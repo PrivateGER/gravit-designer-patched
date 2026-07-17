@@ -2,23 +2,23 @@ module.exports = function (module, exports, require) {
         "use strict";
         (require(30 /* polyfill:Object */), require(8 /* Symbol */), require(20 /* polyfill:RegExp */), require(527), require(107 /* polyfill:RegExp */), require(4), require(32), require(33));
         var designerConfig = require(10);
-        const i = require(1326),
-            a = require(1578),
+        const paywall = require(1326),
+            upgradeDialogs = require(1578),
             GOfflineDialog = require(256),
-            s = require(441),
-            l = {
+            GLicenseChangedEvent = require(441),
+            reminderHandlers = {
                 offlineWarning: () => GOfflineDialog.openOfflineWarning(),
-                trialExpired: () => a.openTrialExpired(),
-                proExpireSoon: () => a.openProExpireSoon(),
-                proExpireToday: () => a.openProExpireSoon(),
-                proExpired: () => a.openProExpired(),
-                upgradeScreen: () => a.openUpgradeScreen(),
-                proOfferInTrial: () => a.openTrialMessage(),
-                proOfferInTrialExpired: () => i.openOfferReminder(),
-                proOfferInTrialExpireSoon: () => a.openTrialMessage(),
-                proOfferInTrialLastWarning: () => a.openTrialMessage(),
-                proOfferSpecialPrice: () => i.openOfferReminder(),
-                proOfferInFree: () => i.openOfferReminder(),
+                trialExpired: () => upgradeDialogs.openTrialExpired(),
+                proExpireSoon: () => upgradeDialogs.openProExpireSoon(),
+                proExpireToday: () => upgradeDialogs.openProExpireSoon(),
+                proExpired: () => upgradeDialogs.openProExpired(),
+                upgradeScreen: () => upgradeDialogs.openUpgradeScreen(),
+                proOfferInTrial: () => upgradeDialogs.openTrialMessage(),
+                proOfferInTrialExpired: () => paywall.openOfferReminder(),
+                proOfferInTrialExpireSoon: () => upgradeDialogs.openTrialMessage(),
+                proOfferInTrialLastWarning: () => upgradeDialogs.openTrialMessage(),
+                proOfferSpecialPrice: () => paywall.openOfferReminder(),
+                proOfferInFree: () => paywall.openOfferReminder(),
             };
         module.exports = new (class {
             constructor() {
@@ -31,98 +31,98 @@ module.exports = function (module, exports, require) {
             }
             async start() {
                 try {
-                    let e = await designerConfig.gApi.getUserSettings().catch(() => null);
-                    e && (this._settings = Object.assign(this._settings, e));
-                } catch (e) {
-                    console.info("GReminderManager", "exception", e);
+                    let userSettings = await designerConfig.gApi.getUserSettings().catch(() => null);
+                    userSettings && (this._settings = Object.assign(this._settings, userSettings));
+                } catch (error) {
+                    console.info("GReminderManager", "exception", error);
                 }
                 (this._settings &&
                     this._settings.reminders &&
                     (this._settings.reminders.proOfferInTrialExpireSoon = designerConfig.DateAPI.daysToMilliseconds(1)),
                     setInterval(this.checkReminders.bind(this), designerConfig.DateAPI.daysToMilliseconds(1)),
                     await this.checkReminders(),
-                    gDesigner.addEventListener(s, this.checkReminders, this));
+                    gDesigner.addEventListener(GLicenseChangedEvent, this.checkReminders, this));
             }
             async checkReminders() {
                 if (!gDesigner.isEnabledSubscriptions()) return;
-                let e = gDesigner.getSyncUser();
-                if (!e || e.deactivated) return;
+                let syncUser = gDesigner.getSyncUser();
+                if (!syncUser || syncUser.deactivated) return;
                 if (!this._isAllowedToShowReminders()) return;
-                const t = gDesigner.getLicense(),
-                    n = gDesigner.now();
-                if (t.canAccessFreemium(n)) {
-                    if (t.isExpired(n)) {
-                        if (t.isTrial() && this.once("trialExpired")) return void this._checkPoint("proOfferInTrialExpired", n);
-                        if (t.isPro()) return void this.once("proExpired");
+                const license = gDesigner.getLicense(),
+                    now = gDesigner.now();
+                if (license.canAccessFreemium(now)) {
+                    if (license.isExpired(now)) {
+                        if (license.isTrial() && this.once("trialExpired")) return void this._checkPoint("proOfferInTrialExpired", now);
+                        if (license.isPro()) return void this.once("proExpired");
                         this.execute("proOfferInTrialExpired");
-                    } else if (t.isPro())
-                        t.getExpirationDate() &&
-                            (this.once("proExpireSoon", t.getExpirationDate()) || this.once("proExpireToday", t.getExpirationDate()));
-                    else if (t.isTrial())
+                    } else if (license.isPro())
+                        license.getExpirationDate() &&
+                            (this.once("proExpireSoon", license.getExpirationDate()) || this.once("proExpireToday", license.getExpirationDate()));
+                    else if (license.isTrial())
                         (await this._getShowTrialMessage()) &&
                             this._waitUntilUserIsInactive() &&
                             (this.execute("proOfferInTrial") ||
-                                this.once("proOfferInTrialExpireSoon", t.getExpirationDate()) ||
-                                this.once("proOfferInTrialLastWarning", t.getExpirationDate()));
-                    else if (t.isFree()) {
-                        const { reminders: { proOfferInFree: e = 15 } = {} } = this._settings;
-                        if (t.getCreationDate()) {
-                            const i = designerConfig.DateAPI.addTime(t.getCreationDate(), e);
-                            designerConfig.DateAPI.gte(n, i) && this.execute("proOfferInFree") && this.reset("proOfferInTrial", n);
+                                this.once("proOfferInTrialExpireSoon", license.getExpirationDate()) ||
+                                this.once("proOfferInTrialLastWarning", license.getExpirationDate()));
+                    else if (license.isFree()) {
+                        const { reminders: { proOfferInFree: proOfferDelay = 15 } = {} } = this._settings;
+                        if (license.getCreationDate()) {
+                            const triggerDate = designerConfig.DateAPI.addTime(license.getCreationDate(), proOfferDelay);
+                            designerConfig.DateAPI.gte(now, triggerDate) && this.execute("proOfferInFree") && this.reset("proOfferInTrial", now);
                         }
                     }
-                    (t.isPro() ||
-                        (t.isLegacy() && t.getSpecialPriceDate() && this.once("proOfferSpecialPrice", t.getSpecialPriceDate(), true)),
-                        t.isOffline() &&
-                            !t.isOfflinePeriodExpired() &&
-                            (t.isPro() || t.isTrial()) &&
-                            this.execute("offlineWarning", t.getOfflineWarningDate()),
-                        t.isPro() && !t.isExpired(n) && (this.reset("proExpired"), this.reset("proExpireToday")));
+                    (license.isPro() ||
+                        (license.isLegacy() && license.getSpecialPriceDate() && this.once("proOfferSpecialPrice", license.getSpecialPriceDate(), true)),
+                        license.isOffline() &&
+                            !license.isOfflinePeriodExpired() &&
+                            (license.isPro() || license.isTrial()) &&
+                            this.execute("offlineWarning", license.getOfflineWarningDate()),
+                        license.isPro() && !license.isExpired(now) && (this.reset("proExpired"), this.reset("proExpireToday")));
                 } else (await this._getShowTrialMessage()) && this._executeReminder("upgradeScreen");
             }
             _isAllowedToShowReminders() {
-                const e = new Date(gDesigner.now()).getTime(),
-                    t = gDesigner.getLicense();
-                return !t.isTrial() || !designerConfig.DateAPI.lte(e, t.getCreationDate());
+                const nowTime = new Date(gDesigner.now()).getTime(),
+                    license = gDesigner.getLicense();
+                return !license.isTrial() || !designerConfig.DateAPI.lte(nowTime, license.getCreationDate());
             }
-            execute(e, t) {
-                const n = gDesigner.now();
-                t && (t = designerConfig.DateAPI.addTime(t, -this._settings.reminders[e] || 0));
-                const i = gDesigner.getSetting(e);
+            execute(key, date) {
+                const now = gDesigner.now();
+                date && (date = designerConfig.DateAPI.addTime(date, -this._settings.reminders[key] || 0));
+                const lastShownValue = gDesigner.getSetting(key);
                 return (
-                    !(i && !designerConfig.DateAPI.isExpired(n, new Date(i), this._settings.reminders[e])) &&
-                    !(t && !designerConfig.DateAPI.isExpired(n, t)) &&
-                    this._executeReminder(e)
+                    !(lastShownValue && !designerConfig.DateAPI.isExpired(now, new Date(lastShownValue), this._settings.reminders[key])) &&
+                    !(date && !designerConfig.DateAPI.isExpired(now, date)) &&
+                    this._executeReminder(key)
                 );
             }
-            once(e, t) {
-                let n = arguments.length > 2 && void 0 !== arguments[2] && arguments[2];
-                if (gDesigner.getSetting(e)) return false;
-                const i = gDesigner.now();
+            once(key, date) {
+                let exactMatch = arguments.length > 2 && void 0 !== arguments[2] && arguments[2];
+                if (gDesigner.getSetting(key)) return false;
+                const now = gDesigner.now();
                 return (
-                    t && (t = designerConfig.DateAPI.addTime(t, -this._settings.reminders[e] || 0)),
-                    !t || (!n && designerConfig.DateAPI.isExpired(i, t)) || (n && designerConfig.DateAPI.eq(i, t)) ? this._executeReminder(e) : void 0
+                    date && (date = designerConfig.DateAPI.addTime(date, -this._settings.reminders[key] || 0)),
+                    !date || (!exactMatch && designerConfig.DateAPI.isExpired(now, date)) || (exactMatch && designerConfig.DateAPI.eq(now, date)) ? this._executeReminder(key) : void 0
                 );
             }
-            _checkPoint(e, t) {
-                gDesigner.setSetting(e, t);
+            _checkPoint(key, date) {
+                gDesigner.setSetting(key, date);
             }
-            _executeReminder(e) {
+            _executeReminder(key) {
                 return (
-                    !!this._checkFlag(e) &&
-                    (/^prod/.test("production") || console.info("ReminderManager", e),
-                    this._checkPoint(e, gDesigner.now()),
-                    this._handleStats(e),
-                    l[e].call(null),
+                    !!this._checkFlag(key) &&
+                    (/^prod/.test("production") || console.info("ReminderManager", key),
+                    this._checkPoint(key, gDesigner.now()),
+                    this._handleStats(key),
+                    reminderHandlers[key].call(null),
                     true)
                 );
             }
-            _checkFlag(e) {
-                return this._flags.hasOwnProperty(e) ? this._flags[e] : false !== this._settings.flags[e];
+            _checkFlag(key) {
+                return this._flags.hasOwnProperty(key) ? this._flags[key] : false !== this._settings.flags[key];
             }
-            _handleStats(e) {
-                let t, n;
-                switch (e) {
+            _handleStats(key) {
+                let license, days;
+                switch (key) {
                     case "offlineWarning":
                         gDesigner.pageTracking("/ProOfflineWarning");
                         break;
@@ -133,23 +133,23 @@ module.exports = function (module, exports, require) {
                         (gDesigner.pageTracking("/Upgrade"),
                             gDesigner
                                 .getUser()
-                                .then(async (e) => {
+                                .then(async (user) => {
                                     gDesigner.getAmplitudeHelper().logEvent(designerConfig.AmplitudeData.Events.ACCOUNT_TRIAL_EXPIRED_SCREEN, {
-                                        ACCOUNT_TOTAL_TRIAL_DAYS_GIVEN: e.trial_created
+                                        ACCOUNT_TOTAL_TRIAL_DAYS_GIVEN: user.trial_created
                                             ? designerConfig.DateAPI.millisecondsToDays(
-                                                  designerConfig.DateAPI.diff(new Date(e.trial_created), new Date(e.trial_expire))
+                                                  designerConfig.DateAPI.diff(new Date(user.trial_created), new Date(user.trial_expire))
                                               )
                                             : null,
-                                        ACCOUNT_TOTAL_SUBSCRIPTION_DAYS_GIVEN: await designerConfig.gApi.license.totalSubscriptionDays(e),
+                                        ACCOUNT_TOTAL_SUBSCRIPTION_DAYS_GIVEN: await designerConfig.gApi.license.totalSubscriptionDays(user),
                                         ACCOUNT_EVER_SUBSCRIBED: await designerConfig.gApi.license.everSubscribed(),
                                     });
                                 })
                                 .catch(() => null));
                         break;
                     case "proExpireSoon":
-                        ((t = gDesigner.getLicense()),
-                            (n = designerConfig.DateAPI.millisecondsToDays(designerConfig.DateAPI.diff(designerConfig.DateAPI.toUTCZone(gDesigner.now()), t.getExpirationDate()))),
-                            gDesigner.pageTracking("/ProReminders" + n));
+                        ((license = gDesigner.getLicense()),
+                            (days = designerConfig.DateAPI.millisecondsToDays(designerConfig.DateAPI.diff(designerConfig.DateAPI.toUTCZone(gDesigner.now()), license.getExpirationDate()))),
+                            gDesigner.pageTracking("/ProReminders" + days));
                         break;
                     case "proExpireToday":
                         gDesigner.pageTracking("/ProReminders1");
@@ -164,9 +164,9 @@ module.exports = function (module, exports, require) {
                         gDesigner.pageTracking("/ProTrialExpired");
                         break;
                     case "proOfferInTrialExpireSoon":
-                        ((t = gDesigner.getLicense()),
-                            (n = designerConfig.DateAPI.millisecondsToDays(designerConfig.DateAPI.diff(designerConfig.DateAPI.toUTCZone(gDesigner.now()), t.getExpirationDate()))),
-                            gDesigner.pageTracking("/ProTrialExpireSoon" + n));
+                        ((license = gDesigner.getLicense()),
+                            (days = designerConfig.DateAPI.millisecondsToDays(designerConfig.DateAPI.diff(designerConfig.DateAPI.toUTCZone(gDesigner.now()), license.getExpirationDate()))),
+                            gDesigner.pageTracking("/ProTrialExpireSoon" + days));
                         break;
                     case "proOfferInTrialLastWarning":
                         gDesigner.pageTracking("/ProTrialExpireToday");
@@ -181,11 +181,11 @@ module.exports = function (module, exports, require) {
                         gDesigner.pageTracking("/Upgrade");
                 }
             }
-            reset(e, t) {
-                gDesigner.setSetting(e, t);
+            reset(key, date) {
+                gDesigner.setSetting(key, date);
             }
             resetAll() {
-                Object.keys(l).forEach((e) => this.reset(e));
+                Object.keys(reminderHandlers).forEach((key) => this.reset(key));
             }
             _waitUntilUserIsInactive() {
                 return (

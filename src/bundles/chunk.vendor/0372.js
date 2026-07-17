@@ -2,34 +2,34 @@ module.exports = function (module, exports, require) {
             "use strict";
             (require(30 /* polyfill:Object */), require(4), require(41), require(13), require(32), require(97), require(33));
             for (
-                var n = require(685),
-                    r = require(686),
-                    o = require(699),
-                    a = require(700),
+                var objectUtils = require(685),
+                    systemInfo = require(686),
+                    GTranslation = require(699),
+                    ClassReference = require(700),
                     GLocaleLanguage = require(701),
-                    l = require(945),
-                    h = require(703),
-                    A = require(704),
-                    c = require(705),
-                    p = new o().getMapped(),
-                    u = new l(),
+                    GLocale = require(945),
+                    GLocaleKey = require(703),
+                    GTranslationNotificationEvent = require(704),
+                    GTranslationEvents = require(705),
+                    translationProjects = new GTranslation().getMapped(),
+                    localeInstance = new GLocale(),
                     d = 0;
-                d < p.length;
+                d < translationProjects.length;
                 d++
             ) {
-                var g = p[d],
+                var g = translationProjects[d],
                     f = g.project;
-                u.setProject(f);
+                localeInstance.setProject(f);
                 for (var m = g.importStack, y = 0; y < m.length; y++) {
                     var _ = m[y];
                     if (
-                        _.some(function (e) {
-                            return e.hasOwnProperty("translations") && Object.keys(e.translations).length;
+                        _.some(function (language) {
+                            return language.hasOwnProperty("translations") && Object.keys(language.translations).length;
                         })
                     ) {
                         if (
-                            _.filter(function (e) {
-                                return e.isDefault;
+                            _.filter(function (language) {
+                                return language.isDefault;
                             }).length > 1
                         )
                             throw "Only one default language can exist!";
@@ -41,43 +41,43 @@ module.exports = function (module, exports, require) {
                                     var E = C[w],
                                         B = Object.assign({}, b.translations[E]);
                                     if (
-                                        (Object.keys(B).forEach(function (e) {
-                                            B[e] || delete B[e];
+                                        (Object.keys(B).forEach(function (key) {
+                                            B[key] || delete B[key];
                                         }),
-                                        u.setValues(new a(E), GLocaleLanguage[b.language], Object.keys(B), Object.values(B), true),
+                                        localeInstance.setValues(new ClassReference(E), GLocaleLanguage[b.language], Object.keys(B), Object.values(B), true),
                                         b.translationsExtended && b.translationsExtended[E])
                                     ) {
-                                        var x = n.extend({}, B, b.translationsExtended[E]);
-                                        (Object.keys(x).forEach(function (e) {
-                                            x[e] || delete x[e];
+                                        var x = objectUtils.extend({}, B, b.translationsExtended[E]);
+                                        (Object.keys(x).forEach(function (key) {
+                                            x[key] || delete x[key];
                                         }),
-                                            u.setValues(new a(E), GLocaleLanguage[b.language], Object.keys(x), Object.values(x), true, true));
+                                            localeInstance.setValues(new ClassReference(E), GLocaleLanguage[b.language], Object.keys(x), Object.values(x), true, true));
                                     }
                                 }
                             }
                         }
                     }
                 }
-                var P = g.translations.find(function (e) {
+                var P = g.translations.find(function (translation) {
                     return (
-                        r.language &&
-                        ((5 === r.fullLanguage.length && e.abbreviation.toLowerCase() === r.fullLanguage) ||
-                            (5 !== r.fullLanguage.length && e.abbreviation.indexOf(r.fullLanguage) >= 0))
+                        systemInfo.language &&
+                        ((5 === systemInfo.fullLanguage.length && translation.abbreviation.toLowerCase() === systemInfo.fullLanguage) ||
+                            (5 !== systemInfo.fullLanguage.length && translation.abbreviation.indexOf(systemInfo.fullLanguage) >= 0))
                     );
                 });
-                P && u.setLanguage(P.keyValue);
+                P && localeInstance.setLanguage(P.keyValue);
             }
             module.exports = {
-                GLocale: u,
+                GLocale: localeInstance,
                 GLocaleLanguage: GLocaleLanguage,
-                ClassReference: a,
-                GTranslation: o,
-                GLocaleKey: h,
-                GTranslationNotificationEvent: A,
-                GTranslationEvents: c,
-                Factory: function (e) {
-                    var t = new l();
-                    return ((t = Object.assign(t, u)).setProject(e), t);
+                ClassReference: ClassReference,
+                GTranslation: GTranslation,
+                GLocaleKey: GLocaleKey,
+                GTranslationNotificationEvent: GTranslationNotificationEvent,
+                GTranslationEvents: GTranslationEvents,
+                Factory: function (project) {
+                    var instance = new GLocale();
+                    return ((instance = Object.assign(instance, localeInstance)).setProject(project), instance);
                 },
             };
         };

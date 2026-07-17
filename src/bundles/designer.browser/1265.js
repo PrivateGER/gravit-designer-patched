@@ -2,78 +2,78 @@ module.exports = function (module, exports, require) {
         "use strict";
         (require(57), require(3), require(4), require(13));
         var GObject = require(1),
-            i = require(123);
+            GProperties = require(123);
         require(173);
-        function a() {
+        function GEllipseProperties() {
             this._ellipses = [];
         }
-        (GObject.GObject.inherit(a, i),
-            (a.prototype._panel = null),
-            (a.prototype._document = null),
-            (a.prototype._ellipses = null),
-            (a.prototype.init = function (e) {
-                this._panel = e;
-                var t = function (e) {
-                    var t = this;
-                    if (0 === e.indexOf("etp-")) {
-                        var n = "",
-                            i = parseInt(e.substr("etp-".length));
-                        switch (i) {
+        (GObject.GObject.inherit(GEllipseProperties, GProperties),
+            (GEllipseProperties.prototype._panel = null),
+            (GEllipseProperties.prototype._document = null),
+            (GEllipseProperties.prototype._ellipses = null),
+            (GEllipseProperties.prototype.init = function (panelElement) {
+                this._panel = panelElement;
+                var createPropertyControl = function (propertyName) {
+                    var self = this;
+                    if (0 === propertyName.indexOf("etp-")) {
+                        var iconClass = "",
+                            shapeType = parseInt(propertyName.substr("etp-".length));
+                        switch (shapeType) {
                             case GObject.GEllipse.Type.Pie:
-                                n = "gravit-icon-circle-pie";
+                                iconClass = "gravit-icon-circle-pie";
                                 break;
                             case GObject.GEllipse.Type.Chord:
-                                n = "gravit-icon-ellipse-chord";
+                                iconClass = "gravit-icon-ellipse-chord";
                                 break;
                             case GObject.GEllipse.Type.Arc:
-                                n = "gravit-icon-ellipse-arc";
+                                iconClass = "gravit-icon-ellipse-arc";
                                 break;
                             default:
                                 throw new Error("");
                         }
                         return $("<div></div>")
-                            .attr("data-property", e)
+                            .attr("data-property", propertyName)
                             .addClass("g-button g-icon")
                             .on("click", function () {
-                                (gDesigner.stats("ellipse_change_type", i),
-                                    t._assignProperty(
+                                (gDesigner.stats("ellipse_change_type", shapeType),
+                                    self._assignProperty(
                                         "etp",
-                                        i,
+                                        shapeType,
                                         GObject.GLocale.get(new GObject.GLocaleKey("GEllipseProperties", "action.change-shape"))
                                     ),
-                                    i === GObject.GEllipse.Type.Arc && t._setBorderAlignmentCenter());
+                                    shapeType === GObject.GEllipse.Type.Arc && self._setBorderAlignmentCenter());
                             })
-                            .append($("<span></span>").addClass(n));
+                            .append($("<span></span>").addClass(iconClass));
                     }
-                    if ("sa" === e || "ea" === e)
+                    if ("sa" === propertyName || "ea" === propertyName)
                         return $("<input>")
                             .attr("type", "text")
-                            .attr("data-property", e)
+                            .attr("data-property", propertyName)
                             .on("change", function () {
                                 gDesigner.stats("ellipse_change_angle");
-                                var n = GObject.GLength.parseEquationValue($(this).gInputBox("value"));
-                                null !== n
-                                    ? ((n = GObject.GMath.normalizeAngleRadians(GObject.GMath.toRadians(n))),
-                                      t._assignProperty(
-                                          e,
-                                          GObject.GMath.PI2 - n,
+                                var angleValue = GObject.GLength.parseEquationValue($(this).gInputBox("value"));
+                                null !== angleValue
+                                    ? ((angleValue = GObject.GMath.normalizeAngleRadians(GObject.GMath.toRadians(angleValue))),
+                                      self._assignProperty(
+                                          propertyName,
+                                          GObject.GMath.PI2 - angleValue,
                                           GObject.GLocale.get(new GObject.GLocaleKey("GEllipseProperties", "action.change-angle"))
                                       ))
-                                    : t._updateProperties();
+                                    : self._updateProperties();
                             })
                             .gInputBox();
-                    throw new Error("Unknown input property: " + e);
+                    throw new Error("Unknown input property: " + propertyName);
                 }.bind(this);
                 ($("<div></div>")
                     .addClass("ellipse-angles-property")
                     .gPropertyRow({
                         label: GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.angles")),
                         columns: [
-                            { width: "50%", content: t("sa") },
-                            { width: "50%", content: t("ea") },
+                            { width: "50%", content: createPropertyControl("sa") },
+                            { width: "50%", content: createPropertyControl("ea") },
                         ],
                     })
-                    .appendTo(e),
+                    .appendTo(panelElement),
                     $("<div></div>")
                         .addClass("ellipse-shape-property")
                         .gPropertyRow({
@@ -83,36 +83,36 @@ module.exports = function (module, exports, require) {
                                     width: "33.3%",
                                     clazz: "shape-type-chooser shape-arc",
                                     label: GObject.GLocale.get(new GObject.GLocaleKey("GEllipse", "type.arc")),
-                                    content: t("etp-" + GObject.GEllipse.Type.Arc),
+                                    content: createPropertyControl("etp-" + GObject.GEllipse.Type.Arc),
                                 },
                                 {
                                     width: "33.3%",
                                     clazz: "shape-type-chooser shape-chord",
                                     label: GObject.GLocale.get(new GObject.GLocaleKey("GEllipse", "type.chord")),
-                                    content: t("etp-" + GObject.GEllipse.Type.Chord),
+                                    content: createPropertyControl("etp-" + GObject.GEllipse.Type.Chord),
                                 },
                                 {
                                     width: "33.3%",
                                     clazz: "shape-type-chooser shape-pie",
                                     label: GObject.GLocale.get(new GObject.GLocaleKey("GEllipse", "type.pie")),
-                                    content: t("etp-" + GObject.GEllipse.Type.Pie),
+                                    content: createPropertyControl("etp-" + GObject.GEllipse.Type.Pie),
                                 },
                             ],
                         })
-                        .appendTo(e));
+                        .appendTo(panelElement));
             }),
-            (a.prototype.update = function (e, t) {
+            (GEllipseProperties.prototype.update = function (document, elements) {
                 if (
                     (this._document &&
                         (this._document.getScene().removeEventListener(GObject.GNode.AfterPropertiesChangeEvent, this._afterPropertiesChange),
                         (this._document = null)),
                     (this._ellipses = []),
-                    e)
+                    document)
                 ) {
-                    for (var n = 0; n < t.length; ++n) t[n] instanceof GObject.GEllipse && this._ellipses.push(t[n]);
-                    if (this._ellipses.length && this._ellipses.length === t.length)
+                    for (var n = 0; n < elements.length; ++n) elements[n] instanceof GObject.GEllipse && this._ellipses.push(elements[n]);
+                    if (this._ellipses.length && this._ellipses.length === elements.length)
                         return (
-                            (this._document = e),
+                            (this._document = document),
                             this._document
                                 .getScene()
                                 .addEventListener(GObject.GNode.AfterPropertiesChangeEvent, this._afterPropertiesChange, this),
@@ -122,54 +122,54 @@ module.exports = function (module, exports, require) {
                 }
                 return false;
             }),
-            (a.prototype._afterPropertiesChange = function (e) {
-                !e.temporary && this._ellipses.length > 0 && this._ellipses[0] === e.node && this._updateProperties();
+            (GEllipseProperties.prototype._afterPropertiesChange = function (event) {
+                !event.temporary && this._ellipses.length > 0 && this._ellipses[0] === event.node && this._updateProperties();
             }),
-            (a.prototype._setBorderAlignmentCenter = function () {
-                var e,
-                    t,
-                    n = ["_ba"],
-                    i = [GObject.GStylable.BorderAlignment.Center],
-                    a = this._document.getEditor();
-                a.beginTransaction();
+            (GEllipseProperties.prototype._setBorderAlignmentCenter = function () {
+                var borderLayers,
+                    borderLayer,
+                    propertyNames = ["_ba"],
+                    propertyValues = [GObject.GStylable.BorderAlignment.Center],
+                    editor = this._document.getEditor();
+                editor.beginTransaction();
                 try {
                     for (var r = 0, s = this._ellipses.length; r < s; ++r) {
-                        e = this._ellipses[r].getPaintLayers().getBorderLayers();
-                        for (var l = 0, c = e.length; l < c; l++)
-                            (t = e[l]) instanceof GObject.GStylable.BorderPaintLayer && t.setProperties(n, i);
+                        borderLayers = this._ellipses[r].getPaintLayers().getBorderLayers();
+                        for (var l = 0, c = borderLayers.length; l < c; l++)
+                            (borderLayer = borderLayers[l]) instanceof GObject.GStylable.BorderPaintLayer && borderLayer.setProperties(propertyNames, propertyValues);
                     }
                 } finally {
-                    a.commitTransaction(GObject.GLocale.get(new GObject.GLocaleKey("GEllipseProperties", "text.ellipse-to-center")));
+                    editor.commitTransaction(GObject.GLocale.get(new GObject.GLocaleKey("GEllipseProperties", "text.ellipse-to-center")));
                 }
             }),
-            (a.prototype._updateProperties = function () {
-                var e = this._ellipses[0];
-                (this._panel.find('[data-property^="etp"]').each(function (t, n) {
-                    var o = $(n),
-                        i = o.attr("data-property").substr("etp-".length);
-                    o.toggleClass("g-active", e.getProperty("etp").toString() === i);
+            (GEllipseProperties.prototype._updateProperties = function () {
+                var ellipse = this._ellipses[0];
+                (this._panel.find('[data-property^="etp"]').each(function (index, element) {
+                    var itemElement = $(element),
+                        itemShapeType = itemElement.attr("data-property").substr("etp-".length);
+                    itemElement.toggleClass("g-active", ellipse.getProperty("etp").toString() === itemShapeType);
                 }),
                     this._panel
                         .find('input[data-property="sa"]')
-                        .val(GObject.GUtil.formatNumber(GObject.GMath.toDegrees(GObject.GMath.PI2 - e.getProperty("sa")), 2)),
+                        .val(GObject.GUtil.formatNumber(GObject.GMath.toDegrees(GObject.GMath.PI2 - ellipse.getProperty("sa")), 2)),
                     this._panel
                         .find('input[data-property="ea"]')
-                        .val(GObject.GUtil.formatNumber(GObject.GMath.toDegrees(GObject.GMath.PI2 - e.getProperty("ea")), 2)));
+                        .val(GObject.GUtil.formatNumber(GObject.GMath.toDegrees(GObject.GMath.PI2 - ellipse.getProperty("ea")), 2)));
             }),
-            (a.prototype._assignProperty = function (e, t, n) {
-                this._assignProperties([e], [t], n);
+            (GEllipseProperties.prototype._assignProperty = function (propertyName, value, description) {
+                this._assignProperties([propertyName], [value], description);
             }),
-            (a.prototype._assignProperties = function (e, t, n) {
-                var o = this._document.getEditor();
-                o.beginTransaction();
+            (GEllipseProperties.prototype._assignProperties = function (propertyNames, values, description) {
+                var editor = this._document.getEditor();
+                editor.beginTransaction();
                 try {
-                    for (var i = 0; i < this._ellipses.length; ++i) this._ellipses[i].setProperties(e, t);
+                    for (var i = 0; i < this._ellipses.length; ++i) this._ellipses[i].setProperties(propertyNames, values);
                 } finally {
-                    o.commitTransaction(n);
+                    editor.commitTransaction(description);
                 }
             }),
-            (a.prototype.toString = function () {
+            (GEllipseProperties.prototype.toString = function () {
                 return "[Object GEllipseProperties]";
             }),
-            (module.exports = a));
+            (module.exports = GEllipseProperties));
     };

@@ -4,7 +4,7 @@ module.exports = function (module, exports, require) {
             i,
             a,
             r,
-            RegExp = require(23),
+            globalThisRef = require(23 /* RegExp */),
             l = require(200),
             c = require(124),
             d = require(35),
@@ -16,17 +16,17 @@ module.exports = function (module, exports, require) {
             m = require(303),
             y = require(410),
             v = require(245),
-            _ = RegExp.setImmediate,
-            b = RegExp.clearImmediate,
-            w = RegExp.process,
-            C = RegExp.Dispatch,
-            x = RegExp.Function,
-            S = RegExp.MessageChannel,
-            E = RegExp.String,
+            _ = globalThisRef.setImmediate,
+            b = globalThisRef.clearImmediate,
+            w = globalThisRef.process,
+            C = globalThisRef.Dispatch,
+            x = globalThisRef.Function,
+            S = globalThisRef.MessageChannel,
+            E = globalThisRef.String,
             A = 0,
             T = {};
         p(function () {
-            o = RegExp.location;
+            o = globalThisRef.location;
         });
         var G = function (e) {
                 if (u(T, e)) {
@@ -43,7 +43,7 @@ module.exports = function (module, exports, require) {
                 G(e.data);
             },
             L = function (e) {
-                RegExp.postMessage(E(e), o.protocol + "//" + o.host);
+                globalThisRef.postMessage(E(e), o.protocol + "//" + o.host);
             };
         ((_ && b) ||
             ((_ = function (e) {
@@ -71,8 +71,8 @@ module.exports = function (module, exports, require) {
                     })
                   : S && !y
                     ? ((r = (a = new S()).port2), (a.port1.onmessage = D), (i = c(r.postMessage, r)))
-                    : RegExp.addEventListener && d(RegExp.postMessage) && !RegExp.importScripts && o && "file:" !== o.protocol && !p(L)
-                      ? ((i = L), RegExp.addEventListener("message", D, false))
+                    : globalThisRef.addEventListener && d(globalThisRef.postMessage) && !globalThisRef.importScripts && o && "file:" !== o.protocol && !p(L)
+                      ? ((i = L), globalThisRef.addEventListener("message", D, false))
                       : (i =
                             "onreadystatechange" in f("script")
                                 ? function (e) {

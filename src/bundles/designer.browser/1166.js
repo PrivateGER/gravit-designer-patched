@@ -1,7 +1,7 @@
 module.exports = function (module, exports, require) {
         "use strict";
         (require(58 /* polyfill:Array */), require(8 /* Symbol */), require(71 /* polyfill:String */));
-        const o = require(177),
+        const GUser = require(177),
             i = require(805),
             { gApi } = require(10 /* designerConfig */),
             r = {};
@@ -10,7 +10,7 @@ module.exports = function (module, exports, require) {
             delete r[e.user.getUID()];
         };
         function c(e) {
-            (e instanceof o || (e = new o(e)), (this._user = e), s || (gDesigner.addEventListener(i, l), (s = true)));
+            (e instanceof GUser || (e = new GUser(e)), (this._user = e), s || (gDesigner.addEventListener(i, l), (s = true)));
         }
         ((c.getUserDataFromAnnotAndUser = function (e, t) {
             const n = e.getProperty("uid");
@@ -32,7 +32,7 @@ module.exports = function (module, exports, require) {
                     (async (e) => {
                         if (!r.hasOwnProperty(e)) {
                             const t = await gApi.getUser(e, true).catch(() => Promise.resolve(null));
-                            r[e] = new o(t);
+                            r[e] = new GUser(t);
                         }
                         return r[e];
                     })(this._user.getUID()).then((o) => {

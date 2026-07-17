@@ -3,137 +3,137 @@ module.exports = function (module, exports, require) {
         (require(19), require(3), require(26));
         var GObject = require(1),
             Utils = require(40),
-            a = require(67),
+            GRichTooltipConfig = require(67),
             GCategory = require(18),
-            s = require(106);
-        function l() {
-            l.TOOLTIP_CONFIG = {
-                [a.TOOLTIP_AREA.TOOLBAR]: a.GRichTooltipConfig.from({
+            GElementAction = require(106);
+        function GVectorizeBorderAction() {
+            GVectorizeBorderAction.TOOLTIP_CONFIG = {
+                [GRichTooltipConfig.TOOLTIP_AREA.TOOLBAR]: GRichTooltipConfig.GRichTooltipConfig.from({
                     title: GObject.GLocale.get(new GObject.GLocaleKey("GVectorizeBorderAction", "tooltip-title")),
                     description: GObject.GLocale.get(new GObject.GLocaleKey("GVectorizeBorderAction", "tooltip-description")),
                     learnMore: "/docs/basics/modify-paths/#vectorize-borders",
                 }),
             };
         }
-        (GObject.GObject.inherit(l, s),
-            (l.ID = "modify.vectorize"),
-            (l.TITLE = new GObject.GLocaleKey("GVectorizeBorderAction", "title")),
-            (l.TOOLTIP_CONFIG = null),
-            (l.prototype.getId = function () {
-                return l.ID;
+        (GObject.GObject.inherit(GVectorizeBorderAction, GElementAction),
+            (GVectorizeBorderAction.ID = "modify.vectorize"),
+            (GVectorizeBorderAction.TITLE = new GObject.GLocaleKey("GVectorizeBorderAction", "title")),
+            (GVectorizeBorderAction.TOOLTIP_CONFIG = null),
+            (GVectorizeBorderAction.prototype.getId = function () {
+                return GVectorizeBorderAction.ID;
             }),
-            (l.prototype.getTitle = function () {
-                return l.TITLE;
+            (GVectorizeBorderAction.prototype.getTitle = function () {
+                return GVectorizeBorderAction.TITLE;
             }),
-            (l.prototype.getCategory = function () {
+            (GVectorizeBorderAction.prototype.getCategory = function () {
                 return GCategory.CATEGORY_MODIFY_PATH;
             }),
-            (l.prototype.getGroup = function () {
+            (GVectorizeBorderAction.prototype.getGroup = function () {
                 return "structure/modify";
             }),
-            (l.prototype.getIcon = function () {
+            (GVectorizeBorderAction.prototype.getIcon = function () {
                 return "gravit-icon-vectorize-border";
             }),
-            (l.prototype.isEnabled = function () {
-                if (!s.prototype.isEnabled.call(this)) return false;
-                var e = gDesigner.getActiveDocument() ? gDesigner.getActiveDocument().getEditor().getIndividualSelection() : null,
-                    t = false;
-                if (e)
-                    for (var n = 0; !t && n < e.length; ++n)
-                        if (!(e[n] instanceof GObject.GImage) && e[n].hasMixin(GObject.GVertexSource) && e[n].hasMixin(GObject.GStylable)) {
-                            var i = e[n].getPaintLayers(),
+            (GVectorizeBorderAction.prototype.isEnabled = function () {
+                if (!GElementAction.prototype.isEnabled.call(this)) return false;
+                var selection = gDesigner.getActiveDocument() ? gDesigner.getActiveDocument().getEditor().getIndividualSelection() : null,
+                    hasBorderLayers = false;
+                if (selection)
+                    for (var n = 0; !hasBorderLayers && n < selection.length; ++n)
+                        if (!(selection[n] instanceof GObject.GImage) && selection[n].hasMixin(GObject.GVertexSource) && selection[n].hasMixin(GObject.GStylable)) {
+                            var i = selection[n].getPaintLayers(),
                                 a = i ? i.getBorderLayers(true) : null;
-                            t = a && a.length >= 1;
+                            hasBorderLayers = a && a.length >= 1;
                         }
-                return t;
+                return hasBorderLayers;
             }),
-            (l.prototype.execute = function () {
-                var e,
-                    t = gDesigner.getActiveDocument(),
-                    n = t ? t.getEditor() : null,
-                    a = (t && t.getScene(), n ? n.getIndividualSelection() : null),
-                    r = [];
-                if (a)
-                    for (var s = 0; s < a.length; ++s) {
-                        var l = a[s];
-                        !l.hasMixin(GObject.GVertexSource) || l instanceof GObject.GImage || !l.hasMixin(GObject.GStylable) || r.push(l);
+            (GVectorizeBorderAction.prototype.execute = function () {
+                var affectedParents,
+                    document = gDesigner.getActiveDocument(),
+                    editor = document ? document.getEditor() : null,
+                    selection = (document && document.getScene(), editor ? editor.getIndividualSelection() : null),
+                    elements = [];
+                if (selection)
+                    for (var s = 0; s < selection.length; ++s) {
+                        var l = selection[s];
+                        !l.hasMixin(GObject.GVertexSource) || l instanceof GObject.GImage || !l.hasMixin(GObject.GStylable) || elements.push(l);
                     }
-                if (r.length) {
-                    var c = function (e, t) {
-                        if (t instanceof GObject.GPath) e.getPaths().appendChild(t);
+                if (elements.length) {
+                    var appendSubPaths = function (targetPath, sourcePath) {
+                        if (sourcePath instanceof GObject.GPath) targetPath.getPaths().appendChild(sourcePath);
                         else
-                            for (var n, i = t.cloneSubPaths(), a = i.getFirstChild(); null !== a; a = n)
-                                ((n = a.getNext()), i.removeChild(a), e.getPaths().appendChild(a));
+                            for (var next, clonedPaths = sourcePath.cloneSubPaths(), child = clonedPaths.getFirstChild(); null !== child; child = next)
+                                ((next = child.getNext()), clonedPaths.removeChild(child), targetPath.getPaths().appendChild(child));
                     };
-                    n.beginTransaction();
+                    editor.beginTransaction();
                     try {
-                        var d,
-                            u = [],
-                            p = function (e) {
-                                var t = e.getProperty("_ba"),
-                                    n = e.getProperty("_bw");
-                                n = n || 1;
-                                var i,
-                                    a = t == GObject.GStylable.BorderAlignment.Center ? 0.5 * n : n,
-                                    r = new GObject.GVertexOffsetter(
-                                        GObject.GPathUtil.makeClockWise(d),
-                                        a,
-                                        t != GObject.GStylable.BorderAlignment.Outside,
-                                        t != GObject.GStylable.BorderAlignment.Inside,
+                        var sourceElement,
+                            resultElements = [],
+                            vectorizeBorderLayer = function (borderLayer) {
+                                var alignment = borderLayer.getProperty("_ba"),
+                                    width = borderLayer.getProperty("_bw");
+                                width = width || 1;
+                                var resultPath,
+                                    offset = alignment == GObject.GStylable.BorderAlignment.Center ? 0.5 * width : width,
+                                    offsetter = new GObject.GVertexOffsetter(
+                                        GObject.GPathUtil.makeClockWise(sourceElement),
+                                        offset,
+                                        alignment != GObject.GStylable.BorderAlignment.Outside,
+                                        alignment != GObject.GStylable.BorderAlignment.Inside,
                                         0,
-                                        e.getProperty("_blc"),
-                                        e.getProperty("_bml")
+                                        borderLayer.getProperty("_blc"),
+                                        borderLayer.getProperty("_bml")
                                     );
-                                if (t == GObject.GStylable.BorderAlignment.Center) i = GObject.GPathUtil.createPathFromVertexSource(r);
+                                if (alignment == GObject.GStylable.BorderAlignment.Center) resultPath = GObject.GPathUtil.createPathFromVertexSource(offsetter);
                                 else {
-                                    var s = GObject.GPathUtil.createPathFromVertexSource(d),
-                                        l = GObject.GPathUtil.createPathFromVertexSource(r);
-                                    s && ((i = new GObject.GCompoundPath()), c(i, s), l && c(i, l));
+                                    var outerPath = GObject.GPathUtil.createPathFromVertexSource(sourceElement),
+                                        innerPath = GObject.GPathUtil.createPathFromVertexSource(offsetter);
+                                    outerPath && ((resultPath = new GObject.GCompoundPath()), appendSubPaths(resultPath, outerPath), innerPath && appendSubPaths(resultPath, innerPath));
                                 }
                                 return (
-                                    i &&
-                                        (GObject.GElement.prototype.assignFrom.call(i, d),
-                                        i.getPaintLayers().clearLayers(),
-                                        e.$_pt && i.getPaintLayers().appendChild(new GObject.GStylable.FillPaintLayer(e.$_pt))),
-                                    i
+                                    resultPath &&
+                                        (GObject.GElement.prototype.assignFrom.call(resultPath, sourceElement),
+                                        resultPath.getPaintLayers().clearLayers(),
+                                        borderLayer.$_pt && resultPath.getPaintLayers().appendChild(new GObject.GStylable.FillPaintLayer(borderLayer.$_pt))),
+                                    resultPath
                                 );
                             };
-                        e = new Set();
-                        for (s = 0; s < r.length; ++s) {
-                            var g = r[s].getParent();
-                            g && e.add(g);
+                        affectedParents = new Set();
+                        for (s = 0; s < elements.length; ++s) {
+                            var g = elements[s].getParent();
+                            g && affectedParents.add(g);
                         }
                         try {
-                            (0, Utils.blockChanges)(n, e);
-                            for (s = 0; s < r.length; ++s) {
-                                var h = (d = r[s]).getParent(),
-                                    f = d.getNext(),
+                            (0, Utils.blockChanges)(editor, affectedParents);
+                            for (s = 0; s < elements.length; ++s) {
+                                var h = (sourceElement = elements[s]).getParent(),
+                                    f = sourceElement.getNext(),
                                     m = null,
-                                    y = d.getPaintLayers().getBorderLayers(true);
+                                    y = sourceElement.getPaintLayers().getBorderLayers(true);
                                 if (y.length > 1)
-                                    GObject.GUtil.each(y, function (e, t) {
-                                        var n = p(t);
-                                        n && (m || (m = new GObject.GGroup()), m.appendChild(n));
+                                    GObject.GUtil.each(y, function (index, borderLayer) {
+                                        var builtPath = vectorizeBorderLayer(borderLayer);
+                                        builtPath && (m || (m = new GObject.GGroup()), m.appendChild(builtPath));
                                     });
                                 else if (1 == y.length) {
                                     var v = y.pop();
-                                    m = p(v);
+                                    m = vectorizeBorderLayer(v);
                                 }
-                                m ? (h.insertChild(m, f), u.push(m), h.removeChild(d)) : u.push(d);
+                                m ? (h.insertChild(m, f), resultElements.push(m), h.removeChild(sourceElement)) : resultElements.push(sourceElement);
                             }
                         } finally {
-                            ((0, Utils.releaseChanges)(n, e), u.length && n.updateSelection(false, u));
+                            ((0, Utils.releaseChanges)(editor, affectedParents), resultElements.length && editor.updateSelection(false, resultElements));
                         }
                     } finally {
-                        n.commitTransaction(GObject.GLocale.get(this.getTitle()));
+                        editor.commitTransaction(GObject.GLocale.get(this.getTitle()));
                     }
                 }
             }),
-            (l.prototype.getTooltipConfig = function (e) {
-                return (e && l.TOOLTIP_CONFIG[e]) || null;
+            (GVectorizeBorderAction.prototype.getTooltipConfig = function (area) {
+                return (area && GVectorizeBorderAction.TOOLTIP_CONFIG[area]) || null;
             }),
-            (l.prototype.toString = function () {
+            (GVectorizeBorderAction.prototype.toString = function () {
                 return "[Object GVectorizeBorderAction]";
             }),
-            (module.exports = l));
+            (module.exports = GVectorizeBorderAction));
     };

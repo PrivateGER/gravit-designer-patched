@@ -3,27 +3,27 @@ module.exports = function (module, exports, require) {
         var _interopRequireDefault = require(16),
             GPlatform = require(15),
             GObject = require(1),
-            r = _interopRequireDefault(require(18 /* GCategory */)),
-            s = _interopRequireDefault(require(31)),
+            GCategory = _interopRequireDefault(require(18 /* GCategory */)),
+            GAction = _interopRequireDefault(require(31 /* GAction */)),
             SidebarsIds = require(198);
-        class c extends s.default {
-            constructor(e) {
-                (super(), (this._type = e), (this._title = new GObject.GLocaleKey("GCycleThroughLayersAction", "title.".concat(this._type))));
+        class GCycleThroughLayersAction extends GAction.default {
+            constructor(type) {
+                (super(), (this._type = type), (this._title = new GObject.GLocaleKey("GCycleThroughLayersAction", "title.".concat(this._type))));
             }
             getId() {
-                return "".concat(c.ID, ".").concat(this._type);
+                return "".concat(GCycleThroughLayersAction.ID, ".").concat(this._type);
             }
             getTitle() {
                 return this._title;
             }
             getCategory() {
-                return r.default.CATEGORY_VIEW;
+                return GCategory.default.CATEGORY_VIEW;
             }
             getShortcut() {
                 switch (this._type) {
-                    case c.Type.Next:
+                    case GCycleThroughLayersAction.Type.Next:
                         return [GPlatform.GKey.Constant.TAB];
-                    case c.Type.Previous:
+                    case GCycleThroughLayersAction.Type.Previous:
                         return [GPlatform.GKey.Constant.SHIFT, GPlatform.GKey.Constant.TAB];
                     default:
                         return null;
@@ -33,48 +33,48 @@ module.exports = function (module, exports, require) {
                 return false;
             }
             execute() {
-                let e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : c.Mode.Level;
-                const t = gDesigner.getLeftSidebars().getActiveSidebar(),
-                    n = gDesigner.getLeftSidebars().getSidebar(SidebarsIds.SidebarsIds.GOutlineSidebar),
-                    o = n.getLayerPanel(),
-                    i = o.gLayerPanel("getCurrentFocusedNode");
-                if (!i || t !== n.getId()) return;
-                const r = this._getNextNodeInIteration(e, i);
-                if (r) {
-                    const e = o.gLayerPanel("getItem", i),
-                        t = o.gLayerPanel("getItem", r);
-                    (e.removeFlag(GObject.GNode.Flag.Selected),
-                        t.setFlag(GObject.GNode.Flag.Selected),
-                        o.gLayerPanel("setCurrentFocusedNode", r),
-                        o.gLayerPanel("relayout"));
+                let mode = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : GCycleThroughLayersAction.Mode.Level;
+                const activeSidebarId = gDesigner.getLeftSidebars().getActiveSidebar(),
+                    outlineSidebar = gDesigner.getLeftSidebars().getSidebar(SidebarsIds.SidebarsIds.GOutlineSidebar),
+                    layerPanel = outlineSidebar.getLayerPanel(),
+                    focusedNode = layerPanel.gLayerPanel("getCurrentFocusedNode");
+                if (!focusedNode || activeSidebarId !== outlineSidebar.getId()) return;
+                const nextNode = this._getNextNodeInIteration(mode, focusedNode);
+                if (nextNode) {
+                    const currentItem = layerPanel.gLayerPanel("getItem", focusedNode),
+                        nextItem = layerPanel.gLayerPanel("getItem", nextNode);
+                    (currentItem.removeFlag(GObject.GNode.Flag.Selected),
+                        nextItem.setFlag(GObject.GNode.Flag.Selected),
+                        layerPanel.gLayerPanel("setCurrentFocusedNode", nextNode),
+                        layerPanel.gLayerPanel("relayout"));
                 }
             }
-            _getNextNodeInIteration(e, t) {
-                switch (e) {
-                    case c.Mode.Level:
-                        return this._getNextNodeOfCurrentLevel(t);
-                    case c.Mode.Focus:
-                        return this._getNextFocusableNode(t);
+            _getNextNodeInIteration(mode, node) {
+                switch (mode) {
+                    case GCycleThroughLayersAction.Mode.Level:
+                        return this._getNextNodeOfCurrentLevel(node);
+                    case GCycleThroughLayersAction.Mode.Focus:
+                        return this._getNextFocusableNode(node);
                     default:
                         return null;
                 }
             }
-            _getNextNodeOfCurrentLevel(e) {
+            _getNextNodeOfCurrentLevel(node) {
                 switch (this._type) {
-                    case c.Type.Next:
-                        return e.next || e.parent.firstChild;
-                    case c.Type.Previous:
-                        return e.previous || e.parent.lastChild;
+                    case GCycleThroughLayersAction.Type.Next:
+                        return node.next || node.parent.firstChild;
+                    case GCycleThroughLayersAction.Type.Previous:
+                        return node.previous || node.parent.lastChild;
                     default:
                         return null;
                 }
             }
-            _getNextFocusableNode(e) {
+            _getNextFocusableNode(node) {
                 switch (this._type) {
-                    case c.Type.Next:
-                        return e.getNextFocusableNode();
-                    case c.Type.Previous:
-                        return e.getPreviousFocusableNode();
+                    case GCycleThroughLayersAction.Type.Next:
+                        return node.getNextFocusableNode();
+                    case GCycleThroughLayersAction.Type.Previous:
+                        return node.getPreviousFocusableNode();
                     default:
                         return null;
                 }
@@ -83,8 +83,8 @@ module.exports = function (module, exports, require) {
                 return "[Object GCycleThroughLayersAction]";
             }
         }
-        ((c.ID = "view.cycle-through-layers"),
-            (c.Type = { Next: "next", Previous: "previous" }),
-            (c.Mode = { Focus: "focus", Level: "level" }),
-            (module.exports = c));
+        ((GCycleThroughLayersAction.ID = "view.cycle-through-layers"),
+            (GCycleThroughLayersAction.Type = { Next: "next", Previous: "previous" }),
+            (GCycleThroughLayersAction.Mode = { Focus: "focus", Level: "level" }),
+            (module.exports = GCycleThroughLayersAction));
     };

@@ -3,9 +3,9 @@ module.exports = function (module, exports, require) {
         require(3);
         var GObject = require(1),
             GCategory = require(18),
-            a = require(31);
+            GAction = require(31);
         function r() {}
-        (GObject.GObject.inherit(r, a),
+        (GObject.GObject.inherit(r, GAction),
             (r.ID = "view.zoom.fit-current-layer"),
             (r.TITLE = new GObject.GLocaleKey("GFitCurrentLayerAction", "title")),
             (r.prototype.getId = function () {

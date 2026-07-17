@@ -1,11 +1,11 @@
 module.exports = function (module, exports, require) {
         "use strict";
         require(3);
-        var o = require(238),
-            i = require(339),
+        var GMenu = require(238),
+            GMenuItem = require(339),
             a = require(1157);
         function r(e) {
-            ((this._htmlElement = $("<nav></nav>").addClass("g-menu-bar")), this.setMenu(e || new o(this)));
+            ((this._htmlElement = $("<nav></nav>").addClass("g-menu-bar")), this.setMenu(e || new GMenu(this)));
         }
         ((r.prototype._menu = null),
             (r.prototype.getMenu = function () {
@@ -13,7 +13,7 @@ module.exports = function (module, exports, require) {
             }),
             (r.prototype.isActive = function () {
                 var e = a.getActiveMenu();
-                return !!(e && e._parent && e._parent instanceof i) && e._parent.getMenuBar() === this;
+                return !!(e && e._parent && e._parent instanceof GMenuItem) && e._parent.getMenuBar() === this;
             }),
             (r.prototype.getParent = function () {
                 return null;

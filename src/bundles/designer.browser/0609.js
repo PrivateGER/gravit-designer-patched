@@ -2,79 +2,79 @@ module.exports = function (module, exports, require) {
         "use strict";
         require(3);
         var GObject = require(1),
-            i = require(53);
+            GEditor = require(53);
         const GCategory = require(18),
-            r = require(106);
-        function s(e, t) {
-            (r.call(this), (this._id = e), (this._title = t));
+            GElementAction = require(106);
+        function GSelectByAction(id, title) {
+            (GElementAction.call(this), (this._id = id), (this._title = title));
         }
-        (GObject.GObject.inherit(s, r),
-            (s.EmptyValue = {}),
-            (s.EmptyPattern = {}),
-            (s.prototype._id = null),
-            (s.prototype._title = null),
-            (s.prototype.getId = function () {
+        (GObject.GObject.inherit(GSelectByAction, GElementAction),
+            (GSelectByAction.EmptyValue = {}),
+            (GSelectByAction.EmptyPattern = {}),
+            (GSelectByAction.prototype._id = null),
+            (GSelectByAction.prototype._title = null),
+            (GSelectByAction.prototype.getId = function () {
                 return this._id;
             }),
-            (s.prototype.getTitle = function () {
+            (GSelectByAction.prototype.getTitle = function () {
                 return this._title;
             }),
-            (s.prototype.getCategory = function () {
+            (GSelectByAction.prototype.getCategory = function () {
                 return GCategory.CATEGORY_EDIT_SELECT_SAME;
             }),
-            (s.prototype.isEnabled = function () {
-                if (!r.prototype.isEnabled.call(this)) return false;
-                const e = gDesigner.getActiveDocument(),
-                    t = e && e.getEditor(),
-                    n = t && t.getSelection();
-                if (!n || !n.length) return false;
-                return this._createPattern(n) !== s.EmptyPattern;
+            (GSelectByAction.prototype.isEnabled = function () {
+                if (!GElementAction.prototype.isEnabled.call(this)) return false;
+                const activeDocument = gDesigner.getActiveDocument(),
+                    editor = activeDocument && activeDocument.getEditor(),
+                    selection = editor && editor.getSelection();
+                if (!selection || !selection.length) return false;
+                return this._createPattern(selection) !== GSelectByAction.EmptyPattern;
             }),
-            (s.prototype._createPattern = function (e) {
-                const t = e && e.length;
-                if (!t) return s.EmptyPattern;
-                const n = this._getValue(e[0]);
-                if (n === s.EmptyValue) return s.EmptyPattern;
-                for (let o = 1; o < t; o++) {
-                    const t = e[o],
-                        i = this._getValue(t);
-                    if (i === s.EmptyValue) return s.EmptyPattern;
-                    if (!this._matches(n, i)) return s.EmptyPattern;
+            (GSelectByAction.prototype._createPattern = function (elements) {
+                const count = elements && elements.length;
+                if (!count) return GSelectByAction.EmptyPattern;
+                const firstValue = this._getValue(elements[0]);
+                if (firstValue === GSelectByAction.EmptyValue) return GSelectByAction.EmptyPattern;
+                for (let o = 1; o < count; o++) {
+                    const element = elements[o],
+                        value = this._getValue(element);
+                    if (value === GSelectByAction.EmptyValue) return GSelectByAction.EmptyPattern;
+                    if (!this._matches(firstValue, value)) return GSelectByAction.EmptyPattern;
                 }
-                return n;
+                return firstValue;
             }),
-            (s.prototype._matches = function (e, t) {
-                return e !== s.EmptyPattern && t !== s.EmptyPattern && GObject.GUtil.equals(e, t, true);
+            (GSelectByAction.prototype._matches = function (patternA, patternB) {
+                return patternA !== GSelectByAction.EmptyPattern && patternB !== GSelectByAction.EmptyPattern && GObject.GUtil.equals(patternA, patternB, true);
             }),
-            (s.prototype._getValue = function (e) {
+            (GSelectByAction.prototype._getValue = function (element) {
                 throw "Not implemented";
             }),
-            (s.prototype.execute = function () {
-                const e = gDesigner.getActiveDocument(),
-                    t = e && e.getScene(),
-                    n = e && e.getEditor(),
-                    a = n && n.getSelection();
-                if (!t || !a || !a.length) return;
-                const r = this._createPattern(a);
-                if (r === s.EmptyPattern) return;
-                const l = [];
-                (t.accept((e) => {
-                    if (e instanceof GObject.GElement && !e.hasMixin(GObject.GAnnotation)) {
-                        const t = this._createPattern([e]);
-                        this._matches(r, t) && l.push(e);
+            (GSelectByAction.prototype.execute = function () {
+                const activeDocument = gDesigner.getActiveDocument(),
+                    scene = activeDocument && activeDocument.getScene(),
+                    editor = activeDocument && activeDocument.getEditor(),
+                    selection = editor && editor.getSelection();
+                if (!scene || !selection || !selection.length) return;
+                const pattern = this._createPattern(selection);
+                if (pattern === GSelectByAction.EmptyPattern) return;
+                const matchedElements = [];
+                (scene.accept((element) => {
+                    if (element instanceof GObject.GElement && !element.hasMixin(GObject.GAnnotation)) {
+                        const elementPattern = this._createPattern([element]);
+                        this._matches(pattern, elementPattern) && matchedElements.push(element);
                     }
                 }),
-                    l.length > 0 &&
-                        i.GEditor.tryRunTransaction(
-                            t,
+                    matchedElements.length > 0 &&
+                        GEditor.GEditor.tryRunTransaction(
+                            scene,
                             () => {
-                                n.updateSelection(false, l);
+                                editor.updateSelection(false, matchedElements);
                             },
                             GObject.GLocale.get(this.getTitle())
                         ));
             }),
-            (s.prototype.toString = function () {
+            (GSelectByAction.prototype.toString = function () {
                 return "[Object GSelectByAction]";
             }),
-            (module.exports = s));
+            (module.exports = GSelectByAction));
     };

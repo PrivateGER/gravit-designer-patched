@@ -2,7 +2,7 @@ module.exports = function (module, exports, require) {
         "use strict";
         var GPlatform = require(15);
         const configBase = require(519),
-            a = require(520),
+            CloudProviders = require(520),
             IS_TRUNK = require(231);
         ((configBase.GoogleTagManagerSettings = require(820)),
             (configBase.AUTO_SAVE_ENABLED = GPlatform.GPlatform.webBrowser !== GPlatform.GPlatform.constructor.WebBrowser.Safari),
@@ -89,8 +89,8 @@ module.exports = function (module, exports, require) {
             ]),
             (configBase.GFileReviewFlow = require(835)),
             (configBase.GFileReviewActions = require(836)));
-        const s = require(583);
-        ((configBase.NOTIFICATION_USER_MENTION_REGEX = s.NOTIFICATION.USER_MENTION),
+        const notificationConstants = require(583);
+        ((configBase.NOTIFICATION_USER_MENTION_REGEX = notificationConstants.NOTIFICATION.USER_MENTION),
             (configBase.HTTP_STATUS_CODES = require(578)),
             (configBase.CloudIntegration = {
                 cloudOptions: [
@@ -107,7 +107,7 @@ module.exports = function (module, exports, require) {
                     name: "Corel Vector",
                     deletable: false,
                     pro: false,
-                    id: a.Provider.CloudNative,
+                    id: CloudProviders.Provider.CloudNative,
                     default: true,
                 },
             }),

@@ -4,18 +4,18 @@ module.exports = function (module, exports, require) {
         (require(30 /* polyfill:Object */), require(8 /* Symbol */));
         var designerConfig = require(10),
             GObject = require(1),
-            r = _interopRequireDefault(require(1187));
-        class s extends designerConfig.GReminderDialog.Impl {
-            open(e) {
-                let { dialog } = e;
+            DialogBase = _interopRequireDefault(require(1187));
+        class ReminderDialogImpl extends designerConfig.GReminderDialog.Impl {
+            open(options) {
+                let { dialog } = options;
                 this._dialog = dialog.getHTMLElement().gDialog({ releaseOnClose: true, nowrap: true }).gDialog("open");
             }
-            async openPurchaseFlow(e) {
-                let { dialog: t, options: n = {} } = e;
-                await gDesigner.openPaymentDialog(null, n).catch(() => null);
+            async openPurchaseFlow(openEvent) {
+                let { dialog: dialog, options: purchaseOptions = {} } = openEvent;
+                await gDesigner.openPaymentDialog(null, purchaseOptions).catch(() => null);
             }
-            openExternalLink(e) {
-                let { link } = e;
+            openExternalLink(options) {
+                let { link } = options;
                 gContainer.openExternalLink(null, link);
             }
             close() {
@@ -30,42 +30,42 @@ module.exports = function (module, exports, require) {
                 });
             }
             getLicense() {
-                let e = gDesigner.getLicense();
+                let license = gDesigner.getLicense();
                 return Promise.resolve({
-                    license: e._license,
-                    expire: e._expire,
-                    created: e._created,
-                    legacy: e._legacy,
+                    license: license._license,
+                    expire: license._expire,
+                    created: license._created,
+                    legacy: license._legacy,
                 });
             }
             getLanguage() {
                 return GObject.GLocale.getLanguage();
             }
         }
-        class l extends r.default {
-            constructor(e) {
-                (super(), (this._dialogOptions = e));
+        class ReminderDialog extends DialogBase.default {
+            constructor(dialogOptions) {
+                (super(), (this._dialogOptions = dialogOptions));
             }
             async open() {
-                const e = new s(),
-                    t = Object.assign(this._dialogOptions, { impl: e });
+                const impl = new ReminderDialogImpl(),
+                    dialogOptions = Object.assign(this._dialogOptions, { impl: impl });
                 switch (this._dialogOptions.endpoint) {
                     case "/pro/reminder/proexpiresoon":
-                        (await designerConfig.GReminderDialogFactory.newProExpireSoon(t)).open();
+                        (await designerConfig.GReminderDialogFactory.newProExpireSoon(dialogOptions)).open();
                         break;
                     case "/pro/reminder/proexpired":
-                        (await designerConfig.GReminderDialogFactory.newProExpired(t)).open();
+                        (await designerConfig.GReminderDialogFactory.newProExpired(dialogOptions)).open();
                         break;
                     case "/pro/reminder/trialexpired":
-                        (await designerConfig.GReminderDialogFactory.newTrialExpired(t)).open();
+                        (await designerConfig.GReminderDialogFactory.newTrialExpired(dialogOptions)).open();
                         break;
                     case "/pro/reminder/trialmessage":
-                        (await designerConfig.GReminderDialogFactory.newTrialMessage(t)).open();
+                        (await designerConfig.GReminderDialogFactory.newTrialMessage(dialogOptions)).open();
                         break;
                     case "/pro/reminder/upgrade":
-                        (await designerConfig.GReminderDialogFactory.newUpgradeScreen(t)).open();
+                        (await designerConfig.GReminderDialogFactory.newUpgradeScreen(dialogOptions)).open();
                 }
             }
         }
-        module.exports = l;
+        module.exports = ReminderDialog;
     };

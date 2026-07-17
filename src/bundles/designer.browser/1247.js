@@ -3,7 +3,7 @@ module.exports = function (module, exports, require) {
         var _interopRequireDefault = require(16);
         (Object.defineProperty(exports, "__esModule", { value: true }),
             (exports.shouldShowExternalFileError = function (e) {
-                return e instanceof s.Item && !e.hasFileSettings();
+                return e instanceof GExternalStorage.Item && !e.hasFileSettings();
             }),
             (exports.updateSaveOptions = function (e, t, n) {
                 if (n.getFullName()) {
@@ -27,5 +27,5 @@ module.exports = function (module, exports, require) {
         var Utils = require(40),
             designerConfig = require(10),
             r = _interopRequireDefault(require(1248));
-        const s = require(388);
+        const GExternalStorage = require(388);
     };

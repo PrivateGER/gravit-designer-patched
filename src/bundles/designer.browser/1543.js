@@ -2,29 +2,29 @@ module.exports = function (module, exports, require) {
         "use strict";
         (require(168 /* PDFFetchStream */), require(4), require(13), require(169 /* PDFNetworkStream */));
         const GFitAllAction = require(449),
-            i = require(566),
+            GFitSelectionAction = require(566),
             GSaveAction = require(447),
             GUndoAction = require(1171),
-            s = require(1167),
-            l = require(813),
-            c = require(448),
+            GMagnificationAction = require(1167),
+            GOpenAction = require(813),
+            GGravitCloudAction = require(448),
             GSaveAsAction = require(445),
             GCloudSynchronizationAction = require(1293),
-            p = require(238),
-            g = require(339),
-            h = require(257),
-            f = require(85),
+            GMenu = require(238),
+            GMenuItem = require(339),
+            CLOUD_ICONS = require(257),
+            GContainer = require(85),
             { GSystem, GMath } = require(1 /* GObject */),
             { FILE_FORMATS } = require(10 /* designerConfig */);
-        module.exports = function (e) {
-            ((e.prototype._windowButton = null),
-                (e.prototype._nativeButton = null),
-                (e.prototype._touchSection = null),
-                (e.prototype._updateTouchUI = function () {
+        module.exports = function (toolbarClass) {
+            ((toolbarClass.prototype._windowButton = null),
+                (toolbarClass.prototype._nativeButton = null),
+                (toolbarClass.prototype._touchSection = null),
+                (toolbarClass.prototype._updateTouchUI = function () {
                     (this._touchSection || (this._touchSection = this._createTouchSection().prependTo(this._htmlElement)),
                         this._windowButton || (this._windowButton = this._createWindowButton().hide().insertBefore(this._exportButton)),
                         this._nativeButton ||
-                            (gContainer.getRuntime() === f.Runtime.Electron &&
+                            (gContainer.getRuntime() === GContainer.Runtime.Electron &&
                                 GSystem.operatingSystem !== GSystem.OperatingSystem.OSX_IOS &&
                                 (this._nativeButton = this._createNativeButton().appendTo(this._htmlElement.find(".export-section")))));
                     (!gDesigner.getApplicationManager().isEditingEnabled() ? this._updateTouchSimpleUI() : this._updateTouchFullUI(),
@@ -34,32 +34,32 @@ module.exports = function (module, exports, require) {
                         this._updateContextTools(),
                         this._updateViewBasedOnPermissions());
                 }),
-                (e.prototype._updateViewBasedOnPermissions = function () {
+                (toolbarClass.prototype._updateViewBasedOnPermissions = function () {
                     this._windowButton &&
                         (gDesigner.getApplicationManager().isDocumentTabManagementEnabled()
                             ? this._windowButton.show()
                             : this._windowButton.hide());
                 }),
-                (e.prototype._updateTouchFullUI = function () {
+                (toolbarClass.prototype._updateTouchFullUI = function () {
                     this._htmlElement.find(".menu-section > .zoom-button").length ||
                         (this._touchZoomButton && (this._touchZoomButton = null),
                         this._initTouchZoomButton(),
                         this._touchZoomButton.insertBefore(".menu-section > .snap-button"));
                 }),
-                (e.prototype._updateTouchSimpleUI = function () {
+                (toolbarClass.prototype._updateTouchSimpleUI = function () {
                     (this._updateTouchZoomButtonSimpleUI(), this._updateZoomFromWindow(true), this._updateTouchPageButton());
                 }),
-                (e.prototype._updateTouchZoomButtonSimpleUI = function () {
-                    const e = this._htmlElement.find(".view-section > .zoom-button");
-                    e.is(this._touchZoomButton) ||
-                        ((this._touchZoomButton = null), this._initTouchZoomButton(), e.replaceWith(this._touchZoomButton));
+                (toolbarClass.prototype._updateTouchZoomButtonSimpleUI = function () {
+                    const zoomButton = this._htmlElement.find(".view-section > .zoom-button");
+                    zoomButton.is(this._touchZoomButton) ||
+                        ((this._touchZoomButton = null), this._initTouchZoomButton(), zoomButton.replaceWith(this._touchZoomButton));
                 }),
-                (e.prototype._updateTouchPageButton = function () {
+                (toolbarClass.prototype._updateTouchPageButton = function () {
                     this._pageButton && (this._pageButton.gPageButton("reinit"), this._pageButton.addClass("dropdown"));
                 }),
-                (e.prototype._initTouchZoomButton = function () {
-                    const e = $("<button />").addClass("dropdown-button").append($("<span></span>").addClass("gravit-icon-down")),
-                        t = new p(void 0, "g-zoom-menu");
+                (toolbarClass.prototype._initTouchZoomButton = function () {
+                    const dropdownButton = $("<button />").addClass("dropdown-button").append($("<span></span>").addClass("gravit-icon-down")),
+                        zoomMenu = new GMenu(void 0, "g-zoom-menu");
                     this._touchZoomButton = $("<div/>")
                         .addClass("zoom-button")
                         .addClass("toolbar-button")
@@ -67,34 +67,34 @@ module.exports = function (module, exports, require) {
                         .addClass("g-menu-button")
                         .addClass("dropdown")
                         .append($("<div />").addClass("action-button").append($("<span />").addClass("caption").text("100%")))
-                        .append(e)
+                        .append(dropdownButton)
                         .gMenuButton({
                             menu: () => (
-                                t.clearItems(),
+                                zoomMenu.clearItems(),
                                 [
                                     gDesigner.getAction(GFitAllAction.ID),
-                                    gDesigner.getAction(i.ID),
-                                    gDesigner.getAction("".concat(s.ID, ".50")),
-                                    gDesigner.getAction("".concat(s.ID, ".100")),
-                                    gDesigner.getAction("".concat(s.ID, ".200")),
-                                    gDesigner.getAction("".concat(s.ID, ".400")),
-                                ].reduce((e, t) => (e.createAddItem(t), e), t)
+                                    gDesigner.getAction(GFitSelectionAction.ID),
+                                    gDesigner.getAction("".concat(GMagnificationAction.ID, ".50")),
+                                    gDesigner.getAction("".concat(GMagnificationAction.ID, ".100")),
+                                    gDesigner.getAction("".concat(GMagnificationAction.ID, ".200")),
+                                    gDesigner.getAction("".concat(GMagnificationAction.ID, ".400")),
+                                ].reduce((menu, action) => (menu.createAddItem(action), menu), zoomMenu)
                             ),
                             getActiveItem: () => {
-                                var e = gDesigner.getWindows().getActiveWindow(),
-                                    n = 100 * (e && e.getView()).getZoom(),
-                                    o = n && GMath.round(n, false, 0),
-                                    i = o && gDesigner.getAction("".concat(s.ID, ".").concat(o)),
-                                    a = i && i.getTitle();
-                                return a && t.findItem(a);
+                                var activeWindow = gDesigner.getWindows().getActiveWindow(),
+                                    zoomPercent = 100 * (activeWindow && activeWindow.getView()).getZoom(),
+                                    roundedZoom = zoomPercent && GMath.round(zoomPercent, false, 0),
+                                    zoomAction = roundedZoom && gDesigner.getAction("".concat(GMagnificationAction.ID, ".").concat(roundedZoom)),
+                                    zoomTitle = zoomAction && zoomAction.getTitle();
+                                return zoomTitle && zoomMenu.findItem(zoomTitle);
                             },
-                            reference: e,
+                            reference: dropdownButton,
                         });
                 }),
-                (e.prototype._getTouchMenubarIcon = function () {
-                    return gContainer.getRuntime() === f.Runtime.IPad ? "gravit-icon-touch-menubar-ipad" : "gravit-icon-touch-menubar";
+                (toolbarClass.prototype._getTouchMenubarIcon = function () {
+                    return gContainer.getRuntime() === GContainer.Runtime.IPad ? "gravit-icon-touch-menubar-ipad" : "gravit-icon-touch-menubar";
                 }),
-                (e.prototype._createTouchSection = function () {
+                (toolbarClass.prototype._createTouchSection = function () {
                     return (
                         this._touchZoomButton || this._initTouchZoomButton(),
                         $("<div></div>")
@@ -103,8 +103,8 @@ module.exports = function (module, exports, require) {
                                 this._createLabelButton({
                                     icon: this._getTouchMenubarIcon(),
                                     menu: () => {
-                                        const e = gDesigner.getMainMenu();
-                                        return (e.detach(), e);
+                                        const mainMenu = gDesigner.getMainMenu();
+                                        return (mainMenu.detach(), mainMenu);
                                     },
                                 }).addClass("menubar-toolbar-button")
                             )
@@ -113,7 +113,7 @@ module.exports = function (module, exports, require) {
                                     icon: "gravit-icon-open",
                                     split: true,
                                     menu: () => this._createOpenMenu(),
-                                    click: () => gDesigner.executeAction(l.ID),
+                                    click: () => gDesigner.executeAction(GOpenAction.ID),
                                 }).addClass("open-toolbar-button")
                             )
                             .append(this._createSaveButtonGroup())
@@ -130,60 +130,60 @@ module.exports = function (module, exports, require) {
                             .append(this._createSnapButton())
                     );
                 }),
-                (e.prototype._createSaveButtonGroup = function () {
-                    const e = gDesigner.getAction(GSaveAction.ID);
+                (toolbarClass.prototype._createSaveButtonGroup = function () {
+                    const saveAction = gDesigner.getAction(GSaveAction.ID);
                     return this._createLabelButton({
                         icon: "gravit-icon-save",
                         split: true,
                         menu: [
-                            gDesigner.getAction("".concat(GSaveAsAction.ID, ".").concat(FILE_FORMATS.find((e) => e.default).ext)),
-                            gDesigner.getAction("".concat(c.ID, ".").concat(c.Actions.SaveAs)),
+                            gDesigner.getAction("".concat(GSaveAsAction.ID, ".").concat(FILE_FORMATS.find((format) => format.default).ext)),
+                            gDesigner.getAction("".concat(GGravitCloudAction.ID, ".").concat(GGravitCloudAction.Actions.SaveAs)),
                             gDesigner.getAction(GCloudSynchronizationAction.ID),
-                        ].reduce((e, t) => (e.createAddItem(t), e), new p()),
+                        ].reduce((menu, action) => (menu.createAddItem(action), menu), new GMenu()),
                         click: () => gDesigner.executeAction(GSaveAction.ID),
                     })
                         .addClass("save-toolbar-button")
-                        .attr("data-action", e.getId())
-                        .data("action", e);
+                        .attr("data-action", saveAction.getId())
+                        .data("action", saveAction);
                 }),
-                (e.prototype._createWindowButton = function () {
-                    const e = new p();
+                (toolbarClass.prototype._createWindowButton = function () {
+                    const windowMenu = new GMenu();
                     return this._createLabelButton({
                         caption: " ",
                         menu: () => {
-                            e.clearItems();
-                            const t = gDesigner.getWindows();
-                            return t.getWindows().reduce((e, n) => (this._createAndAppendWindowTabToMenu(t, e, n), e), e);
+                            windowMenu.clearItems();
+                            const windows = gDesigner.getWindows();
+                            return windows.getWindows().reduce((menu, window) => (this._createAndAppendWindowTabToMenu(windows, menu, window), menu), windowMenu);
                         },
-                        getActiveItem: () => this._findActiveWindowItemInMenu(e),
+                        getActiveItem: () => this._findActiveWindowItemInMenu(windowMenu),
                     })
                         .addClass("window-button")
                         .addClass("g-touch-only");
                 }),
-                (e.prototype._createAndAppendWindowTabToMenu = function (e, t, n) {
-                    const o = this._getWindowTitle(n),
-                        i = t.createAddItem(o, () => {
-                            e.activateWindow(n, true);
+                (toolbarClass.prototype._createAndAppendWindowTabToMenu = function (windows, menu, window) {
+                    const title = this._getWindowTitle(window),
+                        menuItem = menu.createAddItem(title, () => {
+                            windows.activateWindow(window, true);
                         });
-                    (i.setDetachable(true),
-                        i.addEventListener(g.DetachEvent, () => {
-                            e.removeWindow(n);
+                    (menuItem.setDetachable(true),
+                        menuItem.addEventListener(GMenuItem.DetachEvent, () => {
+                            windows.removeWindow(window);
                         }));
-                    const a = n.getDocument();
-                    a && (a.isCloudFile() || a.isExternalFile()) && i.setIcon(h["gravit-icon-cloud"]);
+                    const doc = window.getDocument();
+                    doc && (doc.isCloudFile() || doc.isExternalFile()) && menuItem.setIcon(CLOUD_ICONS["gravit-icon-cloud"]);
                 }),
-                (e.prototype._findActiveWindowItemInMenu = function (e) {
-                    const t = gDesigner.getWindows(),
-                        n = t && t.getActiveWindow(),
-                        o = this._getWindowTitle(n);
-                    return o && e.findItem(o);
+                (toolbarClass.prototype._findActiveWindowItemInMenu = function (menu) {
+                    const windows = gDesigner.getWindows(),
+                        activeWindow = windows && windows.getActiveWindow(),
+                        title = this._getWindowTitle(activeWindow);
+                    return title && menu.findItem(title);
                 }),
-                (e.prototype._createNativeButton = function () {
+                (toolbarClass.prototype._createNativeButton = function () {
                     const e = (e) => $("<button/>").addClass("native-button").append($("<span/>").addClass(e));
                     return this._createLabelButton({
                         caption: "",
                         icon: "gravit-icon-3-dots",
-                        click: (t) => {
+                        click: (event) => {
                             $("<div/>")
                                 .append(
                                     $("<div/>")
@@ -196,46 +196,46 @@ module.exports = function (module, exports, require) {
                                     releaseOnClose: true,
                                     clazz: "g-toolbar-native-button-overlay",
                                 })
-                                .gOverlay("open", $(t.target));
+                                .gOverlay("open", $(event.target));
                         },
                     })
                         .addClass("native-button")
                         .addClass("g-touch-only");
                 }),
-                (e.prototype._updateActiveWindow = function () {
+                (toolbarClass.prototype._updateActiveWindow = function () {
                     if (gDesigner.isTouchEnabled() && this._windowButton)
                         if (gDesigner.getApplicationManager().isDocumentTabManagementEnabled()) {
-                            const o = gDesigner.getWindows() && gDesigner.getWindows().getActiveWindow();
-                            if (o) {
-                                const i = o.getDocument();
-                                var e = this._getWindowTitle(o),
-                                    t = "..." + e.substr(e.length - 3);
-                                const a = this._windowButton
+                            const activeWindow = gDesigner.getWindows() && gDesigner.getWindows().getActiveWindow();
+                            if (activeWindow) {
+                                const doc = activeWindow.getDocument();
+                                var title = this._getWindowTitle(activeWindow),
+                                    truncatedTitle = "..." + title.substr(title.length - 3);
+                                const captionElement = this._windowButton
                                     .show()
-                                    .toggleClass("syncing", i && i.isSynchronizing())
+                                    .toggleClass("syncing", doc && doc.isSynchronizing())
                                     .find(".action-button .caption")
-                                    .text(e);
+                                    .text(title);
                                 (this._windowButton.find(".subicon").remove(), this._windowButton.find(".ending").remove());
-                                var n = a[0].offsetWidth < a[0].scrollWidth;
-                                (this._windowButton.toggleClass("text-overflow", n),
-                                    n &&
+                                var isOverflowing = captionElement[0].offsetWidth < captionElement[0].scrollWidth;
+                                (this._windowButton.toggleClass("text-overflow", isOverflowing),
+                                    isOverflowing &&
                                         $("<span/>")
                                             .addClass("ending")
-                                            .attr("data-ending", t)
+                                            .attr("data-ending", truncatedTitle)
                                             .insertBefore(this._windowButton.find(".gravit-icon-down")),
                                     this._windowButton.find(".subicon").remove(),
-                                    i &&
-                                        (i.isCloudFile() || i.isExternalFile()) &&
+                                    doc &&
+                                        (doc.isCloudFile() || doc.isExternalFile()) &&
                                         $("<span/>")
                                             .addClass("subicon")
-                                            .addClass(h["gravit-icon-cloud-window"])
+                                            .addClass(CLOUD_ICONS["gravit-icon-cloud-window"])
                                             .insertBefore(this._windowButton.find(".gravit-icon-down")));
                             } else this._windowButton.hide();
                         } else this._windowButton.hide();
                 }),
-                (e.prototype._getWindowTitle = function (e) {
-                    const t = e && e.getDocument();
-                    return e && "".concat(e.getTitleWithExtension()).concat(t && t.isModified() ? "*" : "");
+                (toolbarClass.prototype._getWindowTitle = function (window) {
+                    const doc = window && window.getDocument();
+                    return window && "".concat(window.getTitleWithExtension()).concat(doc && doc.isModified() ? "*" : "");
                 }));
         };
     };

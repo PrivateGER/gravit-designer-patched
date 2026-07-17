@@ -1,30 +1,30 @@
 module.exports = function (module, exports, require) {
         "use strict";
         (require(30 /* polyfill:Object */), require(8 /* Symbol */));
-        const o = require(337),
-            i = require(1338),
+        const licenseManager = require(337),
+            gtmHelper = require(1338),
             { gApi, PurchaseStatus } = require(10 /* designerConfig */),
             { IS_TRUNK } = require(231 /* IS_TRUNK */);
-        let l;
-        class c {
+        let instance;
+        class PurchaseManager {
             static getInstance() {
-                return (l || (l = new c()), l);
+                return (instance || (instance = new PurchaseManager()), instance);
             }
             waitForPurchase() {
                 return (
                     this.cancelPurchase(),
                     (this._promiseCapabilities = {}),
-                    new Promise((e, t) => {
-                        (Object.assign(this._promiseCapabilities, { resolve: e, reject: t }),
+                    new Promise((resolve, reject) => {
+                        (Object.assign(this._promiseCapabilities, { resolve: resolve, reject: reject }),
                             (this._ws = new gApi.WebSocketClient()),
                             this._ws.connect("/payload"),
-                            this._ws.on("payload", async (t) => {
+                            this._ws.on("payload", async (message) => {
                                 try {
-                                    const { data } = t;
+                                    const { data } = message;
                                     (await this._tryCheckLicense(),
                                         await this._tryFireEvent(data),
                                         (data.licenseHasBeenUpgraded = this._shouldFireUserCompletedPurchaseEvent(data)),
-                                        e(data));
+                                        resolve(data));
                                 } finally {
                                     this._ws.close();
                                 }
@@ -38,22 +38,22 @@ module.exports = function (module, exports, require) {
             }
             async _tryCheckLicense() {
                 try {
-                    await o.checkLicense();
-                } catch (e) {
-                    console.error("GLicenseManager.checkLicense", e);
+                    await licenseManager.checkLicense();
+                } catch (error) {
+                    console.error("GLicenseManager.checkLicense", error);
                 }
             }
-            async _tryFireEvent(e) {
+            async _tryFireEvent(data) {
                 try {
-                    this._shouldFireUserCompletedPurchaseEvent(e) && i.fireEvent(i.Events.USER_COMPLETED_PURCHASE_EVENT);
-                } catch (e) {
-                    console.error("GTMHelper.fireEvent", e);
+                    this._shouldFireUserCompletedPurchaseEvent(data) && gtmHelper.fireEvent(gtmHelper.Events.USER_COMPLETED_PURCHASE_EVENT);
+                } catch (error) {
+                    console.error("GTMHelper.fireEvent", error);
                 }
             }
-            _shouldFireUserCompletedPurchaseEvent(e) {
-                const { statusId } = e;
+            _shouldFireUserCompletedPurchaseEvent(data) {
+                const { statusId } = data;
                 return !(!IS_TRUNK || statusId !== PurchaseStatus.SuccessfulTestOrder) || statusId === PurchaseStatus.Paid;
             }
         }
-        module.exports = c;
+        module.exports = PurchaseManager;
     };

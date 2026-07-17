@@ -4,245 +4,245 @@ module.exports = function (module, exports, require) {
         require(8 /* Symbol */);
         var GObject = require(1),
             designerConfig = require(10),
-            r = _interopRequireDefault(require(1091)),
-            PDFNodeStream = require(165),
-            l = require(219),
+            AuthorizationStatus = _interopRequireDefault(require(1091)),
+            pako = require(165 /* PDFNodeStream */),
+            AlertDialog = require(219),
             String = require(9),
-            d = require(47);
-        function u() {}
-        ((u.Directory = function (e) {
-            this._storage = e;
+            GLocaleKey = require(47);
+        function GStorage() {}
+        ((GStorage.Directory = function (storage) {
+            this._storage = storage;
         }),
-            (u.Directory.prototype._storage = null),
-            (u.Directory.prototype.getStorage = function () {
+            (GStorage.Directory.prototype._storage = null),
+            (GStorage.Directory.prototype.getStorage = function () {
                 return this._storage;
             }),
-            (u.Directory.prototype.getUniqueId = function () {
+            (GStorage.Directory.prototype.getUniqueId = function () {
                 return null;
             }),
-            (u.Directory.prototype.addDirectory = async function (e, t) {
+            (GStorage.Directory.prototype.addDirectory = async function (name, t) {
                 throw new Error("Not implemented.");
             }),
-            (u.Directory.prototype.addFile = async function (e, t) {
+            (GStorage.Directory.prototype.addFile = async function (name, t) {
                 throw new Error("Not implemented.");
             }),
-            (u.Item = function (e) {
-                this._storage = e;
+            (GStorage.Item = function (storage) {
+                this._storage = storage;
             }),
-            GObject.GObject.inherit(u.Item, GObject.GObject),
-            (u.Item.prototype._storage = null),
-            (u.Item.prototype._fileFormatVersion = null),
-            (u.Item.prototype.isRegistrable = function () {
+            GObject.GObject.inherit(GStorage.Item, GObject.GObject),
+            (GStorage.Item.prototype._storage = null),
+            (GStorage.Item.prototype._fileFormatVersion = null),
+            (GStorage.Item.prototype.isRegistrable = function () {
                 return false;
             }),
-            (u.Item.prototype.release = function () {
+            (GStorage.Item.prototype.release = function () {
                 this._data && (this._data = null);
             }),
-            (u.Item.prototype.getStorage = function () {
+            (GStorage.Item.prototype.getStorage = function () {
                 return this._storage;
             }),
-            (u.Item.prototype.getUniqueId = function () {
+            (GStorage.Item.prototype.getUniqueId = function () {
                 return null;
             }),
-            (u.Item.prototype.getVersionId = function () {
+            (GStorage.Item.prototype.getVersionId = function () {
                 return null;
             }),
-            (u.Item.prototype.getFile = function () {
+            (GStorage.Item.prototype.getFile = function () {
                 return null;
             }),
-            (u.Item.prototype.getId = function () {
+            (GStorage.Item.prototype.getId = function () {
                 return null;
             }),
-            (u.Item.prototype.getFullName = function () {
+            (GStorage.Item.prototype.getFullName = function () {
                 throw new Error("Not implemented.");
             }),
-            (u.Item.prototype.setFileName = function (e) {
+            (GStorage.Item.prototype.setFileName = function (filename) {
                 throw new Error("Not implemented.");
             }),
-            (u.Item.prototype.getName = function () {
-                var e = this.getFullName();
-                if (e) {
-                    var t = e.lastIndexOf(".");
-                    return t >= 0 ? e.substr(0, t) : e;
+            (GStorage.Item.prototype.getName = function () {
+                var fullName = this.getFullName();
+                if (fullName) {
+                    var dotIndex = fullName.lastIndexOf(".");
+                    return dotIndex >= 0 ? fullName.substr(0, dotIndex) : fullName;
                 }
                 return null;
             }),
-            (u.Item.prototype.getExtension = function () {
-                var e = this.getFullName();
-                if (e) {
-                    var t = e.lastIndexOf(".");
-                    if (t >= 0) return e.substr(t + 1).toUpperCase();
+            (GStorage.Item.prototype.getExtension = function () {
+                var fullName = this.getFullName();
+                if (fullName) {
+                    var dotIndex = fullName.lastIndexOf(".");
+                    if (dotIndex >= 0) return fullName.substr(dotIndex + 1).toUpperCase();
                 }
                 return null;
             }),
-            (u.Item.prototype.storeFileFormatVersion = async function (e) {
-                this._fileFormatVersion = e;
+            (GStorage.Item.prototype.storeFileFormatVersion = async function (version) {
+                this._fileFormatVersion = version;
             }),
-            (u.Item.prototype.getFileFormatVersion = function () {
+            (GStorage.Item.prototype.getFileFormatVersion = function () {
                 return this._fileFormatVersion;
             }),
-            (u.Item.prototype.read = function (e, t, n) {
+            (GStorage.Item.prototype.read = function (callback, t, n) {
                 throw new Error("Not implemented.");
             }),
-            (u.Item.prototype.write = function (e, t, n, o, i) {
+            (GStorage.Item.prototype.write = function (data, callback, quotaErrorCallback, progress, document) {
                 throw new Error("Not implemented.");
             }),
-            (u.Item.prototype.createOrUpdateFileWithMetadata = async function (e, t) {
+            (GStorage.Item.prototype.createOrUpdateFileWithMetadata = async function (fileData, options) {
                 throw new Error("Not implemented");
             }),
-            (u.Item.prototype.getToken = function () {
+            (GStorage.Item.prototype.getToken = function () {
                 throw new Error("Not implemented");
             }),
-            (u.Item.prototype.supportsShadowFile = function () {
+            (GStorage.Item.prototype.supportsShadowFile = function () {
                 return false;
             }),
-            (u.Item.prototype.isEditingEnabled = function () {
+            (GStorage.Item.prototype.isEditingEnabled = function () {
                 return true;
             }),
-            (u.Item.prototype.supportsSharing = function () {
+            (GStorage.Item.prototype.supportsSharing = function () {
                 return false;
             }),
-            (u.Item.prototype.hasVersionControl = function () {
+            (GStorage.Item.prototype.hasVersionControl = function () {
                 return false;
             }),
-            (u.Item.prototype.supportsExternalSharing = function () {
+            (GStorage.Item.prototype.supportsExternalSharing = function () {
                 return false;
             }),
-            (u.Item.prototype.supportsExternalSharingByLink = function () {
+            (GStorage.Item.prototype.supportsExternalSharingByLink = function () {
                 return false;
             }),
-            (u.Item.prototype.getPermissionsList = function () {}),
-            (u.Item.prototype._fileSizeBeforeSaved = 0),
-            (u.Item.prototype._fileSizeAfterSaved = 0),
-            (u.Item.prototype.documentRealFileSize = 0),
-            (u.Item.prototype._fileLastModifiedDate = null),
-            (u.Item.prototype._fileAutoSaveLastModifiedDate = null),
-            (u.Item.prototype._isSaveCounterMeasureEnabled = false),
-            (u.Item.prototype.getFileSizeBeforeSaved = function () {
+            (GStorage.Item.prototype.getPermissionsList = function () {}),
+            (GStorage.Item.prototype._fileSizeBeforeSaved = 0),
+            (GStorage.Item.prototype._fileSizeAfterSaved = 0),
+            (GStorage.Item.prototype.documentRealFileSize = 0),
+            (GStorage.Item.prototype._fileLastModifiedDate = null),
+            (GStorage.Item.prototype._fileAutoSaveLastModifiedDate = null),
+            (GStorage.Item.prototype._isSaveCounterMeasureEnabled = false),
+            (GStorage.Item.prototype.getFileSizeBeforeSaved = function () {
                 return this._fileSizeBeforeSaved;
             }),
-            (u.Item.prototype._setFileSizeBeforeSaved = function (e) {
-                this._fileSizeBeforeSaved = e;
+            (GStorage.Item.prototype._setFileSizeBeforeSaved = function (size) {
+                this._fileSizeBeforeSaved = size;
             }),
-            (u.Item.prototype.getFileLastModifiedDate = function () {
+            (GStorage.Item.prototype.getFileLastModifiedDate = function () {
                 return this._fileLastModifiedDate;
             }),
-            (u.Item.prototype.setFileLastModifiedDate = function (e) {
-                this._fileLastModifiedDate = e;
+            (GStorage.Item.prototype.setFileLastModifiedDate = function (date) {
+                this._fileLastModifiedDate = date;
             }),
-            (u.Item.prototype.getFileAutoSaveLastModifiedDate = function () {
+            (GStorage.Item.prototype.getFileAutoSaveLastModifiedDate = function () {
                 return this._fileAutoSaveLastModifiedDate;
             }),
-            (u.Item.prototype.setFileAutoSaveLastModifiedDate = function (e) {
-                this._fileAutoSaveLastModifiedDate = e;
+            (GStorage.Item.prototype.setFileAutoSaveLastModifiedDate = function (date) {
+                this._fileAutoSaveLastModifiedDate = date;
             }),
-            (u.Item.prototype._setFileSizeAfterSaved = async function () {
+            (GStorage.Item.prototype._setFileSizeAfterSaved = async function () {
                 throw new Error("Not implemented");
             }),
-            (u.Item.prototype.getFileSizeAfterSaved = function () {
+            (GStorage.Item.prototype.getFileSizeAfterSaved = function () {
                 return this._fileSizeAfterSaved;
             }),
-            (u.Item.prototype.isSaveCounterMeasureEnabled = function () {
+            (GStorage.Item.prototype.isSaveCounterMeasureEnabled = function () {
                 return this._isSaveCounterMeasureEnabled;
             }),
-            (u.Item.prototype.setSaveCounterMeasureEnabled = function (e) {
-                this._isSaveCounterMeasureEnabled = e;
+            (GStorage.Item.prototype.setSaveCounterMeasureEnabled = function (enabled) {
+                this._isSaveCounterMeasureEnabled = enabled;
             }),
-            (u.Item.prototype._verifyFileNotTooSmall = function (e, t) {
+            (GStorage.Item.prototype._verifyFileNotTooSmall = function (size, document) {
                 try {
-                    (e < designerConfig.UN_BELIVEVABLE_FEW_BYTES_TO_SAVE &&
+                    (size < designerConfig.UN_BELIVEVABLE_FEW_BYTES_TO_SAVE &&
                         !this.isSaveCounterMeasureEnabled() &&
-                        new l(String.get(new d("GDocument", "text.saveing-error"))).open(),
-                        this.getDocumentRealSizeAfterSave(t));
-                } catch (e) {
-                    console.error(e);
+                        new AlertDialog(String.get(new GLocaleKey("GDocument", "text.saveing-error"))).open(),
+                        this.getDocumentRealSizeAfterSave(document));
+                } catch (error) {
+                    console.error(error);
                 }
             }),
-            (u.Item.prototype._verifyFileSizeAfterSaved = function () {
+            (GStorage.Item.prototype._verifyFileSizeAfterSaved = function () {
                 try {
                     (() =>
                         !(this.getFileSizeBeforeSaved() < this.getFileSizeAfterSaved()) &&
                         this.getFileSizeBeforeSaved() / 2 > this.getFileSizeAfterSaved())() &&
                         this.getFileSizeAfterSaved() &&
                         this.getFileSizeAfterSaved() > 0 &&
-                        new l(String.get(new d("GDocument", "text.saveing-error"))).open();
-                } catch (e) {
-                    console.error(e);
+                        new AlertDialog(String.get(new GLocaleKey("GDocument", "text.saveing-error"))).open();
+                } catch (error) {
+                    console.error(error);
                 }
             }),
-            (u.Item.prototype.notEnoughDiskSpace = function () {
-                new l(String.get(new d("GDocument", "text.save-no-space"))).open();
+            (GStorage.Item.prototype.notEnoughDiskSpace = function () {
+                new AlertDialog(String.get(new GLocaleKey("GDocument", "text.save-no-space"))).open();
             }),
-            (u.Item.prototype.getDocumentRealSizeAfterSave = function (e) {
-                let t = null;
-                e = e || gDesigner.getActiveDocument();
+            (GStorage.Item.prototype.getDocumentRealSizeAfterSave = function (document) {
+                let serializedScene = null;
+                document = document || gDesigner.getActiveDocument();
                 try {
-                    t = GObject.GNode.serialize(e.getScene(), { save: true, singleton: false });
-                } catch (e) {
-                    return (console.error(e), (this.documentRealFileSize = 0), this.documentRealFileSize);
+                    serializedScene = GObject.GNode.serialize(document.getScene(), { save: true, singleton: false });
+                } catch (error) {
+                    return (console.error(error), (this.documentRealFileSize = 0), this.documentRealFileSize);
                 }
-                return null === t || "" === t
+                return null === serializedScene || "" === serializedScene
                     ? ((this.documentRealFileSize = 0), this.documentRealFileSize)
-                    : ((this.documentRealFileSize = PDFNodeStream.gzip(t, { level: 9 }).length), this.documentRealFileSize);
+                    : ((this.documentRealFileSize = pako.gzip(serializedScene, { level: 9 }).length), this.documentRealFileSize);
             }),
-            (u.Item.prototype.hasUpdates = async function () {
+            (GStorage.Item.prototype.hasUpdates = async function () {
                 throw Error("Not implemented!");
             }),
-            (u.prototype.canChooseDirectory = function () {
+            (GStorage.prototype.canChooseDirectory = function () {
                 return false;
             }),
-            (u.prototype.canPromptOpen = function () {
+            (GStorage.prototype.canPromptOpen = function () {
                 return false;
             }),
-            (u.prototype.canPromptSave = function () {
+            (GStorage.prototype.canPromptSave = function () {
                 return false;
             }),
-            (u.prototype.canSave = function () {
+            (GStorage.prototype.canSave = function () {
                 return false;
             }),
-            (u.prototype.canDownload = function () {
+            (GStorage.prototype.canDownload = function () {
                 return false;
             }),
-            (u.prototype.chooseDirectory = function (e, t) {
+            (GStorage.prototype.chooseDirectory = function (successCallback, errorCallback) {
                 throw new Error("Not implemented.");
             }),
-            (u.prototype.openPrompt = function (e, t, n, o) {
+            (GStorage.prototype.openPrompt = function (filters, callback, multiple, options) {
                 throw new Error("Not implemented.");
             }),
-            (u.prototype.savePrompt = function (e, t, n, o) {
+            (GStorage.prototype.savePrompt = function (suggestedName, filters, callback, cancelCallback) {
                 throw new Error("Not implemented.");
             }),
-            (u.prototype.download = function (e, t) {
+            (GStorage.prototype.download = function (name, callback) {
                 throw new Error("Not implemented.");
             }),
-            (u.prototype.storeLastDirectory = function (e) {
-                gDesigner.setSetting("lastDirectory", e);
+            (GStorage.prototype.storeLastDirectory = function (path) {
+                gDesigner.setSetting("lastDirectory", path);
             }),
-            (u.prototype.getLastDirectory = function () {
-                var e = GObject.GSystem.operatingSystem === GObject.GSystem.OperatingSystem.Windows ? "\\" : "/";
+            (GStorage.prototype.getLastDirectory = function () {
+                var separator = GObject.GSystem.operatingSystem === GObject.GSystem.OperatingSystem.Windows ? "\\" : "/";
                 if (gDesigner.getSetting("lastDirectory")) return gDesigner.getSetting("lastDirectory");
                 if (gDesigner.getActiveDocument() && gDesigner.getActiveDocument().getStorageItem()) {
-                    let t = gDesigner.getActiveDocument().getStorageItem().getUniqueId();
-                    return t.substring(0, t.lastIndexOf(e));
+                    let uniqueId = gDesigner.getActiveDocument().getStorageItem().getUniqueId();
+                    return uniqueId.substring(0, uniqueId.lastIndexOf(separator));
                 }
                 for (var t = 0; t < gDesigner.getDocuments().length; ++t)
                     if (gDesigner.getDocuments()[t].getStorageItem()) {
-                        let n = gDesigner.getDocuments()[t].getStorageItem().getUniqueId();
-                        return n.substring(0, n.lastIndexOf(e));
+                        let uniqueId = gDesigner.getDocuments()[t].getStorageItem().getUniqueId();
+                        return uniqueId.substring(0, uniqueId.lastIndexOf(separator));
                     }
                 return "";
             }),
-            (u.prototype.getPlugins = function () {
+            (GStorage.prototype.getPlugins = function () {
                 return [];
             }),
-            (u.prototype.getPluginPath = function (e) {
+            (GStorage.prototype.getPluginPath = function (pluginId) {
                 return null;
             }),
-            (u.prototype.getPluginSrc = function (e) {
+            (GStorage.prototype.getPluginSrc = function (pluginId) {
                 return null;
             }),
-            (u.prototype.getWritePermission = async function (e) {
-                return new r.default(true);
+            (GStorage.prototype.getWritePermission = async function (destination) {
+                return new AuthorizationStatus.default(true);
             }),
-            (module.exports = u));
+            (module.exports = GStorage));
     };

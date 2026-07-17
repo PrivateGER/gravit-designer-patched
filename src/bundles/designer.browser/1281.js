@@ -3,13 +3,13 @@ module.exports = function (module, exports, require) {
         var _interopRequireDefault = require(16);
         (require(58 /* polyfill:Array */), require(71 /* polyfill:String */), require(4), require(41), require(13), require(38));
         var GPlatform = require(15),
-            a = _interopRequireDefault(require(31)),
-            r = _interopRequireDefault(require(1168));
-        class s extends a.default {
-            constructor(e) {
-                (super(), (this.Type = e.Type));
-                const t = Object.values(this.Type);
-                ((this._subActionIds = t.map((e) => r.default.getSubActionId(this.getId(), e))),
+            GAction = _interopRequireDefault(require(31 /* GAction */)),
+            GSubAction = _interopRequireDefault(require(1168));
+        class GMainAction extends GAction.default {
+            constructor(options) {
+                (super(), (this.Type = options.Type));
+                const subActionTypes = Object.values(this.Type);
+                ((this._subActionIds = subActionTypes.map((type) => GSubAction.default.getSubActionId(this.getId(), type))),
                     (this._timeoutId = null),
                     (this._shortcutSubKeyHandlerBind = this._shortcutSubKeyHandler.bind(this)));
             }
@@ -18,13 +18,13 @@ module.exports = function (module, exports, require) {
             }
             execute() {}
             getSubActions() {
-                return this._subActionIds ? this._subActionIds.map((e) => gDesigner.getAction(e)) : null;
+                return this._subActionIds ? this._subActionIds.map((subActionId) => gDesigner.getAction(subActionId)) : null;
             }
             getShortcutSubKeys() {
-                const e = this.getSubActions();
-                return e ? e.map((e) => e.getShortcutSubKey()).filter((e) => e) : null;
+                const subActions = this.getSubActions();
+                return subActions ? subActions.map((e) => e.getShortcutSubKey()).filter((e) => e) : null;
             }
-            getShortcutHint(e) {
+            getShortcutHint(options) {
                 return null;
             }
             _setShortcutSubKeyListener() {
@@ -32,19 +32,19 @@ module.exports = function (module, exports, require) {
                     document.addEventListener("keydown", this._shortcutSubKeyHandlerBind, true),
                     (this._timeoutId = setTimeout(() => {
                         (this._resetShortcutSubKeyListener(), this.execute());
-                    }, a.default.SHORTCUT_DELAY)));
+                    }, GAction.default.SHORTCUT_DELAY)));
             }
-            _executeFromShortcutSubKey(e) {
-                const t = this.getSubActions();
-                if (!t) return;
-                const n = t.find((t) => t.getShortcutSubKey() === e);
-                n && n.execute();
+            _executeFromShortcutSubKey(shortcutSubKey) {
+                const subActions = this.getSubActions();
+                if (!subActions) return;
+                const subAction = subActions.find((action) => action.getShortcutSubKey() === shortcutSubKey);
+                subAction && subAction.execute();
             }
-            _shortcutSubKeyHandler(e) {
-                const t = GPlatform.GKey.translateCode(e.code),
-                    n = this.getShortcutSubKeys();
+            _shortcutSubKeyHandler(event) {
+                const key = GPlatform.GKey.translateCode(event.code),
+                    shortcutSubKeys = this.getShortcutSubKeys();
                 (this._resetShortcutSubKeyListener(),
-                    t && n && n.includes(t) && (e.preventDefault(), e.stopPropagation(), this._executeFromShortcutSubKey(t)));
+                    key && shortcutSubKeys && shortcutSubKeys.includes(key) && (event.preventDefault(), event.stopPropagation(), this._executeFromShortcutSubKey(key)));
             }
             _resetShortcutSubKeyListener() {
                 this._timeoutId &&
@@ -56,5 +56,5 @@ module.exports = function (module, exports, require) {
                 return "[Object GMainAction]";
             }
         }
-        module.exports = s;
+        module.exports = GMainAction;
     };

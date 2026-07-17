@@ -2,156 +2,156 @@ module.exports = function (module, exports, require) {
         "use strict";
         (require(58 /* polyfill:Array */), require(8 /* Symbol */), require(71 /* polyfill:String */), require(4), require(13), require(38), require(97));
         var GObject = require(1);
-        const i = require(78),
-            a = require(393),
-            r = require(433),
-            s = require(336),
-            l = require(868),
+        const DocumentEvent = require(78),
+            CollaborationEvent = require(393),
+            GShareRoleFactory = require(433),
+            StorageItemEvent = require(336),
+            ShareEvent = require(868),
             {
                 GFileReviewFlow,
                 gApi,
                 FileStatus,
                 FILE_REVIEW_ENABLED,
                 Notification,
-                NotificationConstants: { FILE_REVIEW_FLOW: h = [] },
+                NotificationConstants: { FILE_REVIEW_FLOW: reviewFlowActions = [] },
             } = require(10 /* designerConfig */);
-        function f() {
+        function GFileReviewManager() {
             if (!FILE_REVIEW_ENABLED) return this;
-            (gDesigner.addEventListener(i, this._documentEvent, this),
-                gDesigner.addEventListener(s.FileStatusUpdate, this._storageItemFileStatusEvent, this),
-                gDesigner.addEventListener(l, this._handleShareEvent, this),
+            (gDesigner.addEventListener(DocumentEvent, this._documentEvent, this),
+                gDesigner.addEventListener(StorageItemEvent.FileStatusUpdate, this._storageItemFileStatusEvent, this),
+                gDesigner.addEventListener(ShareEvent, this._handleShareEvent, this),
                 gDesigner.getActiveDocument() &&
                     (this._addDocumentEvents(gDesigner.getActiveDocument()), this._updateFromDocument(gDesigner.getActiveDocument())));
         }
-        (GObject.GObject.inherit(f, GObject.GEventTarget),
-            (f.UpdateEvent = function () {}),
-            GObject.GObject.inherit(f.UpdateEvent, GObject.GEvent),
-            (f.prototype._addDocumentEvents = function (e) {
-                e.addEventListener(a, this._collaborationEvent, this);
+        (GObject.GObject.inherit(GFileReviewManager, GObject.GEventTarget),
+            (GFileReviewManager.UpdateEvent = function () {}),
+            GObject.GObject.inherit(GFileReviewManager.UpdateEvent, GObject.GEvent),
+            (GFileReviewManager.prototype._addDocumentEvents = function (document) {
+                document.addEventListener(CollaborationEvent, this._collaborationEvent, this);
             }),
-            (f.prototype._removeDocumentEvents = function (e) {
-                e.removeEventListener(a, this._collaborationEvent, this);
+            (GFileReviewManager.prototype._removeDocumentEvents = function (document) {
+                document.removeEventListener(CollaborationEvent, this._collaborationEvent, this);
             }),
-            (f.prototype._storageItemFileStatusEvent = async function (e) {
-                let { storageItem, newStatus } = e;
-                this._fileId === storageItem.getId() && this._doc.isCollaborative() && this._setStatus(newStatus) && this.trigger(new f.UpdateEvent());
+            (GFileReviewManager.prototype._storageItemFileStatusEvent = async function (event) {
+                let { storageItem, newStatus } = event;
+                this._fileId === storageItem.getId() && this._doc.isCollaborative() && this._setStatus(newStatus) && this.trigger(new GFileReviewManager.UpdateEvent());
             }),
-            (f.prototype._handleShareEvent = async function (e) {
-                switch (e.type) {
-                    case l.Type.Updated:
+            (GFileReviewManager.prototype._handleShareEvent = async function (event) {
+                switch (event.type) {
+                    case ShareEvent.Type.Updated:
                         (await this._updateCollaboratorRoleListIfInitialized(),
-                            this.hasEventListeners(f.UpdateEvent) && this.trigger(new f.UpdateEvent()));
+                            this.hasEventListeners(GFileReviewManager.UpdateEvent) && this.trigger(new GFileReviewManager.UpdateEvent()));
                 }
             }),
-            (f.prototype._documentEvent = async function (e) {
-                const t = e.document;
-                switch (e.type) {
-                    case i.Type.Activated:
-                        (this._addDocumentEvents(t), this._updateFromDocument(t));
+            (GFileReviewManager.prototype._documentEvent = async function (event) {
+                const document = event.document;
+                switch (event.type) {
+                    case DocumentEvent.Type.Activated:
+                        (this._addDocumentEvents(document), this._updateFromDocument(document));
                         break;
-                    case i.Type.Deactivated:
-                        (this._removeDocumentEvents(t), this._updateFromDocument(t), (this._doc = null));
+                    case DocumentEvent.Type.Deactivated:
+                        (this._removeDocumentEvents(document), this._updateFromDocument(document), (this._doc = null));
                         break;
-                    case i.Type.StorageItemUpdated:
-                        this._updateFromDocument(t);
+                    case DocumentEvent.Type.StorageItemUpdated:
+                        this._updateFromDocument(document);
                 }
             }),
-            (f.prototype._collaborationEvent = async function (e) {
-                const { type, sender } = e;
+            (GFileReviewManager.prototype._collaborationEvent = async function (event) {
+                const { type, sender } = event;
                 if (sender === gDesigner.getActiveDocument())
                     switch (type) {
-                        case a.Type.ShareUpdate:
-                        case a.Type.UserUpdate:
+                        case CollaborationEvent.Type.ShareUpdate:
+                        case CollaborationEvent.Type.UserUpdate:
                             (await this._updateCollaboratorRoleListIfInitialized(),
-                                this.hasEventListeners(f.UpdateEvent) && this.trigger(new f.UpdateEvent()));
+                                this.hasEventListeners(GFileReviewManager.UpdateEvent) && this.trigger(new GFileReviewManager.UpdateEvent()));
                     }
             }),
-            (f.prototype._updateFromDocument = async function (e) {
+            (GFileReviewManager.prototype._updateFromDocument = async function (document) {
                 if (
-                    (e !== this._doc &&
+                    (document !== this._doc &&
                         ((this._flow = null),
                         (this._fileId = null),
                         (this._status = null),
-                        (this._doc = e),
+                        (this._doc = document),
                         (this._collaboratorRoleList = null),
                         (this._collaboratorList = null)),
                     this._doc && this._doc.getId() && this._doc.getStorageItem() && this._doc.isCollaborative())
                 ) {
                     this._fileId = this._doc.getId();
-                    const e = await this._doc.getStorageItem().getOrCreateCollaborativeFile();
-                    e && this._setStatus(e.status) && this.trigger(new f.UpdateEvent());
-                } else this._setStatus(null) && this.trigger(new f.UpdateEvent());
+                    const collaborativeFile = await this._doc.getStorageItem().getOrCreateCollaborativeFile();
+                    collaborativeFile && this._setStatus(collaborativeFile.status) && this.trigger(new GFileReviewManager.UpdateEvent());
+                } else this._setStatus(null) && this.trigger(new GFileReviewManager.UpdateEvent());
             }),
-            (f.prototype._setStatus = function (e) {
+            (GFileReviewManager.prototype._setStatus = function (status) {
                 return (
-                    this._status !== e &&
-                    ((this._status = e),
+                    this._status !== status &&
+                    ((this._status = status),
                     (void 0 !== this._status && null !== this._status) || (this._status = FileStatus.IN_REVIEW),
                     void 0 !== GFileReviewFlow && GFileReviewFlow.constructor && (this._flow = new GFileReviewFlow(this._status)),
                     true)
                 );
             }),
-            (f.prototype._isCurrentUserApprover = function () {
-                const e = gDesigner.getSyncUser();
-                if (!e) return false;
+            (GFileReviewManager.prototype._isCurrentUserApprover = function () {
+                const currentUser = gDesigner.getSyncUser();
+                if (!currentUser) return false;
                 if (!this._collaboratorList) return false;
-                const t = this._collaboratorList.find((t) => t.getUID() === e.getUID());
-                return t && t.getRole().is(r.ROLES.APPROVER_ROLE);
+                const collaborator = this._collaboratorList.find((collaborator) => collaborator.getUID() === currentUser.getUID());
+                return collaborator && collaborator.getRole().is(GShareRoleFactory.ROLES.APPROVER_ROLE);
             }),
-            (f.prototype._shouldStatusDisabledForApproverWithCurrentStatus = function (e) {
+            (GFileReviewManager.prototype._shouldStatusDisabledForApproverWithCurrentStatus = function (newStatus) {
                 if (this._isCurrentUserApprover())
                     switch (this._status) {
                         case FileStatus.IN_REVIEW:
                         case FileStatus.REOPENED:
                             return true;
                         case FileStatus.APPROVED:
-                            return e === FileStatus.IN_REVIEW || e === FileStatus.AWAITING_APPROVAL;
+                            return newStatus === FileStatus.IN_REVIEW || newStatus === FileStatus.AWAITING_APPROVAL;
                         case FileStatus.AWAITING_APPROVAL:
-                            return e === FileStatus.IN_REVIEW;
+                            return newStatus === FileStatus.IN_REVIEW;
                     }
                 return false;
             }),
-            (f.prototype.getStatus = function () {
+            (GFileReviewManager.prototype.getStatus = function () {
                 return this._status;
             }),
-            (f.prototype.updateReviewStatus = function (e) {
-                return this.canUpdateToStatus(e) && this._fileId
-                    ? gApi.updateStatus(this._fileId, e)
+            (GFileReviewManager.prototype.updateReviewStatus = function (status) {
+                return this.canUpdateToStatus(status) && this._fileId
+                    ? gApi.updateStatus(this._fileId, status)
                     : Promise.reject(GObject.GLocale.get(new GObject.GLocaleKey("GFileReviewManager", "text.cant-update-file-to-status")));
             }),
-            (f.prototype.canUpdateToStatus = function (e) {
+            (GFileReviewManager.prototype.canUpdateToStatus = function (status) {
                 return (
                     !!this._flow &&
-                    (this._isCurrentUserApprover() ? !this._shouldStatusDisabledForApproverWithCurrentStatus(e) : this._flow.canMoveTo(e))
+                    (this._isCurrentUserApprover() ? !this._shouldStatusDisabledForApproverWithCurrentStatus(status) : this._flow.canMoveTo(status))
                 );
             }),
-            (f.prototype._updateCollaboratorRoleListIfInitialized = async function () {
+            (GFileReviewManager.prototype._updateCollaboratorRoleListIfInitialized = async function () {
                 this._canUpdateCollaboratorList() && this._collaboratorRoleList && (await this._updateCollaboratorRoleList());
             }),
-            (f.prototype._canUpdateCollaboratorList = function () {
+            (GFileReviewManager.prototype._canUpdateCollaboratorList = function () {
                 return this._doc && this._fileId;
             }),
-            (f.prototype._updateCollaboratorRoleList = async function () {
+            (GFileReviewManager.prototype._updateCollaboratorRoleList = async function () {
                 if (!this._canUpdateCollaboratorList()) return;
-                const e = await gDesigner.getShareManager().getCollaboratorsCached(this._doc);
-                e && ((this._collaboratorList = e), (this._collaboratorRoleList = e.map((e) => e.getRole())));
+                const collaborators = await gDesigner.getShareManager().getCollaboratorsCached(this._doc);
+                collaborators && ((this._collaboratorList = collaborators), (this._collaboratorRoleList = collaborators.map((collaborator) => collaborator.getRole())));
             }),
-            (f.prototype.hasApprovers = async function () {
+            (GFileReviewManager.prototype.hasApprovers = async function () {
                 return (
                     !(!this._doc || !this._fileId) &&
                     (this._collaboratorRoleList || (await this._updateCollaboratorRoleList()),
-                    this._collaboratorRoleList.some((e) => e.is(r.ROLES.APPROVER_ROLE)))
+                    this._collaboratorRoleList.some((role) => role.is(GShareRoleFactory.ROLES.APPROVER_ROLE)))
                 );
             }),
-            (f.prototype.getDocumentReviewHistory = async function (e) {
-                const t = await gApi.annotations.getDesignHistory(e).catch(() => []),
-                    n = [];
-                for (let e = 0; e < t.length; e++) {
-                    const o = t[e],
-                        i = Notification.from(o);
-                    h.includes(i.getAction()) && n.push(i);
+            (GFileReviewManager.prototype.getDocumentReviewHistory = async function (fileId) {
+                const historyItems = await gApi.annotations.getDesignHistory(fileId).catch(() => []),
+                    reviewHistory = [];
+                for (let e = 0; e < historyItems.length; e++) {
+                    const historyItem = historyItems[e],
+                        notification = Notification.from(historyItem);
+                    reviewFlowActions.includes(notification.getAction()) && reviewHistory.push(notification);
                 }
-                return n;
+                return reviewHistory;
             }),
-            (module.exports = f));
+            (module.exports = GFileReviewManager));
     };

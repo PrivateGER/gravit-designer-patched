@@ -4,127 +4,127 @@ module.exports = function (module, exports, require) {
         var GObject = require(1),
             GPlatform = require(15),
             GCategory = require(18),
-            r = require(31),
-            s = require(844),
-            l = require(86),
+            GAction = require(31),
+            GActionIcons = require(844),
+            DocumentStatus = require(86),
             GCloudStorage = require(220),
             GCommonNames = require(119),
             GLoginPanel = require(446);
         const GOfflineDialog = require(256);
-        function g(e) {
-            ((this._type = e), (this._title = new GObject.GLocaleKey("GGravitCloudAction", "title." + e)));
+        function GGravitCloudAction(actionType) {
+            ((this._type = actionType), (this._title = new GObject.GLocaleKey("GGravitCloudAction", "title." + actionType)));
         }
-        ((g.Actions = { New: "new", Save: "save", SaveAs: "save-as", Open: "open" }),
-            GObject.GObject.inherit(g, r),
-            (g.ID = "gravit-cloud"),
-            (g.prototype._type = null),
-            (g.prototype._title = null),
-            (g.prototype.getId = function () {
-                return g.getIdForAction(this._type);
+        ((GGravitCloudAction.Actions = { New: "new", Save: "save", SaveAs: "save-as", Open: "open" }),
+            GObject.GObject.inherit(GGravitCloudAction, GAction),
+            (GGravitCloudAction.ID = "gravit-cloud"),
+            (GGravitCloudAction.prototype._type = null),
+            (GGravitCloudAction.prototype._title = null),
+            (GGravitCloudAction.prototype.getId = function () {
+                return GGravitCloudAction.getIdForAction(this._type);
             }),
-            (g.getIdForAction = function (e) {
-                return g.ID + "." + e;
+            (GGravitCloudAction.getIdForAction = function (actionType) {
+                return GGravitCloudAction.ID + "." + actionType;
             }),
-            (g.prototype.getTitle = function () {
+            (GGravitCloudAction.prototype.getTitle = function () {
                 return this._title;
             }),
-            (g.prototype.getCategory = function () {
+            (GGravitCloudAction.prototype.getCategory = function () {
                 return GCategory.CATEGORY_FILE;
             }),
-            (g.prototype.getGroup = function () {
-                return this._type === g.Actions.Open ? "file-open" : "file";
+            (GGravitCloudAction.prototype.getGroup = function () {
+                return this._type === GGravitCloudAction.Actions.Open ? "file-open" : "file";
             }),
-            (g.prototype.getGroupIcon = function () {
-                return s["gravit-cloud"];
+            (GGravitCloudAction.prototype.getGroupIcon = function () {
+                return GActionIcons["gravit-cloud"];
             }),
-            (g.prototype.getShortcut = function () {
-                return this._type == g.Actions.Open
+            (GGravitCloudAction.prototype.getShortcut = function () {
+                return this._type == GGravitCloudAction.Actions.Open
                     ? [GPlatform.GKey.Constant.SHIFT, GPlatform.GKey.Constant.META, "O"]
-                    : this._type == g.Actions.SaveAs
+                    : this._type == GGravitCloudAction.Actions.SaveAs
                       ? [GPlatform.GKey.Constant.SHIFT, GPlatform.GKey.Constant.META, "S"]
                       : null;
             }),
-            (g.prototype.isEnabled = function () {
-                if (!gDesigner.getApplicationManager().isEditingEnabled() && this._type === g.Actions.Save) return false;
-                if (!gDesigner.getApplicationManager().isOpenFromCloudEnabled() && this._type === g.Actions.Open) return false;
-                if (!gDesigner.getApplicationManager().isSavingAsEnabled() && this._type === g.Actions.SaveAs) return false;
-                return !(!gDesigner.getActiveDocument() && this._type !== g.Actions.Open) && !!GCommonNames.isOnline();
+            (GGravitCloudAction.prototype.isEnabled = function () {
+                if (!gDesigner.getApplicationManager().isEditingEnabled() && this._type === GGravitCloudAction.Actions.Save) return false;
+                if (!gDesigner.getApplicationManager().isOpenFromCloudEnabled() && this._type === GGravitCloudAction.Actions.Open) return false;
+                if (!gDesigner.getApplicationManager().isSavingAsEnabled() && this._type === GGravitCloudAction.Actions.SaveAs) return false;
+                return !(!gDesigner.getActiveDocument() && this._type !== GGravitCloudAction.Actions.Open) && !!GCommonNames.isOnline();
             }),
-            (g.prototype.execute = function (e, t, n) {
-                const o = () =>
+            (GGravitCloudAction.prototype.execute = function (document, callback, options) {
+                const loginAndExecute = () =>
                     new GLoginPanel(
                         () => {
-                            this._executeAction(e, t, n);
+                            this._executeAction(document, callback, options);
                         },
                         () => {
                             gDesigner.stats("action-cancelled_export", this._type);
                         }
                     );
-                gDesigner.isOffline() ? GOfflineDialog.openUnavailableFeature(o) : o();
+                gDesigner.isOffline() ? GOfflineDialog.openUnavailableFeature(loginAndExecute) : loginAndExecute();
             }),
-            (g.prototype._executeAction = function (e, t, n) {
-                var o = this;
+            (GGravitCloudAction.prototype._executeAction = function (document, callback, options) {
+                var self = this;
                 if ("open" === this._type) {
-                    let e = { closable: true, showCloudOptions: true, openFromCloud: true };
-                    gDesigner.openNewDocumentDialog(e);
+                    let dialogOptions = { closable: true, showCloudOptions: true, openFromCloud: true };
+                    gDesigner.openNewDocumentDialog(dialogOptions);
                 } else if ("save" === this._type) {
-                    var i = gDesigner.getActiveDocument();
-                    if (i.isCommercialProductFile()) return void i.openPaywall(this.getId());
-                    var a = i.getStorageItem();
-                    a && a instanceof GCloudStorage.Item
+                    var activeDocument = gDesigner.getActiveDocument();
+                    if (activeDocument.isCommercialProductFile()) return void activeDocument.openPaywall(this.getId());
+                    var storageItem = activeDocument.getStorageItem();
+                    storageItem && storageItem instanceof GCloudStorage.Item
                         ? GCommonNames.performSave(
-                              i,
+                              activeDocument,
                               () => {
-                                  t && t(l.Saved);
+                                  callback && callback(DocumentStatus.Saved);
                               },
                               () => {
-                                  t && t(l.SaveFailed);
+                                  callback && callback(DocumentStatus.SaveFailed);
                               }
                           )
-                        : o._saveAs(false, e, t);
+                        : self._saveAs(false, document, callback);
                 } else if ("new" === this._type) {
-                    let n = {
+                    let dialogOptions = {
                         closable: true,
                         cb: function () {
-                            o._saveAs(true, e, t);
+                            self._saveAs(true, document, callback);
                         },
                     };
-                    gDesigner.openNewDocumentDialog(n);
-                } else "save-as" === this._type && o._saveAs(false, e, t, n);
+                    gDesigner.openNewDocumentDialog(dialogOptions);
+                } else "save-as" === this._type && self._saveAs(false, document, callback, options);
             }),
-            (g.prototype._hasUnsupported = async function () {
+            (GGravitCloudAction.prototype._hasUnsupported = async function () {
                 return false;
             }),
-            (g.prototype._saveAs = async function (e, t, n, o) {
-                var i = t || gDesigner.getActiveDocument();
-                if (i.isCommercialProductFile()) i.openPaywall(this.getId());
+            (GGravitCloudAction.prototype._saveAs = async function (removeWindowOnCancel, document, callback, options) {
+                var targetDocument = document || gDesigner.getActiveDocument();
+                if (targetDocument.isCommercialProductFile()) targetDocument.openPaywall(this.getId());
                 else {
-                    var a = i.getTitle();
-                    (!i.isDocumentFromTemplate() && (await this._hasUnsupported(i))) ||
+                    var title = targetDocument.getTitle();
+                    (!targetDocument.isDocumentFromTemplate() && (await this._hasUnsupported(targetDocument))) ||
                         gDesigner.openCloudSaveDialog(
-                            i,
+                            targetDocument,
                             function () {
-                                (e && gDesigner.getWindows().removeWindow(i.getActiveWindow()), n && n(l.SaveCancelled));
+                                (removeWindowOnCancel && gDesigner.getWindows().removeWindow(targetDocument.getActiveWindow()), callback && callback(DocumentStatus.SaveCancelled));
                             },
-                            a,
-                            n,
-                            o
+                            title,
+                            callback,
+                            options
                         );
                 }
             }),
-            (g.prototype.getIcon = function () {
-                return gDesigner.getApplicationManager().isOpenFromCloudEnabled() && this._type === g.Actions.Open
+            (GGravitCloudAction.prototype.getIcon = function () {
+                return gDesigner.getApplicationManager().isOpenFromCloudEnabled() && this._type === GGravitCloudAction.Actions.Open
                     ? gDesigner.isTouchEnabled()
                         ? "gravit-icon-touch-file-open-cloud"
                         : ""
-                    : gDesigner.getApplicationManager().isSavingAsEnabled() && this._type === g.Actions.SaveAs
+                    : gDesigner.getApplicationManager().isSavingAsEnabled() && this._type === GGravitCloudAction.Actions.SaveAs
                       ? gDesigner.isTouchEnabled()
                           ? "gravit-icon-touch-file-save-as-cloud"
                           : ""
                       : void 0;
             }),
-            (g.prototype.toString = function () {
+            (GGravitCloudAction.prototype.toString = function () {
                 return "[Object GGravitCloudAction]";
             }),
-            (module.exports = g));
+            (module.exports = GGravitCloudAction));
     };

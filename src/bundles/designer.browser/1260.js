@@ -6,7 +6,7 @@ module.exports = function (module, exports, require) {
             GObject = require(1),
             GPlatform = require(15),
             GTouchTool = _interopRequireDefault(require(340)),
-            GRichTooltip = require(67),
+            GRichTooltipConfig = require(67),
             GSceneProperties = _interopRequireDefault(require(442)),
             GDocumentEvent = require(78),
             GDocumentStatusEvent = require(217),
@@ -145,7 +145,7 @@ module.exports = function (module, exports, require) {
                         .append($("<div></div>"))
                         .appendTo(this._pageToolbar)
                         .gRichTooltip(
-                            GRichTooltip.GRichTooltipConfig.from({
+                            GRichTooltipConfig.GRichTooltipConfig.from({
                                 title: GObject.GLocale.get(new GObject.GLocaleKey("GOutlineSidebar", "text.multipage-tooltip-title")),
                                 description: GObject.GLocale.get(new GObject.GLocaleKey("GOutlineSidebar", "text.multipage-tooltip-description")),
                                 learnMore: "/docs/organizing-your-designs/pages/#page-panel",
@@ -168,7 +168,7 @@ module.exports = function (module, exports, require) {
                         .append($("<span></span>").addClass("gravit-icon-trash"))
                         .appendTo(this._pageToolbar)
                         .gRichTooltip(
-                            GRichTooltip.GRichTooltipConfig.from({
+                            GRichTooltipConfig.GRichTooltipConfig.from({
                                 title: GObject.GLocale.get(new GObject.GLocaleKey("GOutlineSidebar", "text.delete-page-tooltip-title")),
                                 description: GObject.GLocale.get(new GObject.GLocaleKey("GOutlineSidebar", "text.delete-page-tooltip-description")),
                                 learnMore: "/docs/organizing-your-designs/pages/#page-panel",
@@ -187,7 +187,7 @@ module.exports = function (module, exports, require) {
                         .append($("<span></span>").addClass("gravit-icon-addpage"))
                         .appendTo(this._pageToolbar)
                         .gRichTooltip(
-                            GRichTooltip.GRichTooltipConfig.from({
+                            GRichTooltipConfig.GRichTooltipConfig.from({
                                 title: GObject.GLocale.get(new GObject.GLocaleKey("GOutlineSidebar", "text.create-new-page-tooltip-title")),
                                 description: GObject.GLocale.get(new GObject.GLocaleKey("GOutlineSidebar", "text.create-new-page-tooltip-description")),
                                 learnMore: "/docs/organizing-your-designs/pages/#page-panel",
@@ -370,7 +370,7 @@ module.exports = function (module, exports, require) {
                         .append($("<span></span>").addClass("gravit-icon-trash"))
                         .appendTo(this._layerToolbar)
                         .gRichTooltip(
-                            GRichTooltip.GRichTooltipConfig.from({
+                            GRichTooltipConfig.GRichTooltipConfig.from({
                                 title: GObject.GLocale.get(new GObject.GLocaleKey("GOutlineSidebar", "text.delete-layer-tooltip-title")),
                                 description: GObject.GLocale.get(new GObject.GLocaleKey("GOutlineSidebar", "text.delete-layer-tooltip-description")),
                                 learnMore: "/docs/organizing-your-designs/objects/#deleting-objects",
@@ -382,7 +382,7 @@ module.exports = function (module, exports, require) {
                         .append($("<span></span>").addClass("gravit-icon-addlayer"))
                         .appendTo(this._layerToolbar)
                         .gRichTooltip(
-                            GRichTooltip.GRichTooltipConfig.from({
+                            GRichTooltipConfig.GRichTooltipConfig.from({
                                 title: GObject.GLocale.get(new GObject.GLocaleKey("GOutlineSidebar", "text.new-layer-tooltip-title")),
                                 description: GObject.GLocale.get(new GObject.GLocaleKey("GOutlineSidebar", "text.new-layer-tooltip-description")),
                                 learnMore:

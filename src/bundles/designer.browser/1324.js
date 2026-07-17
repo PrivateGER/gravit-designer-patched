@@ -1,13 +1,13 @@
 module.exports = function (module, exports, require) {
         "use strict";
         (require(20 /* polyfill:RegExp */), require(34));
-        const o = require(177),
+        const GUser = require(177),
             {
                 SharePermissions: { COMMENT, EDIT },
                 ShareRoles,
             } = require(10 /* designerConfig */),
             { GLocale, GLocaleKey } = require(1 /* GObject */);
-        module.exports = class extends o {
+        module.exports = class extends GUser {
             constructor() {
                 let {
                     access_id,

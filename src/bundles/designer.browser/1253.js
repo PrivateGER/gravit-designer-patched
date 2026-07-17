@@ -2,159 +2,159 @@ module.exports = function (module, exports, require) {
         "use strict";
         (require(19), require(180), require(181 /* polyfill:ArrayBuffer */), require(8 /* Symbol */), require(91 /* polyfill:String */), require(218), require(189), require(190), require(191), require(192), require(4), require(41), require(13), require(38));
         var GObject = require(1),
-            i = require(797),
+            GExportFormats = require(797),
             Utils = require(40),
             designerConfig = require(10),
             GStorage = require(237),
             GDocument = require(163),
-            c = require(442);
+            GConstants = require(442);
         const GFileTypes = require(389);
-        function u() {}
+        function GExporter() {}
         ((window.pako = require(165 /* PDFNodeStream */)),
             require(1514 /* lib:zip.js */),
-            require(1515),
+            require(1515 /* lib:zip.js */),
             require(1516),
             (zip.useWebWorkers = false),
-            (u.generateExportables = function (e, t, n) {
-                var i = e instanceof Array ? e : [e];
-                e instanceof GObject.GScene && (i = e.getChildren().filter((e) => e instanceof GObject.GPage && e.isVisible()));
-                var a = [],
-                    r = {};
-                function s(e) {
-                    var t = e.getProperty("name");
-                    if (!t) {
-                        var n = GObject.GObject.getTypeId(e);
-                        (r.hasOwnProperty(n) || (r[n] = 0), (t = e.getNodeNameTranslated()));
-                        var i = ++r[n];
-                        i > 1 && (t += "_" + i);
+            (GExporter.generateExportables = function (source, options, recursive) {
+                var elements = source instanceof Array ? source : [source];
+                source instanceof GObject.GScene && (elements = source.getChildren().filter((child) => child instanceof GObject.GPage && child.isVisible()));
+                var result = [],
+                    nameCounts = {};
+                function resolveName(element) {
+                    var name = element.getProperty("name");
+                    if (!name) {
+                        var typeId = GObject.GObject.getTypeId(element);
+                        (nameCounts.hasOwnProperty(typeId) || (nameCounts[typeId] = 0), (name = element.getNodeNameTranslated()));
+                        var count = ++nameCounts[typeId];
+                        count > 1 && (name += "_" + count);
                     }
-                    return t;
+                    return name;
                 }
-                function l(e) {
-                    if (t)
-                        a.push(
-                            GObject.GUtil.extend({}, t, {
-                                element: e,
-                                name: 1 === i.length && t.name ? t.name : s(e),
+                function collect(element) {
+                    if (options)
+                        result.push(
+                            GObject.GUtil.extend({}, options, {
+                                element: element,
+                                name: 1 === elements.length && options.name ? options.name : resolveName(element),
                             })
                         );
-                    else if (e.hasMixin(GObject.GNode.Properties)) {
-                        var r = e.getProperty(c.EXPORT_PROPERTY_NAME, true);
-                        if (r && r instanceof Array && r.length)
-                            for (var d = s(e), u = 0; u < r.length; ++u) {
-                                var p = r[u];
+                    else if (element.hasMixin(GObject.GNode.Properties)) {
+                        var exportDefs = element.getProperty(GConstants.EXPORT_PROPERTY_NAME, true);
+                        if (exportDefs && exportDefs instanceof Array && exportDefs.length)
+                            for (var name = resolveName(element), u = 0; u < exportDefs.length; ++u) {
+                                var p = exportDefs[u];
                                 p.fm &&
-                                    a.push(
+                                    result.push(
                                         GObject.GUtil.extend(
                                             {},
                                             {
                                                 size: p.sz,
                                                 suffix: p.sf,
                                                 format: p.fm,
-                                                element: e,
-                                                name: d,
+                                                element: element,
+                                                name: name,
                                             }
                                         )
                                     );
                             }
                     }
-                    if (n && e.hasMixin(GObject.GNode.Container))
-                        for (var g = e.getFirstChild(); null !== g; g = g.getNext()) g instanceof GObject.GElement && l(g);
+                    if (recursive && element.hasMixin(GObject.GNode.Container))
+                        for (var child = element.getFirstChild(); null !== child; child = child.getNext()) child instanceof GObject.GElement && collect(child);
                 }
-                for (var d = 0; d < i.length; ++d) {
-                    l(i[d]);
+                for (var d = 0; d < elements.length; ++d) {
+                    collect(elements[d]);
                 }
-                return a;
+                return result;
             }),
-            (u._validateCommercialDocument = function () {
-                const e = gDesigner.getActiveDocument();
-                return !e || !e.isCommercialProductFile() || (e.openPaywall(), false);
+            (GExporter._validateCommercialDocument = function () {
+                const document = gDesigner.getActiveDocument();
+                return !document || !document.isCommercialProductFile() || (document.openPaywall(), false);
             }),
-            (u.exportExportable = function (e, t, n, s) {
+            (GExporter.exportExportable = function (exportable, onBlob, progress, reporter) {
                 if (this._validateCommercialDocument()) {
-                    var l = e.element,
-                        c = e.format;
-                    if ("png" === c || "jpg" === c) {
-                        var u = null,
-                            p = null;
-                        switch (c) {
+                    var element = exportable.element,
+                        format = exportable.format;
+                    if ("png" === format || "jpg" === format) {
+                        var imageType = null,
+                            quality = null;
+                        switch (format) {
                             case "png":
-                                u = GObject.GBitmap.ImageType.PNG;
+                                imageType = GObject.GBitmap.ImageType.PNG;
                                 break;
                             case "jpg":
-                                ((u = GObject.GBitmap.ImageType.JPEG), (p = (e.jpegQuality || 100) / 100));
+                                ((imageType = GObject.GBitmap.ImageType.JPEG), (quality = (exportable.jpegQuality || 100) / 100));
                         }
-                        var g = GObject.GLength.DPI,
-                            h = i.GBitmapExport.export(e.element, e.size, e.backgroundColor, e.configuration, g, e.backgroundOpacity, true);
-                        h && h.toImageBlob(u, t, p);
-                    } else if ("svg" === c)
-                        i.GSVGExport.export(
-                            l,
+                        var dpi = GObject.GLength.DPI,
+                            bitmap = GExportFormats.GBitmapExport.export(exportable.element, exportable.size, exportable.backgroundColor, exportable.configuration, dpi, exportable.backgroundOpacity, true);
+                        bitmap && bitmap.toImageBlob(imageType, onBlob, quality);
+                    } else if ("svg" === format)
+                        GExportFormats.GSVGExport.export(
+                            element,
                             {
-                                convertTextToPath: e.convertTextToPath,
-                                decimalPlacesPrecision: Utils.watchDog.check(e.decimalPlacesPrecision, 3),
-                                preserveEditingCapabilities: Utils.watchDog.check(e.preserveEditingCapabilities, false),
-                                backgroundColor: e.backgroundColor,
-                                backgroundOpacity: e.backgroundOpacity,
-                                sceneBackground: !e.configuration || e.configuration.sceneBackground || !!e.backgroundColor,
-                                layerNamesAsId: Utils.watchDog.check(e.layerNamesAsId, false),
+                                convertTextToPath: exportable.convertTextToPath,
+                                decimalPlacesPrecision: Utils.watchDog.check(exportable.decimalPlacesPrecision, 3),
+                                preserveEditingCapabilities: Utils.watchDog.check(exportable.preserveEditingCapabilities, false),
+                                backgroundColor: exportable.backgroundColor,
+                                backgroundOpacity: exportable.backgroundOpacity,
+                                sceneBackground: !exportable.configuration || exportable.configuration.sceneBackground || !!exportable.backgroundColor,
+                                layerNamesAsId: Utils.watchDog.check(exportable.layerNamesAsId, false),
                             },
-                            function (e, n) {
-                                !e && n && t(new Blob([n], { type: "image/svg+xml" }));
+                            function (error, data) {
+                                !error && data && onBlob(new Blob([data], { type: "image/svg+xml" }));
                             }
                         );
                     else {
-                        if (c !== GFileTypes.PDF.ext) throw new Error("Unknown format.");
-                        gDesigner.getUser().then(function (c) {
-                            var u;
-                            u =
-                                c && c.getFullUserName()
-                                    ? c.getFullUserName()
+                        if (format !== GFileTypes.PDF.ext) throw new Error("Unknown format.");
+                        gDesigner.getUser().then(function (user) {
+                            var authorName;
+                            authorName =
+                                user && user.getFullUserName()
+                                    ? user.getFullUserName()
                                     : GObject.GLocale.get(new GObject.GLocaleKey("GDocument", "text.default-export-author"));
-                            var p = {
-                                    dpi: Utils.watchDog.check(GObject.GUtil.parseNumber(e.size), GObject.GUtil.parseNumber("72dpi")),
-                                    colorSpace: e.colorSpace,
-                                    jpegQuality: e.jpegQuality || designerConfig.JPEG_EXPORT_QUALITY_DEFAULT,
-                                    configuration: e.configuration,
-                                    backgroundColor: e.backgroundColor,
-                                    backgroundOpacity: e.backgroundOpacity,
-                                    convertTextToPath: e.convertTextToPath,
-                                    progress: n,
-                                    user: u,
+                            var options = {
+                                    dpi: Utils.watchDog.check(GObject.GUtil.parseNumber(exportable.size), GObject.GUtil.parseNumber("72dpi")),
+                                    colorSpace: exportable.colorSpace,
+                                    jpegQuality: exportable.jpegQuality || designerConfig.JPEG_EXPORT_QUALITY_DEFAULT,
+                                    configuration: exportable.configuration,
+                                    backgroundColor: exportable.backgroundColor,
+                                    backgroundOpacity: exportable.backgroundOpacity,
+                                    convertTextToPath: exportable.convertTextToPath,
+                                    progress: progress,
+                                    user: authorName,
                                     title: gDesigner.getWindows().getActiveWindow().getTitle(),
-                                    downsampleImages: e.downsampleImages,
+                                    downsampleImages: exportable.downsampleImages,
                                 },
-                                g = i.GPDFExport.export(
-                                    l,
-                                    p,
-                                    function (e, n) {
-                                        (!e && n && t(new Blob([n], { type: GFileTypes.PDF.mime })),
-                                            s && (g.isAbort() ? s.close && s.close() : e && s.error && s.error(e)));
+                                pdfExport = GExportFormats.GPDFExport.export(
+                                    element,
+                                    options,
+                                    function (error, data) {
+                                        (!error && data && onBlob(new Blob([data], { type: GFileTypes.PDF.mime })),
+                                            reporter && (pdfExport.isAbort() ? reporter.close && reporter.close() : error && reporter.error && reporter.error(error)));
                                     },
                                     null,
-                                    s
+                                    reporter
                                 );
-                            s && (s.abort = () => g && g.abort());
+                            reporter && (reporter.abort = () => pdfExport && pdfExport.abort());
                         });
                     }
                 }
             }),
-            (u.generateExportName = function (e, t, n) {
-                var i = GObject.GUtil.sanitizeFilename(t || e.name) + (e.suffix || "");
-                if (n) {
-                    var a = n.filter(function (t) {
-                        return t.name === i && t.format === e.format;
+            (GExporter.generateExportName = function (exportable, name, usedNames) {
+                var fileName = GObject.GUtil.sanitizeFilename(name || exportable.name) + (exportable.suffix || "");
+                if (usedNames) {
+                    var duplicates = usedNames.filter(function (entry) {
+                        return entry.name === fileName && entry.format === exportable.format;
                     });
-                    (n.push({ name: i, format: e.format }), a.length && (i += "(" + (a.length + 1) + ")"));
+                    (usedNames.push({ name: fileName, format: exportable.format }), duplicates.length && (fileName += "(" + (duplicates.length + 1) + ")"));
                 }
-                return (i += "." + e.format);
+                return (fileName += "." + exportable.format);
             }),
-            (u.exportToDirectory = async function (e, t, n, i) {
+            (GExporter.exportToDirectory = async function (exportables, outputDirectory, onComplete, onProgress) {
                 if (this._validateCommercialDocument())
-                    for (var a = {}, r = 0, s = [], l = 0; l < e.length; ++l) {
+                    for (var directoryCache = {}, r = 0, usedNames = [], l = 0; l < exportables.length; ++l) {
                         var c = null,
-                            d = t;
-                        if ((c = e[l].name)) {
+                            d = outputDirectory;
+                        if ((c = exportables[l].name)) {
                             if (c.indexOf("/") >= 0) {
                                 var p = c.split("/"),
                                     g = [];
@@ -168,154 +168,154 @@ module.exports = function (module, exports, require) {
                                     for (let e = 0; e < g.length; ++e) {
                                         var m = g[e];
                                         f && (f += "/");
-                                        var y = a[(f += m.toLowerCase())];
+                                        var y = directoryCache[(f += m.toLowerCase())];
                                         if (y) d = y;
                                         else
                                             try {
-                                                ((d = await d.addDirectory(m)), (a[f] = d));
+                                                ((d = await d.addDirectory(m)), (directoryCache[f] = d));
                                             } catch (e) {}
                                     }
                                 } else g.length && (c = g[0]);
                             } else c = GObject.GUtil.sanitizeFilename(c.trim());
                             c &&
                                 d &&
-                                u.exportExportable(
-                                    e[l],
-                                    (function (t, o) {
-                                        return function (i) {
-                                            var a = new FileReader();
+                                GExporter.exportExportable(
+                                    exportables[l],
+                                    (function (directory, fileName) {
+                                        return function (data) {
+                                            var reader = new FileReader();
                                             if (
-                                                ((a.onload = () => {
-                                                    t.addFile(o)
-                                                        .then((t) => {
-                                                            t.write(new Uint8Array(a.result), () => {
-                                                                ++r === e.length && n && n();
+                                                ((reader.onload = () => {
+                                                    directory.addFile(fileName)
+                                                        .then((file) => {
+                                                            file.write(new Uint8Array(reader.result), () => {
+                                                                ++r === exportables.length && onComplete && onComplete();
                                                             });
                                                         })
                                                         .catch(() => {
-                                                            ++r === e.length && n && n();
+                                                            ++r === exportables.length && onComplete && onComplete();
                                                         });
                                                 }),
-                                                i instanceof Blob || i instanceof File)
+                                                data instanceof Blob || data instanceof File)
                                             )
                                                 try {
-                                                    a.readAsArrayBuffer(i);
+                                                    reader.readAsArrayBuffer(data);
                                                 } catch (t) {
-                                                    ++r === e.length && n && n();
+                                                    ++r === exportables.length && onComplete && onComplete();
                                                 }
-                                            else ++r === e.length && n && n();
+                                            else ++r === exportables.length && onComplete && onComplete();
                                         };
-                                    })(d, u.generateExportName(e[l], c, s)),
-                                    i
+                                    })(d, GExporter.generateExportName(exportables[l], c, usedNames)),
+                                    onProgress
                                 );
                         }
                     }
             }),
-            (u.export = function (e, t, n, i, a, r, c, p, g, h) {
+            (GExporter.export = function (exportables, storage, name, onComplete, onCancel, assetsMode, onProgress, reporter, onError, storageOptions) {
                 if (this._validateCommercialDocument()) {
-                    var f = (e, t, n) => {
-                            var o = new FileReader();
-                            ((o.onload = () => {
-                                t.write(new Uint8Array(o.result), () => (n ? n() : void 0), g);
+                    var writeBlob = (blob, file, onWritten) => {
+                            var reader = new FileReader();
+                            ((reader.onload = () => {
+                                file.write(new Uint8Array(reader.result), () => (onWritten ? onWritten() : void 0), onError);
                             }),
-                                o.readAsArrayBuffer(e));
+                                reader.readAsArrayBuffer(blob));
                         },
-                        m = (e, n, o, i, r, l) => {
-                            t instanceof GStorage.Item
-                                ? f(e, t, o)
-                                : t instanceof GStorage &&
-                                  (!r && t.canPromptSave()
-                                      ? t.savePrompt(
-                                            n,
-                                            [i],
-                                            (t) => {
-                                                f(e, t, o);
+                        finishExport = (blob, fileName, onWritten, fileTypeEntry, forceDownload, storageOptions) => {
+                            storage instanceof GStorage.Item
+                                ? writeBlob(blob, storage, onWritten)
+                                : storage instanceof GStorage &&
+                                  (!forceDownload && storage.canPromptSave()
+                                      ? storage.savePrompt(
+                                            fileName,
+                                            [fileTypeEntry],
+                                            (file) => {
+                                                writeBlob(blob, file, onWritten);
                                             },
-                                            a,
-                                            l
+                                            onCancel,
+                                            storageOptions
                                         )
-                                      : t.canDownload() &&
-                                        t.download(
-                                            n,
-                                            (t) => {
-                                                f(e, t, o);
+                                      : storage.canDownload() &&
+                                        storage.download(
+                                            fileName,
+                                            (file) => {
+                                                writeBlob(blob, file, onWritten);
                                             },
-                                            l
+                                            storageOptions
                                         ));
                         },
-                        y = e[0],
-                        v = e.length > 1,
-                        _ = GDocument.FileTypes.find((e) => e.ext === y.format);
+                        exportable = exportables[0],
+                        isMultiple = exportables.length > 1,
+                        fileType = GDocument.FileTypes.find((type) => type.ext === exportable.format);
                     if (
-                        (v &&
-                            (y.format !== GFileTypes.PDF.ext ||
-                                r ||
-                                ((v = false), ((y = GObject.GUtil.extend({}, y)).name = n), (y.element = e.map((e) => e.element)))),
-                        v)
+                        (isMultiple &&
+                            (exportable.format !== GFileTypes.PDF.ext ||
+                                assetsMode ||
+                                ((isMultiple = false), ((exportable = GObject.GUtil.extend({}, exportable)).name = name), (exportable.element = exportables.map((item) => item.element)))),
+                        isMultiple)
                     )
-                        if (t instanceof GStorage && t.canChooseDirectory())
-                            t.chooseDirectory(
-                                (t) => {
-                                    u.exportToDirectory(e, t, i, c);
+                        if (storage instanceof GStorage && storage.canChooseDirectory())
+                            storage.chooseDirectory(
+                                (directory) => {
+                                    GExporter.exportToDirectory(exportables, directory, onComplete, onProgress);
                                 },
-                                a,
+                                onCancel,
                                 () => {
-                                    var t = new u.ZipDirectory();
-                                    u.exportToDirectory(
-                                        e,
-                                        t,
+                                    var fallbackZipDirectory = new GExporter.ZipDirectory();
+                                    GExporter.exportToDirectory(
+                                        exportables,
+                                        fallbackZipDirectory,
                                         () => {
-                                            t.exportBlob((e) => {
-                                                m(e, n + ".zip", i, _, true, h);
+                                            fallbackZipDirectory.exportBlob((blob) => {
+                                                finishExport(blob, name + ".zip", onComplete, fileType, true, storageOptions);
                                             });
                                         },
-                                        c
+                                        onProgress
                                     );
                                 }
                             );
                         else {
-                            var b = new u.ZipDirectory();
-                            u.exportToDirectory(
-                                e,
-                                b,
+                            var zipDirectory = new GExporter.ZipDirectory();
+                            GExporter.exportToDirectory(
+                                exportables,
+                                zipDirectory,
                                 () => {
-                                    b.exportBlob((e) => {
-                                        m(e, n + ".zip", i, { ext: "zip", mime: "application/zip" }, false, h);
+                                    zipDirectory.exportBlob((blob) => {
+                                        finishExport(blob, name + ".zip", onComplete, { ext: "zip", mime: "application/zip" }, false, storageOptions);
                                     });
                                 },
-                                c
+                                onProgress
                             );
                         }
                     else
-                        u.exportExportable(
-                            y,
-                            function (e) {
-                                const n = t instanceof GStorage && t.canDownload() && _ && _.ext === GFileTypes.PDF.ext;
-                                m(e, u.generateExportName(y), i, _, n, h);
+                        GExporter.exportExportable(
+                            exportable,
+                            function (blob) {
+                                const isDirectPdfDownload = storage instanceof GStorage && storage.canDownload() && fileType && fileType.ext === GFileTypes.PDF.ext;
+                                finishExport(blob, GExporter.generateExportName(exportable), onComplete, fileType, isDirectPdfDownload, storageOptions);
                             },
-                            c,
-                            p
+                            onProgress,
+                            reporter
                         );
                 }
             }),
-            (u.ZipDirectory = function (e, t) {
-                (GStorage.Directory.call(this, e), (this._zipRoot = t ? null : new zip.fs.FS()), (this._zipDirectory = t || this._zipRoot.root));
+            (GExporter.ZipDirectory = function (storage, zipNode) {
+                (GStorage.Directory.call(this, storage), (this._zipRoot = zipNode ? null : new zip.fs.FS()), (this._zipDirectory = zipNode || this._zipRoot.root));
             }),
-            GObject.GObject.inherit(u.ZipDirectory, GStorage.Directory),
-            (u.ZipDirectory.prototype.addDirectory = async function (e) {
-                return new u.ZipDirectory(this._storage, this._zipDirectory.addDirectory(e));
+            GObject.GObject.inherit(GExporter.ZipDirectory, GStorage.Directory),
+            (GExporter.ZipDirectory.prototype.addDirectory = async function (name) {
+                return new GExporter.ZipDirectory(this._storage, this._zipDirectory.addDirectory(name));
             }),
-            (u.ZipDirectory.prototype.addFile = async function (e) {
+            (GExporter.ZipDirectory.prototype.addFile = async function (name) {
                 return {
                     _zipDirectory: this._zipDirectory,
-                    _name: e,
-                    write: function (e, t) {
-                        if ((this._zipDirectory.addBlob(this._name, new Blob([e])), t)) return t();
+                    _name: name,
+                    write: function (data, callback) {
+                        if ((this._zipDirectory.addBlob(this._name, new Blob([data])), callback)) return callback();
                     },
                 };
             }),
-            (u.ZipDirectory.prototype.exportBlob = function (e) {
-                this._zipDirectory.exportBlob(e);
+            (GExporter.ZipDirectory.prototype.exportBlob = function (callback) {
+                this._zipDirectory.exportBlob(callback);
             }),
-            (module.exports = u));
+            (module.exports = GExporter));
     };

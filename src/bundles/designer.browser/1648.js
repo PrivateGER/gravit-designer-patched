@@ -3,52 +3,52 @@ module.exports = function (module, exports, require) {
         var _interopRequireDefault = require(16),
             GObject = require(1),
             GPlatform = require(15),
-            r = _interopRequireDefault(require(18 /* GCategory */)),
-            s = _interopRequireDefault(require(1168)),
+            GCategory = _interopRequireDefault(require(18 /* GCategory */)),
+            GSubAction = _interopRequireDefault(require(1168)),
             SidebarsIds = require(198),
-            c = _interopRequireDefault(require(1345));
-        class d extends s.default {
-            constructor(e) {
-                (super(e), (this._title = new GObject.GLocaleKey("GChangeAnchorPointsJointTypeSubAction", "title.".concat(this._type))));
+            GChangeAnchorPointsJointTypeAction = _interopRequireDefault(require(1345));
+        class GChangeAnchorPointsJointTypeSubAction extends GSubAction.default {
+            constructor(type) {
+                (super(type), (this._title = new GObject.GLocaleKey("GChangeAnchorPointsJointTypeSubAction", "title.".concat(this._type))));
             }
             _getMainActionId() {
-                return c.default.ID;
+                return GChangeAnchorPointsJointTypeAction.default.ID;
             }
             getCategory() {
-                return r.default.CATEGORY_MODIFY;
+                return GCategory.default.CATEGORY_MODIFY;
             }
             getShortcutSubKey() {
                 switch (this._type) {
-                    case d.Type.Straight:
+                    case GChangeAnchorPointsJointTypeSubAction.Type.Straight:
                         return GPlatform.GKey.Constant.S;
-                    case d.Type.Mirrored:
+                    case GChangeAnchorPointsJointTypeSubAction.Type.Mirrored:
                         return GPlatform.GKey.Constant.M;
-                    case d.Type.Disconnected:
+                    case GChangeAnchorPointsJointTypeSubAction.Type.Disconnected:
                         return GPlatform.GKey.Constant.D;
-                    case d.Type.Connector:
+                    case GChangeAnchorPointsJointTypeSubAction.Type.Connector:
                         return GPlatform.GKey.Constant.C;
-                    case d.Type.Asymmetric:
+                    case GChangeAnchorPointsJointTypeSubAction.Type.Asymmetric:
                         return GPlatform.GKey.Constant.A;
                     default:
                         return null;
                 }
             }
             execute() {
-                const e = gDesigner.getRightSidebars().getSidebar(SidebarsIds.SidebarsIds.GInspectorSidebar),
-                    t = this._getNodeType();
-                t && e.setPathPointsNodeType(t);
+                const sidebar = gDesigner.getRightSidebars().getSidebar(SidebarsIds.SidebarsIds.GInspectorSidebar),
+                    nodeType = this._getNodeType();
+                nodeType && sidebar.setPathPointsNodeType(nodeType);
             }
             _getNodeType() {
                 switch (this._type) {
-                    case d.Type.Straight:
+                    case GChangeAnchorPointsJointTypeSubAction.Type.Straight:
                         return "-";
-                    case d.Type.Mirrored:
+                    case GChangeAnchorPointsJointTypeSubAction.Type.Mirrored:
                         return GObject.GPathBase.AnchorPoint.Type.Mirror;
-                    case d.Type.Disconnected:
+                    case GChangeAnchorPointsJointTypeSubAction.Type.Disconnected:
                         return GObject.GPathBase.AnchorPoint.Type.Asymmetric;
-                    case d.Type.Connector:
+                    case GChangeAnchorPointsJointTypeSubAction.Type.Connector:
                         return GObject.GPathBase.AnchorPoint.Type.Connector;
-                    case d.Type.Asymmetric:
+                    case GChangeAnchorPointsJointTypeSubAction.Type.Asymmetric:
                         return GObject.GPathBase.AnchorPoint.Type.Symmetric;
                     default:
                         return null;
@@ -58,12 +58,12 @@ module.exports = function (module, exports, require) {
                 return "[Object GChangeAnchorPointsJointTypeSubAction]";
             }
         }
-        ((d.Type = {
+        ((GChangeAnchorPointsJointTypeSubAction.Type = {
             Straight: "straight",
             Mirrored: "mirrored",
             Disconnected: "disconnected",
             Connector: "connector",
             Asymmetric: "asymmetric",
         }),
-            (module.exports = d));
+            (module.exports = GChangeAnchorPointsJointTypeSubAction));
     };

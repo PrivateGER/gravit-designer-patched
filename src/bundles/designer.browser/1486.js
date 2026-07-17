@@ -5,7 +5,7 @@ module.exports = function (module, exports, require) {
         var i = require(1154),
             a = _interopRequireDefault(require(389 /* GFileTypes */)),
             r = _interopRequireDefault(require(163 /* GDocument */)),
-            s = _interopRequireDefault(require(1245)),
+            s = _interopRequireDefault(require(1245 /* FontImporter */)),
             GObject = require(1);
         module.exports = {
             debugDownloadPNG: function () {

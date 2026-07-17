@@ -3,22 +3,22 @@ module.exports = function (module, exports, require) {
         var _interopRequireDefault = require(16);
         (require(8 /* Symbol */), require(20 /* polyfill:RegExp */), require(34), require(4), require(41), require(13));
         var GObject = require(1),
-            a = require(1163),
-            r = _interopRequireDefault(require(1090)),
-            s = _interopRequireDefault(require(358)),
+            dateFormatUtils = require(1163),
+            storageItemFactory = _interopRequireDefault(require(1090)),
+            reviewUtils = _interopRequireDefault(require(358 /* GAnnotationsUtils */)),
             Utils = require(40),
             designerConfig = require(10);
         const IsFiniteNonNegativeNumber = require(0),
-            u = require(1551),
-            p = require(1174);
-        function g() {}
-        (IsFiniteNonNegativeNumber.inherit(g, u),
-            (g.prototype.render = async function (e, t) {
-                (this._createUI(e), await this._updateUIForFile(e, t));
+            FilesPanelItemViewBase = require(1551),
+            FilesPanelEvent = require(1174);
+        function FilesPanelFileView() {}
+        (IsFiniteNonNegativeNumber.inherit(FilesPanelFileView, FilesPanelItemViewBase),
+            (FilesPanelFileView.prototype.render = async function (container, file) {
+                (this._createUI(container), await this._updateUIForFile(container, file));
             }),
-            (g.prototype._createUI = function (e) {
-                $("<div/>").addClass("file-preview-container").append($("<img/>").addClass("file-preview").attr("src", "")).appendTo(e);
-                const t = $("<div/>").addClass("file-button-container").appendTo(e);
+            (FilesPanelFileView.prototype._createUI = function (container) {
+                $("<div/>").addClass("file-preview-container").append($("<img/>").addClass("file-preview").attr("src", "")).appendTo(container);
+                const fileButtonContainer = $("<div/>").addClass("file-button-container").appendTo(container);
                 ($("<button/>")
                     .gShareButton({
                         clazz: "file-panel-share-button",
@@ -26,17 +26,17 @@ module.exports = function (module, exports, require) {
                         stats: "filespanel-view_infoPanel_share",
                         restrictedStats: "filespanel-view_infoPanel_nonprotriespro-share",
                     })
-                    .appendTo(t)
+                    .appendTo(fileButtonContainer)
                     .hide(),
-                    $("<div/>").addClass("file-name").appendTo(e),
-                    $("<div/>").addClass("file-created").appendTo(e));
-                var n = $("<div/>").addClass("collaboration").appendTo(e);
+                    $("<div/>").addClass("file-name").appendTo(container),
+                    $("<div/>").addClass("file-created").appendTo(container));
+                var collaborationContainer = $("<div/>").addClass("collaboration").appendTo(container);
                 ($("<span/>")
                     .addClass("collaborators")
                     .append($("<div/>").addClass("gravit-icon-collaborators"))
                     .append($("<div/>").addClass("collaborators-number").text("0"))
                     .append($("<span/>").text(" " + GObject.GLocale.get(new GObject.GLocaleKey("GFilesPanelViewBase", "text.collaborators"))))
-                    .appendTo(n)
+                    .appendTo(collaborationContainer)
                     .hide(),
                     $("<span/>")
                         .addClass("comments")
@@ -47,7 +47,7 @@ module.exports = function (module, exports, require) {
                                 .addClass("comments-label")
                                 .text(GObject.GLocale.get(new GObject.GLocaleKey("GFilesPanelViewBase", "text.comments")))
                         )
-                        .appendTo(n)
+                        .appendTo(collaborationContainer)
                         .hide(),
                     $("<div/>")
                         .addClass("status")
@@ -57,87 +57,87 @@ module.exports = function (module, exports, require) {
                                 .text(GObject.GLocale.get(new GObject.GLocaleKey("GFilesPanelViewBase", "text.status")) + ": ")
                         )
                         .append($("<div/>").addClass("state").text(""))
-                        .appendTo(e)
+                        .appendTo(container)
                         .hide());
             }),
-            (g.prototype._updateUIForFile = async function (e, t) {
-                const n = e.find(".share-button"),
-                    o = e.find(".comments-number"),
-                    d = e.find(".comments-label"),
-                    u = e.find(".collaborators-number"),
-                    g = e.find(".file-created"),
-                    h = e.find(".collaboration"),
-                    f = e.find(".status"),
-                    m = e.find(".collaborators");
-                (e.find(".file-preview").attr("src", t.getPreviewURL() || designerConfig.DEFAULT_FILE_THUMBNAIL),
-                    e.find(".file-preview").unbind("dblclick"),
-                    e.find(".file-preview").on("dblclick", (e) => {
-                        (e.stopPropagation(), e.preventDefault(), this._triggerEvent(p.Type.DoubleClickFile, t));
+            (FilesPanelFileView.prototype._updateUIForFile = async function (container, file) {
+                const shareButton = container.find(".share-button"),
+                    commentsNumberElement = container.find(".comments-number"),
+                    commentsLabelElement = container.find(".comments-label"),
+                    collaboratorsNumberElement = container.find(".collaborators-number"),
+                    fileCreatedElement = container.find(".file-created"),
+                    collaborationElement = container.find(".collaboration"),
+                    statusElement = container.find(".status"),
+                    collaboratorsElement = container.find(".collaborators");
+                (container.find(".file-preview").attr("src", file.getPreviewURL() || designerConfig.DEFAULT_FILE_THUMBNAIL),
+                    container.find(".file-preview").unbind("dblclick"),
+                    container.find(".file-preview").on("dblclick", (event) => {
+                        (event.stopPropagation(), event.preventDefault(), this._triggerEvent(FilesPanelEvent.Type.DoubleClickFile, file));
                     }),
-                    e.find(".file-name").text(t.name),
-                    e.data("fileId", t.id));
-                const y = await r.default.createStorageItem(t);
-                y.supportsShadowFile() && (await y.syncShadowFile());
-                const v = await designerConfig.gApi.getFileExtended(y.getId()).catch(() => null);
-                g.text(
+                    container.find(".file-name").text(file.name),
+                    container.data("fileId", file.id));
+                const storageItem = await storageItemFactory.default.createStorageItem(file);
+                storageItem.supportsShadowFile() && (await storageItem.syncShadowFile());
+                const fileExtended = await designerConfig.gApi.getFileExtended(storageItem.getId()).catch(() => null);
+                fileCreatedElement.text(
                     GObject.GLocale.get(new GObject.GLocaleKey("GFilesPanelViewBase", "text.created")).replace(
                         "%createdTime",
-                        (0, a.dateToFilePreviewFormat)(t.created || v.created)
+                        (0, dateFormatUtils.dateToFilePreviewFormat)(file.created || fileExtended.created)
                     )
                 );
-                const _ = (v && s.default.getCommentsCount(v)) || 0;
-                (o.text(_), d.text(GObject.GLocale.get(new GObject.GLocaleKey("GFilesPanelViewBase", 1 === _ ? "text.comment" : "text.comments"))));
+                const commentsCount = (fileExtended && reviewUtils.default.getCommentsCount(fileExtended)) || 0;
+                (commentsNumberElement.text(commentsCount), commentsLabelElement.text(GObject.GLocale.get(new GObject.GLocaleKey("GFilesPanelViewBase", 1 === commentsCount ? "text.comment" : "text.comments"))));
                 let b = null,
                     w = null,
                     C = false;
-                if (!v)
+                if (!fileExtended)
                     return (
-                        h.hide(),
-                        n.gShareButton("update", { disabled: true, isSharing: false }),
-                        void n.attr("data-title", GObject.GLocale.get(new GObject.GLocaleKey("GFilesPanelViewBase", "text.can-only-share-by-owner")))
+                        collaborationElement.hide(),
+                        shareButton.gShareButton("update", { disabled: true, isSharing: false }),
+                        void shareButton.attr("data-title", GObject.GLocale.get(new GObject.GLocaleKey("GFilesPanelViewBase", "text.can-only-share-by-owner")))
                     );
                 {
-                    const e = gDesigner.getSyncUser();
+                    const syncUser = gDesigner.getSyncUser();
                     (({
                         state: { isPrivate: b, sharing: w, owner: C },
-                    } = (0, Utils.getFileStateAndRole)(e, v, {})),
-                        !gDesigner.getApplicationManager().isShareEngineEnabled() || (w && !C) || n.show(),
-                        h.show());
+                    } = (0, Utils.getFileStateAndRole)(syncUser, fileExtended, {})),
+                        !gDesigner.getApplicationManager().isShareEngineEnabled() || (w && !C) || shareButton.show(),
+                        collaborationElement.show());
                 }
                 if (
-                    (n.gShareButton("update", {
+                    (shareButton.gShareButton("update", {
                         disabled: false,
-                        storeItem: y,
+                        storeItem: storageItem,
                         isSharing: w,
                         closeCallback: () => {
-                            this._triggerEvent(p.Type.Reload);
+                            this._triggerEvent(FilesPanelEvent.Type.Reload);
                         },
                         isPrivate: b,
                     }),
-                    n.removeAttr("data-title"),
+                    shareButton.removeAttr("data-title"),
                     !w)
                 )
-                    return (f.hide(), e.find(".collaborators").hide(), void e.find(".comments").hide());
-                const x = await gDesigner.getFileReviewManager().getDocumentReviewHistory(y.getId());
-                (e.find(".comments").show(), x.length > 1 && v ? (f.show(), this._updateStatus(e, v.status)) : f.hide());
-                const S = v.getPrivateShareList().filter((e) => !e.owner).length;
-                S > 0 ? (m.show(), u.text(S)) : m.hide();
+                    return (statusElement.hide(), container.find(".collaborators").hide(), void container.find(".comments").hide());
+                const reviewHistory = await gDesigner.getFileReviewManager().getDocumentReviewHistory(storageItem.getId());
+                (container.find(".comments").show(), reviewHistory.length > 1 && fileExtended ? (statusElement.show(), this._updateStatus(container, fileExtended.status)) : statusElement.hide());
+                const privateShareCount = fileExtended.getPrivateShareList().filter((share) => !share.owner).length;
+                privateShareCount > 0 ? (collaboratorsElement.show(), collaboratorsNumberElement.text(privateShareCount)) : collaboratorsElement.hide();
             }),
-            (g.prototype._updateStatus = function (e, t) {
-                const n = e.find(".state");
-                switch (t) {
+            (FilesPanelFileView.prototype._updateStatus = function (container, status) {
+                const stateElement = container.find(".state");
+                switch (status) {
                     case designerConfig.FileStatus.IN_REVIEW:
-                        n.text(GObject.GLocale.get(new GObject.GLocaleKey("GReviewDockerProperties", "text.review-title")));
+                        stateElement.text(GObject.GLocale.get(new GObject.GLocaleKey("GReviewDockerProperties", "text.review-title")));
                         break;
                     case designerConfig.FileStatus.REOPENED:
-                        n.text(GObject.GLocale.get(new GObject.GLocaleKey("GReviewDockerProperties", "text.reopen-title")));
+                        stateElement.text(GObject.GLocale.get(new GObject.GLocaleKey("GReviewDockerProperties", "text.reopen-title")));
                         break;
                     case designerConfig.FileStatus.AWAITING_APPROVAL:
-                        n.text(GObject.GLocale.get(new GObject.GLocaleKey("GReviewDockerProperties", "text.request-approval-title")));
+                        stateElement.text(GObject.GLocale.get(new GObject.GLocaleKey("GReviewDockerProperties", "text.request-approval-title")));
                         break;
                     case designerConfig.FileStatus.APPROVED:
-                        n.text(GObject.GLocale.get(new GObject.GLocaleKey("GReviewDockerProperties", "text.approved-title")));
+                        stateElement.text(GObject.GLocale.get(new GObject.GLocaleKey("GReviewDockerProperties", "text.approved-title")));
                 }
             }),
-            (module.exports = g));
+            (module.exports = FilesPanelFileView));
     };

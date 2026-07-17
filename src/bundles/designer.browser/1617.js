@@ -4,15 +4,15 @@ module.exports = function (module, exports, require) {
         (require(20 /* polyfill:RegExp */), require(107 /* polyfill:RegExp */), require(34));
         var GObject = require(1),
             GPlatform = require(15),
-            r = _interopRequireDefault(require(1618)),
-            s = _interopRequireDefault(require(85)),
-            l = _interopRequireDefault(require(31)),
-            c = _interopRequireDefault(require(18 /* GCategory */)),
-            d = _interopRequireDefault(require(44 /* GSystemDialog */)),
-            u = _interopRequireDefault(require(443)),
-            p = _interopRequireDefault(require(1341));
-        const { isExecutingOnMSTeamsSync } = u.default;
-        class h extends l.default {
+            screenfull = _interopRequireDefault(require(1618 /* lib:screenfull */)),
+            GContainer = _interopRequireDefault(require(85 /* GContainer */)),
+            GAction = _interopRequireDefault(require(31 /* GAction */)),
+            GCategory = _interopRequireDefault(require(18 /* GCategory */)),
+            GSystemDialog = _interopRequireDefault(require(44 /* GSystemDialog */)),
+            msTeams = _interopRequireDefault(require(443)),
+            ChangeActivePageAction = _interopRequireDefault(require(1341));
+        const { isExecutingOnMSTeamsSync } = msTeams.default;
+        class GPlayAction extends GAction.default {
             constructor() {
                 (super(),
                     (this._scene = null),
@@ -26,19 +26,19 @@ module.exports = function (module, exports, require) {
                     (this._browserFullScreenModeChangeHandlerBind = this._browserFullScreenModeChangeHandler.bind(this)));
             }
             getId() {
-                return h.ID;
+                return GPlayAction.ID;
             }
             getTitle() {
-                return h.TITLE;
+                return GPlayAction.TITLE;
             }
             getCategory() {
-                return c.default.CATEGORY_VIEW;
+                return GCategory.default.CATEGORY_VIEW;
             }
             getShortcut() {
                 return [GPlatform.GKey.Constant.META, GPlatform.GKey.Constant.OPTION, GPlatform.GKey.Constant.ENTER];
             }
             isEnabled() {
-                return !!gDesigner.getActiveDocument() && r.default.enabled && !this._isErrorMessageDisplaying && !this._isLoading;
+                return !!gDesigner.getActiveDocument() && screenfull.default.enabled && !this._isErrorMessageDisplaying && !this._isLoading;
             }
             isVisible() {
                 return !isExecutingOnMSTeamsSync();
@@ -62,25 +62,25 @@ module.exports = function (module, exports, require) {
                         this._overlay.append(this._widget._htmlElement).appendTo($("body")),
                         document.addEventListener("keydown", this._keyDownHandlerBind, true),
                         window.addEventListener("unhandledrejection", this._fullScreenRequestDeniedHandlerBind),
-                        gContainer.getRuntime() === s.default.Runtime.Electron)
+                        gContainer.getRuntime() === GContainer.default.Runtime.Electron)
                     ) {
-                        const e = require(881).remote.getCurrentWindow();
-                        (e.once("leave-full-screen", this._exitPlayMode.bind(this)),
-                            e.isFullScreen()
+                        const electronWindow = require(881).remote.getCurrentWindow();
+                        (electronWindow.once("leave-full-screen", this._exitPlayMode.bind(this)),
+                            electronWindow.isFullScreen()
                                 ? (this._setShouldExitFullScreen(false), this._enterPlayMode())
                                 : (this._setShouldExitFullScreen(true),
-                                  e.once("enter-full-screen", () => {
+                                  electronWindow.once("enter-full-screen", () => {
                                       this._timeoutId = setTimeout(this._enterPlayMode.bind(this), 250);
                                   }),
-                                  e.setFullScreen(true)));
+                                  electronWindow.setFullScreen(true)));
                     } else
                         (this._setShouldExitFullScreen(true),
-                            document.addEventListener(r.default.raw.fullscreenchange, this._browserFullScreenModeChangeHandlerBind),
-                            r.default.request(this._overlay[0]));
+                            document.addEventListener(screenfull.default.raw.fullscreenchange, this._browserFullScreenModeChangeHandlerBind),
+                            screenfull.default.request(this._overlay[0]));
             }
-            changeActivePage(e, t) {
-                const n = gDesigner.getAction("".concat(p.default.ID, ".").concat(t)).getNextPage(e);
-                n ? e.setActivePage(n) : t === p.default.Type.Next && r.default.exit();
+            changeActivePage(scene, direction) {
+                const nextPage = gDesigner.getAction("".concat(ChangeActivePageAction.default.ID, ".").concat(direction)).getNextPage(scene);
+                nextPage ? scene.setActivePage(nextPage) : direction === ChangeActivePageAction.default.Type.Next && screenfull.default.exit();
             }
             _getScene() {
                 gDesigner.toggleLoading(true);
@@ -93,36 +93,36 @@ module.exports = function (module, exports, require) {
                 }
             }
             _cloneActiveScene() {
-                const e = gDesigner.getActiveDocument(),
-                    t = e && e.getScene();
-                return t ? t.clone(null, t.getWorkspace()) : null;
+                const activeDocument = gDesigner.getActiveDocument(),
+                    scene = activeDocument && activeDocument.getScene();
+                return scene ? scene.clone(null, scene.getWorkspace()) : null;
             }
-            _keyDownHandler(e) {
-                let t = true;
-                switch (GPlatform.GKey.translateCode(e.code)) {
+            _keyDownHandler(event) {
+                let handled = true;
+                switch (GPlatform.GKey.translateCode(event.code)) {
                     case GPlatform.GKey.Constant.DOWN:
                     case GPlatform.GKey.Constant.PAGE_DOWN:
                     case GPlatform.GKey.Constant.RIGHT:
                     case GPlatform.GKey.Constant.SPACE:
-                        this.changeActivePage(this._scene, p.default.Type.Next);
+                        this.changeActivePage(this._scene, ChangeActivePageAction.default.Type.Next);
                         break;
                     case GPlatform.GKey.Constant.UP:
                     case GPlatform.GKey.Constant.PAGE_UP:
                     case GPlatform.GKey.Constant.LEFT:
-                        this.changeActivePage(this._scene, p.default.Type.Previous);
+                        this.changeActivePage(this._scene, ChangeActivePageAction.default.Type.Previous);
                         break;
                     case GPlatform.GKey.Constant.ESC:
-                        gContainer.getRuntime() === s.default.Runtime.Electron && this._exitPlayMode();
+                        gContainer.getRuntime() === GContainer.default.Runtime.Electron && this._exitPlayMode();
                         break;
                     default:
-                        t = false;
+                        handled = false;
                 }
-                t && e.stopPropagation();
+                handled && event.stopPropagation();
             }
-            _fullScreenRequestDeniedHandler(e) {
-                "Fullscreen request denied" === e.reason.message &&
+            _fullScreenRequestDeniedHandler(event) {
+                "Fullscreen request denied" === event.reason.message &&
                     (this._exitPlayMode(),
-                    d.default.custom({
+                    GSystemDialog.default.custom({
                         title: GObject.GLocale.getValue("GCommonNames", "text.something-wrong.try-again"),
                         openCallback: () => this._setIsErrorMessageDisplaying(true),
                         closeCallback: () => this._setIsErrorMessageDisplaying(false),
@@ -130,10 +130,10 @@ module.exports = function (module, exports, require) {
             }
             _enterPlayMode() {
                 (this._setIsInPlayMode(true), this._widget.resize(this._overlay.outerWidth(), this._overlay.outerHeight()));
-                const e = this._scene.getActivePage().getPaintBBox();
+                const paintBBox = this._scene.getActivePage().getPaintBBox();
                 if (
-                    (this._widget.zoomAll(e, false),
-                    gContainer.getRuntime() === s.default.Runtime.Browser || gContainer.getRuntime() === s.default.Runtime.PWA)
+                    (this._widget.zoomAll(paintBBox, false),
+                    gContainer.getRuntime() === GContainer.default.Runtime.Browser || gContainer.getRuntime() === GContainer.default.Runtime.PWA)
                 ) {
                     /^((?!chrome|android)(?:[\0-\t\x0B\f\x0E-\u2027\u202A-\uD7FF\uE000-\uFFFF]|[\uD800-\uDBFF][\uDC00-\uDFFF]|[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?:[^\uD800-\uDBFF]|^)[\uDC00-\uDFFF]))*[s\u017F]afari/i.test(
                         navigator.userAgent
@@ -144,8 +144,8 @@ module.exports = function (module, exports, require) {
             _createExitFullScreenHint() {
                 return $("<div/>")
                     .addClass("g-exit-full-screen")
-                    .on("webkitAnimationEnd", (e) => {
-                        $(e.target).closest(".g-exit-full-screen").remove();
+                    .on("webkitAnimationEnd", (event) => {
+                        $(event.target).closest(".g-exit-full-screen").remove();
                     })
                     .append(
                         $("<div/>").html(
@@ -161,34 +161,34 @@ module.exports = function (module, exports, require) {
                     this._overlay.remove(),
                     this._widget.release(),
                     document.removeEventListener("keydown", this._keyDownHandlerBind, true),
-                    document.removeEventListener(r.default.raw.fullscreenchange, this._browserFullScreenModeChangeHandlerBind),
+                    document.removeEventListener(screenfull.default.raw.fullscreenchange, this._browserFullScreenModeChangeHandlerBind),
                     window.removeEventListener("unhandledrejection", this._fullScreenRequestDeniedHandlerBind),
                     this._setIsInPlayMode(false),
                     this._setIsLoading(false));
             }
             _browserFullScreenModeChangeHandler() {
-                r.default.isFullscreen ? this._enterPlayMode() : this._exitPlayMode();
+                screenfull.default.isFullscreen ? this._enterPlayMode() : this._exitPlayMode();
             }
             _exitFullScreen() {
-                if (gContainer.getRuntime() === s.default.Runtime.Electron) {
+                if (gContainer.getRuntime() === GContainer.default.Runtime.Electron) {
                     require(881).remote.getCurrentWindow().setFullScreen(false);
-                } else r.default.exit();
+                } else screenfull.default.exit();
             }
-            _setIsInPlayMode(e) {
-                this._isInPlayMode = e;
+            _setIsInPlayMode(value) {
+                this._isInPlayMode = value;
             }
-            _setIsLoading(e) {
-                this._isLoading = e;
+            _setIsLoading(value) {
+                this._isLoading = value;
             }
-            _setShouldExitFullScreen(e) {
-                this._shouldExitFullScreen = e;
+            _setShouldExitFullScreen(value) {
+                this._shouldExitFullScreen = value;
             }
-            _setIsErrorMessageDisplaying(e) {
-                this._isErrorMessageDisplaying = e;
+            _setIsErrorMessageDisplaying(value) {
+                this._isErrorMessageDisplaying = value;
             }
             toString() {
                 return "[Object GPlayAction]";
             }
         }
-        ((h.ID = "view.play"), (h.TITLE = new GObject.GLocaleKey("GPlayAction", "title")), (module.exports = h));
+        ((GPlayAction.ID = "view.play"), (GPlayAction.TITLE = new GObject.GLocaleKey("GPlayAction", "title")), (module.exports = GPlayAction));
     };

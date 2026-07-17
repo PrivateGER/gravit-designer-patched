@@ -1,14 +1,14 @@
 module.exports = function (module, exports, require) {
         "use strict";
         require(57);
-        var o,
-            i,
-            a = null,
-            r = null,
-            s = false;
-        class l {
+        var showTimeoutId,
+            idleTimeoutId,
+            hoverTarget = null,
+            tooltipElement = null,
+            recentlyShown = false;
+        class GTooltip {
             static _getTooltipElement() {
-                return r;
+                return tooltipElement;
             }
             static _getBodyWidth() {
                 return $("body").width();
@@ -16,68 +16,68 @@ module.exports = function (module, exports, require) {
             static _getBodyHeight() {
                 return $("body").height();
             }
-            static showTooltip(e) {
-                o = void 0;
-                let t = l._getTooltipElement();
-                if (a || e) {
-                    var n = $(a || e).closest("[data-title]");
-                    if (n.length) {
-                        var r = n[0].getBoundingClientRect(),
-                            c = n.attr("data-title"),
-                            d = parseInt(n.attr("data-custom-left-offset") || 0),
-                            u = !!parseInt(n.attr("data-wrap") || 0);
-                        if (r && c) {
-                            t.addClass("visible").toggleClass("wrap", u).text(c);
-                            var p = r.left + r.width / 2 - t.outerWidth() / 2 + "px",
-                                g = r.top + r.height + "px";
-                            (t.css({ left: p, top: g }),
-                                t.offset().top + r.height > l._getBodyHeight() && t.css("top", r.top - r.height + "px"));
-                            const e = l._getBodyWidth();
-                            if (d + t.offset().left + t.outerWidth() > e) {
-                                let n = t.offset().left - (t.offset().left + t.outerWidth() - e) + d;
-                                t.css("left", n + "px");
+            static showTooltip(target) {
+                showTimeoutId = void 0;
+                let tooltip = GTooltip._getTooltipElement();
+                if (hoverTarget || target) {
+                    var titleElement = $(hoverTarget || target).closest("[data-title]");
+                    if (titleElement.length) {
+                        var rect = titleElement[0].getBoundingClientRect(),
+                            titleText = titleElement.attr("data-title"),
+                            leftOffset = parseInt(titleElement.attr("data-custom-left-offset") || 0),
+                            wrap = !!parseInt(titleElement.attr("data-wrap") || 0);
+                        if (rect && titleText) {
+                            tooltip.addClass("visible").toggleClass("wrap", wrap).text(titleText);
+                            var left = rect.left + rect.width / 2 - tooltip.outerWidth() / 2 + "px",
+                                top = rect.top + rect.height + "px";
+                            (tooltip.css({ left: left, top: top }),
+                                tooltip.offset().top + rect.height > GTooltip._getBodyHeight() && tooltip.css("top", rect.top - rect.height + "px"));
+                            const bodyWidth = GTooltip._getBodyWidth();
+                            if (leftOffset + tooltip.offset().left + tooltip.outerWidth() > bodyWidth) {
+                                let adjustedLeft = tooltip.offset().left - (tooltip.offset().left + tooltip.outerWidth() - bodyWidth) + leftOffset;
+                                tooltip.css("left", adjustedLeft + "px");
                             }
-                            (l.resetIdle(), (s = true), (i = setTimeout(l.resetIdle, 500)));
+                            (GTooltip.resetIdle(), (recentlyShown = true), (idleTimeoutId = setTimeout(GTooltip.resetIdle, 500)));
                         }
                     }
                 }
             }
             static resetIdle() {
-                (void 0 !== i && clearTimeout(i), (s = false));
+                (void 0 !== idleTimeoutId && clearTimeout(idleTimeoutId), (recentlyShown = false));
             }
             static resetTooltip() {
-                (void 0 !== o && (clearTimeout(o), (o = void 0)), r.removeClass("visible").text("").css({ left: "", top: "" }));
+                (void 0 !== showTimeoutId && (clearTimeout(showTimeoutId), (showTimeoutId = void 0)), tooltipElement.removeClass("visible").text("").css({ left: "", top: "" }));
             }
-            static documentOverListener(e) {
-                l.resetTooltip();
-                let t = $(e.target).closest("[data-title]"),
-                    n = t.data("gRichTooltip") || t.parent().data("gRichTooltip") || t.children().eq(0).data("gRichTooltip");
-                t.length > 0 && !n && ((a = e.target), s ? l.showTooltip() : (o = setTimeout(l.showTooltip, 500)));
+            static documentOverListener(event) {
+                GTooltip.resetTooltip();
+                let titleElement = $(event.target).closest("[data-title]"),
+                    richTooltip = titleElement.data("gRichTooltip") || titleElement.parent().data("gRichTooltip") || titleElement.children().eq(0).data("gRichTooltip");
+                titleElement.length > 0 && !richTooltip && ((hoverTarget = event.target), recentlyShown ? GTooltip.showTooltip() : (showTimeoutId = setTimeout(GTooltip.showTooltip, 500)));
             }
             static documentOutListener() {
-                (l.resetTooltip(), (a = null));
+                (GTooltip.resetTooltip(), (hoverTarget = null));
             }
             static init() {
-                ((r = $("<div></div>").addClass("g-tooltip").appendTo($("body"))),
-                    document.addEventListener("mouseover", l.documentOverListener),
-                    document.addEventListener("mouseout", l.documentOutListener));
+                ((tooltipElement = $("<div></div>").addClass("g-tooltip").appendTo($("body"))),
+                    document.addEventListener("mouseover", GTooltip.documentOverListener),
+                    document.addEventListener("mouseout", GTooltip.documentOutListener));
             }
         }
-        module.exports = l;
-        var c = {
+        module.exports = GTooltip;
+        var methods = {
             show: function () {
-                (l.showTooltip($(this)),
-                    document.addEventListener("click", l.resetTooltip, {
+                (GTooltip.showTooltip($(this)),
+                    document.addEventListener("click", GTooltip.resetTooltip, {
                         once: true,
                         capture: true,
                     }));
             },
         };
-        $.fn.gTooltip = function (e) {
-            return c[e]
-                ? c[e].apply(this, Array.prototype.slice.call(arguments, 1))
-                : "object" != typeof e && e
-                  ? void $.error("Method " + e + " does not exist on jQuery.myPlugin")
-                  : c.init.apply(this, arguments);
+        $.fn.gTooltip = function (method) {
+            return methods[method]
+                ? methods[method].apply(this, Array.prototype.slice.call(arguments, 1))
+                : "object" != typeof method && method
+                  ? void $.error("Method " + method + " does not exist on jQuery.myPlugin")
+                  : methods.init.apply(this, arguments);
         };
     };

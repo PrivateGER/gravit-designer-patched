@@ -2,11 +2,11 @@ module.exports = function (module, exports, require) {
         "use strict";
         require(3);
         const { GObject, GLocaleKey } = require(1 /* GObject */),
-            a = require(31),
+            GAction = require(31),
             GCategory = require(18),
             s = require(1644);
         function l() {}
-        (GObject.inherit(l, a),
+        (GObject.inherit(l, GAction),
             (l.ID = "help.shortcuts"),
             (l.TITLE = new GLocaleKey("GShowShortcutsAction", "title")),
             (l.prototype.getId = function () {

@@ -1,8 +1,8 @@
 module.exports = function (module, exports, require) {
         "use strict";
         var GObject = require(1);
-        function i() {}
-        ((i.GVDESIGN = {
+        function GFileTypes() {}
+        ((GFileTypes.GVDESIGN = {
             ext: "gvdesign",
             mime: "application/gravit+design",
             name: new GObject.GLocaleKey("GDocument", "file-type.gvdesign"),
@@ -13,7 +13,7 @@ module.exports = function (module, exports, require) {
             import_image: false,
             default: true,
         }),
-            (i.HEIC = {
+            (GFileTypes.HEIC = {
                 ext: "heic",
                 mime: "image/heic",
                 name: new GObject.GLocaleKey("GDocument", "file-type.png"),
@@ -22,7 +22,7 @@ module.exports = function (module, exports, require) {
                 store: false,
                 import_image: true,
             }),
-            (i.PNG = {
+            (GFileTypes.PNG = {
                 ext: "png",
                 mime: "image/png",
                 name: new GObject.GLocaleKey("GDocument", "file-type.png"),
@@ -31,7 +31,7 @@ module.exports = function (module, exports, require) {
                 store: true,
                 import_image: true,
             }),
-            (i.JPG = {
+            (GFileTypes.JPG = {
                 ext: "jpg",
                 mime: "image/jpeg",
                 name: new GObject.GLocaleKey("GDocument", "file-type.jpeg"),
@@ -40,14 +40,14 @@ module.exports = function (module, exports, require) {
                 store: true,
                 import_image: true,
             }),
-            (i.JPEG = {
+            (GFileTypes.JPEG = {
                 ext: "jpeg",
                 mime: "image/jpeg",
                 category: "image",
                 load: true,
                 import_image: true,
             }),
-            (i.SVG = {
+            (GFileTypes.SVG = {
                 ext: "svg",
                 mime: "image/svg+xml",
                 name: new GObject.GLocaleKey("GDocument", "file-type.svg"),
@@ -56,7 +56,7 @@ module.exports = function (module, exports, require) {
                 store: true,
                 import_image: true,
             }),
-            (i.SVGZ = {
+            (GFileTypes.SVGZ = {
                 ext: "svgz",
                 mime: "image/svg+xml",
                 name: new GObject.GLocaleKey("GDocument", "file-type.svgz"),
@@ -65,7 +65,7 @@ module.exports = function (module, exports, require) {
                 store: false,
                 import_image: true,
             }),
-            (i.PDF = {
+            (GFileTypes.PDF = {
                 ext: "pdf",
                 mime: "application/pdf",
                 name: new GObject.GLocaleKey("GDocument", "file-type.pdf"),
@@ -74,7 +74,7 @@ module.exports = function (module, exports, require) {
                 store: true,
                 import_image: true,
             }),
-            (i.AI = {
+            (GFileTypes.AI = {
                 ext: "ai",
                 mime: "application/pdf",
                 name: new GObject.GLocaleKey("GDocument", "file-type.ai"),
@@ -84,7 +84,7 @@ module.exports = function (module, exports, require) {
                 import_image: true,
                 pro: true,
             }),
-            (i.EPS = {
+            (GFileTypes.EPS = {
                 ext: "eps",
                 mime: "application/postscript",
                 name: new GObject.GLocaleKey("GDocument", "file-type.eps"),
@@ -94,7 +94,7 @@ module.exports = function (module, exports, require) {
                 import_image: true,
                 pro: true,
             }),
-            (i.SKETCH = {
+            (GFileTypes.SKETCH = {
                 ext: "sketch",
                 mime: "application/zip",
                 name: new GObject.GLocaleKey("GDocument", "file-type.sketch"),
@@ -104,15 +104,15 @@ module.exports = function (module, exports, require) {
                 import_image: true,
                 pro: true,
             }),
-            (i.ZIP = {
+            (GFileTypes.ZIP = {
                 ext: "zip",
                 mime: "application/zip",
                 load: false,
                 store: false,
                 import_image: false,
             }),
-            (i.getFileTypesArray = function () {
-                return [i.GVDESIGN, i.PNG, i.HEIC, i.JPG, i.JPEG, i.SVG, i.PDF, i.EPS];
+            (GFileTypes.getFileTypesArray = function () {
+                return [GFileTypes.GVDESIGN, GFileTypes.PNG, GFileTypes.HEIC, GFileTypes.JPG, GFileTypes.JPEG, GFileTypes.SVG, GFileTypes.PDF, GFileTypes.EPS];
             }),
-            (module.exports = i));
+            (module.exports = GFileTypes));
     };

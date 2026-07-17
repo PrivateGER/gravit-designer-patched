@@ -1,48 +1,48 @@
 module.exports = function (module, exports, require) {
-            var n = require(2),
-                r = require(51),
-                o = require(17),
-                a = require(47),
+            var GNode = require(2),
+                GWebGLEffect = require(51),
+                GRGBColor = require(17),
+                GLocaleKey = require(47),
                 String = require(9);
 
-            function l() {
-                (r.call(this), this._setDefaultProperties(l.GeometryProperties));
+            function GGLStrokeLayerEffect() {
+                (GWebGLEffect.call(this), this._setDefaultProperties(GGLStrokeLayerEffect.GeometryProperties));
             }
-            (n.inherit("GGLStrokeLayerEffect", l, r),
-                (l.prototype.getEffectPadding = function () {
+            (GNode.inherit("GGLStrokeLayerEffect", GGLStrokeLayerEffect, GWebGLEffect),
+                (GGLStrokeLayerEffect.prototype.getEffectPadding = function () {
                     return 0 == this.$shp.placement.value
                         ? this.$shp.width + 1
                         : 1 == this.$shp.placement.value
                           ? 1
                           : 1 + Math.ceil(this.$shp.width / 2);
                 }),
-                (l.prototype.propertyTransform = function (e, t) {
-                    switch (e) {
+                (GGLStrokeLayerEffect.prototype.propertyTransform = function (propertyName, value) {
+                    switch (propertyName) {
                         case "width":
-                            return r.polynomialTransform(t, 2, l.RANGES.width);
+                            return GWebGLEffect.polynomialTransform(value, 2, GGLStrokeLayerEffect.RANGES.width);
                         case "softness":
-                            return r.polynomialTransform(t, 2, l.RANGES.softness);
+                            return GWebGLEffect.polynomialTransform(value, 2, GGLStrokeLayerEffect.RANGES.softness);
                     }
-                    return t;
+                    return value;
                 }),
-                (l.prototype.getNodeNameTranslated = function () {
+                (GGLStrokeLayerEffect.prototype.getNodeNameTranslated = function () {
                     return String.getValue("GGLStrokeLayerEffect", "name", this.getNodeName());
                 }),
-                (l.prototype.propertyInverseTransform = function (e, t) {
-                    switch (e) {
+                (GGLStrokeLayerEffect.prototype.propertyInverseTransform = function (propertyName, value) {
+                    switch (propertyName) {
                         case "width":
-                            return r.polynomialInverseTransform(t, 2, l.RANGES.width);
+                            return GWebGLEffect.polynomialInverseTransform(value, 2, GGLStrokeLayerEffect.RANGES.width);
                         case "softness":
-                            return r.polynomialInverseTransform(t, 2, l.RANGES.softness);
+                            return GWebGLEffect.polynomialInverseTransform(value, 2, GGLStrokeLayerEffect.RANGES.softness);
                     }
-                    return t;
+                    return value;
                 }),
-                (l.GeometryProperties = {
+                (GGLStrokeLayerEffect.GeometryProperties = {
                     shp: {
                         width: 5,
                         softness: 0.5,
                         shape: 0.7071,
-                        color: o.WHITE.getValue(),
+                        color: GRGBColor.WHITE.getValue(),
                         opacity: {
                             type: "opacity",
                             value: 1,
@@ -55,15 +55,15 @@ module.exports = function (module, exports, require) {
                     },
                     sh: "GGLStrokeLayerShader",
                 }),
-                (l.RANGES = {
+                (GGLStrokeLayerEffect.RANGES = {
                     width: [0, 100],
                     softness: [0.01, 1],
                     shape: [0, 2],
                     placement: [
-                        new a("GGLStrokeLayerEffect", "text.outside"),
-                        new a("GGLStrokeLayerEffect", "text.inside"),
-                        new a("GGLStrokeLayerEffect", "text.center"),
+                        new GLocaleKey("GGLStrokeLayerEffect", "text.outside"),
+                        new GLocaleKey("GGLStrokeLayerEffect", "text.inside"),
+                        new GLocaleKey("GGLStrokeLayerEffect", "text.center"),
                     ],
                 }),
-                (module.exports = l));
+                (module.exports = GGLStrokeLayerEffect));
         };

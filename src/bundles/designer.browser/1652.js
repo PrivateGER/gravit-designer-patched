@@ -4,17 +4,17 @@ module.exports = function (module, exports, require) {
         (require(19), require(4), require(13), require(32), require(38), require(33), require(26));
         var GObject = require(1),
             GPlatform = require(15),
-            r = _interopRequireDefault(require(31)),
-            s = _interopRequireDefault(require(18 /* GCategory */));
-        class l extends r.default {
+            GAction = _interopRequireDefault(require(31 /* GAction */)),
+            GCategory = _interopRequireDefault(require(18 /* GCategory */));
+        class GSwapPaintLayersAction extends GAction.default {
             getId() {
-                return l.ID;
+                return GSwapPaintLayersAction.ID;
             }
             getTitle() {
-                return l.TITLE;
+                return GSwapPaintLayersAction.TITLE;
             }
             getCategory() {
-                return s.default.CATEGORY_MODIFY;
+                return GCategory.default.CATEGORY_MODIFY;
             }
             isVisible() {
                 return false;
@@ -23,71 +23,71 @@ module.exports = function (module, exports, require) {
                 return [GPlatform.GKey.Constant.X];
             }
             isEnabled() {
-                const e = gDesigner.getActiveDocument(),
-                    t = e && e.getEditor(),
-                    n = t && t.getSelection();
-                return !!(n && n.find((e) => e.hasMixin(GObject.GStylable)));
+                const document = gDesigner.getActiveDocument(),
+                    editor = document && document.getEditor(),
+                    selection = editor && editor.getSelection();
+                return !!(selection && selection.find((element) => element.hasMixin(GObject.GStylable)));
             }
             execute() {
-                const e = gDesigner.getActiveDocument(),
-                    t = e && e.getEditor(),
-                    n = t && t.getSelection();
-                if (n) {
-                    t.beginTransaction();
+                const document = gDesigner.getActiveDocument(),
+                    editor = document && document.getEditor(),
+                    selection = editor && editor.getSelection();
+                if (selection) {
+                    editor.beginTransaction();
                     try {
-                        n.forEach((e) => {
-                            if (e.hasMixin(GObject.GStylable)) {
-                                const t = e.getPaintLayers();
-                                if (t) {
-                                    const n = this._createPaintLayers(l.Type.Border, t),
-                                        o = this._createPaintLayers(l.Type.Fill, t);
-                                    (n.forEach((t) => {
-                                        this._setBorderAlignment(e, t);
+                        selection.forEach((element) => {
+                            if (element.hasMixin(GObject.GStylable)) {
+                                const layerContainer = element.getPaintLayers();
+                                if (layerContainer) {
+                                    const borderLayers = this._createPaintLayers(GSwapPaintLayersAction.Type.Border, layerContainer),
+                                        fillLayers = this._createPaintLayers(GSwapPaintLayersAction.Type.Fill, layerContainer);
+                                    (borderLayers.forEach((layer) => {
+                                        this._setBorderAlignment(element, layer);
                                     }),
-                                        t.clearLayers(),
-                                        n.concat(o).forEach((e) => {
-                                            t.appendChild(e);
+                                        layerContainer.clearLayers(),
+                                        borderLayers.concat(fillLayers).forEach((layer) => {
+                                            layerContainer.appendChild(layer);
                                         }));
                                 }
                             }
                         });
                     } finally {
-                        t.commitTransaction(GObject.GLocale.get(this.getTitle()));
+                        editor.commitTransaction(GObject.GLocale.get(this.getTitle()));
                     }
                 }
             }
-            _createPaintLayers(e, t) {
-                const n = ["_pt", "_op", "_vs", "_bl"];
-                switch (e) {
-                    case l.Type.Fill:
-                        return t.getBorderLayers().map((e) => {
-                            const t = e.getProperties(n);
-                            return new GObject.GStylable.FillPaintLayer(...t);
+            _createPaintLayers(type, paintLayers) {
+                const propertyNames = ["_pt", "_op", "_vs", "_bl"];
+                switch (type) {
+                    case GSwapPaintLayersAction.Type.Fill:
+                        return paintLayers.getBorderLayers().map((layer) => {
+                            const properties = layer.getProperties(propertyNames);
+                            return new GObject.GStylable.FillPaintLayer(...properties);
                         });
-                    case l.Type.Border:
-                        return t.getFillLayers().map((e) => {
-                            const t = e.getProperties(n);
-                            return new GObject.GStylable.BorderPaintLayer(...t);
+                    case GSwapPaintLayersAction.Type.Border:
+                        return paintLayers.getFillLayers().map((layer) => {
+                            const properties = layer.getProperties(propertyNames);
+                            return new GObject.GStylable.BorderPaintLayer(...properties);
                         });
                     default:
                         throw Error("Not specified type given");
                 }
             }
-            _setBorderAlignment(e, t) {
-                e instanceof GObject.GText
-                    ? t.setProperty("_ba", GObject.GStylable.BorderAlignment.Outside)
-                    : e instanceof GObject.GShape
-                      ? e instanceof GObject.GEllipse && e.$etp === GObject.GEllipse.Type.Arc
-                          ? t.setProperty("_ba", GObject.GStylable.BorderAlignment.Center)
-                          : t.setProperty("_ba", GObject.GStylable.BorderAlignment.Inside)
-                      : e instanceof GObject.GPath && !e.$closed && t.setProperty("_ba", GObject.GStylable.BorderAlignment.Center);
+            _setBorderAlignment(element, layer) {
+                element instanceof GObject.GText
+                    ? layer.setProperty("_ba", GObject.GStylable.BorderAlignment.Outside)
+                    : element instanceof GObject.GShape
+                      ? element instanceof GObject.GEllipse && element.$etp === GObject.GEllipse.Type.Arc
+                          ? layer.setProperty("_ba", GObject.GStylable.BorderAlignment.Center)
+                          : layer.setProperty("_ba", GObject.GStylable.BorderAlignment.Inside)
+                      : element instanceof GObject.GPath && !element.$closed && layer.setProperty("_ba", GObject.GStylable.BorderAlignment.Center);
             }
             toString() {
                 return "[Object GSwapPaintLayersAction]";
             }
         }
-        ((l.ID = "modify.swap-paint-layers"),
-            (l.TITLE = new GObject.GLocaleKey("GSwapPaintLayersAction", "title")),
-            (l.Type = { Fill: "fill", Border: "border" }),
-            (module.exports = l));
+        ((GSwapPaintLayersAction.ID = "modify.swap-paint-layers"),
+            (GSwapPaintLayersAction.TITLE = new GObject.GLocaleKey("GSwapPaintLayersAction", "title")),
+            (GSwapPaintLayersAction.Type = { Fill: "fill", Border: "border" }),
+            (module.exports = GSwapPaintLayersAction));
     };

@@ -279,5 +279,5 @@ module.exports = function (module, exports, require) {
                         l.readyState !== l.DONE || _ || (l.dispatchEvent("load"), l.dispatchEvent("loadend")));
                 };
             };
-        }).call(this, require(221 /* Buffer */).Buffer, require(183));
+        }).call(this, require(221 /* Buffer */).Buffer, require(183 /* lib:process */));
     };

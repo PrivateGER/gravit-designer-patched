@@ -26,7 +26,7 @@ module.exports = function (module, exports, require) {
             GSystemDialog = require(44),
             GContainer = require(85),
             GExternalStorage = require(388),
-            GShareRole = require(433),
+            GShareRoleFactory = require(433),
             iconClasses = require(257),
             GCollaborativeFileMixin = require(436),
             GStorageItemEvent = require(336);
@@ -56,7 +56,7 @@ module.exports = function (module, exports, require) {
             }
             async _loadShareInit() {
                 if (!this._sharedFile.getPublicShare()) {
-                    const role = GShareRole.ROLES.DEFAULT_PUBLIC_ROLE;
+                    const role = GShareRoleFactory.ROLES.DEFAULT_PUBLIC_ROLE;
                     if (role) {
                         const share = new Share().assignRole(role);
                         return this._storageItem.supportsExternalSharing()
@@ -181,7 +181,7 @@ module.exports = function (module, exports, require) {
                 );
             }
             _getRole(share) {
-                return GShareRole.makeFromShare(share);
+                return GShareRoleFactory.makeFromShare(share);
             }
             _loadShare() {
                 if (!this._storageItem.hasMixin(GCollaborativeFileMixin)) throw (console.log("Storage item not supported"), "Storage not supported");
@@ -247,7 +247,7 @@ module.exports = function (module, exports, require) {
                         row = this._createShareSetting({
                             label: email,
                             icon: this._getAvatar(user),
-                            defaultRole: GShareRole.ROLES.DEFAULT_PRIVATE_ROLE,
+                            defaultRole: GShareRoleFactory.ROLES.DEFAULT_PRIVATE_ROLE,
                             removeCallback: () => {
                                 this._unshareWithUser({ id: uid, email: email, role: role });
                             },
@@ -330,7 +330,7 @@ module.exports = function (module, exports, require) {
                 const row = this._createShareSetting({
                         icon: $("<span/>").addClass("gravit-icon-public-share-link").addClass("icon"),
                         label: GObject.GLocale.get(new GObject.GLocaleKey("GShareDialog", "text.public-share-link")),
-                        defaultRole: GShareRole.ROLES.DEFAULT_PUBLIC_ROLE,
+                        defaultRole: GShareRoleFactory.ROLES.DEFAULT_PUBLIC_ROLE,
                     }),
                     roleSelector = row.find(".g-role-selector");
                 return (
@@ -390,7 +390,7 @@ module.exports = function (module, exports, require) {
                                 );
                         }),
                     roleSelector = $("<div/>").gRoleSelector({
-                        defaultRole: GShareRole.ROLES.DEFAULT_PRIVATE_ROLE,
+                        defaultRole: GShareRoleFactory.ROLES.DEFAULT_PRIVATE_ROLE,
                     });
                 return (
                     roleSelector.on("rolechange", () => {
@@ -688,7 +688,7 @@ module.exports = function (module, exports, require) {
                 this._isLoading || this._dialog.gDialog("close");
             }
             _canResendInvitationEmail(share) {
-                const role = GShareRole.makeFromShare(share);
+                const role = GShareRoleFactory.makeFromShare(share);
                 if (role && !role.is(ShareRoles.NoAccess)) {
                     return (
                         (this._initialSharedFile &&

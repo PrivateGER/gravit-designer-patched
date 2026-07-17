@@ -4,27 +4,27 @@ module.exports = function (module, exports, require) {
         var GObject = require(1);
         const { FILE_FORMATS, CLOUD_SYNC_FEATURE: { NEW_LAYOUT } = {} } = require(10 /* designerConfig */),
             GCategory = require(18),
-            s = require(31),
+            GAction = require(31),
             GCommonNames = require(119),
-            c = require(448),
-            d = require(86),
+            GGravitCloudAction = require(448),
+            DocumentStatus = require(86),
             GDocument = require(163),
             GSaveAsAction = require(445),
             GSystemDialog = require(44),
-            h = FILE_FORMATS.find((e) => e.default).ext;
-        function f() {}
-        (GObject.GObject.inherit(f, s),
-            (f.ID = "sync"),
-            (f.prototype.getId = function () {
-                return f.ID;
+            defaultExt = FILE_FORMATS.find((format) => format.default).ext;
+        function GCloudSynchronizationAction() {}
+        (GObject.GObject.inherit(GCloudSynchronizationAction, GAction),
+            (GCloudSynchronizationAction.ID = "sync"),
+            (GCloudSynchronizationAction.prototype.getId = function () {
+                return GCloudSynchronizationAction.ID;
             }),
-            (f.prototype._getSyncInformation = function (e) {
-                if (e.getScene()) {
-                    const t = e.getScene().lastModifiedDate();
-                    return t
+            (GCloudSynchronizationAction.prototype._getSyncInformation = function (document) {
+                if (document.getScene()) {
+                    const lastModified = document.getScene().lastModifiedDate();
+                    return lastModified
                         ? GObject.GLocale.get(new GObject.GLocaleKey("GCloudSynchronizationAction", "text.last-synced-at")).replace(
                               "%date",
-                              GObject.GLocale.toLocaleDate(t, {
+                              GObject.GLocale.toLocaleDate(lastModified, {
                                   year: "numeric",
                                   month: "numeric",
                                   day: "numeric",
@@ -36,63 +36,63 @@ module.exports = function (module, exports, require) {
                         : GObject.GLocale.get(new GObject.GLocaleKey("GDocumentChooser", "text.unavailable"));
                 }
             }),
-            (f.prototype.isAvailable = function () {
+            (GCloudSynchronizationAction.prototype.isAvailable = function () {
                 return !!NEW_LAYOUT;
             }),
-            (f.prototype.getTitle = function () {
-                const e = gDesigner.getActiveDocument();
-                if (e) {
-                    if (e.isSynchronizing()) return new GObject.GLocaleKey("GCloudSynchronizationAction", "text.syncing");
-                    if (e.isCloudFile()) return this._getSyncInformation(e);
-                    if (e.isCloudSyncOn()) return new GObject.GLocaleKey("GCloudSynchronizationAction", "text.unsync-from-cloud");
+            (GCloudSynchronizationAction.prototype.getTitle = function () {
+                const document = gDesigner.getActiveDocument();
+                if (document) {
+                    if (document.isSynchronizing()) return new GObject.GLocaleKey("GCloudSynchronizationAction", "text.syncing");
+                    if (document.isCloudFile()) return this._getSyncInformation(document);
+                    if (document.isCloudSyncOn()) return new GObject.GLocaleKey("GCloudSynchronizationAction", "text.unsync-from-cloud");
                 }
                 return new GObject.GLocaleKey("GCloudSynchronizationAction", "text.sync-to-cloud");
             }),
-            (f.prototype.getIcon = function () {
-                const e = gDesigner.getActiveDocument();
-                if (e) {
-                    if (e.isSynchronizing()) return "gravit-icon-cloud-syncing";
-                    if (e.isCloudSyncOn() || e.isCloudFile()) return "gravit-icon-cloud-synced";
+            (GCloudSynchronizationAction.prototype.getIcon = function () {
+                const document = gDesigner.getActiveDocument();
+                if (document) {
+                    if (document.isSynchronizing()) return "gravit-icon-cloud-syncing";
+                    if (document.isCloudSyncOn() || document.isCloudFile()) return "gravit-icon-cloud-synced";
                 }
                 return "gravit-icon-cloud-unsynced";
             }),
-            (f.prototype.getInfo = function () {
-                const e = gDesigner.getActiveDocument();
-                return e && e.isCloudSyncOn() && !e.isSynchronizing() ? this._getSyncInformation(e) : null;
+            (GCloudSynchronizationAction.prototype.getInfo = function () {
+                const document = gDesigner.getActiveDocument();
+                return document && document.isCloudSyncOn() && !document.isSynchronizing() ? this._getSyncInformation(document) : null;
             }),
-            (f.prototype.getCategory = function () {
+            (GCloudSynchronizationAction.prototype.getCategory = function () {
                 return GCategory.CATEGORY_FILE;
             }),
-            (f.prototype.getGroup = function () {
+            (GCloudSynchronizationAction.prototype.getGroup = function () {
                 return "file";
             }),
-            (f.prototype.isVisible = function () {
-                const e = gDesigner.getActiveDocument();
+            (GCloudSynchronizationAction.prototype.isVisible = function () {
+                const document = gDesigner.getActiveDocument();
                 return (
-                    !!e && !e.isWebFile() && !e.isExternalFile() && !e.isNew() && (!e.isCloudSyncOn() || e.isCloudSynchronismAvailable())
+                    !!document && !document.isWebFile() && !document.isExternalFile() && !document.isNew() && (!document.isCloudSyncOn() || document.isCloudSynchronismAvailable())
                 );
             }),
-            (f.prototype.isEnabled = function () {
-                const e = gDesigner.getActiveDocument();
+            (GCloudSynchronizationAction.prototype.isEnabled = function () {
+                const document = gDesigner.getActiveDocument();
                 return (
-                    !!e &&
-                    !e.isCloudFile() &&
-                    ((!e.getScene().getProperty("cfs") && !e.getScene().getProperty("cid")) || e.getScene().isCloudSynchronization())
+                    !!document &&
+                    !document.isCloudFile() &&
+                    ((!document.getScene().getProperty("cfs") && !document.getScene().getProperty("cid")) || document.getScene().isCloudSynchronization())
                 );
             }),
-            (f.prototype._performCloudSync = function (e) {
+            (GCloudSynchronizationAction.prototype._performCloudSync = function (document) {
                 gDesigner.getDefaultStorage().canSave()
-                    ? e.isNew()
-                        ? GCommonNames.createFile(e, (t) => {
-                              (e.getScene().setCloudSynchronization(t.id),
+                    ? document.isNew()
+                        ? GCommonNames.createFile(document, (file) => {
+                              (document.getScene().setCloudSynchronization(file.id),
                                   gDesigner.executeAction(
-                                      GSaveAsAction.ID + "." + h,
+                                      GSaveAsAction.ID + "." + defaultExt,
                                       [
                                           null,
-                                          e,
+                                          document,
                                           () => {
-                                              GCommonNames.renameFile(t, e.getTitle(), () => {
-                                                  e.storeToCloud(e.getScene());
+                                              GCommonNames.renameFile(file, document.getTitle(), () => {
+                                                  document.storeToCloud(document.getScene());
                                               });
                                           },
                                       ],
@@ -100,24 +100,24 @@ module.exports = function (module, exports, require) {
                                       true
                                   ));
                           })
-                        : e.isCloudFile()
-                          ? gDesigner.executeAction(GSaveAsAction.ID + "." + h, void 0, void 0, true)
-                          : GCommonNames.createFile(e, (t) => {
-                                (e.getScene().setCloudSynchronization(t.id),
-                                    e.storeToCloud(e.getScene(), () => {
-                                        e.store(null, null, null, {
-                                            lastModifiedDate: e.getScene().getLastSavedTime(),
+                        : document.isCloudFile()
+                          ? gDesigner.executeAction(GSaveAsAction.ID + "." + defaultExt, void 0, void 0, true)
+                          : GCommonNames.createFile(document, (file) => {
+                                (document.getScene().setCloudSynchronization(file.id),
+                                    document.storeToCloud(document.getScene(), () => {
+                                        document.store(null, null, null, {
+                                            lastModifiedDate: document.getScene().getLastSavedTime(),
                                         });
                                     }));
                             })
-                    : e.isCloudFile()
-                      ? gDesigner.executeAction(GSaveAsAction.ID + "." + h, void 0, void 0, true)
+                    : document.isCloudFile()
+                      ? gDesigner.executeAction(GSaveAsAction.ID + "." + defaultExt, void 0, void 0, true)
                       : gDesigner.executeAction(
-                            c.ID + ".save-as",
+                            GGravitCloudAction.ID + ".save-as",
                             [
-                                e,
-                                (t) => {
-                                    t === d.Loaded && gDesigner.removeDocument(e, null, true);
+                                document,
+                                (status) => {
+                                    status === DocumentStatus.Loaded && gDesigner.removeDocument(document, null, true);
                                 },
                                 true,
                             ],
@@ -125,45 +125,45 @@ module.exports = function (module, exports, require) {
                             true
                         );
             }),
-            (f.prototype._toggleCloudSync = function (e) {
-                const t = !e.isCloudSyncOn(),
-                    n = e.getScene();
-                (n.setProperty("cfs", t),
-                    n.getProperty("cfs")
-                        ? e.chooseLatestDocument(
-                              n,
-                              function (t, o) {
-                                  if (t !== n || o) {
-                                      const n = new GDocument(e.getStorageItem());
-                                      (n.setScene(t), gDesigner.replaceDocument(e, n));
+            (GCloudSynchronizationAction.prototype._toggleCloudSync = function (document) {
+                const enableSync = !document.isCloudSyncOn(),
+                    scene = document.getScene();
+                (scene.setProperty("cfs", enableSync),
+                    scene.getProperty("cfs")
+                        ? document.chooseLatestDocument(
+                              scene,
+                              function (chosenScene, isDifferent) {
+                                  if (chosenScene !== scene || isDifferent) {
+                                      const newDocument = new GDocument(document.getStorageItem());
+                                      (newDocument.setScene(chosenScene), gDesigner.replaceDocument(document, newDocument));
                                   } else
-                                      e.storeToCloud(t, () => {
+                                      document.storeToCloud(chosenScene, () => {
                                           gDesigner.getDefaultStorage().canSave() &&
-                                              e.store(null, null, null, {
-                                                  lastModifiedDate: n.getLastSavedTime(),
+                                              document.store(null, null, null, {
+                                                  lastModifiedDate: scene.getLastSavedTime(),
                                               });
                                       });
                               },
                               function () {
                                   GSystemDialog.alert(GObject.GLocale.get(new GObject.GLocaleKey("GDocument", "text.sync-to-cloud-error")));
                               },
-                              function (e, t) {
-                                  return t.lastModifiedDate().getTime() > e.lastModifiedDate().getTime();
+                              function (local, incoming) {
+                                  return incoming.lastModifiedDate().getTime() > local.lastModifiedDate().getTime();
                               }
                           )
-                        : e.isCloudFile() ||
+                        : document.isCloudFile() ||
                           (gDesigner.getDefaultStorage().canSave()
-                              ? e.store()
-                              : gDesigner.executeAction(GSaveAsAction.ID + "." + h, void 0, void 0, true)));
+                              ? document.store()
+                              : gDesigner.executeAction(GSaveAsAction.ID + "." + defaultExt, void 0, void 0, true)));
             }),
-            (f.prototype.statsValue = function () {
-                return gDesigner.getActiveDocument().isCloudSyncOn() ? f.ID + ".unsync-from-cloud" : f.ID + ".sync-to-cloud";
+            (GCloudSynchronizationAction.prototype.statsValue = function () {
+                return gDesigner.getActiveDocument().isCloudSyncOn() ? GCloudSynchronizationAction.ID + ".unsync-from-cloud" : GCloudSynchronizationAction.ID + ".sync-to-cloud";
             }),
-            (f.prototype.execute = function (e) {
-                (e = e || gDesigner.getActiveDocument()) && (e.hasCloudReference() ? this._toggleCloudSync(e) : this._performCloudSync(e));
+            (GCloudSynchronizationAction.prototype.execute = function (document) {
+                (document = document || gDesigner.getActiveDocument()) && (document.hasCloudReference() ? this._toggleCloudSync(document) : this._performCloudSync(document));
             }),
-            (f.prototype.toString = function () {
+            (GCloudSynchronizationAction.prototype.toString = function () {
                 return "[Object GCloudSynchronizationAction]";
             }),
-            (module.exports = f));
+            (module.exports = GCloudSynchronizationAction));
     };

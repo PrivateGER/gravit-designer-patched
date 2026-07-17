@@ -2,88 +2,88 @@ module.exports = function (module, exports, require) {
         "use strict";
         (require(180), require(181 /* polyfill:ArrayBuffer */), require(57), require(20 /* polyfill:RegExp */), require(34), require(134 /* polyfill:String */), require(4), require(41), require(32), require(38), require(33));
         var GObject = require(1),
-            i = require(381),
-            a = require(255),
-            r = require(1198),
+            GFontsProvider = require(381),
+            fontsProviderManager = require(255 /* FontsProviderManager */),
+            fontStorage = require(1198 /* GFontDBClient */),
             GSystemDialog = require(44);
-        function l(e) {
-            i.call(this, e);
+        function GImportedFontsProvider(providerManager) {
+            GFontsProvider.call(this, providerManager);
         }
-        GObject.GObject.inherit(l, i);
-        var c = GObject.GUtil.uuid();
-        ((l.prototype._totalFonts = 0),
-            (l.prototype._fontList = null),
-            (l.prototype._formattedFontList = null),
-            (l.prototype._initialized = false),
-            (l.prototype._initializing = false),
-            (l.prototype._queue = null),
-            (l.prototype.addPreviews = function (e) {
-                for (var t = 0; t < e.length; t++) {
+        GObject.GObject.inherit(GImportedFontsProvider, GFontsProvider);
+        var providerId = GObject.GUtil.uuid();
+        ((GImportedFontsProvider.prototype._totalFonts = 0),
+            (GImportedFontsProvider.prototype._fontList = null),
+            (GImportedFontsProvider.prototype._formattedFontList = null),
+            (GImportedFontsProvider.prototype._initialized = false),
+            (GImportedFontsProvider.prototype._initializing = false),
+            (GImportedFontsProvider.prototype._queue = null),
+            (GImportedFontsProvider.prototype.addPreviews = function (fonts) {
+                for (var t = 0; t < fonts.length; t++) {
                     var n = document.createElement("image");
-                    e[t].preview = n;
+                    fonts[t].preview = n;
                 }
-                if (e.length) {
-                    var i = this;
-                    for (t = 0; t < e.length; t++)
-                        e[t].cachedPreview ||
-                            (e[t].addPreviewCallback = function (e, t) {
-                                var n = $("<div></div>").addClass("preview-container"),
-                                    l = document.createElement("div");
-                                ((l.innerHTML = this.displayname || this.family),
-                                    (l.style.fontFamily = this.family),
-                                    (l.style.fontSize = gDesigner.isTouchEnabled() ? "20px" : "13px"),
-                                    (l.style.height = gDesigner.isTouchEnabled() ? "30px" : "20px"),
-                                    $(l).appendTo(n));
+                if (fonts.length) {
+                    var self = this;
+                    for (t = 0; t < fonts.length; t++)
+                        fonts[t].cachedPreview ||
+                            (fonts[t].addPreviewCallback = function (callback, t) {
+                                var previewContainer = $("<div></div>").addClass("preview-container"),
+                                    fontNameLabel = document.createElement("div");
+                                ((fontNameLabel.innerHTML = this.displayname || this.family),
+                                    (fontNameLabel.style.fontFamily = this.family),
+                                    (fontNameLabel.style.fontSize = gDesigner.isTouchEnabled() ? "20px" : "13px"),
+                                    (fontNameLabel.style.height = gDesigner.isTouchEnabled() ? "30px" : "20px"),
+                                    $(fontNameLabel).appendTo(previewContainer));
                                 var c,
-                                    d = $("<span></span>")
+                                    deleteButton = $("<span></span>")
                                         .addClass("gravit-icon-trash g-font-delete")
                                         .attr("name", "_SPECIAL_")
-                                        .appendTo(n)[0];
-                                (l.addEventListener("mouseover", function (e) {
-                                    (e.stopPropagation(), e.preventDefault());
+                                        .appendTo(previewContainer)[0];
+                                (fontNameLabel.addEventListener("mouseover", function (event) {
+                                    (event.stopPropagation(), event.preventDefault());
                                 }),
-                                    d.addEventListener("mouseup", (e) => {
-                                        (e.stopPropagation(), e.preventDefault());
-                                        var t = a.getInstance(),
-                                            n = (e, s) => {
-                                                var l = this.fonts;
-                                                if (s >= l.length) {
-                                                    var c = i._formattedFontList.findIndex((e) => e.family === this.family);
-                                                    if (-1 === c) return;
-                                                    (i._formattedFontList.splice(c, 1),
-                                                        (i._fontList = []),
-                                                        i._formattedFontList.forEach(function (e) {
-                                                            e.fonts.forEach(function (e) {
-                                                                i._fontList.push({
-                                                                    family: e.family,
-                                                                    weight: String(e.weight),
-                                                                    style: e.style,
-                                                                    subfamily: e.subfamily,
-                                                                    displayname: e.displayname,
+                                    deleteButton.addEventListener("mouseup", (event) => {
+                                        (event.stopPropagation(), event.preventDefault());
+                                        var providerManagerInstance = fontsProviderManager.getInstance(),
+                                            deleteNextFont = (storage, fontIndex) => {
+                                                var fontVariants = this.fonts;
+                                                if (fontIndex >= fontVariants.length) {
+                                                    var familyIndex = self._formattedFontList.findIndex((entry) => entry.family === this.family);
+                                                    if (-1 === familyIndex) return;
+                                                    (self._formattedFontList.splice(familyIndex, 1),
+                                                        (self._fontList = []),
+                                                        self._formattedFontList.forEach(function (group) {
+                                                            group.fonts.forEach(function (variant) {
+                                                                self._fontList.push({
+                                                                    family: variant.family,
+                                                                    weight: String(variant.weight),
+                                                                    style: variant.style,
+                                                                    subfamily: variant.subfamily,
+                                                                    displayname: variant.displayname,
                                                                 });
                                                             });
                                                         }),
-                                                        i._totalFonts--,
-                                                        e
+                                                        self._totalFonts--,
+                                                        storage
                                                             .updateItem(
-                                                                r.FONT_LIST,
-                                                                i._fontList.map(function (e) {
+                                                                fontStorage.FONT_LIST,
+                                                                self._fontList.map(function (font) {
                                                                     return {
-                                                                        family: e.family,
-                                                                        weight: e.weight,
-                                                                        style: e.style,
-                                                                        subfamily: e.subfamily,
-                                                                        displayname: e.displayname,
+                                                                        family: font.family,
+                                                                        weight: font.weight,
+                                                                        style: font.style,
+                                                                        subfamily: font.subfamily,
+                                                                        displayname: font.displayname,
                                                                     };
                                                                 })
                                                             )
                                                             .done((e) => {
-                                                                for (var n = {}, i = 0; i < this.families.length; i++)
-                                                                    n[this.families[i]] = "Open Sans";
+                                                                for (var fallbackMap = {}, i = 0; i < this.families.length; i++)
+                                                                    fallbackMap[this.families[i]] = "Open Sans";
                                                                 if (
-                                                                    (gDesigner.getDocuments().forEach((e) => {
-                                                                        e.getScene().acceptChildren((e) => {
-                                                                            e instanceof GObject.GText && e.replaceFonts(n, true);
+                                                                    (gDesigner.getDocuments().forEach((gravitDocument) => {
+                                                                        gravitDocument.getScene().acceptChildren((node) => {
+                                                                            node instanceof GObject.GText && node.replaceFonts(fallbackMap, true);
                                                                         });
                                                                     }),
                                                                     gDesigner.getWorkspace())
@@ -93,63 +93,63 @@ module.exports = function (module, exports, require) {
                                                                             .getWorkspace()
                                                                             .getFontManager()
                                                                             .removeFont(this.families[i]);
-                                                                (a.getInstance().reset(),
-                                                                    t && t.setShowMissingFontsDialog(true),
+                                                                (fontsProviderManager.getInstance().reset(),
+                                                                    providerManagerInstance && providerManagerInstance.setShowMissingFontsDialog(true),
                                                                     console.log("successfully updated font list"),
                                                                     this._queue && this._queue.length && this._queue.shift().call(this));
                                                             }));
                                                 } else {
-                                                    var d = l[s],
-                                                        u = d.family + "_" + d.weight + "_" + d.style;
-                                                    e.deleteItem(u).done(() => {
-                                                        n(e, s + 1);
+                                                    var fontVariant = fontVariants[fontIndex],
+                                                        variantKey = fontVariant.family + "_" + fontVariant.weight + "_" + fontVariant.style;
+                                                    storage.deleteItem(variantKey).done(() => {
+                                                        deleteNextFont(storage, fontIndex + 1);
                                                     });
                                                 }
                                             };
-                                        GSystemDialog.confirm(GObject.GLocale.get(new GObject.GLocaleKey("GImportedFontsProvider", "confirm.delete-font")), (e) => {
-                                            e &&
+                                        GSystemDialog.confirm(GObject.GLocale.get(new GObject.GLocaleKey("GImportedFontsProvider", "confirm.delete-font")), (confirmed) => {
+                                            confirmed &&
                                                 (this._queue || (this._queue = []),
                                                 this._queue.push(() => {
-                                                    r.getInstance((e) => {
-                                                        e && (t && t.setShowMissingFontsDialog(false), n(e, 0));
+                                                    fontStorage.getInstance((storage) => {
+                                                        storage && (providerManagerInstance && providerManagerInstance.setShowMissingFontsDialog(false), deleteNextFont(storage, 0));
                                                     });
                                                 }),
                                                 1 === this._queue.length && this._queue.shift().call(this));
                                         });
                                     }));
-                                var u = null;
-                                for (c = 0; c < i._formattedFontList.length; c++)
-                                    if (i._formattedFontList[c].family === this.family) {
-                                        u = i._formattedFontList[c];
+                                var matchedEntry = null;
+                                for (c = 0; c < self._formattedFontList.length; c++)
+                                    if (self._formattedFontList[c].family === this.family) {
+                                        matchedEntry = self._formattedFontList[c];
                                         break;
                                     }
-                                (u
-                                    ? r.getInstance((e) => {
-                                          if (e) {
-                                              var t = this.fonts[0];
-                                              if (t) {
-                                                  var n = t.family + "_" + t.weight + "_" + t.style;
-                                                  e.getItem(n).done((e) => {
-                                                      var n = new FileReader();
-                                                      ((n.onload = () => {
-                                                          var e = document.createElement("style");
-                                                          (e.appendChild(
+                                (matchedEntry
+                                    ? fontStorage.getInstance((storage) => {
+                                          if (storage) {
+                                              var primaryVariant = this.fonts[0];
+                                              if (primaryVariant) {
+                                                  var variantKey = primaryVariant.family + "_" + primaryVariant.weight + "_" + primaryVariant.style;
+                                                  storage.getItem(variantKey).done((fontData) => {
+                                                      var fileReader = new FileReader();
+                                                      ((fileReader.onload = () => {
+                                                          var styleElement = document.createElement("style");
+                                                          (styleElement.appendChild(
                                                               document.createTextNode(
                                                                   "@font-face {font-family:" +
-                                                                      t.family +
+                                                                      primaryVariant.family +
                                                                       ";font-style:" +
-                                                                      ("N" !== t.style ? "italic" : "normal") +
+                                                                      ("N" !== primaryVariant.style ? "italic" : "normal") +
                                                                       ";font-weight:" +
-                                                                      t.weight +
+                                                                      primaryVariant.weight +
                                                                       ';src: url("' +
-                                                                      n.result +
+                                                                      fileReader.result +
                                                                       '") format("truetype");}'
                                                               )
                                                           ),
-                                                              document.head.appendChild(e));
+                                                              document.head.appendChild(styleElement));
                                                       }),
-                                                          n.readAsDataURL(
-                                                              new Blob([e], {
+                                                          fileReader.readAsDataURL(
+                                                              new Blob([fontData], {
                                                                   type: "application/x-font-ttf",
                                                               })
                                                           ));
@@ -157,15 +157,15 @@ module.exports = function (module, exports, require) {
                                               }
                                           }
                                       })
-                                    : (l.innerHTML = "[Unavailable]"),
-                                    e(n));
+                                    : (fontNameLabel.innerHTML = "[Unavailable]"),
+                                    callback(previewContainer));
                             });
                 }
             }),
-            (l.prototype.initialize = function () {
+            (GImportedFontsProvider.prototype.initialize = function () {
                 if (!this._initialized && !this._initializing) {
                     this._initializing = true;
-                    var e = Array.prototype.slice.call(arguments);
+                    var extraArgs = Array.prototype.slice.call(arguments);
                     this.load(
                         "%",
                         0,
@@ -174,7 +174,7 @@ module.exports = function (module, exports, require) {
                             done: function (t, n, o) {
                                 ((this._initialized = true),
                                     (this._initializing = false),
-                                    e.length && e[0].apply(this, e.slice(1)),
+                                    extraArgs.length && extraArgs[0].apply(this, extraArgs.slice(1)),
                                     this._clearCallbacks());
                             }.bind(this),
                             fail: function () {
@@ -185,43 +185,43 @@ module.exports = function (module, exports, require) {
                     );
                 }
             }),
-            (l.prototype.load = function (e, t, n, o, i) {
+            (GImportedFontsProvider.prototype.load = function (query, offset, count, callback, force) {
                 if (!this._initialized && !this._initializing)
                     return (
                         this._loadCallbacks.push(
-                            function (i) {
-                                i ? o.fail() : this.load(e, t, n, o);
+                            function (failed) {
+                                failed ? callback.fail() : this.load(query, offset, count, callback);
                             }.bind(this)
                         ),
-                        void this.initialize(this.load, e, t, n, o)
+                        void this.initialize(this.load, query, offset, count, callback)
                     );
-                !this._initializing || i
+                !this._initializing || force
                     ? this._fontList
-                        ? o.done(
+                        ? callback.done(
                               this._formattedFontList
-                                  .filter((t) =>
-                                      e.indexOf("%") >= 0
-                                          ? (t.displayname || t.family).toLowerCase().startsWith(e.replace(/%/g, ""))
-                                          : (t.displayname || t.family).toLowerCase() == e.toLowerCase()
+                                  .filter((entry) =>
+                                      query.indexOf("%") >= 0
+                                          ? (entry.displayname || entry.family).toLowerCase().startsWith(query.replace(/%/g, ""))
+                                          : (entry.displayname || entry.family).toLowerCase() == query.toLowerCase()
                                   )
-                                  .slice(t, t + n),
+                                  .slice(offset, offset + count),
                               true,
                               null
                           )
-                        : r.getInstance((i) => {
-                              if (!i) return o.fail();
-                              i.getItem(r.FONT_LIST).done((i) => {
-                                  ((this._fontList = i || []),
+                        : fontStorage.getInstance((storage) => {
+                              if (!storage) return callback.fail();
+                              storage.getItem(fontStorage.FONT_LIST).done((fontListData) => {
+                                  ((this._fontList = fontListData || []),
                                       this._generateFormattedList(),
                                       (this._totalFonts = this._formattedFontList ? this._formattedFontList.length : 0),
-                                      o.done(
+                                      callback.done(
                                           this._formattedFontList
-                                              .filter((t) =>
-                                                  e.indexOf("%") >= 0
-                                                      ? (t.displayname || t.family).toLowerCase().startsWith(e.replace(/%/g, ""))
-                                                      : (t.displayname || t.family).toLowerCase() == e.toLowerCase()
+                                              .filter((entry) =>
+                                                  query.indexOf("%") >= 0
+                                                      ? (entry.displayname || entry.family).toLowerCase().startsWith(query.replace(/%/g, ""))
+                                                      : (entry.displayname || entry.family).toLowerCase() == query.toLowerCase()
                                               )
-                                              .slice(t, t + n),
+                                              .slice(offset, offset + count),
                                           true,
                                           null
                                       ),
@@ -229,16 +229,16 @@ module.exports = function (module, exports, require) {
                               });
                           })
                     : this._loadCallbacks.push(
-                          function (i) {
-                              i ? o.fail() : this.load(e, t, n, o);
+                          function (failed) {
+                              failed ? callback.fail() : this.load(query, offset, count, callback);
                           }.bind(this)
                       );
             }),
-            (l.prototype._generateFormattedList = function () {
+            (GImportedFontsProvider.prototype._generateFormattedList = function () {
                 if (this._fontList) {
                     this._formattedFontList = [];
-                    for (var e = this._fontList.slice(), t = 0; t < e.length; t++) {
-                        var n = e[t],
+                    for (var remainingFonts = this._fontList.slice(), t = 0; t < remainingFonts.length; t++) {
+                        var n = remainingFonts[t],
                             o = n.displayname || n.family,
                             i = [
                                 {
@@ -256,17 +256,17 @@ module.exports = function (module, exports, require) {
                             fonts: i,
                             families: a,
                         });
-                        for (var r = e.length - 1; r > t; r--)
-                            o === (e[r].displayname || e[r].family) &&
-                                (a.indexOf(e[r].family) < 0 && a.push(e[r].family),
+                        for (var r = remainingFonts.length - 1; r > t; r--)
+                            o === (remainingFonts[r].displayname || remainingFonts[r].family) &&
+                                (a.indexOf(remainingFonts[r].family) < 0 && a.push(remainingFonts[r].family),
                                 i.push({
-                                    weight: parseInt(e[r].weight),
-                                    style: e[r].style,
-                                    family: e[r].family,
-                                    subfamily: e[r].subfamily || null,
-                                    displayname: e[r].displayname || null,
+                                    weight: parseInt(remainingFonts[r].weight),
+                                    style: remainingFonts[r].style,
+                                    family: remainingFonts[r].family,
+                                    subfamily: remainingFonts[r].subfamily || null,
+                                    displayname: remainingFonts[r].displayname || null,
                                 }),
-                                e.splice(r, 1));
+                                remainingFonts.splice(r, 1));
                         var s = 0,
                             l = a[0].length;
                         if (l > 0)
@@ -281,66 +281,66 @@ module.exports = function (module, exports, require) {
                     }
                 } else this._formattedFontList = null;
             }),
-            (l.prototype._resolveCallbacks = []),
-            (l.prototype._loadCallbacks = []),
-            (l.prototype._clearCallbacks = function (e) {
-                (this._resolveCallbacks.forEach(function (t) {
-                    t(!!e);
+            (GImportedFontsProvider.prototype._resolveCallbacks = []),
+            (GImportedFontsProvider.prototype._loadCallbacks = []),
+            (GImportedFontsProvider.prototype._clearCallbacks = function (failed) {
+                (this._resolveCallbacks.forEach(function (callback) {
+                    callback(!!failed);
                 }),
                     (this._resolveCallbacks = []),
-                    this._loadCallbacks.forEach(function (e) {
-                        e();
+                    this._loadCallbacks.forEach(function (callback) {
+                        callback();
                     }),
                     (this._loadCallbacks = []));
             }),
-            (l.prototype.getTotalFonts = function (e) {
-                return e ? this._formattedFontList.filter(this._searchFilter(e)).length : this._totalFonts;
+            (GImportedFontsProvider.prototype.getTotalFonts = function (query) {
+                return query ? this._formattedFontList.filter(this._searchFilter(query)).length : this._totalFonts;
             }),
-            (l.prototype.resetProvider = function () {
+            (GImportedFontsProvider.prototype.resetProvider = function () {
                 ((this._fontList = null), (this._formattedFontList = null));
             }),
-            (l.prototype.resolveFont = function (e, t, n, i) {
+            (GImportedFontsProvider.prototype.resolveFont = function (family, style, weight, callback) {
                 if (!this._initialized && !this._initializing)
                     return (
                         this._resolveCallbacks.push(
-                            function (o) {
-                                o ? i.fail() : this.resolveFont(e, t, n, i);
+                            function (failed) {
+                                failed ? callback.fail() : this.resolveFont(family, style, weight, callback);
                             }.bind(this)
                         ),
-                        void this.initialize(this.resolveFont, e, t, n, i)
+                        void this.initialize(this.resolveFont, family, style, weight, callback)
                     );
                 if (this._initializing)
                     this._resolveCallbacks.push(
-                        function (o) {
-                            o ? i.fail() : this.resolveFont(e, t, n, i);
+                        function (failed) {
+                            failed ? callback.fail() : this.resolveFont(family, style, weight, callback);
                         }.bind(this)
                     );
                 else {
-                    ((n = String(n) || "400"), (t = t || GObject.GFont.Style.Normal));
-                    var a = e + "_" + n + "_" + t;
-                    r.getInstance((o) => {
-                        if (!o) return i.fail();
-                        o.getItem(a).done((r) => {
-                            if (r) i.done(r instanceof DataView || r instanceof ArrayBuffer ? r : r.buffer);
+                    ((weight = String(weight) || "400"), (style = style || GObject.GFont.Style.Normal));
+                    var fontKey = family + "_" + weight + "_" + style;
+                    fontStorage.getInstance((storage) => {
+                        if (!storage) return callback.fail();
+                        storage.getItem(fontKey).done((fontData) => {
+                            if (fontData) callback.done(fontData instanceof DataView || fontData instanceof ArrayBuffer ? fontData : fontData.buffer);
                             else {
-                                if (!this._fontList) return (console.warn("NO FONTLIST"), void i.fail());
-                                var s = this._fontList.findIndex(function (n) {
-                                    return !(n.family !== e || n.style !== t || !n.subfamily || n.displayname === n.family);
+                                if (!this._fontList) return (console.warn("NO FONTLIST"), void callback.fail());
+                                var matchIndex = this._fontList.findIndex(function (entry) {
+                                    return !(entry.family !== family || entry.style !== style || !entry.subfamily || entry.displayname === entry.family);
                                 });
-                                s >= 0
-                                    ? ((n = this._fontList[s].weight || "400"),
-                                      (a = e + "_" + n + "_" + t),
-                                      o.getItem(a).done((e) => {
-                                          e ? i.done(e instanceof DataView || e instanceof ArrayBuffer ? e : e.buffer) : i.fail();
+                                matchIndex >= 0
+                                    ? ((weight = this._fontList[matchIndex].weight || "400"),
+                                      (fontKey = family + "_" + weight + "_" + style),
+                                      storage.getItem(fontKey).done((fontData) => {
+                                          fontData ? callback.done(fontData instanceof DataView || fontData instanceof ArrayBuffer ? fontData : fontData.buffer) : callback.fail();
                                       }))
-                                    : i.fail();
+                                    : callback.fail();
                             }
                         });
                     });
                 }
             }),
-            (l.prototype.getProviderId = function () {
-                return c;
+            (GImportedFontsProvider.prototype.getProviderId = function () {
+                return providerId;
             }),
-            (module.exports = l));
+            (module.exports = GImportedFontsProvider));
     };

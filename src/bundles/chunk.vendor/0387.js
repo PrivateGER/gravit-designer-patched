@@ -1,183 +1,183 @@
 module.exports = function (module, exports, require) {
             var GEditor = require(82),
-                r = require(161),
-                o = require(2),
+                TextUtil = require(161),
+                GNode = require(2),
                 IsFiniteNonNegativeNumber = require(0),
-                s = require(17),
-                l = require(68),
-                h = require(11),
-                A = require(56),
-                c = require(69),
-                p = require(752),
-                u = require(128),
-                d = require(36),
-                g = require(70),
-                f = require(5),
-                m = require(24),
-                y = require(66),
-                _ = require(6),
-                v = require(7),
-                b = require(12),
-                C = require(73),
-                w = require(39),
-                E = require(81),
-                B = (require(52), require(22)),
-                x = require(167),
-                P = require(64),
+                GRGBColor = require(17),
+                GColor = require(68),
+                GUtil = require(11),
+                GShape = require(56),
+                GBlock = require(69),
+                GInlineTextEditor = require(752),
+                GShapeEditor = require(128),
+                GElementEditor = require(36),
+                GText = require(70),
+                GPoint = require(5),
+                EditorConfig = require(24),
+                GBoxEditor = require(66),
+                GRect = require(6),
+                GTransform = require(7),
+                GMath = require(12),
+                GRectangle = require(73),
+                GBaseEditor = require(39),
+                AnnotationPaint = require(81),
+                GElement = (require(52), require(22)),
+                GKeyEvent = require(167),
+                GSystem = require(64),
                 GFont = require(108),
-                T = require(215),
-                I = require(164),
-                F = require(9 /* String */),
-                R = require(47),
-                D = require(176);
+                PathTransformer = require(215),
+                KeyConstant = require(164),
+                GLocale = require(9 /* String */),
+                LocaleKey = require(47),
+                GPlatform = require(176);
 
-            function k(e) {
-                ((this._inlineEditEnabled = true), u.call(this, e));
+            function GTextEditor(element) {
+                ((this._inlineEditEnabled = true), GShapeEditor.call(this, element));
             }
-            (IsFiniteNonNegativeNumber.inherit(k, u),
-                d.exports(k, g),
-                (k.DISTANCE_HANDLER_ID = h.uuid()),
-                (k.prototype._inlineEditor = null),
-                (k.prototype._dontSetContent = false),
-                (k.prototype._currentRangeFormatting = null),
-                (k.prototype._fullContentsTransform = false),
-                (k.prototype._view = null),
-                (k.prototype._inlineEditEnabled = true),
-                (k.prototype._toggles = {
+            (IsFiniteNonNegativeNumber.inherit(GTextEditor, GShapeEditor),
+                GElementEditor.exports(GTextEditor, GText),
+                (GTextEditor.DISTANCE_HANDLER_ID = GUtil.uuid()),
+                (GTextEditor.prototype._inlineEditor = null),
+                (GTextEditor.prototype._dontSetContent = false),
+                (GTextEditor.prototype._currentRangeFormatting = null),
+                (GTextEditor.prototype._fullContentsTransform = false),
+                (GTextEditor.prototype._view = null),
+                (GTextEditor.prototype._inlineEditEnabled = true),
+                (GTextEditor.prototype._toggles = {
                     B: "fontWeight",
                     I: "fontStyle",
                 }),
-                (k.prototype.getProperty = function (e, t, i, n) {
-                    return this.getElement().getProperty(e, t, i, n, this.isInlineEdit());
+                (GTextEditor.prototype.getProperty = function (property, custom, defaultValue, useTemporary) {
+                    return this.getElement().getProperty(property, custom, defaultValue, useTemporary, this.isInlineEdit());
                 }),
-                (k.prototype.setProperties = function (e, t, i) {
-                    var n = this.getElement().hasPathAttached(),
-                        r = (this.getElement().getProperty("trf"), e.indexOf("trf"));
-                    (n && r >= 0 && (e.splice(r, 1), t.splice(r, 1), !e.length)) ||
-                        this.getElement().setProperties(e, t, false, false, i, this.isInlineEdit(), false);
+                (GTextEditor.prototype.setProperties = function (properties, values, temporary) {
+                    var hasPath = this.getElement().hasPathAttached(),
+                        trfIndex = (this.getElement().getProperty("trf"), properties.indexOf("trf"));
+                    (hasPath && trfIndex >= 0 && (properties.splice(trfIndex, 1), values.splice(trfIndex, 1), !properties.length)) ||
+                        this.getElement().setProperties(properties, values, false, false, temporary, this.isInlineEdit(), false);
                 }),
-                (k.prototype.getFonts = function () {
-                    var e = [];
-                    if (((fontProperty = this.getProperty("_tff")), fontProperty)) e.push(fontProperty);
+                (GTextEditor.prototype.getFonts = function () {
+                    var fonts = [];
+                    if (((fontProperty = this.getProperty("_tff")), fontProperty)) fonts.push(fontProperty);
                     else {
-                        var t = g.PropertyMapping._tff,
-                            i = this.getElement().getContent();
-                        if (i) {
-                            for (var n = 0; n < i.length; n++) e.push(this.getElement()._getGravitValue(t, i[n][t]));
-                            e = h.unique(e);
+                        var tffKey = GText.PropertyMapping._tff,
+                            content = this.getElement().getContent();
+                        if (content) {
+                            for (var n = 0; n < content.length; n++) fonts.push(this.getElement()._getGravitValue(tffKey, content[n][tffKey]));
+                            fonts = GUtil.unique(fonts);
                         }
                     }
-                    return e;
+                    return fonts;
                 }),
-                (k.prototype.setProperty = function (e, t, i) {
-                    this.setProperties([e], [t], i);
+                (GTextEditor.prototype.setProperty = function (property, value, temporary) {
+                    this.setProperties([property], [value], temporary);
                 }),
-                (k.prototype.hasPathAttached = function () {
+                (GTextEditor.prototype.hasPathAttached = function () {
                     return this.getElement().hasPathAttached();
                 }),
-                (k.prototype.initialSetup = function (e) {
-                    u.prototype.initialSetup.call(this, null);
+                (GTextEditor.prototype.initialSetup = function (e) {
+                    GShapeEditor.prototype.initialSetup.call(this, null);
                 }),
-                (k.prototype.acceptDrop = function (e, t, i, r) {
-                    if (u.prototype.acceptDrop.call(this, e, t, i, r)) return true;
-                    if (t === d.DropType.FontFamily) {
-                        var o = GEditor.getEditor(this.getElement().getScene());
-                        if (o) {
-                            o.beginTransaction();
+                (GTextEditor.prototype.acceptDrop = function (position, dropType, data, event) {
+                    if (GShapeEditor.prototype.acceptDrop.call(this, position, dropType, data, event)) return true;
+                    if (dropType === GElementEditor.DropType.FontFamily) {
+                        var editor = GEditor.getEditor(this.getElement().getScene());
+                        if (editor) {
+                            editor.beginTransaction();
                             try {
-                                this.getElement().setProperty("_tff", i);
+                                this.getElement().setProperty("_tff", data);
                             } finally {
-                                o.commitTransaction(F.get(new R("GTextEditor", "action.drop-font")));
+                                editor.commitTransaction(GLocale.get(new LocaleKey("GTextEditor", "action.drop-font")));
                             }
                         }
                         return true;
                     }
                     return false;
                 }),
-                (k.prototype._detach = function () {
+                (GTextEditor.prototype._detach = function () {
                     if (this.isInlineEdit()) {
-                        var e = this.getElement();
-                        if (!e) return;
-                        var t = GEditor.getEditor(e.getScene());
-                        t && t.closeInlineEditor();
+                        var element = this.getElement();
+                        if (!element) return;
+                        var editor = GEditor.getEditor(element.getScene());
+                        editor && editor.closeInlineEditor();
                     }
                 }),
-                (k.prototype.handleKeyEvent = function (e) {
-                    if (!this.isInlineEdit() && e instanceof x.Down) {
-                        var t = e.key,
-                            i = P.modifiers.metaKey,
-                            r = P.modifiers.shiftKey,
-                            o = this.getElement().getTLCore(),
-                            a = GEditor.getEditor(this.getElement().getScene()),
-                            s = this._toggles[t];
-                        if (i && !r && s) {
-                            var l,
-                                h,
-                                A,
-                                c,
-                                p = o.getDocumentRange().getFormatting()[s],
-                                u = this.getElement().getWorkspace().getFontManager(),
-                                d = this.getProperty("_tff"),
-                                g = u.queryFontFamily(d);
-                            ("fontWeight" === s
-                                ? ((l = this.getProperty("_tfs")),
-                                  (c =
-                                      (A = h = parseInt(p) == GFont.Weight.Bold ? GFont.Weight.Regular : GFont.Weight.Bold) === GFont.Weight.Normal ||
-                                      void 0 === g ||
-                                      g.filter(function (e) {
-                                          return e.style === l && e.weight === h;
+                (GTextEditor.prototype.handleKeyEvent = function (event) {
+                    if (!this.isInlineEdit() && event instanceof GKeyEvent.Down) {
+                        var key = event.key,
+                            metaModifier = GSystem.modifiers.metaKey,
+                            shiftModifier = GSystem.modifiers.shiftKey,
+                            tlCore = this.getElement().getTLCore(),
+                            editor = GEditor.getEditor(this.getElement().getScene()),
+                            toggleProperty = this._toggles[key];
+                        if (metaModifier && !shiftModifier && toggleProperty) {
+                            var style,
+                                weight,
+                                newValue,
+                                canApply,
+                                currentValue = tlCore.getDocumentRange().getFormatting()[toggleProperty],
+                                fontManager = this.getElement().getWorkspace().getFontManager(),
+                                fontFamily = this.getProperty("_tff"),
+                                fontVariants = fontManager.queryFontFamily(fontFamily);
+                            ("fontWeight" === toggleProperty
+                                ? ((style = this.getProperty("_tfs")),
+                                  (canApply =
+                                      (newValue = weight = parseInt(currentValue) == GFont.Weight.Bold ? GFont.Weight.Regular : GFont.Weight.Bold) === GFont.Weight.Normal ||
+                                      void 0 === fontVariants ||
+                                      fontVariants.filter(function (variant) {
+                                          return variant.style === style && variant.weight === weight;
                                       }).length > 0) &&
-                                      (a.beginTransaction(),
-                                      this.setProperties(["_tfw"], [A]),
-                                      a.commitTransaction(F.get(new R("GTextEditor", "action.modify-text-properties")))))
-                                : "fontStyle" === s &&
-                                  ((h = this.getProperty("_tfw")),
-                                  (c =
-                                      (A = l = "italic" == p ? GFont.Style.Normal : GFont.Style.Italic) === GFont.Style.Normal ||
-                                      void 0 === g ||
-                                      g.filter(function (e) {
-                                          return e.style === l && e.weight === h;
+                                      (editor.beginTransaction(),
+                                      this.setProperties(["_tfw"], [newValue]),
+                                      editor.commitTransaction(GLocale.get(new LocaleKey("GTextEditor", "action.modify-text-properties")))))
+                                : "fontStyle" === toggleProperty &&
+                                  ((weight = this.getProperty("_tfw")),
+                                  (canApply =
+                                      (newValue = style = "italic" == currentValue ? GFont.Style.Normal : GFont.Style.Italic) === GFont.Style.Normal ||
+                                      void 0 === fontVariants ||
+                                      fontVariants.filter(function (variant) {
+                                          return variant.style === style && variant.weight === weight;
                                       }).length > 0) &&
-                                      (a.beginTransaction(),
-                                      this.setProperties(["_tfs"], [A]),
-                                      a.commitTransaction(F.get(new R("GTextEditor", "action.modify-text-properties"))))),
-                                c && this.triggerHotkeyEvent([I.Constant.CONTROL, t]));
+                                      (editor.beginTransaction(),
+                                      this.setProperties(["_tfs"], [newValue]),
+                                      editor.commitTransaction(GLocale.get(new LocaleKey("GTextEditor", "action.modify-text-properties"))))),
+                                canApply && this.triggerHotkeyEvent([KeyConstant.Constant.CONTROL, key]));
                         }
                     }
                 }),
-                (k.prototype._attach = function () {
-                    var e = this.getElement();
-                    ((e.deferredLoadHandler = function () {
+                (GTextEditor.prototype._attach = function () {
+                    var element = this.getElement();
+                    ((element.deferredLoadHandler = function () {
                         this._triggerSelectionChanged();
                     }.bind(this)),
-                        e.contentChangedHandler(
-                            function (e) {
-                                var t = this.getElement();
-                                if (t) {
-                                    var i,
-                                        r,
-                                        o,
-                                        a,
-                                        s = t.getTLCore();
+                        element.contentChangedHandler(
+                            function (temporary) {
+                                var textElement = this.getElement();
+                                if (textElement) {
+                                    var richContent,
+                                        serializedContent,
+                                        editor,
+                                        wasEdited,
+                                        tlCore = textElement.getTLCore();
                                     if (
-                                        ((o = GEditor.getEditor(t.getScene())),
-                                        (i = s.getRichContent()),
-                                        (r = JSON.stringify(i)),
-                                        (a = s.getWasEdited()),
-                                        r !== t.getProperty("content"))
+                                        ((editor = GEditor.getEditor(textElement.getScene())),
+                                        (richContent = tlCore.getRichContent()),
+                                        (serializedContent = JSON.stringify(richContent)),
+                                        (wasEdited = tlCore.getWasEdited()),
+                                        serializedContent !== textElement.getProperty("content"))
                                     ) {
-                                        !e && o && o.beginTransaction();
+                                        !temporary && editor && editor.beginTransaction();
                                         try {
-                                            (t.setProperties(["content"], [r], false, false, false, false, false, this._dontSetContent),
-                                                t.getProperty("afs") && t.adaptFontSizeToFitBBox());
+                                            (textElement.setProperties(["content"], [serializedContent], false, false, false, false, false, this._dontSetContent),
+                                                textElement.getProperty("afs") && textElement.adaptFontSizeToFitBBox());
                                         } finally {
-                                            (!e && o && o.commitTransaction(F.get(new R("GTextEditor", "action.edit-text"))),
-                                                o &&
+                                            (!temporary && editor && editor.commitTransaction(GLocale.get(new LocaleKey("GTextEditor", "action.edit-text"))),
+                                                editor &&
                                                     this.isInlineEdit() &&
                                                     setTimeout(
                                                         function () {
                                                             this._triggerTextEdited({
-                                                                wasModifiedBefore: a,
+                                                                wasModifiedBefore: wasEdited,
                                                             });
                                                         }.bind(this)
                                                     ),
@@ -189,347 +189,347 @@ module.exports = function (module, exports, require) {
                             true
                         ));
                 }),
-                (k.prototype.getDefaultStyle = function () {
-                    var e = this.getElement();
-                    return e.getScene()
-                        ? e
+                (GTextEditor.prototype.getDefaultStyle = function () {
+                    var element = this.getElement();
+                    return element.getScene()
+                        ? element
                               .getScene()
                               .getStyles()
-                              .querySingle('style[_sdf="' + IsFiniteNonNegativeNumber.getTypeId(g) + '"]')
+                              .querySingle('style[_sdf="' + IsFiniteNonNegativeNumber.getTypeId(GText) + '"]')
                         : null;
                 }),
-                (k.prototype._getPartInfoAt = function (e, t, i) {
+                (GTextEditor.prototype._getPartInfoAt = function (point, transform, tolerance) {
                     if (this._element.hasPathAttached()) {
-                        var n = this._getDistHandlePosition(t);
+                        var handlePosition = this._getDistHandlePosition(transform);
                         if (
-                            E.getAnnotationBBox(null, n, m.annotationHandles.textOnPath.size, false)
-                                .expanded(m.annotPickDistance, m.annotPickDistance, m.annotPickDistance, m.annotPickDistance)
-                                .containsPoint(e)
+                            AnnotationPaint.getAnnotationBBox(null, handlePosition, EditorConfig.annotationHandles.textOnPath.size, false)
+                                .expanded(EditorConfig.annotPickDistance, EditorConfig.annotPickDistance, EditorConfig.annotPickDistance, EditorConfig.annotPickDistance)
+                                .containsPoint(point)
                         ) {
-                            var r = new w.PartInfo(this, k.DISTANCE_HANDLER_ID, null, true, true);
-                            if (r) return r;
+                            var partInfo = new GBaseEditor.PartInfo(this, GTextEditor.DISTANCE_HANDLER_ID, null, true, true);
+                            if (partInfo) return partInfo;
                         }
                     }
-                    return u.prototype._getPartInfoAt.call(this, e, t, i);
+                    return GShapeEditor.prototype._getPartInfoAt.call(this, point, transform, tolerance);
                 }),
-                (k.prototype.createElementPreview = function () {
+                (GTextEditor.prototype.createElementPreview = function () {
                     if (!this._elementPreview && !this.getElement().hasPathAttached()) {
-                        var e = this._element.getSourceBBox();
-                        e &&
-                            (this._setElementPreview(new C(e.getX(), e.getY(), e.getWidth(), e.getHeight())),
-                            this._elementPreview.transferProperties(this._element, [A.GeometryProperties]));
+                        var sourceBBox = this._element.getSourceBBox();
+                        sourceBBox &&
+                            (this._setElementPreview(new GRectangle(sourceBBox.getX(), sourceBBox.getY(), sourceBBox.getWidth(), sourceBBox.getHeight())),
+                            this._elementPreview.transferProperties(this._element, [GShape.GeometryProperties]));
                     }
                 }),
-                (k.prototype.canApplyTransform = function () {
+                (GTextEditor.prototype.canApplyTransform = function () {
                     if (this.hasPathAttached()) {
                         if (this._elementPreview) return false;
                         if (this._transform) {
-                            var e = this._transform.getTranslation();
-                            if (this._transform.translated(-e.getX(), -e.getY()).isIdentity()) return true;
+                            var translation = this._transform.getTranslation();
+                            if (this._transform.translated(-translation.getX(), -translation.getY()).isIdentity()) return true;
                         }
                         return false;
                     }
-                    return this._elementPreview || u.prototype.canApplyTransform.call(this);
+                    return this._elementPreview || GShapeEditor.prototype.canApplyTransform.call(this);
                 }),
-                (k.prototype._applyTransform = function (e, t, i, n) {
-                    ((this._fullContentsTransform = e.getProperty("sc")),
-                        u.prototype._applyTransform.call(this, e.hasPathAttached() ? e._attachedPath : e, t, i, n));
+                (GTextEditor.prototype._applyTransform = function (element, deep, exclusions, n) {
+                    ((this._fullContentsTransform = element.getProperty("sc")),
+                        GShapeEditor.prototype._applyTransform.call(this, element.hasPathAttached() ? element._attachedPath : element, deep, exclusions, n));
                 }),
-                (k.prototype.resetTransform = function () {
-                    ((this._fullContentsTransform = false), u.prototype.resetTransform.call(this));
+                (GTextEditor.prototype.resetTransform = function () {
+                    ((this._fullContentsTransform = false), GShapeEditor.prototype.resetTransform.call(this));
                 }),
-                (k.prototype.edTransform = function (e, t, i, n) {
-                    ((this._fullContentsTransform = (n && !!n.fullContentsTransform) || this.getElement().getProperty("sc")),
-                        y.prototype.edTransform.call(this, e, t, i, n));
+                (GTextEditor.prototype.edTransform = function (transform, partId, partInfo, editOptions) {
+                    ((this._fullContentsTransform = (editOptions && !!editOptions.fullContentsTransform) || this.getElement().getProperty("sc")),
+                        GBoxEditor.prototype.edTransform.call(this, transform, partId, partInfo, editOptions));
                 }),
-                (k.prototype.getPEGeometryBBox = function () {
-                    var e = null;
-                    if (this.hasFlag(w.Flag.Selected) || this.hasFlag(w.Flag.Highlighted) || this.hasFlag(w.Flag.Outline)) {
-                        var t = this.getElement();
-                        e = t.getSourceBBox();
-                        var i = t.getTransform(),
-                            n = null;
-                        (this._preTransform && (n = this._preTransform),
-                            i && (n = n ? n.multiplied(i) : i),
-                            this._transform && (n = n ? n.multiplied(this._transform) : this._transform),
-                            e && n && (e = n.mapRect(e)));
+                (GTextEditor.prototype.getPEGeometryBBox = function () {
+                    var bbox = null;
+                    if (this.hasFlag(GBaseEditor.Flag.Selected) || this.hasFlag(GBaseEditor.Flag.Highlighted) || this.hasFlag(GBaseEditor.Flag.Outline)) {
+                        var element = this.getElement();
+                        bbox = element.getSourceBBox();
+                        var elementTransform = element.getTransform(),
+                            combinedTransform = null;
+                        (this._preTransform && (combinedTransform = this._preTransform),
+                            elementTransform && (combinedTransform = combinedTransform ? combinedTransform.multiplied(elementTransform) : elementTransform),
+                            this._transform && (combinedTransform = combinedTransform ? combinedTransform.multiplied(this._transform) : this._transform),
+                            bbox && combinedTransform && (bbox = combinedTransform.mapRect(bbox)));
                     }
-                    return e;
+                    return bbox;
                 }),
-                (k.prototype.movePart = function (e, t, i, n, r, o, a, s) {
-                    var l = u.prototype.movePart.call(this, e, t, i, n, r, o, a);
-                    if (e === k.DISTANCE_HANDLER_ID) {
-                        var h = this._element.getTLCore();
-                        if (!h || !h.getTransformer()) return 0;
-                        var A = h.getTransformer(T.TYPE),
-                            c = A.getBoxOrigin();
-                        if (!c) return 0;
-                        var p = n.mapPoint(i),
-                            d = this._element.getProperty("trf");
-                        d && d.invertible() && (p = d.inverted().mapPoint(p));
-                        var g = A.inverseTransform(p.subtract(c), true);
-                        (this._element.setProperty("tpthl", g.getX() + (this._element.$tpthl || 0), null, false, true),
+                (GTextEditor.prototype.movePart = function (partId, partInfo, viewPoint, transform, guides, shift, option, multiPage) {
+                    var result = GShapeEditor.prototype.movePart.call(this, partId, partInfo, viewPoint, transform, guides, shift, option);
+                    if (partId === GTextEditor.DISTANCE_HANDLER_ID) {
+                        var tlCore = this._element.getTLCore();
+                        if (!tlCore || !tlCore.getTransformer()) return 0;
+                        var transformer = tlCore.getTransformer(PathTransformer.TYPE),
+                            boxOrigin = transformer.getBoxOrigin();
+                        if (!boxOrigin) return 0;
+                        var scenePoint = transform.mapPoint(viewPoint),
+                            elementTransform = this._element.getProperty("trf");
+                        elementTransform && elementTransform.invertible() && (scenePoint = elementTransform.inverted().mapPoint(scenePoint));
+                        var localOffset = transformer.inverseTransform(scenePoint.subtract(boxOrigin), true);
+                        (this._element.setProperty("tpthl", localOffset.getX() + (this._element.$tpthl || 0), null, false, true),
                             this.requestInvalidation());
                     }
-                    return l;
+                    return result;
                 }),
-                (k.prototype._applyPartMove = function (e, t, i, n) {
-                    if (e === y.RESIZE_HANDLE_PART_ID || e === y.ROTATION_HANDLE_PART_ID)
+                (GTextEditor.prototype._applyPartMove = function (partId, partInfo, editOptions, linkedElements) {
+                    if (partId === GBoxEditor.RESIZE_HANDLE_PART_ID || partId === GBoxEditor.ROTATION_HANDLE_PART_ID)
                         if (this.canApplyTransform()) {
-                            var r = this._element.getProperty("sc");
+                            var scaleContent = this._element.getProperty("sc");
                             if (
-                                ((this._fullContentsTransform = r && t.side !== _.Side.BOTTOM_RIGHT),
+                                ((this._fullContentsTransform = scaleContent && partInfo.side !== GRect.Side.BOTTOM_RIGHT),
                                 this._element &&
                                     this._elementPreview &&
                                     !this._element.isFakeText() &&
-                                    e === y.RESIZE_HANDLE_PART_ID &&
+                                    partId === GBoxEditor.RESIZE_HANDLE_PART_ID &&
                                     !this._fullContentsTransform)
                             ) {
-                                var o,
-                                    a,
-                                    s = [],
-                                    l = [],
-                                    h = this._elementPreview.getProperty("trf"),
-                                    A = this._element.getProperty("trf"),
-                                    c = A ? A.inverted() : null;
-                                if (h) {
-                                    if (r && t.side === _.Side.BOTTOM_RIGHT) {
-                                        var p = (c ? c.multiplied(h) : h).getScaleFactor(),
-                                            f = this._element.getProperty("_tfi");
-                                        if (f) o = parseInt(f * p);
+                                var newFontSize,
+                                    newContent,
+                                    resetProps = [],
+                                    resetValues = [],
+                                    previewTransform = this._elementPreview.getProperty("trf"),
+                                    elementTransform = this._element.getProperty("trf"),
+                                    inverseElementTransform = elementTransform ? elementTransform.inverted() : null;
+                                if (previewTransform) {
+                                    if (scaleContent && partInfo.side === GRect.Side.BOTTOM_RIGHT) {
+                                        var scaleFactor = (inverseElementTransform ? inverseElementTransform.multiplied(previewTransform) : previewTransform).getScaleFactor(),
+                                            currentFontSize = this._element.getProperty("_tfi");
+                                        if (currentFontSize) newFontSize = parseInt(currentFontSize * scaleFactor);
                                         else if (this._element.getTLCore()) {
-                                            var m = this._element.getContent();
-                                            m &&
-                                                ((m = m.map(function (e) {
-                                                    return ((e.fontSize = p * e.fontSize), e);
+                                            var content = this._element.getContent();
+                                            content &&
+                                                ((content = content.map(function (run) {
+                                                    return ((run.fontSize = scaleFactor * run.fontSize), run);
                                                 })),
-                                                (a = JSON.stringify(m, g._serializeContent)));
+                                                (newContent = JSON.stringify(content, GText._serializeContent)));
                                         }
                                     }
-                                    c && (h = h.multiplied(c));
+                                    inverseElementTransform && (previewTransform = previewTransform.multiplied(inverseElementTransform));
                                 }
                                 (this._element.beginUpdate(),
-                                    t.side !== _.Side.RIGHT_CENTER &&
-                                        t.side !== _.Side.LEFT_CENTER &&
+                                    partInfo.side !== GRect.Side.RIGHT_CENTER &&
+                                        partInfo.side !== GRect.Side.LEFT_CENTER &&
                                         this._element.getProperty("ah") &&
                                         !this._element.hasPathAttached() &&
-                                        (s.push("ah"), l.push(false)),
-                                    t.side !== _.Side.TOP_CENTER &&
-                                        t.side !== _.Side.BOTTOM_CENTER &&
+                                        (resetProps.push("ah"), resetValues.push(false)),
+                                    partInfo.side !== GRect.Side.TOP_CENTER &&
+                                        partInfo.side !== GRect.Side.BOTTOM_CENTER &&
                                         this._element.getProperty("aw") &&
                                         !this._element.hasPathAttached() &&
-                                        (s.push("aw"), l.push(false)),
-                                    s.length && this._element.setProperties(s, l, false, false, false),
-                                    this._element.transformSourceBBox(h),
-                                    void 0 !== o
-                                        ? this._element.setProperties(["_tfi"], [o])
-                                        : void 0 !== a && this._element.setProperties(["content"], [a]),
+                                        (resetProps.push("aw"), resetValues.push(false)),
+                                    resetProps.length && this._element.setProperties(resetProps, resetValues, false, false, false),
+                                    this._element.transformSourceBBox(previewTransform),
+                                    void 0 !== newFontSize
+                                        ? this._element.setProperties(["_tfi"], [newFontSize])
+                                        : void 0 !== newContent && this._element.setProperties(["content"], [newContent]),
                                     this._preTransform &&
                                         !this._preTransform.isIdentity() &&
-                                        B.Transform.prototype.preTransform.call(this._element, this._preTransform, false, n),
+                                        GElement.Transform.prototype.preTransform.call(this._element, this._preTransform, false, linkedElements),
                                     this._element.endUpdate(),
                                     this.resetTransform());
                             } else
-                                (this._element && this._element.isFakeText() && e === y.RESIZE_HANDLE_PART_ID) ||
-                                    (u.prototype._prepareApplyTransform(this, this._element),
-                                    u.prototype._applyTransform.call(this, this._element, e === y.ROTATION_HANDLE_PART_ID, n, i));
+                                (this._element && this._element.isFakeText() && partId === GBoxEditor.RESIZE_HANDLE_PART_ID) ||
+                                    (GShapeEditor.prototype._prepareApplyTransform(this, this._element),
+                                    GShapeEditor.prototype._applyTransform.call(this, this._element, partId === GBoxEditor.ROTATION_HANDLE_PART_ID, linkedElements, editOptions));
                         } else this.resetTransform();
                     else
-                        e === k.DISTANCE_HANDLER_ID && (this._element.setProperty("tpthl", this._element.$tpthl), this.resetPartMove(e, t));
-                    d.prototype._applyPartMove.call(this, e, t, i, n);
+                        partId === GTextEditor.DISTANCE_HANDLER_ID && (this._element.setProperty("tpthl", this._element.$tpthl), this.resetPartMove(partId, partInfo));
+                    GElementEditor.prototype._applyPartMove.call(this, partId, partInfo, editOptions, linkedElements);
                 }),
-                (k.prototype.processPaste = function (e) {
-                    var t = null;
+                (GTextEditor.prototype.processPaste = function (data) {
+                    var content = null;
                     if (!this.isInlineEdit()) return false;
                     if (
-                        (e instanceof g
-                            ? (t = e.getContent())
-                            : (e instanceof String || "string" == typeof e) &&
-                              (D.OperatingSystem.Windows && (e = h.replaceMicrosoftLineFeed(e)), (t = e)),
-                        !t)
+                        (data instanceof GText
+                            ? (content = data.getContent())
+                            : (data instanceof String || "string" == typeof data) &&
+                              (GPlatform.OperatingSystem.Windows && (data = GUtil.replaceMicrosoftLineFeed(data)), (content = data)),
+                        !content)
                     )
                         return false;
-                    var i = this._element.getTLCore();
-                    return i
+                    var tlCore = this._element.getTLCore();
+                    return tlCore
                         ? (this.requestInvalidation(),
                           this.contentSetEnabled(0),
-                          i.insert(this._element._shorten(t)),
+                          tlCore.insert(this._element._shorten(content)),
                           this.invalidateTextWidth(),
                           this.contentSetEnabled(1),
                           true)
                         : 0;
                 }),
-                (k.prototype.invalidateTextWidth = function () {
-                    var e = this._element;
-                    if (e.$aw && !e.hasPathAttached()) {
-                        var t,
-                            i,
-                            n = e.getGeometryBBox(),
-                            r = e.getPage().getGeometryBBox(),
-                            o = e.getTransform(),
-                            a = e._getWidth();
-                        if (o && o.getMatrix()[0] < 0) {
-                            if (n.getX() < 0 && n.getX() + n.getWidth() > 50) {
-                                e.setProperties(["aw", "w"], [false, a]);
-                                var s = (n.getWidth() + n.getX()) / n.getWidth();
-                                ((l = (l = new v()).scaled(s, 1)), e.transformSourceBBox(l));
+                (GTextEditor.prototype.invalidateTextWidth = function () {
+                    var element = this._element;
+                    if (element.$aw && !element.hasPathAttached()) {
+                        var rightEdge,
+                            pageWidth,
+                            bbox = element.getGeometryBBox(),
+                            pageBBox = element.getPage().getGeometryBBox(),
+                            elementTransform = element.getTransform(),
+                            width = element._getWidth();
+                        if (elementTransform && elementTransform.getMatrix()[0] < 0) {
+                            if (bbox.getX() < 0 && bbox.getX() + bbox.getWidth() > 50) {
+                                element.setProperties(["aw", "w"], [false, width]);
+                                var scale = (bbox.getWidth() + bbox.getX()) / bbox.getWidth();
+                                ((scaleTransform = (scaleTransform = new GTransform()).scaled(scale, 1)), element.transformSourceBBox(scaleTransform));
                             }
-                        } else if ((t = n.getX() + n.getWidth()) > (i = r.getWidth())) {
-                            var l = new v(),
-                                h = t - i;
-                            if (n.getWidth() - h > 50) {
-                                e.setProperties(["aw", "w"], [false, a]);
-                                s = (n.getWidth() - h) / n.getWidth();
-                                ((l = l.scaled(s, 1)), e.transformSourceBBox(l));
+                        } else if ((rightEdge = bbox.getX() + bbox.getWidth()) > (pageWidth = pageBBox.getWidth())) {
+                            var scaleTransform = new GTransform(),
+                                overflow = rightEdge - pageWidth;
+                            if (bbox.getWidth() - overflow > 50) {
+                                element.setProperties(["aw", "w"], [false, width]);
+                                scale = (bbox.getWidth() - overflow) / bbox.getWidth();
+                                ((scaleTransform = scaleTransform.scaled(scale, 1)), element.transformSourceBBox(scaleTransform));
                             }
                         }
                     }
                 }),
-                (k.prototype.handleKeyDown = function (e) {
-                    return !!this.isInlineEdit() && this._inlineEditor.handleDomKeyDown(e);
+                (GTextEditor.prototype.handleKeyDown = function (event) {
+                    return !!this.isInlineEdit() && this._inlineEditor.handleDomKeyDown(event);
                 }),
-                (k.prototype.contentSetEnabled = function (e) {
-                    this._dontSetContent = !e;
+                (GTextEditor.prototype.contentSetEnabled = function (enabled) {
+                    this._dontSetContent = !enabled;
                 }),
-                (k.prototype.canHandleDblClick = function () {
+                (GTextEditor.prototype.canHandleDblClick = function () {
                     return true;
                 }),
-                (k.prototype.handleDblClick = function (e, t) {
+                (GTextEditor.prototype.handleDblClick = function (partId, partInfo) {
                     return (
-                        e === y.RESIZE_HANDLE_PART_ID &&
-                        (t.side === _.Side.RIGHT_CENTER
+                        partId === GBoxEditor.RESIZE_HANDLE_PART_ID &&
+                        (partInfo.side === GRect.Side.RIGHT_CENTER
                             ? this._element.setProperty("aw", !this._element.getProperty("aw"))
-                            : t.side === _.Side.BOTTOM_CENTER && this._element.setProperty("ah", !this._element.getProperty("ah")),
+                            : partInfo.side === GRect.Side.BOTTOM_CENTER && this._element.setProperty("ah", !this._element.getProperty("ah")),
                         true)
                     );
                 }),
-                (k.prototype._getVerticalOffset = function () {
-                    var e = this._element.getTLCore();
-                    if (!e) return 0;
-                    var t = this._element.getSourceBBox(),
-                        i = (t && t.getHeight()) || 0,
-                        n = e.getHeight();
-                    return n < i ? 0.5 * (this._element._getHeight() - n) : 0;
+                (GTextEditor.prototype._getVerticalOffset = function () {
+                    var tlCore = this._element.getTLCore();
+                    if (!tlCore) return 0;
+                    var sourceBBox = this._element.getSourceBBox(),
+                        sourceHeight = (sourceBBox && sourceBBox.getHeight()) || 0,
+                        tlCoreHeight = tlCore.getHeight();
+                    return tlCoreHeight < sourceHeight ? 0.5 * (this._element._getHeight() - tlCoreHeight) : 0;
                 }),
-                (k.prototype.getBBox = function (e) {
-                    if (this.hasPathAttached() && (this.hasFlag(w.Flag.Selected) || this.hasFlag(w.Flag.Highlighted))) {
-                        var t = e;
-                        this._transform && (t = this._transform.multiplied(e));
-                        var i = this._element.getTLCore();
-                        if (i) {
-                            var n = t,
-                                r = this.getBoxTransform();
-                            r && (n = r.multiplied(t));
-                            var o = i.getBoxes(i.getDocumentRange());
-                            if (!o) return null;
-                            var a,
-                                s,
-                                l,
-                                h,
-                                A = this._mergeRectangles(o);
-                            ((a = s = Number.POSITIVE_INFINITY), (l = h = Number.NEGATIVE_INFINITY));
-                            for (var c = 0; c < A.length; c++)
-                                for (var p = A[c], d = 0; d < p.length; d++) {
+                (GTextEditor.prototype.getBBox = function (transform) {
+                    if (this.hasPathAttached() && (this.hasFlag(GBaseEditor.Flag.Selected) || this.hasFlag(GBaseEditor.Flag.Highlighted))) {
+                        var effectiveTransform = transform;
+                        this._transform && (effectiveTransform = this._transform.multiplied(transform));
+                        var tlCore = this._element.getTLCore();
+                        if (tlCore) {
+                            var mapTransform = effectiveTransform,
+                                boxTransform = this.getBoxTransform();
+                            boxTransform && (mapTransform = boxTransform.multiplied(effectiveTransform));
+                            var boxes = tlCore.getBoxes(tlCore.getDocumentRange());
+                            if (!boxes) return null;
+                            var minX,
+                                minY,
+                                maxX,
+                                maxY,
+                                mergedRects = this._mergeRectangles(boxes);
+                            ((minX = minY = Number.POSITIVE_INFINITY), (maxX = maxY = Number.NEGATIVE_INFINITY));
+                            for (var c = 0; c < mergedRects.length; c++)
+                                for (var p = mergedRects[c], d = 0; d < p.length; d++) {
                                     var g = p[d],
                                         f = g.getX(),
                                         m = g.getY();
-                                    ((a = Math.min(a, f)), (l = Math.max(l, f)), (s = Math.min(s, m)), (h = Math.max(h, m)));
+                                    ((minX = Math.min(minX, f)), (maxX = Math.max(maxX, f)), (minY = Math.min(minY, m)), (maxY = Math.max(maxY, m)));
                                 }
-                            if (isFinite(a) && isFinite(l) && isFinite(h) && isFinite(s)) {
-                                var y = new _(a, s, l - a, h - s),
-                                    v = this.getBBoxMargin();
-                                return n.mapRect(y).expanded(v, v, v, v);
+                            if (isFinite(minX) && isFinite(maxX) && isFinite(maxY) && isFinite(minY)) {
+                                var unionRect = new GRect(minX, minY, maxX - minX, maxY - minY),
+                                    margin = this.getBBoxMargin();
+                                return mapTransform.mapRect(unionRect).expanded(margin, margin, margin, margin);
                             }
                             return null;
                         }
                     }
-                    return u.prototype.getBBox.call(this, e);
+                    return GShapeEditor.prototype.getBBox.call(this, transform);
                 }),
-                (k.prototype.getBBoxMargin = function () {
-                    var e = u.prototype.getBBoxMargin.call(this);
+                (GTextEditor.prototype.getBBoxMargin = function () {
+                    var baseMargin = GShapeEditor.prototype.getBBoxMargin.call(this);
                     if (this.getElement().hasPathAttached()) {
-                        var t = this.isInlineEdit() && this._inlineEditor.getCaretBox(),
-                            i = this.hasFlag(w.Flag.Selected) ? E.getAnnotationPaintMargin(m.annotationHandles.textOnPath.size) : 0;
-                        return (t && (i = Math.max(t.box.getWidth(), t.box.getHeight())), Math.max(i, e));
+                        var caretBox = this.isInlineEdit() && this._inlineEditor.getCaretBox(),
+                            margin = this.hasFlag(GBaseEditor.Flag.Selected) ? AnnotationPaint.getAnnotationPaintMargin(EditorConfig.annotationHandles.textOnPath.size) : 0;
+                        return (caretBox && (margin = Math.max(caretBox.box.getWidth(), caretBox.box.getHeight())), Math.max(margin, baseMargin));
                     }
-                    return e;
+                    return baseMargin;
                 }),
-                (k.prototype._getBBox = function (e, t) {
+                (GTextEditor.prototype._getBBox = function (transform, applyOwnTransform) {
                     if (!this._fullContentsTransform && this._transform) {
-                        var i = this._transform && t ? this._transform.multiplied(e) : e,
-                            n = this._getBoxParams(i);
-                        if (n.bbox) {
-                            var r = n.bbox;
-                            if (n.trf) return (r = n.trf.mapRect(r));
+                        var effectiveTransform = this._transform && applyOwnTransform ? this._transform.multiplied(transform) : transform,
+                            boxParams = this._getBoxParams(effectiveTransform);
+                        if (boxParams.bbox) {
+                            var bbox = boxParams.bbox;
+                            if (boxParams.trf) return (bbox = boxParams.trf.mapRect(bbox));
                         }
                     }
                     return null;
                 }),
-                (k.prototype._paintResizeHandles = function (e, t) {
-                    var i = m.annotationHandles.resize;
+                (GTextEditor.prototype._paintResizeHandles = function (transform, context) {
+                    var resizeConfig = EditorConfig.annotationHandles.resize;
                     this._iterateResizeHandles(
-                        function (n, r, o) {
-                            var a = i.inverted;
-                            (m.annotationHandles.text.showAutoSize &&
-                                ((r === _.Side.RIGHT_CENTER && this._element.getProperty("aw")) ||
-                                    (r === _.Side.BOTTOM_CENTER && this._element.getProperty("ah"))) &&
-                                (a = !a),
-                                r === _.Side.BOTTOM_RIGHT && this._element.getProperty("sc")
-                                    ? E.paintAnnotation(t, e, n, i.type, a, i.size, m.annotationHandles.text.blResizeColor, s.WHITE)
-                                    : E.paintAnnotation(t, e, n, i.type, a, i.size, this.getColor() || t.selectionOutlineColor, s.WHITE));
+                        function (point, side, segment) {
+                            var inverted = resizeConfig.inverted;
+                            (EditorConfig.annotationHandles.text.showAutoSize &&
+                                ((side === GRect.Side.RIGHT_CENTER && this._element.getProperty("aw")) ||
+                                    (side === GRect.Side.BOTTOM_CENTER && this._element.getProperty("ah"))) &&
+                                (inverted = !inverted),
+                                side === GRect.Side.BOTTOM_RIGHT && this._element.getProperty("sc")
+                                    ? AnnotationPaint.paintAnnotation(context, transform, point, resizeConfig.type, inverted, resizeConfig.size, EditorConfig.annotationHandles.text.blResizeColor, GRGBColor.WHITE)
+                                    : AnnotationPaint.paintAnnotation(context, transform, point, resizeConfig.type, inverted, resizeConfig.size, this.getColor() || context.selectionOutlineColor, GRGBColor.WHITE));
                         }.bind(this),
-                        e
+                        transform
                     );
                 }),
-                (k.prototype._showResizeHandles = function () {
-                    return !this.getElement().hasPathAttached() && u.prototype._showResizeHandles.call(this);
+                (GTextEditor.prototype._showResizeHandles = function () {
+                    return !this.getElement().hasPathAttached() && GShapeEditor.prototype._showResizeHandles.call(this);
                 }),
-                (k.prototype._drawBBox = function (e, t, i, n, r, o, a) {
-                    var s,
-                        l = i.box || i,
-                        h = t;
-                    if (o) {
-                        i.transform && (h = h.preMultiplied(i.transform));
-                        var A = 0,
-                            c = 0;
-                        (1 == l.getWidth() ? (c = l.getHeight()) : (A = l.getWidth()),
-                            (s = [h.mapPoint(new f(l.getX() + 0.5, l.getY())), h.mapPoint(new f(l.getX() + A + 0.5, l.getY() + c))]));
+                (GTextEditor.prototype._drawBBox = function (context, transform, box, color, opacity, isCaret, strokeOnly) {
+                    var points,
+                        rect = box.box || box,
+                        renderTransform = transform;
+                    if (isCaret) {
+                        box.transform && (renderTransform = renderTransform.preMultiplied(box.transform));
+                        var width = 0,
+                            height = 0;
+                        (1 == rect.getWidth() ? (height = rect.getHeight()) : (width = rect.getWidth()),
+                            (points = [renderTransform.mapPoint(new GPoint(rect.getX() + 0.5, rect.getY())), renderTransform.mapPoint(new GPoint(rect.getX() + width + 0.5, rect.getY() + height))]));
                     } else
-                        l instanceof _
-                            ? (s = h.mapQuadrilateral(l))
-                            : l.length &&
-                              (s = l.map(function (e) {
-                                  return h.mapPoint(e);
+                        rect instanceof GRect
+                            ? (points = renderTransform.mapQuadrilateral(rect))
+                            : rect.length &&
+                              (points = rect.map(function (point) {
+                                  return renderTransform.mapPoint(point);
                               }));
-                    var p = null;
-                    (s &&
-                        s.length &&
-                        (p = s.map(function (e) {
-                            return new f(Math.floor(e.getX()) + 0.5, Math.floor(e.getY()) + 0.5);
+                    var roundedPoints = null;
+                    (points &&
+                        points.length &&
+                        (roundedPoints = points.map(function (point) {
+                            return new GPoint(Math.floor(point.getX()) + 0.5, Math.floor(point.getY()) + 0.5);
                         })),
-                        p &&
-                            (e.canvas.putVertices(p, true),
-                            2 == p.length
-                                ? e.canvas.strokeVertices(n, Math.sqrt(h.getScaleFactor()) || 1, null, null, null, null, r)
-                                : a
-                                  ? e.canvas.strokeVertices(n, 1, null, null, null, null, r)
-                                  : e.canvas.fillVertices(n, r)));
+                        roundedPoints &&
+                            (context.canvas.putVertices(roundedPoints, true),
+                            2 == roundedPoints.length
+                                ? context.canvas.strokeVertices(color, Math.sqrt(renderTransform.getScaleFactor()) || 1, null, null, null, null, opacity)
+                                : strokeOnly
+                                  ? context.canvas.strokeVertices(color, 1, null, null, null, null, opacity)
+                                  : context.canvas.fillVertices(color, opacity)));
                 }),
-                (k.prototype._mergeRectangles = function (e) {
-                    for (var t = 0, i = []; t < e.length; ) {
-                        var n = e[t].box,
-                            r = e[t].transform;
+                (GTextEditor.prototype._mergeRectangles = function (boxEntries) {
+                    for (var t = 0, merged = []; t < boxEntries.length; ) {
+                        var n = boxEntries[t].box,
+                            r = boxEntries[t].transform;
                         if (r) {
                             for (
                                 var o = r.mapQuadrilateral(n),
-                                    a = (p = b.getTurnAngle(o[0], o[1], o[1], o[2]) <= 0) ? [o[0], o[1]] : [o[1], o[0]],
+                                    a = (p = GMath.getTurnAngle(o[0], o[1], o[1], o[2]) <= 0) ? [o[0], o[1]] : [o[1], o[0]],
                                     s = p ? [o[3], o[2]] : [o[2], o[3]],
                                     l = null,
                                     h = t + 1;
-                                h < e.length;
+                                h < boxEntries.length;
                                 h++
                             ) {
-                                var A = e[h].box;
+                                var A = boxEntries[h].box;
                                 if (
                                     !(
                                         A.getX() <= n.getX() + n.getWidth() &&
@@ -539,10 +539,10 @@ module.exports = function (module, exports, require) {
                                     )
                                 )
                                     break;
-                                if ((r = e[h].transform)) {
+                                if ((r = boxEntries[h].transform)) {
                                     l = r.mapQuadrilateral(A);
-                                    var c;
-                                    c = b.getIntersectionPoint(
+                                    var cornerPoint;
+                                    cornerPoint = GMath.getIntersectionPoint(
                                         l[0].getX(),
                                         l[0].getY(),
                                         l[1].getX(),
@@ -552,13 +552,13 @@ module.exports = function (module, exports, require) {
                                         o[1].getX(),
                                         o[1].getY()
                                     );
-                                    var p = b.getTurnAngle(l[0], l[1], l[1], l[2]) <= 0;
-                                    c ? (a.pop(), p ? a.push(c, l[1]) : a.push(c, l[0])) : p ? a.push(l[0], l[1]) : a.push(l[1], l[0]);
+                                    var p = GMath.getTurnAngle(l[0], l[1], l[1], l[2]) <= 0;
+                                    cornerPoint ? (a.pop(), p ? a.push(cornerPoint, l[1]) : a.push(cornerPoint, l[0])) : p ? a.push(l[0], l[1]) : a.push(l[1], l[0]);
                                     var u = null,
-                                        d = b.normalizePoint(l[2].subtract(l[3]));
-                                    if (!(b.normalizePoint(o[2].subtract(o[3])).dot(d) > 0.999)) {
+                                        d = GMath.normalizePoint(l[2].subtract(l[3]));
+                                    if (!(GMath.normalizePoint(o[2].subtract(o[3])).dot(d) > 0.999)) {
                                         var g = [];
-                                        (u = b.getIntersectionPoint(
+                                        (u = GMath.getIntersectionPoint(
                                             l[2].getX(),
                                             l[2].getY(),
                                             l[3].getX(),
@@ -573,7 +573,7 @@ module.exports = function (module, exports, require) {
                                             Math.abs(g[0]) + Math.abs(g[1]) > 2 &&
                                             (u = null);
                                     }
-                                    (c
+                                    (cornerPoint
                                         ? p
                                             ? s.push(l[3], l[2])
                                             : s.push(l[2], l[3])
@@ -583,85 +583,85 @@ module.exports = function (module, exports, require) {
                                 }
                             }
                             var f = a.concat(s.reverse());
-                            (i.push(f), (t = h));
+                            (merged.push(f), (t = h));
                         } else t++;
                     }
-                    return i;
+                    return merged;
                 }),
-                (k.prototype._paintOutline = function (e, t, i, n, r) {
+                (GTextEditor.prototype._paintOutline = function (transform, context, i, color, r) {
                     if (!this.getElement().hasPathAttached()) {
-                        var o = true;
-                        (this.isInlineEdit() && (o = !this.getElement().getProperty("ah") || !this.getElement().getProperty("aw")),
-                            o && y.prototype._paintOutline.call(this, e, t, true, n));
+                        var paintBaseOutline = true;
+                        (this.isInlineEdit() && (paintBaseOutline = !this.getElement().getProperty("ah") || !this.getElement().getProperty("aw")),
+                            paintBaseOutline && GBoxEditor.prototype._paintOutline.call(this, transform, context, true, color));
                     }
-                    var a,
-                        h,
-                        A,
-                        c = e,
-                        p = this.getBoxTransform();
+                    var caretBox,
+                        selectionBoxes,
+                        mergedBoxes,
+                        renderTransform = transform,
+                        boxTransform = this.getBoxTransform();
                     if (
-                        ((c = p ? p.multiplied(c) : c),
-                        this.isInlineEdit() && ((a = this._inlineEditor.getCaretBox()), (h = this._inlineEditor.getSelectionBoxes())),
-                        a)
+                        ((renderTransform = boxTransform ? boxTransform.multiplied(renderTransform) : renderTransform),
+                        this.isInlineEdit() && ((caretBox = this._inlineEditor.getCaretBox()), (selectionBoxes = this._inlineEditor.getSelectionBoxes())),
+                        caretBox)
                     ) {
                         for (
-                            var u = this.getElement(),
-                                d = u.getTLCore(),
-                                g = u.getEffects().getFirstChild(),
-                                f = (g && g.getProperty("GGLBrightnessContrastEffect&shp")) || null,
-                                m = g && f ? f.brightness : 0,
-                                _ = u.getProperty("_stop"),
-                                v = d.getRichContent(),
-                                b = d.getSelection(),
-                                C = b ? b.start : 0,
-                                E = 0,
-                                B = 0,
+                            var element = this.getElement(),
+                                tlCore = element.getTLCore(),
+                                firstEffect = element.getEffects().getFirstChild(),
+                                brightnessEffect = (firstEffect && firstEffect.getProperty("GGLBrightnessContrastEffect&shp")) || null,
+                                brightness = firstEffect && brightnessEffect ? brightnessEffect.brightness : 0,
+                                stopOpacity = element.getProperty("_stop"),
+                                richContent = tlCore.getRichContent(),
+                                selection = tlCore.getSelection(),
+                                selectionStart = selection ? selection.start : 0,
+                                runIndex = 0,
+                                charCount = 0,
                                 x = 0,
-                                P = v.length;
-                            x < P;
+                                runCount = richContent.length;
+                            x < runCount;
                             x++
                         ) {
-                            if (C <= (B += v[x].text.length)) {
-                                E = x;
+                            if (selectionStart <= (charCount += richContent[x].text.length)) {
+                                runIndex = x;
                                 break;
                             }
                         }
-                        var S = v.length ? v[E].fontColor : n;
-                        (m && ((hsv = l.rgbToHSV(s.parseCSSColor(S))), (hsv[2] += m), (S = l.rgbToHtmlHex(l.hsvToRGB(hsv)))),
-                            this._drawBBox(t, c, a, S, _, true));
-                    } else if (h && h.length)
-                        if (h[0].transform) {
-                            A = this._mergeRectangles(h);
-                            for (x = 0; x < A.length; x++)
+                        var fontColor = richContent.length ? richContent[runIndex].fontColor : color;
+                        (brightness && ((hsv = GColor.rgbToHSV(GRGBColor.parseCSSColor(fontColor))), (hsv[2] += brightness), (fontColor = GColor.rgbToHtmlHex(GColor.hsvToRGB(hsv)))),
+                            this._drawBBox(context, renderTransform, caretBox, fontColor, stopOpacity, true));
+                    } else if (selectionBoxes && selectionBoxes.length)
+                        if (selectionBoxes[0].transform) {
+                            mergedBoxes = this._mergeRectangles(selectionBoxes);
+                            for (x = 0; x < mergedBoxes.length; x++)
                                 this._drawBBox(
-                                    t,
-                                    c,
-                                    A[x],
-                                    n || (this.hasFlag(w.Flag.Highlighted) ? t.highlightOutlineColor : t.selectionOutlineColor),
+                                    context,
+                                    renderTransform,
+                                    mergedBoxes[x],
+                                    color || (this.hasFlag(GBaseEditor.Flag.Highlighted) ? context.highlightOutlineColor : context.selectionOutlineColor),
                                     0.3,
                                     false
                                 );
                         } else
-                            for (x = 0; x < h.length; x++)
+                            for (x = 0; x < selectionBoxes.length; x++)
                                 this._drawBBox(
-                                    t,
-                                    c,
-                                    h[x],
-                                    n || (this.hasFlag(w.Flag.Highlighted) ? t.highlightOutlineColor : t.selectionOutlineColor),
+                                    context,
+                                    renderTransform,
+                                    selectionBoxes[x],
+                                    color || (this.hasFlag(GBaseEditor.Flag.Highlighted) ? context.highlightOutlineColor : context.selectionOutlineColor),
                                     0.3,
                                     false
                                 );
                     else if (this.getElement().hasPathAttached() && !this.isInlineEdit()) {
-                        if (!(d = this.getElement().getTLCore())) return;
-                        var T = d.getBoxes(d.getDocumentRange());
-                        if (T) {
-                            A = this._mergeRectangles(T);
-                            for (x = 0; x < A.length; x++)
+                        if (!(tlCore = this.getElement().getTLCore())) return;
+                        var pathBoxes = tlCore.getBoxes(tlCore.getDocumentRange());
+                        if (pathBoxes) {
+                            mergedBoxes = this._mergeRectangles(pathBoxes);
+                            for (x = 0; x < mergedBoxes.length; x++)
                                 this._drawBBox(
-                                    t,
-                                    c,
-                                    A[x],
-                                    n || (this.hasFlag(w.Flag.Highlighted) ? t.highlightOutlineColor : t.selectionOutlineColor),
+                                    context,
+                                    renderTransform,
+                                    mergedBoxes[x],
+                                    color || (this.hasFlag(GBaseEditor.Flag.Highlighted) ? context.highlightOutlineColor : context.selectionOutlineColor),
                                     0.3,
                                     false,
                                     true
@@ -669,93 +669,93 @@ module.exports = function (module, exports, require) {
                         }
                     }
                 }),
-                (k.prototype._paintResizeBoxOutline = function (e, t, i, n, r) {
+                (GTextEditor.prototype._paintResizeBoxOutline = function (transform, context, i, color, lineWidth) {
                     if (!this._fullContentsTransform && this._transform) {
-                        var o = this._getBoxParams(e);
-                        o.bbox && this._paintTransformedQuadrilateral(o.trf, o.bbox, t, n, r);
-                    } else y.prototype._paintResizeBoxOutline.call(this, e, t, i, n, r);
+                        var boxParams = this._getBoxParams(transform);
+                        boxParams.bbox && this._paintTransformedQuadrilateral(boxParams.trf, boxParams.bbox, context, color, lineWidth);
+                    } else GBoxEditor.prototype._paintResizeBoxOutline.call(this, transform, context, i, color, lineWidth);
                 }),
-                (k.prototype._getBoxParams = function (e) {
-                    var t = this.getBox(),
-                        i = this.getBoxTransform();
-                    if (t && e) {
-                        var n = e,
-                            r = i ? i.inverted() : null,
-                            o = this._element.getSourceBBox() || new f(0, 0);
-                        (r && (n = new v(1, 0, 0, 1, o.getX(), o.getY()).multiplied(i).multiplied(n).multiplied(r)), (i = i || new v()));
-                        var a = n.getMatrix(),
-                            s = i.getTranslation(),
-                            l = new _(s.getX(), s.getY(), t.getWidth(), t.getHeight()),
-                            h = n.mapQuadrilateral(l),
-                            A = Math.max(1, Math.abs(h[0].getX() - h[1].getX())),
-                            c = Math.max(1, Math.abs(h[0].getY() - h[3].getY())),
-                            p = n.getTranslation();
-                        ((i = i.preMultiplied(new v(a[0] < 0 ? -1 : 1, 0, 0, a[3] < 0 ? -1 : 1, p.getX(), p.getY()))),
-                            (t = new _(0, 0, A, c)));
+                (GTextEditor.prototype._getBoxParams = function (transform) {
+                    var box = this.getBox(),
+                        boxTransform = this.getBoxTransform();
+                    if (box && transform) {
+                        var mappedTransform = transform,
+                            inverseBoxTransform = boxTransform ? boxTransform.inverted() : null,
+                            boxOrigin = this._element.getSourceBBox() || new GPoint(0, 0);
+                        (inverseBoxTransform && (mappedTransform = new GTransform(1, 0, 0, 1, boxOrigin.getX(), boxOrigin.getY()).multiplied(boxTransform).multiplied(mappedTransform).multiplied(inverseBoxTransform)), (boxTransform = boxTransform || new GTransform()));
+                        var matrix = mappedTransform.getMatrix(),
+                            translation = boxTransform.getTranslation(),
+                            rect = new GRect(translation.getX(), translation.getY(), box.getWidth(), box.getHeight()),
+                            quad = mappedTransform.mapQuadrilateral(rect),
+                            width = Math.max(1, Math.abs(quad[0].getX() - quad[1].getX())),
+                            height = Math.max(1, Math.abs(quad[0].getY() - quad[3].getY())),
+                            mappedTranslation = mappedTransform.getTranslation();
+                        ((boxTransform = boxTransform.preMultiplied(new GTransform(matrix[0] < 0 ? -1 : 1, 0, 0, matrix[3] < 0 ? -1 : 1, mappedTranslation.getX(), mappedTranslation.getY()))),
+                            (box = new GRect(0, 0, width, height)));
                     }
                     return {
-                        bbox: t,
-                        trf: i,
+                        bbox: box,
+                        trf: boxTransform,
                     };
                 }),
-                (k.prototype._getDistHandlePosition = function (e) {
+                (GTextEditor.prototype._getDistHandlePosition = function (transform) {
                     if (!this._element.hasPathAttached()) return null;
-                    var t = this.getElement().getTLCore();
-                    if (!t || !t.getTransformer()) return null;
-                    var i = new f(0, 0),
-                        n = new _(i.getX(), -t.getVShift() + i.getY(), 1, 1),
-                        r = t.getTransformer().getMatrix(0, 0, n) || new v(),
-                        o = t.getRenderBounds(),
-                        a = new v(1, 0, 0, 1, -o.getX(), -o.getY()),
-                        s = e || new v();
-                    return (e = r
-                        .multiplied(a)
-                        .multiplied(this._element.$trf || new v())
-                        .multiplied(s)).mapPoint(i);
+                    var tlCore = this.getElement().getTLCore();
+                    if (!tlCore || !tlCore.getTransformer()) return null;
+                    var origin = new GPoint(0, 0),
+                        unitRect = new GRect(origin.getX(), -tlCore.getVShift() + origin.getY(), 1, 1),
+                        matrix = tlCore.getTransformer().getMatrix(0, 0, unitRect) || new GTransform(),
+                        renderBounds = tlCore.getRenderBounds(),
+                        boundsOffset = new GTransform(1, 0, 0, 1, -renderBounds.getX(), -renderBounds.getY()),
+                        appliedTransform = transform || new GTransform();
+                    return (transform = matrix
+                        .multiplied(boundsOffset)
+                        .multiplied(this._element.$trf || new GTransform())
+                        .multiplied(appliedTransform)).mapPoint(origin);
                 }),
-                (k.prototype._postPaint = function (e, t) {
-                    if ((u.prototype._postPaint.call(this, e, t), this._element.hasFlag(o.Flag.Selected))) {
-                        var i = this._getDistHandlePosition(e);
-                        if (i) {
-                            var n = m.annotationHandles.textOnPath;
-                            E.paintAnnotation(t, null, i, n.type, false, n.size, s.WHITE, t.annotationColor);
+                (GTextEditor.prototype._postPaint = function (transform, context) {
+                    if ((GShapeEditor.prototype._postPaint.call(this, transform, context), this._element.hasFlag(GNode.Flag.Selected))) {
+                        var handlePosition = this._getDistHandlePosition(transform);
+                        if (handlePosition) {
+                            var textOnPathConfig = EditorConfig.annotationHandles.textOnPath;
+                            AnnotationPaint.paintAnnotation(context, null, handlePosition, textOnPathConfig.type, false, textOnPathConfig.size, GRGBColor.WHITE, context.annotationColor);
                         }
                     }
                 }),
-                (k.prototype._triggerSelectionChanged = function () {
-                    var e = GEditor.getEditor(this.getElement().getScene());
-                    e &&
-                        e.hasEventListeners(GEditor.InlineEditorEvent) &&
-                        e.trigger(new GEditor.InlineEditorEvent(this, GEditor.InlineEditorEvent.Type.SelectionChanged));
+                (GTextEditor.prototype._triggerSelectionChanged = function () {
+                    var editor = GEditor.getEditor(this.getElement().getScene());
+                    editor &&
+                        editor.hasEventListeners(GEditor.InlineEditorEvent) &&
+                        editor.trigger(new GEditor.InlineEditorEvent(this, GEditor.InlineEditorEvent.Type.SelectionChanged));
                 }),
-                (k.prototype._triggerTextEdited = function (e) {
-                    var t = GEditor.getEditor(this.getElement().getScene());
-                    t &&
-                        t.hasEventListeners(GEditor.InlineEditorEvent) &&
-                        t.trigger(new GEditor.InlineEditorEvent(this, GEditor.InlineEditorEvent.Type.TextEdited, e));
+                (GTextEditor.prototype._triggerTextEdited = function (data) {
+                    var editor = GEditor.getEditor(this.getElement().getScene());
+                    editor &&
+                        editor.hasEventListeners(GEditor.InlineEditorEvent) &&
+                        editor.trigger(new GEditor.InlineEditorEvent(this, GEditor.InlineEditorEvent.Type.TextEdited, data));
                 }),
-                (k.prototype.triggerHotkeyEvent = function (e) {
-                    var t = GEditor.getEditor(this.getElement().getScene());
-                    t && t.hasEventListeners(GEditor.HotkeyEvent) && t.trigger(new GEditor.HotkeyEvent(e));
+                (GTextEditor.prototype.triggerHotkeyEvent = function (hotkey) {
+                    var editor = GEditor.getEditor(this.getElement().getScene());
+                    editor && editor.hasEventListeners(GEditor.HotkeyEvent) && editor.trigger(new GEditor.HotkeyEvent(hotkey));
                 }),
-                (k.prototype._nextCaretToggle = 0),
-                (k.prototype._caretUpdate = function () {
-                    var e, t;
+                (GTextEditor.prototype._nextCaretToggle = 0),
+                (GTextEditor.prototype._caretUpdate = function () {
+                    var tlCore, now;
                     this.isInlineEdit() &&
                         (this._inlineEditor.hasFocus()
-                            ? (t = new Date().getTime()) > this._nextCaretToggle &&
-                              ((e = this._element.getTLCore()),
-                              (this._nextCaretToggle = t + 500),
-                              e && e.toggleCaret() && this.getElement().repaint(true))
-                            : (e = this._element.getTLCore()) && e.isCaretVisible() && e.toggleCaret());
+                            ? (now = new Date().getTime()) > this._nextCaretToggle &&
+                              ((tlCore = this._element.getTLCore()),
+                              (this._nextCaretToggle = now + 500),
+                              tlCore && tlCore.toggleCaret() && this.getElement().repaint(true))
+                            : (tlCore = this._element.getTLCore()) && tlCore.isCaretVisible() && tlCore.toggleCaret());
                 }),
-                (k.prototype.adjustInlineEditForView = function (e, t) {
-                    var i = this.getElement().getTLCore();
-                    i && !this.getElement().getProperty("_we") ? i.selectAll() : t && this._inlineEditor.setCursor(t);
+                (GTextEditor.prototype.adjustInlineEditForView = function (view, cursor) {
+                    var tlCore = this.getElement().getTLCore();
+                    tlCore && !this.getElement().getProperty("_we") ? tlCore.selectAll() : cursor && this._inlineEditor.setCursor(cursor);
                 }),
-                (k.prototype.canInlineEdit = function () {
+                (GTextEditor.prototype.canInlineEdit = function () {
                     if (
-                        m.inlineEditText &&
+                        EditorConfig.inlineEditText &&
                         this._inlineEditEnabled &&
                         this.getElement().getTLCore() &&
                         this._element.getWorkspace().getFontManager().getDefaultFont() &&
@@ -765,61 +765,61 @@ module.exports = function (module, exports, require) {
                         return true;
                     return false;
                 }),
-                (k.prototype.isInlineEdit = function () {
+                (GTextEditor.prototype.isInlineEdit = function () {
                     return null !== this._inlineEditor && this._inlineEditor.isActivated();
                 }),
-                (k.prototype.beginInlineEdit = function (e) {
-                    var t = this.getElement().getTLCore();
-                    t &&
+                (GTextEditor.prototype.beginInlineEdit = function (view) {
+                    var tlCore = this.getElement().getTLCore();
+                    tlCore &&
                         this._element.getWorkspace().getFontManager().getDefaultFont() &&
                         !this._element.isFakeText() &&
-                        (this.removeFlag(y.Flag.ResizeAll),
+                        (this.removeFlag(GBoxEditor.Flag.ResizeAll),
                         this._inlineEditor ||
-                            ((this._inlineEditor = new p(this)),
-                            t.selectionChanged(
-                                function (e) {
-                                    if (!this.getParentEditor()) return r.UNSUBSCRIBE;
+                            ((this._inlineEditor = new GInlineTextEditor(this)),
+                            tlCore.selectionChanged(
+                                function (event) {
+                                    if (!this.getParentEditor()) return TextUtil.UNSUBSCRIBE;
                                     (this._triggerSelectionChanged(), this.getElement().repaint());
                                 }.bind(this),
                                 true
                             )),
                         (this._nextCaretToggle = new Date().getTime()),
-                        this._inlineEditor.activate(e),
+                        this._inlineEditor.activate(view),
                         this.getElement().repaint(true));
                 }),
-                (k.prototype.isSelectionHit = function (e) {
-                    return !!this.isInlineEdit() && this._inlineEditor.isSelectionHit(e);
+                (GTextEditor.prototype.isSelectionHit = function (position) {
+                    return !!this.isInlineEdit() && this._inlineEditor.isSelectionHit(position);
                 }),
-                (k.prototype.isDeletePartsAllowed = function () {
+                (GTextEditor.prototype.isDeletePartsAllowed = function () {
                     return this.isInlineEdit();
                 }),
-                (k.prototype.deletePartsSelected = function () {
+                (GTextEditor.prototype.deletePartsSelected = function () {
                     this.isInlineEdit() && this._inlineEditor.deleteSelected();
                 }),
-                (k.prototype.finishInlineEdit = function () {
+                (GTextEditor.prototype.finishInlineEdit = function () {
                     this._inlineEditor._view;
                     (this._inlineEditor.deactivate(),
                         this.getElement().repaint(false),
-                        this.getElement().getProperty("plkt") & c.ProgramLck.NoSizeChanges || this.setFlag(y.Flag.ResizeAll));
-                    var e = this.getElement().getTLCore();
+                        this.getElement().getProperty("plkt") & GBlock.ProgramLck.NoSizeChanges || this.setFlag(GBoxEditor.Flag.ResizeAll));
+                    var tlCore = this.getElement().getTLCore();
                     if (
-                        e &&
-                        (this.getElement().setProperty("_we", this.getElement().getProperty("_we") || e.getWasEdited(), false, false, false),
-                        e.getLength() <= 1)
+                        tlCore &&
+                        (this.getElement().setProperty("_we", this.getElement().getProperty("_we") || tlCore.getWasEdited(), false, false, false),
+                        tlCore.getLength() <= 1)
                     ) {
-                        var t = GEditor.getEditor(this.getElement().getScene());
-                        t && t.deleteSelection(true);
+                        var editor = GEditor.getEditor(this.getElement().getScene());
+                        editor && editor.deleteSelection(true);
                     }
                     return "Modify Text Content";
                 }),
-                (k.prototype.canHandleKeyEvents = function () {
+                (GTextEditor.prototype.canHandleKeyEvents = function () {
                     return true;
                 }),
-                (k.prototype.setInlineEditEnabled = function (e) {
-                    this._inlineEditEnabled = e;
+                (GTextEditor.prototype.setInlineEditEnabled = function (enabled) {
+                    this._inlineEditEnabled = enabled;
                 }),
-                (k.prototype.toString = function () {
+                (GTextEditor.prototype.toString = function () {
                     return "[Object GTextEditor]";
                 }),
-                (module.exports = k));
+                (module.exports = GTextEditor));
         };

@@ -4,94 +4,94 @@ module.exports = function (module, exports, require) {
         var GObject = require(1),
             GPlatform = require(15),
             Utils = require(40),
-            r = require(67),
+            GRichTooltipConfig = require(67),
             GCategory = require(18),
-            l = require(106);
-        function c() {
-            c.TOOLTIP_CONFIG = {
-                [r.TOOLTIP_AREA.TOOLBAR]: r.GRichTooltipConfig.from({
+            GElementAction = require(106);
+        function GGroupAction() {
+            GGroupAction.TOOLTIP_CONFIG = {
+                [GRichTooltipConfig.TOOLTIP_AREA.TOOLBAR]: GRichTooltipConfig.GRichTooltipConfig.from({
                     title: GObject.GLocale.get(new GObject.GLocaleKey("GGroupAction", "tooltip-title")),
                     description: GObject.GLocale.get(new GObject.GLocaleKey("GGroupAction", "tooltip-description")),
-                    shortcut: c.SHORTCUT,
+                    shortcut: GGroupAction.SHORTCUT,
                     learnMore: "/docs/organizing-your-designs/groups/",
                 }),
             };
         }
-        (GObject.GObject.inherit(c, l),
-            (c.ID = "modify.group"),
-            (c.TITLE = new GObject.GLocaleKey("GGroupAction", "title")),
-            (c.SHORTCUT = [GPlatform.GKey.Constant.META, "G"]),
-            (c.TOOLTIP_CONFIG = null),
-            (c.prototype.getId = function () {
-                return c.ID;
+        (GObject.GObject.inherit(GGroupAction, GElementAction),
+            (GGroupAction.ID = "modify.group"),
+            (GGroupAction.TITLE = new GObject.GLocaleKey("GGroupAction", "title")),
+            (GGroupAction.SHORTCUT = [GPlatform.GKey.Constant.META, "G"]),
+            (GGroupAction.TOOLTIP_CONFIG = null),
+            (GGroupAction.prototype.getId = function () {
+                return GGroupAction.ID;
             }),
-            (c.prototype.getTitle = function () {
-                return c.TITLE;
+            (GGroupAction.prototype.getTitle = function () {
+                return GGroupAction.TITLE;
             }),
-            (c.prototype.getIcon = function () {
+            (GGroupAction.prototype.getIcon = function () {
                 return "gravit-icon-group";
             }),
-            (c.prototype.getCategory = function () {
+            (GGroupAction.prototype.getCategory = function () {
                 return GCategory.CATEGORY_MODIFY;
             }),
-            (c.prototype.getGroup = function () {
+            (GGroupAction.prototype.getGroup = function () {
                 return "structure-group";
             }),
-            (c.prototype.getShortcut = function () {
-                return c.SHORTCUT;
+            (GGroupAction.prototype.getShortcut = function () {
+                return GGroupAction.SHORTCUT;
             }),
-            (c.prototype.isEnabled = function () {
-                if (!l.prototype.isEnabled.call(this)) return false;
-                var e = gDesigner.getActiveDocument();
-                if (e) {
-                    var t = e.getEditor().getIndividualSelection();
-                    if (t && t.length > 0)
-                        for (var n = new GObject.GGroup(), i = t.length - 1; i >= 0; --i) {
-                            var a = t[i];
-                            if (a.validateInsertion(n) && !a.getParent().isLocked() && n.validateInsertion(a.getParent())) return true;
+            (GGroupAction.prototype.isEnabled = function () {
+                if (!GElementAction.prototype.isEnabled.call(this)) return false;
+                var activeDocument = gDesigner.getActiveDocument();
+                if (activeDocument) {
+                    var selection = activeDocument.getEditor().getIndividualSelection();
+                    if (selection && selection.length > 0)
+                        for (var group = new GObject.GGroup(), i = selection.length - 1; i >= 0; --i) {
+                            var a = selection[i];
+                            if (a.validateInsertion(group) && !a.getParent().isLocked() && group.validateInsertion(a.getParent())) return true;
                         }
                 }
                 return false;
             }),
-            (c.prototype.execute = function () {
-                var e = gDesigner.getActiveDocument().getEditor(),
-                    t = GObject.GNode.order(e.getIndividualSelection().slice());
-                e.beginTransaction();
+            (GGroupAction.prototype.execute = function () {
+                var editor = gDesigner.getActiveDocument().getEditor(),
+                    orderedSelection = GObject.GNode.order(editor.getIndividualSelection().slice());
+                editor.beginTransaction();
                 try {
-                    for (var n = new GObject.GGroup(), i = [], r = 0; r < t.length; ++r) {
-                        (p = t[r]).validateInsertion(n) && i.push(p);
+                    for (var group = new GObject.GGroup(), validElements = [], r = 0; r < orderedSelection.length; ++r) {
+                        (child = orderedSelection[r]).validateInsertion(group) && validElements.push(child);
                     }
-                    if (i.length > 0) {
-                        var s = i[i.length - 1],
-                            l = s.getParent(),
-                            c = s.getNext();
-                        if (!l.isLocked() && n.validateInsertion(l)) {
-                            l.insertChild(n, c);
-                            var d,
-                                u = gDesigner.getActiveDocument().getScene();
+                    if (validElements.length > 0) {
+                        var lastElement = validElements[validElements.length - 1],
+                            parent = lastElement.getParent(),
+                            nextSibling = lastElement.getNext();
+                        if (!parent.isLocked() && group.validateInsertion(parent)) {
+                            parent.insertChild(group, nextSibling);
+                            var parents,
+                                scene = gDesigner.getActiveDocument().getScene();
                             try {
-                                d = new Set();
-                                for (r = 0; r < i.length; ++r) d.add(i[r].getParent());
-                                (0, Utils.blockChanges)(e, d, u, n);
-                                for (r = 0; r < i.length; ++r) {
-                                    var p;
-                                    ((p = i[r]).getParent().removeChild(p), n.appendChild(p));
+                                parents = new Set();
+                                for (r = 0; r < validElements.length; ++r) parents.add(validElements[r].getParent());
+                                (0, Utils.blockChanges)(editor, parents, scene, group);
+                                for (r = 0; r < validElements.length; ++r) {
+                                    var child;
+                                    ((child = validElements[r]).getParent().removeChild(child), group.appendChild(child));
                                 }
                             } finally {
-                                (0, Utils.releaseChanges)(e, d, u, n);
+                                (0, Utils.releaseChanges)(editor, parents, scene, group);
                             }
                         }
-                        e.updateSelection(false, [n]);
+                        editor.updateSelection(false, [group]);
                     }
                 } finally {
-                    e.commitTransaction(GObject.GLocale.get(new GObject.GLocaleKey("GGroupAction", "title")));
+                    editor.commitTransaction(GObject.GLocale.get(new GObject.GLocaleKey("GGroupAction", "title")));
                 }
             }),
-            (c.prototype.getTooltipConfig = function (e) {
-                return (e && c.TOOLTIP_CONFIG[e]) || null;
+            (GGroupAction.prototype.getTooltipConfig = function (area) {
+                return (area && GGroupAction.TOOLTIP_CONFIG[area]) || null;
             }),
-            (c.prototype.toString = function () {
+            (GGroupAction.prototype.toString = function () {
                 return "[Object GGroupAction]";
             }),
-            (module.exports = c));
+            (module.exports = GGroupAction));
     };

@@ -1,77 +1,77 @@
 module.exports = function (module, exports, require) {
         "use strict";
         require(3);
-        var o = require(53),
+        var GEditorModule = require(53),
             GObject = require(1),
             GCategory = require(18),
-            r = require(873),
-            s = require(106);
-        function l() {}
-        (GObject.GObject.inherit(l, s),
-            (l.ID = "modify.attachToPath"),
-            (l.TITLE = new GObject.GLocaleKey("GAttachToPathAction", "title")),
-            (l.prototype.getId = function () {
-                return l.ID;
+            GSplitPathAction = require(873),
+            GElementAction = require(106);
+        function GAttachToPathAction() {}
+        (GObject.GObject.inherit(GAttachToPathAction, GElementAction),
+            (GAttachToPathAction.ID = "modify.attachToPath"),
+            (GAttachToPathAction.TITLE = new GObject.GLocaleKey("GAttachToPathAction", "title")),
+            (GAttachToPathAction.prototype.getId = function () {
+                return GAttachToPathAction.ID;
             }),
-            (l.prototype.getTitle = function () {
-                return l.TITLE;
+            (GAttachToPathAction.prototype.getTitle = function () {
+                return GAttachToPathAction.TITLE;
             }),
-            (l.prototype.getCategory = function () {
+            (GAttachToPathAction.prototype.getCategory = function () {
                 return GCategory.CATEGORY_MODIFY_PATH;
             }),
-            (l.prototype.getGroup = function () {
+            (GAttachToPathAction.prototype.getGroup = function () {
                 return "structure/modify";
             }),
-            (l.prototype.getIcon = function () {
+            (GAttachToPathAction.prototype.getIcon = function () {
                 return gDesigner.isTouchEnabled() ? "gravit-icon-attach-to-path" : null;
             }),
-            (l.prototype.isEnabled = function () {
-                if (!s.prototype.isEnabled.call(this)) return false;
-                var e = gDesigner.getActiveDocument() ? gDesigner.getActiveDocument().getEditor().getSelection() : null,
-                    t = [],
-                    n = null;
-                if (e)
-                    for (var a = 0; a < e.length; ++a)
-                        if (e[a] instanceof GObject.GText && !e[a].hasPathAttached()) {
-                            var r = o.GElementEditor.getEditor(e[a]);
-                            r && !r.isInlineEdit() && t.push(e[a]);
-                        } else !e[a].hasMixin(GObject.GVertexSource) || e[a] instanceof GObject.GPathsGraph || (n = e[a]);
-                return !(!t.length || !n);
+            (GAttachToPathAction.prototype.isEnabled = function () {
+                if (!GElementAction.prototype.isEnabled.call(this)) return false;
+                var selection = gDesigner.getActiveDocument() ? gDesigner.getActiveDocument().getEditor().getSelection() : null,
+                    attachableTexts = [],
+                    pathElement = null;
+                if (selection)
+                    for (var a = 0; a < selection.length; ++a)
+                        if (selection[a] instanceof GObject.GText && !selection[a].hasPathAttached()) {
+                            var r = GEditorModule.GElementEditor.getEditor(selection[a]);
+                            r && !r.isInlineEdit() && attachableTexts.push(selection[a]);
+                        } else !selection[a].hasMixin(GObject.GVertexSource) || selection[a] instanceof GObject.GPathsGraph || (pathElement = selection[a]);
+                return !(!attachableTexts.length || !pathElement);
             }),
-            (l.prototype.execute = function () {
-                var e,
-                    t = gDesigner.getActiveDocument(),
-                    n = t ? t.getScene() : null,
-                    a = (u = t ? t.getEditor() : null) ? u.getIndividualSelection() : null,
-                    s = null,
-                    l = [];
-                if (a)
-                    for (var c = 0; c < a.length; ++c)
-                        if (!s && a[c] instanceof GObject.GPathBase) s = a[c];
-                        else if (a[c] instanceof GObject.GText && !a[c].hasPathAttached()) {
-                            var d = o.GElementEditor.getEditor(a[c]);
-                            d && !d.isInlineEdit() && l.push(a[c]);
-                        } else e || !a[c].hasMixin(GObject.GVertexSource) || a[c] instanceof GObject.GPathsGraph || (e = a[c]);
+            (GAttachToPathAction.prototype.execute = function () {
+                var pathElement,
+                    activeDocument = gDesigner.getActiveDocument(),
+                    scene = activeDocument ? activeDocument.getScene() : null,
+                    individualSelection = (editor = activeDocument ? activeDocument.getEditor() : null) ? editor.getIndividualSelection() : null,
+                    targetPath = null,
+                    linkTexts = [];
+                if (individualSelection)
+                    for (var c = 0; c < individualSelection.length; ++c)
+                        if (!targetPath && individualSelection[c] instanceof GObject.GPathBase) targetPath = individualSelection[c];
+                        else if (individualSelection[c] instanceof GObject.GText && !individualSelection[c].hasPathAttached()) {
+                            var d = GEditorModule.GElementEditor.getEditor(individualSelection[c]);
+                            d && !d.isInlineEdit() && linkTexts.push(individualSelection[c]);
+                        } else pathElement || !individualSelection[c].hasMixin(GObject.GVertexSource) || individualSelection[c] instanceof GObject.GPathsGraph || (pathElement = individualSelection[c]);
                 try {
-                    if ((u.beginTransaction(), !s)) {
-                        var u = gDesigner.getActiveDocument().getEditor();
-                        (e instanceof GObject.GCompoundPath
-                            ? gDesigner.executeAction(r.ID, void 0, void 0, true)
-                            : (u.updateSelection(false, [e]), u.convertSelectionToPaths()),
-                            (s = u.getSelection()[0]),
-                            (a = a.concat()).splice(a.indexOf(e), 1),
-                            u.updateSelection(true, a));
+                    if ((editor.beginTransaction(), !targetPath)) {
+                        var editor = gDesigner.getActiveDocument().getEditor();
+                        (pathElement instanceof GObject.GCompoundPath
+                            ? gDesigner.executeAction(GSplitPathAction.ID, void 0, void 0, true)
+                            : (editor.updateSelection(false, [pathElement]), editor.convertSelectionToPaths()),
+                            (targetPath = editor.getSelection()[0]),
+                            (individualSelection = individualSelection.concat()).splice(individualSelection.indexOf(pathElement), 1),
+                            editor.updateSelection(true, individualSelection));
                     }
-                    n &&
-                        l.map(function (e) {
-                            n.link(e, s);
+                    scene &&
+                        linkTexts.map(function (text) {
+                            scene.link(text, targetPath);
                         });
                 } finally {
-                    u.commitTransaction(GObject.GLocale.get(this.getTitle()));
+                    editor.commitTransaction(GObject.GLocale.get(this.getTitle()));
                 }
             }),
-            (l.prototype.toString = function () {
+            (GAttachToPathAction.prototype.toString = function () {
                 return "[Object GAttachToPathAction]";
             }),
-            (module.exports = l));
+            (module.exports = GAttachToPathAction));
     };

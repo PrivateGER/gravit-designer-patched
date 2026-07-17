@@ -3,27 +3,27 @@ module.exports = function (module, exports, require) {
         (require(19), require(96 /* polyfill:JSON */), require(8 /* Symbol */), require(20 /* polyfill:RegExp */), require(34), require(247), require(91 /* polyfill:String */), require(4), require(41), require(13), require(32), require(38), require(33), require(26));
         var GObject = require(1);
         const { TRANSLATION_MANAGER } = require(10 /* designerConfig */);
-        function a() {}
-        (GObject.GObject.inherit(a, GObject.GObject),
-            (a.prototype._translationBase = null),
-            (a.prototype.getProjectsDescription = function () {
-                return this._translationBase.getMapped().map((e) => e.project);
+        function GTranslationManager() {}
+        (GObject.GObject.inherit(GTranslationManager, GObject.GObject),
+            (GTranslationManager.prototype._translationBase = null),
+            (GTranslationManager.prototype.getProjectsDescription = function () {
+                return this._translationBase.getMapped().map((translation) => translation.project);
             }),
-            (a.prototype.loadProjectTranslations = function (e) {
-                if (!GObject.GTranslation.Projects.hasOwnProperty(e)) throw Error("Can't load translations, invalid project!");
-                ((this._project = e),
-                    (this._translations = this._translationBase.getByProject(e)),
+            (GTranslationManager.prototype.loadProjectTranslations = function (project) {
+                if (!GObject.GTranslation.Projects.hasOwnProperty(project)) throw Error("Can't load translations, invalid project!");
+                ((this._project = project),
+                    (this._translations = this._translationBase.getByProject(project)),
                     (this._classesMap = Object.keys(
-                        this._translations.find((e) => e.keyValue === GObject.GLocaleLanguage.English).translations
+                        this._translations.find((translation) => translation.keyValue === GObject.GLocaleLanguage.English).translations
                     )));
             }),
-            (a.prototype.getActiveProject = function () {
+            (GTranslationManager.prototype.getActiveProject = function () {
                 return this._project;
             }),
-            (a.prototype._translations = null),
-            (a.prototype._project = null),
-            (a._CSV_SEPARATOR = "|||"),
-            (a.prototype.init = function () {
+            (GTranslationManager.prototype._translations = null),
+            (GTranslationManager.prototype._project = null),
+            (GTranslationManager._CSV_SEPARATOR = "|||"),
+            (GTranslationManager.prototype.init = function () {
                 return (
                     (this._translationBase = new GObject.GTranslation()),
                     this.loadProjectTranslations(GObject.GTranslation.Projects.Designer),
@@ -32,119 +32,119 @@ module.exports = function (module, exports, require) {
                     Promise.resolve()
                 );
             }),
-            (a.prototype.getTranslationByKey = function (e) {
-                return this._translations.find((t) => t.keyValue === e);
+            (GTranslationManager.prototype.getTranslationByKey = function (key) {
+                return this._translations.find((translation) => translation.keyValue === key);
             }),
-            (a.prototype._clone = function (e) {
-                return JSON.parse(JSON.stringify(e));
+            (GTranslationManager.prototype._clone = function (value) {
+                return JSON.parse(JSON.stringify(value));
             }),
-            (a.prototype.getTranslationCopy = function (e) {
-                return this._clone(this.getTranslationByKey(e));
+            (GTranslationManager.prototype.getTranslationCopy = function (key) {
+                return this._clone(this.getTranslationByKey(key));
             }),
-            (a.FormatTypes = { CSV: "CSV" }),
-            (a.prototype.import = function (e) {
-                let t = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : a.FormatTypes.CSV,
-                    n = !(arguments.length > 2 && void 0 !== arguments[2]) || arguments[2];
-                switch (t) {
-                    case a.FormatTypes.CSV:
-                        return this._handleCSVImport(e).then((e) => this.applyTranslationPatch(e, n));
+            (GTranslationManager.FormatTypes = { CSV: "CSV" }),
+            (GTranslationManager.prototype.import = function (data) {
+                let format = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : GTranslationManager.FormatTypes.CSV,
+                    merge = !(arguments.length > 2 && void 0 !== arguments[2]) || arguments[2];
+                switch (format) {
+                    case GTranslationManager.FormatTypes.CSV:
+                        return this._handleCSVImport(data).then((patch) => this.applyTranslationPatch(patch, merge));
                 }
             }),
-            (a.prototype.applyTranslationPatch = function (e) {
-                let t = !(arguments.length > 1 && void 0 !== arguments[1]) || arguments[1];
-                var n = t ? this._translations : this._clone(this._translations);
+            (GTranslationManager.prototype.applyTranslationPatch = function (patch) {
+                let merge = !(arguments.length > 1 && void 0 !== arguments[1]) || arguments[1];
+                var target = merge ? this._translations : this._clone(this._translations);
                 return (
-                    e.forEach((e) => {
-                        var t = n.find((t) => t.language === e.language);
-                        let i = e.translations;
-                        Object.keys(i).forEach((e) => {
-                            Object.keys(i[e]).forEach((n) => {
-                                t.translations[e][n] = i[e][n];
+                    patch.forEach((translation) => {
+                        var existing = target.find((existing) => existing.language === translation.language);
+                        let translations = translation.translations;
+                        Object.keys(translations).forEach((uiClass) => {
+                            Object.keys(translations[uiClass]).forEach((field) => {
+                                existing.translations[uiClass][field] = translations[uiClass][field];
                             });
                         });
-                        let a = e.translationsExtended;
-                        (a &&
-                            Object.keys(a).forEach((e) => {
-                                if (0 === Object.keys(a[e]).length) delete t.translationsExtended[e];
+                        let extended = translation.translationsExtended;
+                        (extended &&
+                            Object.keys(extended).forEach((uiClass) => {
+                                if (0 === Object.keys(extended[uiClass]).length) delete existing.translationsExtended[uiClass];
                                 else {
-                                    (t.translationsExtended || (t.translationsExtended = {}),
-                                        t.translationsExtended[e] || (t.translationsExtended[e] = {}),
-                                        Object.keys(a[e]).forEach((n) => {
-                                            t.translationsExtended[e][n] = a[e][n];
+                                    (existing.translationsExtended || (existing.translationsExtended = {}),
+                                        existing.translationsExtended[uiClass] || (existing.translationsExtended[uiClass] = {}),
+                                        Object.keys(extended[uiClass]).forEach((field) => {
+                                            existing.translationsExtended[uiClass][field] = extended[uiClass][field];
                                         }));
                                 }
                             }),
-                            t.translationsExtended && 0 === Object.keys(t.translationsExtended).length && delete t.translationsExtended);
-                        var r = this._clone(e);
-                        (delete r.translations, delete r.translationsExtended, (t = GObject.GUtil.extend(t, r)));
+                            existing.translationsExtended && 0 === Object.keys(existing.translationsExtended).length && delete existing.translationsExtended);
+                        var rest = this._clone(translation);
+                        (delete rest.translations, delete rest.translationsExtended, (existing = GObject.GUtil.extend(existing, rest)));
                     }),
-                    Promise.resolve(n)
+                    Promise.resolve(target)
                 );
             }),
-            (a.prototype.export = function () {
-                let e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : a.FormatTypes.CSV,
-                    t = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : null,
-                    n = arguments.length > 2 && void 0 !== arguments[2] && arguments[2];
-                switch (e) {
-                    case a.FormatTypes.CSV:
-                        return this._exportAsCSV({ language: t, onlyEmpty: n });
+            (GTranslationManager.prototype.export = function () {
+                let format = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : GTranslationManager.FormatTypes.CSV,
+                    language = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : null,
+                    onlyEmpty = arguments.length > 2 && void 0 !== arguments[2] && arguments[2];
+                switch (format) {
+                    case GTranslationManager.FormatTypes.CSV:
+                        return this._exportAsCSV({ language: language, onlyEmpty: onlyEmpty });
                 }
             }),
-            (a.prototype.getMetaData = function () {
+            (GTranslationManager.prototype.getMetaData = function () {
                 return Promise.resolve(JSON.stringify(this._translations, null, 4));
             }),
-            (a.prototype._exportAsCSV = function (e) {
-                let { language: t = null, onlyEmpty: n = false } = e;
-                const o = function (e) {
-                    return (e && e.replace(/\r?\n|\r/g, "")) || "";
+            (GTranslationManager.prototype._exportAsCSV = function (options) {
+                let { language: language = null, onlyEmpty: onlyEmpty = false } = options;
+                const sanitize = function (value) {
+                    return (value && value.replace(/\r?\n|\r/g, "")) || "";
                 };
-                var i = (null != t && !isNaN(t) && this._translations.filter((e) => e.keyValue === t)) || this._translations,
-                    r = [];
-                const s = this._translations.find((e) => e.isDefault);
+                var translations = (null != language && !isNaN(language) && this._translations.filter((translation) => translation.keyValue === language)) || this._translations,
+                    rows = [];
+                const defaultTranslation = this._translations.find((translation) => translation.isDefault);
                 return (
-                    i.forEach((e) => {
-                        Object.keys(e.translations).forEach((t) => {
-                            Object.keys(e.translations[t]).forEach((i) => {
-                                var l;
+                    translations.forEach((translation) => {
+                        Object.keys(translation.translations).forEach((uiClass) => {
+                            Object.keys(translation.translations[uiClass]).forEach((field) => {
+                                var extendedValue;
                                 (this.isConsideringExtension() &&
-                                    (l = e.translationsExtended && e.translationsExtended[t] && e.translationsExtended[t][i]),
-                                    (n && "" !== e.translations[t][i].trim()) ||
-                                        r.push(
-                                            [e.language, t, i, o(n ? s.translations[t][i] : e.translations[t][i]), o(l)].join(
-                                                a._CSV_SEPARATOR
+                                    (extendedValue = translation.translationsExtended && translation.translationsExtended[uiClass] && translation.translationsExtended[uiClass][field]),
+                                    (onlyEmpty && "" !== translation.translations[uiClass][field].trim()) ||
+                                        rows.push(
+                                            [translation.language, uiClass, field, sanitize(onlyEmpty ? defaultTranslation.translations[uiClass][field] : translation.translations[uiClass][field]), sanitize(extendedValue)].join(
+                                                GTranslationManager._CSV_SEPARATOR
                                             )
                                         ));
                             });
                         });
                     }),
-                    Promise.resolve(r.join("\r\n"))
+                    Promise.resolve(rows.join("\r\n"))
                 );
             }),
-            (a.prototype._handleCSVImport = function (e) {
-                var t = (e) => e.length >= 4,
-                    n = [];
-                return new Promise((i, r) => {
-                    if (e) {
-                        var s = e.split(/\r?\n/);
-                        if (s.length < 1) return r("No rows were found!");
-                        for (let e = 0; e < s.length; e++) {
-                            var l = s[e],
-                                c = l.split(a._CSV_SEPARATOR);
-                            if (!t(c))
-                                return r(
+            (GTranslationManager.prototype._handleCSVImport = function (csvText) {
+                var isValidRow = (columns) => columns.length >= 4,
+                    result = [];
+                return new Promise((resolve, reject) => {
+                    if (csvText) {
+                        var lines = csvText.split(/\r?\n/);
+                        if (lines.length < 1) return reject("No rows were found!");
+                        for (let e = 0; e < lines.length; e++) {
+                            var l = lines[e],
+                                c = l.split(GTranslationManager._CSV_SEPARATOR);
+                            if (!isValidRow(c))
+                                return reject(
                                     "Invalid number of columns on row " +
                                         (e + 1) +
                                         (l.trim().length ? ", content '" + l.substr(0, 30) + "...'" : ", is empty")
                                 );
                             var [d, u, p, g, h] = c;
                             if (!GObject.GLocaleLanguage.hasOwnProperty(d))
-                                return r("Language not available ('".concat(d, "'), row ").concat(e + 1, "!"));
-                            if (!this._classesMap.find((e) => e === u))
-                                return r("Reference to UI not available ('".concat(u, "')!, row ").concat(e + 1));
-                            var f = this._translations.find((e) => e.language === d.trim());
+                                return reject("Language not available ('".concat(d, "'), row ").concat(e + 1, "!"));
+                            if (!this._classesMap.find((uiClass) => uiClass === u))
+                                return reject("Reference to UI not available ('".concat(u, "')!, row ").concat(e + 1));
+                            var f = this._translations.find((item) => item.language === d.trim());
                             if (f) {
-                                var m = n.find((e) => e.language === d);
-                                (m || ((m = { language: d, translations: {} }), n.push(m)),
+                                var m = result.find((item) => item.language === d);
+                                (m || ((m = { language: d, translations: {} }), result.push(m)),
                                     f.translations[u] &&
                                         (m.translations[u] || (m.translations[u] = {}),
                                         f.translations[u].hasOwnProperty(p) &&
@@ -156,54 +156,54 @@ module.exports = function (module, exports, require) {
                                                 (m.translationsExtended[u][p] = h)))));
                             }
                         }
-                        return i(n);
+                        return resolve(result);
                     }
                 });
             }),
-            (a.prototype.getTranslationRealName = function (e) {
-                var t = this._translations.find((t) => t.keyValue === e);
-                return t ? t.realName : null;
+            (GTranslationManager.prototype.getTranslationRealName = function (key) {
+                var translation = this._translations.find((translation) => translation.keyValue === key);
+                return translation ? translation.realName : null;
             }),
-            (a.prototype.createNewLanguage = async function (e, t, n) {
-                return new Promise((o, i) => {
-                    var a = this.getTranslationTemplate();
+            (GTranslationManager.prototype.createNewLanguage = async function (language, realName, abbreviation) {
+                return new Promise((resolve, reject) => {
+                    var template = this.getTranslationTemplate();
                     return (
-                        (a.language = e),
-                        (a.realName = t),
-                        (a.abbreviation = n),
-                        (a.keyValue = this._localeLanguage.hasOwnProperty(e)
-                            ? this._localeLanguage[e]
+                        (template.language = language),
+                        (template.realName = realName),
+                        (template.abbreviation = abbreviation),
+                        (template.keyValue = this._localeLanguage.hasOwnProperty(language)
+                            ? this._localeLanguage[language]
                             : Math.max(...Object.values(this._localeLanguage)) + 1),
-                        this._translations.push(a),
-                        this._localeLanguage.hasOwnProperty(e) || (this._localeLanguage[e] = a.keyValue),
-                        o(a)
+                        this._translations.push(template),
+                        this._localeLanguage.hasOwnProperty(language) || (this._localeLanguage[language] = template.keyValue),
+                        resolve(template)
                     );
                 });
             }),
-            (a.prototype.getTranslationTemplate = function () {
-                var e = this.getTranslationCopy(this._localeLanguage.Default);
+            (GTranslationManager.prototype.getTranslationTemplate = function () {
+                var template = this.getTranslationCopy(this._localeLanguage.Default);
                 return (
-                    (e.keyValue = null),
-                    (e.language = null),
-                    (e.isDefault = false),
-                    (e.isAvailable = true),
-                    (e.abbreviation = null),
-                    Object.keys(e.translations).forEach((t) => {
-                        Object.keys(e.translations[t]).forEach((n) => {
-                            e.translations[t][n] = "";
+                    (template.keyValue = null),
+                    (template.language = null),
+                    (template.isDefault = false),
+                    (template.isAvailable = true),
+                    (template.abbreviation = null),
+                    Object.keys(template.translations).forEach((uiClass) => {
+                        Object.keys(template.translations[uiClass]).forEach((field) => {
+                            template.translations[uiClass][field] = "";
                         });
                     }),
-                    e.translationsExtended &&
-                        Object.keys(e.translationsExtended).forEach((t) => {
-                            Object.keys(e.translationsExtended[t]).forEach((n) => {
-                                e.translationsExtended[t][n] = "";
+                    template.translationsExtended &&
+                        Object.keys(template.translationsExtended).forEach((uiClass) => {
+                            Object.keys(template.translationsExtended[uiClass]).forEach((field) => {
+                                template.translationsExtended[uiClass][field] = "";
                             });
                         }),
-                    e
+                    template
                 );
             }),
-            (a.prototype.isConsideringExtension = function () {
+            (GTranslationManager.prototype.isConsideringExtension = function () {
                 return !!TRANSLATION_MANAGER.CONSIDER_EXTENSION;
             }),
-            (module.exports = a));
+            (module.exports = GTranslationManager));
     };

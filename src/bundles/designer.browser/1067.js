@@ -2,61 +2,61 @@ module.exports = function (module, exports, require) {
         "use strict";
         require(290);
         const { GObject, GLocale } = require(1 /* GObject */),
-            a = require(1068);
-        function r(e) {
-            let { id, level: n = 0, name, description, status, pro: s = false, assignable: l = true, permissions } = e;
-            (a.call(this),
+            ControlSubject = require(1068);
+        function GShareRole(options) {
+            let { id, level: level = 0, name, description, status, pro: pro = false, assignable: assignable = true, permissions } = options;
+            (ControlSubject.call(this),
                 (this.id = id),
                 (this.name = name),
                 (this.description = description),
                 (this.status = status),
-                (this.pro = s),
+                (this.pro = pro),
                 (this.permissions = permissions),
-                (this.assignable = l),
-                (this.level = n));
+                (this.assignable = assignable),
+                (this.level = level));
         }
-        (GObject.inheritAndMix(r, GObject, [a]),
-            (r.prototype.getPermissions = function () {
+        (GObject.inheritAndMix(GShareRole, GObject, [ControlSubject]),
+            (GShareRole.prototype.getPermissions = function () {
                 return this.permissions;
             }),
-            (r.prototype.getDescription = function () {
+            (GShareRole.prototype.getDescription = function () {
                 return this.description;
             }),
-            (r.prototype.getStatus = function () {
+            (GShareRole.prototype.getStatus = function () {
                 return this.status;
             }),
-            (r.prototype.getName = function () {
+            (GShareRole.prototype.getName = function () {
                 return this.name;
             }),
-            (r.prototype.getId = function () {
+            (GShareRole.prototype.getId = function () {
                 return this.id;
             }),
-            (r.prototype.setId = function (e) {
-                this.id = e;
+            (GShareRole.prototype.setId = function (id) {
+                this.id = id;
             }),
-            (r.prototype.getName = function () {
+            (GShareRole.prototype.getName = function () {
                 return this.name;
             }),
-            (r.prototype.getLevel = function () {
+            (GShareRole.prototype.getLevel = function () {
                 return this.level;
             }),
-            (r.prototype.isPro = function () {
+            (GShareRole.prototype.isPro = function () {
                 return this.pro;
             }),
-            (r.prototype.equals = function (e) {
-                return e.getId() === this.getId();
+            (GShareRole.prototype.equals = function (other) {
+                return other.getId() === this.getId();
             }),
-            (r.prototype.hasPermission = function (e) {
-                return !!this.permissions[e];
+            (GShareRole.prototype.hasPermission = function (permissionKey) {
+                return !!this.permissions[permissionKey];
             }),
-            (r.prototype.applyPermissions = function (e) {
-                this.permissions.applyFrom(e);
+            (GShareRole.prototype.applyPermissions = function (permissions) {
+                this.permissions.applyFrom(permissions);
             }),
-            (r.prototype.isAssignable = function () {
+            (GShareRole.prototype.isAssignable = function () {
                 return this.assignable;
             }),
-            (r.prototype.is = function (e) {
-                return this.getId() === e.id;
+            (GShareRole.prototype.is = function (role) {
+                return this.getId() === role.id;
             }),
-            (module.exports = r));
+            (module.exports = GShareRole));
     };

@@ -2,91 +2,91 @@ module.exports = function (module, exports, require) {
         "use strict";
         (require(8 /* Symbol */), require(196 /* polyfill:Promise */), require(20 /* polyfill:RegExp */), require(3), require(34));
         var GObject = require(1);
-        const i = require(606),
-            a = require(394),
-            r = require(392),
-            s = require(393),
-            l = require(78),
-            c = require(291),
-            d = require(1346),
-            u = require(1348),
+        const GPanel = require(606),
+            GView = require(394),
+            GApplicationStateChangedEvent = require(392),
+            GCollaborationEvent = require(393),
+            GDocumentEvent = require(78),
+            GNetworkAvailabilityChangedEvent = require(291),
+            GUnloadEvent = require(1346),
+            CollaborativeTextController = require(1348),
             GSystemDialog = require(44),
-            g = require(177),
+            GUser = require(177),
             { DateAPI, ShareRoles } = require(10 /* designerConfig */);
-        function m() {}
-        (GObject.GObject.inherit(m, i),
-            (m.ID = "collaborative-text-panel"),
-            (m.prototype._htmlElement = null),
-            (m.prototype._requestLockDialog = null),
-            (m.prototype._lastRequestLockTime = 0),
-            (m.prototype._isModified = false),
-            (m.prototype._applicationStateChangedEvent = function (e) {
-                e.document === this._document && this._update();
+        function GCollaborativeTextPanel() {}
+        (GObject.GObject.inherit(GCollaborativeTextPanel, GPanel),
+            (GCollaborativeTextPanel.ID = "collaborative-text-panel"),
+            (GCollaborativeTextPanel.prototype._htmlElement = null),
+            (GCollaborativeTextPanel.prototype._requestLockDialog = null),
+            (GCollaborativeTextPanel.prototype._lastRequestLockTime = 0),
+            (GCollaborativeTextPanel.prototype._isModified = false),
+            (GCollaborativeTextPanel.prototype._applicationStateChangedEvent = function (event) {
+                event.document === this._document && this._update();
             }),
-            (m.prototype._documentEvent = function (e) {
-                if (!e.document.isLockedByVersionHistory())
-                    switch (e.type) {
-                        case l.Type.Activated:
+            (GCollaborativeTextPanel.prototype._documentEvent = function (event) {
+                if (!event.document.isLockedByVersionHistory())
+                    switch (event.type) {
+                        case GDocumentEvent.Type.Activated:
                             (this._deactivate(),
-                                (this._document = e.document),
-                                this._document.addEventListener(u.StatusChangedEvent, this._update, this),
-                                this._document.addEventListener(u.LockUpdateEvent, this._update, this),
-                                this._document.addEventListener(s, this._collaborationEvent, this),
-                                gDesigner.addEventListener(c, this._networkAvailabilityChangedEvent, this),
+                                (this._document = event.document),
+                                this._document.addEventListener(CollaborativeTextController.StatusChangedEvent, this._update, this),
+                                this._document.addEventListener(CollaborativeTextController.LockUpdateEvent, this._update, this),
+                                this._document.addEventListener(GCollaborationEvent, this._collaborationEvent, this),
+                                gDesigner.addEventListener(GNetworkAvailabilityChangedEvent, this._networkAvailabilityChangedEvent, this),
                                 this._update());
                             break;
-                        case l.Type.Deactivated:
-                            e.document === this._document && (this._deactivate(), this._htmlElement.css("display", "none"));
+                        case GDocumentEvent.Type.Deactivated:
+                            event.document === this._document && (this._deactivate(), this._htmlElement.css("display", "none"));
                             break;
-                        case l.Type.Modified:
+                        case GDocumentEvent.Type.Modified:
                             if (!this.isEnabled()) return;
-                            if (e.document === this._document && this._document.isCollaborativeTextEditing()) {
-                                const e = this._document.isModified();
-                                this._isModified !== e && ((this._isModified = e), this._update());
+                            if (event.document === this._document && this._document.isCollaborativeTextEditing()) {
+                                const isModified = this._document.isModified();
+                                this._isModified !== isModified && ((this._isModified = isModified), this._update());
                             }
                     }
             }),
-            (m.prototype._deactivate = function () {
+            (GCollaborativeTextPanel.prototype._deactivate = function () {
                 this._document &&
-                    (this._document.removeEventListener(u.StatusChangedEvent, this._update, this),
-                    this._document.removeEventListener(u.LockUpdateEvent, this._update, this),
-                    this._document.removeEventListener(s, this._collaborationEvent, this),
-                    gDesigner.removeEventListener(c, this._networkAvailabilityChangedEvent, this));
+                    (this._document.removeEventListener(CollaborativeTextController.StatusChangedEvent, this._update, this),
+                    this._document.removeEventListener(CollaborativeTextController.LockUpdateEvent, this._update, this),
+                    this._document.removeEventListener(GCollaborationEvent, this._collaborationEvent, this),
+                    gDesigner.removeEventListener(GNetworkAvailabilityChangedEvent, this._networkAvailabilityChangedEvent, this));
             }),
-            (m.prototype._collaborationEvent = function (e) {
-                e.type === s.Type.LockRequest && this._requestLock(e.data.from && e.data.from.name);
+            (GCollaborativeTextPanel.prototype._collaborationEvent = function (event) {
+                event.type === GCollaborationEvent.Type.LockRequest && this._requestLock(event.data.from && event.data.from.name);
             }),
-            (m.prototype._networkAvailabilityChangedEvent = function (e) {
-                this._htmlElement.toggleClass("offline", !e.connected);
+            (GCollaborativeTextPanel.prototype._networkAvailabilityChangedEvent = function (event) {
+                this._htmlElement.toggleClass("offline", !event.connected);
             }),
-            (m.prototype._update = async function () {
+            (GCollaborativeTextPanel.prototype._update = async function () {
                 if ((this._htmlElement.css("display", this.isEnabled() ? "" : "none"), this.isEnabled())) {
-                    const e = this._document.getCollaborativeTextController();
-                    if (e)
-                        if (e.getStatus() === u.Status.UpdateAvailable) (this._document.lock(), this._showUpdatePanel());
-                        else if (e.getStatus() === u.Status.Updating) this._showUpdatingPanel();
+                    const controller = this._document.getCollaborativeTextController();
+                    if (controller)
+                        if (controller.getStatus() === CollaborativeTextController.Status.UpdateAvailable) (this._document.lock(), this._showUpdatePanel());
+                        else if (controller.getStatus() === CollaborativeTextController.Status.Updating) this._showUpdatingPanel();
                         else if (gDesigner.getApplicationManager().hasRole(ShareRoles.Owner)) this._showOwnerPanel();
-                        else if (await e.canLock())
-                            switch (e.getStatus()) {
-                                case u.Status.Initial:
-                                case u.Status.Editing:
+                        else if (await controller.canLock())
+                            switch (controller.getStatus()) {
+                                case CollaborativeTextController.Status.Initial:
+                                case CollaborativeTextController.Status.Editing:
                                     this._showEditPanel();
                                     break;
-                                case u.Status.Finished:
-                                case u.Status.Previewed:
+                                case CollaborativeTextController.Status.Finished:
+                                case CollaborativeTextController.Status.Previewed:
                                     this._showFinishedPanel();
                                     break;
-                                case u.Status.Previewing:
+                                case CollaborativeTextController.Status.Previewing:
                                     this._showPreviewPanel();
                                     break;
-                                case u.Status.Sending:
+                                case CollaborativeTextController.Status.Sending:
                                     this._showSendingPanel();
                             }
                         else this._showRequestPanel();
                 }
-                this.trigger(a.UPDATE_EVENT);
+                this.trigger(GView.UPDATE_EVENT);
             }),
-            (m.prototype._showOwnerPanel = function () {
+            (GCollaborativeTextPanel.prototype._showOwnerPanel = function () {
                 this._htmlElement.empty().append(
                     $("<div/>")
                         .addClass("container")
@@ -98,7 +98,7 @@ module.exports = function (module, exports, require) {
                         )
                 );
             }),
-            (m.prototype._showUpdatePanel = function () {
+            (GCollaborativeTextPanel.prototype._showUpdatePanel = function () {
                 this._htmlElement.empty().append(
                     $("<div/>")
                         .addClass("container")
@@ -125,7 +125,7 @@ module.exports = function (module, exports, require) {
                         )
                 );
             }),
-            (m.prototype._showUpdatingPanel = function () {
+            (GCollaborativeTextPanel.prototype._showUpdatingPanel = function () {
                 this._htmlElement.empty().append(
                     $("<div/>")
                         .addClass("container")
@@ -138,7 +138,7 @@ module.exports = function (module, exports, require) {
                         )
                 );
             }),
-            (m.prototype._showEditPanel = function () {
+            (GCollaborativeTextPanel.prototype._showEditPanel = function () {
                 this._htmlElement.empty().append(
                     $("<div/>")
                         .addClass("container")
@@ -162,14 +162,14 @@ module.exports = function (module, exports, require) {
                         )
                 );
             }),
-            (m.prototype._showFinishedPanel = function () {
+            (GCollaborativeTextPanel.prototype._showFinishedPanel = function () {
                 this._htmlElement.empty().append(
                     $("<div/>")
                         .addClass("container")
                         .addClass("finish-panel")
                         .append(
                             $("<button/>")
-                                .prop("disabled", this._document.getCollaborativeTextController().getStatus() === u.Status.Previewed)
+                                .prop("disabled", this._document.getCollaborativeTextController().getStatus() === CollaborativeTextController.Status.Previewed)
                                 .addClass("g-highlight-button")
                                 .addClass("outlined")
                                 .addClass("online-action")
@@ -210,8 +210,8 @@ module.exports = function (module, exports, require) {
                                             (gDesigner.stats("collabtextpanel_bottom-bar_send-changes"),
                                                 GSystemDialog.confirm(
                                                     GObject.GLocale.get(new GObject.GLocaleKey("GCollaborativeTextPanel", "text.send-to-owner")),
-                                                    (e) => {
-                                                        e &&
+                                                    (confirmed) => {
+                                                        confirmed &&
                                                             this._document
                                                                 .getCollaborativeTextController()
                                                                 .sendChanges()
@@ -242,7 +242,7 @@ module.exports = function (module, exports, require) {
                         )
                 );
             }),
-            (m.prototype._showPreviewPanel = function () {
+            (GCollaborativeTextPanel.prototype._showPreviewPanel = function () {
                 this._htmlElement.empty().append(
                     $("<div/>")
                         .addClass("container")
@@ -255,7 +255,7 @@ module.exports = function (module, exports, require) {
                         )
                 );
             }),
-            (m.prototype._showSendingPanel = function () {
+            (GCollaborativeTextPanel.prototype._showSendingPanel = function () {
                 this._htmlElement.empty().append(
                     $("<div/>")
                         .addClass("container")
@@ -268,10 +268,10 @@ module.exports = function (module, exports, require) {
                         )
                 );
             }),
-            (m.prototype._showRequestPanel = async function () {
-                const e = await this._document.getCollaborativeTextController().getCurrentLock();
-                if (!e) return this._document.getCollaborativeTextController().resetTextEditing();
-                const t = new g(e.user);
+            (GCollaborativeTextPanel.prototype._showRequestPanel = async function () {
+                const lock = await this._document.getCollaborativeTextController().getCurrentLock();
+                if (!lock) return this._document.getCollaborativeTextController().resetTextEditing();
+                const user = new GUser(lock.user);
                 this._htmlElement.empty().append(
                     $("<div/>")
                         .addClass("container")
@@ -282,7 +282,7 @@ module.exports = function (module, exports, require) {
                                 .text(
                                     GObject.GLocale.get(new GObject.GLocaleKey("GCollaborativeTextPanel", "text.request-access-message")).replace(
                                         "%name",
-                                        t.getFullUserName()
+                                        user.getFullUserName()
                                     )
                                 )
                         )
@@ -293,22 +293,22 @@ module.exports = function (module, exports, require) {
                                 .addClass("online-action")
                                 .prop("disabled", this._document.getCollaborativeTextController().hasAlreadyRequestedAccess())
                                 .text(GObject.GLocale.get(new GObject.GLocaleKey("GCollaborativeTextPanel", "text.request-access")))
-                                .on("click", (e) => {
+                                .on("click", (event) => {
                                     (gDesigner.stats("collabtextpanel_bottom-bar_request-access"),
                                         gDesigner.toggleLoading(true),
                                         this._document
                                             .getCollaborativeTextController()
                                             .requestAccess()
                                             .then(() => {
-                                                ($(e.target).closest("button").attr("disabled", true),
+                                                ($(event.target).closest("button").attr("disabled", true),
                                                     GSystemDialog.alert(
                                                         GObject.GLocale.get(
                                                             new GObject.GLocaleKey("GCollaborativeTextPanel", "text.request-has-been-sent")
-                                                        ).replace("%name", t.getFullUserName())
+                                                        ).replace("%name", user.getFullUserName())
                                                     ));
                                             })
-                                            .catch((e) => {
-                                                e.status && e.status !== gApi.HTTP_STATUS_CODES.NOT_FOUND && GSystemDialog.error(e);
+                                            .catch((error) => {
+                                                error.status && error.status !== gApi.HTTP_STATUS_CODES.NOT_FOUND && GSystemDialog.error(error);
                                             })
                                             .finally(() => {
                                                 (this._update(), gDesigner.toggleLoading(false));
@@ -317,26 +317,26 @@ module.exports = function (module, exports, require) {
                         )
                 );
             }),
-            (m.prototype._requestLock = function (e) {
+            (GCollaborativeTextPanel.prototype._requestLock = function (userName) {
                 if (!this.isEnabled()) return;
                 if (this._requestLockDialog) return;
-                const t = DateAPI.now(),
-                    n = DateAPI.minutesToMilliseconds(5);
-                (this._lastRequestLockTime && t - this._lastRequestLockTime < n) ||
-                    ((this._lastRequestLockTime = t),
+                const now = DateAPI.now(),
+                    cooldownMs = DateAPI.minutesToMilliseconds(5);
+                (this._lastRequestLockTime && now - this._lastRequestLockTime < cooldownMs) ||
+                    ((this._lastRequestLockTime = now),
                     (this._requestLockDialog = GSystemDialog.custom({
                         className: "g-request-lock-dialog",
                         closeCallback: () => (this._requestLockDialog = null),
                         closeable: false,
                         subtitle: GObject.GLocale.get(new GObject.GLocaleKey("GCollaborativeTextPanel", "text.wants-to-take-over")).replace(
                             /%name/g,
-                            e || GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.unknown-user"))
+                            userName || GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.unknown-user"))
                         ),
                         buttons: [
                             {
                                 label: GObject.GLocale.get(new GObject.GLocaleKey("GCollaborativeTextPanel", "text.save-my-edits-and-allow")),
-                                onclick: (e) => {
-                                    (e.gDialog("close"),
+                                onclick: (dialogElement) => {
+                                    (dialogElement.gDialog("close"),
                                         this._document
                                             .getCollaborativeTextController()
                                             .sendChanges()
@@ -349,50 +349,50 @@ module.exports = function (module, exports, require) {
                             },
                             {
                                 label: GObject.GLocale.get(new GObject.GLocaleKey("GCollaborativeTextPanel", "text.discard-my-edits-and-allow")),
-                                onclick: (e) => {
-                                    (e.addClass("g-loading"),
+                                onclick: (dialogElement) => {
+                                    (dialogElement.addClass("g-loading"),
                                         this._document
                                             .getCollaborativeTextController()
                                             .releaseLock()
-                                            .catch((e) => {
-                                                GSystemDialog.error(e);
+                                            .catch((error) => {
+                                                GSystemDialog.error(error);
                                             })
                                             .finally(() => {
-                                                e.gDialog("close");
+                                                dialogElement.gDialog("close");
                                             }));
                                 },
                             },
                             {
                                 label: GObject.GLocale.get(new GObject.GLocaleKey("GCollaborativeTextPanel", "text.decline")),
                                 highlighted: true,
-                                onclick: (e) => {
-                                    e.gDialog("close");
+                                onclick: (dialogElement) => {
+                                    dialogElement.gDialog("close");
                                 },
                             },
                         ],
                     })));
             }),
-            (m.prototype.init = function (e) {
-                ((this._htmlElement = e),
+            (GCollaborativeTextPanel.prototype.init = function (element) {
+                ((this._htmlElement = element),
                     this._htmlElement.addClass("g-collaborative-text-panel").css("display", "none"),
-                    gDesigner.addEventListener(l, this._documentEvent, this),
-                    gDesigner.addEventListener(d, this._unloadEvent, this),
-                    gDesigner.addEventListener(r, this._applicationStateChangedEvent, this));
+                    gDesigner.addEventListener(GDocumentEvent, this._documentEvent, this),
+                    gDesigner.addEventListener(GUnloadEvent, this._unloadEvent, this),
+                    gDesigner.addEventListener(GApplicationStateChangedEvent, this._applicationStateChangedEvent, this));
             }),
-            (m.prototype._unloadEvent = function (e) {
+            (GCollaborativeTextPanel.prototype._unloadEvent = function (event) {
                 if (this._document)
                     try {
                         gApi.lock.releaseSync(this._document.getId());
                     } catch (e) {}
             }),
-            (m.prototype.isEnabled = function () {
+            (GCollaborativeTextPanel.prototype.isEnabled = function () {
                 return !!this._document && this._document.isCollaborativeTextEditing();
             }),
-            (m.prototype.toString = function () {
+            (GCollaborativeTextPanel.prototype.toString = function () {
                 return "[Object GCollaborativeTextPanel]";
             }),
-            (m.prototype.getId = function () {
-                return m.ID;
+            (GCollaborativeTextPanel.prototype.getId = function () {
+                return GCollaborativeTextPanel.ID;
             }),
-            (module.exports = m));
+            (module.exports = GCollaborativeTextPanel));
     };

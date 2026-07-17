@@ -1,9 +1,9 @@
 module.exports = function (module, exports, require) {
         var o;
         module.exports =
-            ((o = require(55)),
+            ((o = require(55 /* lib:crypto-js */)),
             require(272),
-            require(273),
+            require(273 /* lib:crypto-js */),
             require(234),
             require(98),
             (function () {

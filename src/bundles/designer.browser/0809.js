@@ -4,13 +4,13 @@ module.exports = function (module, exports, require) {
         var GObject = require(1),
             GPlatform = require(15),
             Utils = require(40),
-            r = require(67),
+            GRichTooltipConfig = require(67),
             designerConfig = require(10),
             GCategory = require(18),
             c = require(106);
-        function d() {
-            d.TOOLTIP_CONFIG = {
-                [r.TOOLTIP_AREA.TOOLBAR]: r.GRichTooltipConfig.from({
+        function GClipAction() {
+            GClipAction.TOOLTIP_CONFIG = {
+                [GRichTooltipConfig.TOOLTIP_AREA.TOOLBAR]: GRichTooltipConfig.GRichTooltipConfig.from({
                     title: GObject.GLocale.get(new GObject.GLocaleKey("GClipAction", "tooltip-title")),
                     description: GObject.GLocale.get(new GObject.GLocaleKey("GClipAction", "tooltip-description")),
                     video: designerConfig.gApi.getRichTooltipVideoURL("Clip.mp4"),
@@ -18,72 +18,72 @@ module.exports = function (module, exports, require) {
                 }),
             };
         }
-        (GObject.GObject.inherit(d, c),
-            (d.ID = "modify.clip"),
-            (d.TITLE = new GObject.GLocaleKey("GClipAction", "title")),
-            (d.TOOLTIP_CONFIG = null),
-            (d.prototype.getId = function () {
-                return d.ID;
+        (GObject.GObject.inherit(GClipAction, c),
+            (GClipAction.ID = "modify.clip"),
+            (GClipAction.TITLE = new GObject.GLocaleKey("GClipAction", "title")),
+            (GClipAction.TOOLTIP_CONFIG = null),
+            (GClipAction.prototype.getId = function () {
+                return GClipAction.ID;
             }),
-            (d.prototype.getTitle = function () {
-                return d.TITLE;
+            (GClipAction.prototype.getTitle = function () {
+                return GClipAction.TITLE;
             }),
-            (d.prototype.getIcon = function () {
+            (GClipAction.prototype.getIcon = function () {
                 return "gravit-icon-clip-circle";
             }),
-            (d.prototype.getCategory = function () {
+            (GClipAction.prototype.getCategory = function () {
                 return GCategory.CATEGORY_MODIFY;
             }),
-            (d.prototype.getGroup = function () {
+            (GClipAction.prototype.getGroup = function () {
                 return "structure-group";
             }),
-            (d.prototype.isEnabled = function () {
+            (GClipAction.prototype.isEnabled = function () {
                 if (!c.prototype.isEnabled.call(this)) return false;
-                var e = gDesigner.getActiveDocument();
-                if (e) {
-                    var t = e.getEditor().getIndividualSelection();
-                    return t && t.length > 1;
+                var activeDocument = gDesigner.getActiveDocument();
+                if (activeDocument) {
+                    var selection = activeDocument.getEditor().getIndividualSelection();
+                    return selection && selection.length > 1;
                 }
                 return false;
             }),
-            (d.prototype.getShortcut = function () {
+            (GClipAction.prototype.getShortcut = function () {
                 return [GPlatform.GKey.Constant.OPTION, GPlatform.GKey.Constant.META, "M"];
             }),
-            (d.prototype.execute = function (e, t) {
-                var n = gDesigner.getActiveDocument().getEditor(),
-                    i = gDesigner.getActiveDocument().getScene(),
-                    r = GObject.GNode.order(n.getIndividualSelection().slice(), e),
-                    s = r.shift();
-                if (!s.isLocked()) {
-                    var l,
-                        c = s.getPaintBBox();
-                    t || n.beginTransaction();
+            (GClipAction.prototype.execute = function (reverseOrder, noTransaction) {
+                var editor = gDesigner.getActiveDocument().getEditor(),
+                    scene = gDesigner.getActiveDocument().getScene(),
+                    orderedElements = GObject.GNode.order(editor.getIndividualSelection().slice(), reverseOrder),
+                    targetElement = orderedElements.shift();
+                if (!targetElement.isLocked()) {
+                    var affectedParents,
+                        targetBBox = targetElement.getPaintBBox();
+                    noTransaction || editor.beginTransaction();
                     try {
-                        l = new Set();
-                        for (var d = 0; d < r.length; ++d) l.add(r[d].getParent());
+                        affectedParents = new Set();
+                        for (var d = 0; d < orderedElements.length; ++d) affectedParents.add(orderedElements[d].getParent());
                         try {
-                            (0, Utils.blockChanges)(n, l, i, s);
-                            for (d = 0; d < r.length; ++d) {
-                                var u = r[d];
-                                u.validateInsertion(s) &&
+                            (0, Utils.blockChanges)(editor, affectedParents, scene, targetElement);
+                            for (d = 0; d < orderedElements.length; ++d) {
+                                var u = orderedElements[d];
+                                u.validateInsertion(targetElement) &&
                                     u.getPaintBBox() &&
-                                    c &&
-                                    u.getPaintBBox().intersectsRect(c) &&
-                                    (u.getParent().removeChild(u), s.appendChild(u));
+                                    targetBBox &&
+                                    u.getPaintBBox().intersectsRect(targetBBox) &&
+                                    (u.getParent().removeChild(u), targetElement.appendChild(u));
                             }
                         } finally {
-                            ((0, Utils.releaseChanges)(n, l, i, s), n.updateSelection(false, [s]));
+                            ((0, Utils.releaseChanges)(editor, affectedParents, scene, targetElement), editor.updateSelection(false, [targetElement]));
                         }
                     } finally {
-                        t || n.commitTransaction(GObject.GLocale.get(new GObject.GLocaleKey("GClipAction", "text.clip-selecion")));
+                        noTransaction || editor.commitTransaction(GObject.GLocale.get(new GObject.GLocaleKey("GClipAction", "text.clip-selecion")));
                     }
                 }
             }),
-            (d.prototype.getTooltipConfig = function (e) {
-                return e && d.TOOLTIP_CONFIG[e];
+            (GClipAction.prototype.getTooltipConfig = function (area) {
+                return area && GClipAction.TOOLTIP_CONFIG[area];
             }),
-            (d.prototype.toString = function () {
+            (GClipAction.prototype.toString = function () {
                 return "[Object GClipAction]";
             }),
-            (module.exports = d));
+            (module.exports = GClipAction));
     };

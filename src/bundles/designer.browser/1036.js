@@ -3,7 +3,7 @@ module.exports = function (module, exports, require) {
         (Object.defineProperty(exports, "__esModule", { value: true }), (exports.GGoogleAPI = exports.GDefaultGoogleAPI = void 0), require(19), require(30 /* polyfill:Object */), require(8 /* Symbol */), require(26));
         var designerConfig = require(10),
             GObject = require(1);
-        class a {
+        class GoogleAPIBase {
             isLoaded() {
                 return true;
             }
@@ -20,21 +20,21 @@ module.exports = function (module, exports, require) {
             isSignedIn() {
                 throw "Not implemented";
             }
-            listenSignInStateChanges(e) {}
-            install(e) {}
+            listenSignInStateChanges(callback) {}
+            install(parentElement) {}
             signIn() {
                 throw "Not implemented";
             }
             signOut() {
                 throw "Not implemented";
             }
-            getTokenConfiguration(e) {
+            getTokenConfiguration(result) {
                 throw "Not implemented";
             }
             loadFilePicker() {
                 throw "Not implemented";
             }
-            openFilePicker(e, t) {
+            openFilePicker(onPicked, onError) {
                 throw "Not implemented";
             }
             getBasicProfile() {
@@ -47,162 +47,162 @@ module.exports = function (module, exports, require) {
                 throw "Not implemented";
             }
         }
-        exports.GGoogleAPI = a;
-        exports.GDefaultGoogleAPI = new (class extends a {
+        exports.GGoogleAPI = GoogleAPIBase;
+        exports.GDefaultGoogleAPI = new (class extends GoogleAPIBase {
             isLoaded() {
                 return !!window.gapi;
             }
             async init() {
                 let {
-                    appId: e,
-                    apiKey: t,
-                    clientId: n,
-                    discoveryDocs: o,
-                    scope: a,
+                    appId: appId,
+                    apiKey: apiKey,
+                    clientId: clientId,
+                    discoveryDocs: discoveryDocs,
+                    scope: scope,
                 } = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
                 return (
-                    (this._appId = e),
-                    (this._apiKey = t),
-                    (this._clientId = n),
-                    (this._discoveryDocs = o),
-                    (this._scope = a),
-                    await new Promise((e, t) => {
-                        gapi.load("client", { callback: e, onerror: t });
+                    (this._appId = appId),
+                    (this._apiKey = apiKey),
+                    (this._clientId = clientId),
+                    (this._discoveryDocs = discoveryDocs),
+                    (this._scope = scope),
+                    await new Promise((resolve, reject) => {
+                        gapi.load("client", { callback: resolve, onerror: reject });
                     }),
-                    await gapi.client.init({ apiKey: t, discoveryDocs: o }),
-                    new Promise(async (e, t) => {
+                    await gapi.client.init({ apiKey: apiKey, discoveryDocs: discoveryDocs }),
+                    new Promise(async (resolve, reject) => {
                         try {
-                            const t = await gContainer.getProperty("googleapi_auth_email_hint");
+                            const emailHint = await gContainer.getProperty("googleapi_auth_email_hint");
                             ((this._tokenClient = google.accounts.oauth2.initTokenClient({
-                                client_id: n,
-                                scope: a,
+                                client_id: clientId,
+                                scope: scope,
                                 prompt: "",
                                 callback: "",
-                                hint: t || "",
+                                hint: emailHint || "",
                                 error_callback: () => location.reload(),
                             })),
-                                e());
+                                resolve());
                         } catch (e) {
-                            t(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.loading-failed")));
+                            reject(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.loading-failed")));
                         }
                     })
                 );
             }
             async isSignedIn() {
                 if (this.isLoaded()) {
-                    const e = await gContainer.getProperty("googleapi_auth_key");
-                    return fetch("https://www.googleapis.com/oauth2/v3/tokeninfo?access_token=".concat(e && e.access_token))
-                        .then((e) => e.json())
-                        .then((e) => !!e.email)
+                    const authKey = await gContainer.getProperty("googleapi_auth_key");
+                    return fetch("https://www.googleapis.com/oauth2/v3/tokeninfo?access_token=".concat(authKey && authKey.access_token))
+                        .then((response) => response.json())
+                        .then((tokenInfo) => !!tokenInfo.email)
                         .catch(() => false);
                 }
                 return false;
             }
-            install(e) {
-                const t = [],
-                    n = (t) =>
-                        new Promise((n, o) => {
-                            let i = document.createElement("script");
-                            ((i.async = true),
-                                (i.src = t),
-                                (i.onload = n),
-                                (i.onerror = o),
-                                (e || document.getElementsByTagName("head")[0]).appendChild(i));
+            install(parentElement) {
+                const scriptPromises = [],
+                    loadScript = (url) =>
+                        new Promise((resolve, reject) => {
+                            let scriptElement = document.createElement("script");
+                            ((scriptElement.async = true),
+                                (scriptElement.src = url),
+                                (scriptElement.onload = resolve),
+                                (scriptElement.onerror = reject),
+                                (parentElement || document.getElementsByTagName("head")[0]).appendChild(scriptElement));
                         });
                 return (
-                    t.push(n("https://apis.google.com/js/api.js")),
-                    t.push(n("https://accounts.google.com/gsi/client")),
-                    Promise.all(t)
+                    scriptPromises.push(loadScript("https://apis.google.com/js/api.js")),
+                    scriptPromises.push(loadScript("https://accounts.google.com/gsi/client")),
+                    Promise.all(scriptPromises)
                 );
             }
             async signIn() {
                 return (
                     await gContainer.setProperty("googleapi_auth_key", null),
-                    new Promise(async (e, t) => {
+                    new Promise(async (resolve, reject) => {
                         try {
-                            const n = await gContainer.getProperty("googleapi_auth_email_hint");
-                            ((this._tokenClient.callback = async (n) => {
-                                n.error && t();
-                                const o = gapi.client.getToken(),
-                                    i = {
-                                        access_token: o.access_token,
-                                        expires_at: 1e3 * o.expires_in + Date.now(),
+                            const emailHint = await gContainer.getProperty("googleapi_auth_email_hint");
+                            ((this._tokenClient.callback = async (tokenResponse) => {
+                                tokenResponse.error && reject();
+                                const token = gapi.client.getToken(),
+                                    authKey = {
+                                        access_token: token.access_token,
+                                        expires_at: 1e3 * token.expires_in + Date.now(),
                                     };
-                                (await gContainer.setProperty("googleapi_auth_key", i), e());
+                                (await gContainer.setProperty("googleapi_auth_key", authKey), resolve());
                             }),
                                 this._tokenClient.requestAccessToken({
                                     prompt: "",
-                                    hint: n || "",
+                                    hint: emailHint || "",
                                 }));
                         } catch (e) {
-                            t(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.loading-failed")));
+                            reject(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.loading-failed")));
                         }
                     })
                 );
             }
             async signOut() {
                 this._picker && delete this._picker;
-                const e = await gContainer.getProperty("googleapi_auth_key");
-                (await google.accounts.oauth2.revoke(e && e.access_token),
+                const authKey = await gContainer.getProperty("googleapi_auth_key");
+                (await google.accounts.oauth2.revoke(authKey && authKey.access_token),
                     gapi.client.setToken(null),
                     gContainer.setProperty("googleapi_auth_key", null),
                     gContainer.setProperty("googleapi_auth_email_hint", null));
             }
             async getTokenConfiguration() {
-                let e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
-                const t = await gContainer.getProperty("googleapi_auth_key");
-                return Object.assign(e, {
-                    accessToken: t.access_token,
-                    expires: t.expires_at,
+                let result = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
+                const authKey = await gContainer.getProperty("googleapi_auth_key");
+                return Object.assign(result, {
+                    accessToken: authKey.access_token,
+                    expires: authKey.expires_at,
                     corporate: false,
                 });
             }
             async loadFilePicker() {
-                return new Promise((e, t) => {
+                return new Promise((resolve, reject) => {
                     gapi.load("picker", {
                         timeout: 2e4,
-                        callback: e,
-                        ontimeout: () => t(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.loading-failed"))),
-                        onerror: () => t(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.loading-failed"))),
+                        callback: resolve,
+                        ontimeout: () => reject(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.loading-failed"))),
+                        onerror: () => reject(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.loading-failed"))),
                     });
                 });
             }
-            async openFilePicker(e, t) {
+            async openFilePicker(onPicked, onError) {
                 try {
                     (await this.isSignedIn()) || (await this.signIn());
-                    const t = (await gContainer.getProperty("googleapi_auth_key")).access_token;
+                    const accessToken = (await gContainer.getProperty("googleapi_auth_key")).access_token;
                     (this._picker && delete this._picker,
                         (this._picker = (0, designerConfig.GooglePickerBuilder)({
                             appId: this._appId,
                             apiKey: this._apiKey,
-                            accessToken: t,
+                            accessToken: accessToken,
                             language: GObject.GLocale.getLanguage(),
                         })),
-                        this._picker.setCallback((t) => {
-                            t.action === google.picker.Action.PICKED && e(t.docs);
+                        this._picker.setCallback((pickerData) => {
+                            pickerData.action === google.picker.Action.PICKED && onPicked(pickerData.docs);
                         }),
                         this._picker.setVisible(true));
-                } catch (e) {
-                    t && t(e);
+                } catch (error) {
+                    onError && onError(error);
                 }
             }
             async getBasicProfile() {
                 (await this.isSignedIn()) || (await this.signIn());
-                const e = await gContainer.getProperty("googleapi_auth_key");
-                return fetch("https://www.googleapis.com/oauth2/v3/userinfo?access_token=".concat(e && e.access_token))
-                    .then((e) => e.json())
+                const authKey = await gContainer.getProperty("googleapi_auth_key");
+                return fetch("https://www.googleapis.com/oauth2/v3/userinfo?access_token=".concat(authKey && authKey.access_token))
+                    .then((response) => response.json())
                     .then(
-                        (e) => (
-                            e.email && gContainer.setProperty("googleapi_auth_email_hint", e.email),
-                            { email: e.email, imageUrl: e.picture, name: e.name }
+                        (profile) => (
+                            profile.email && gContainer.setProperty("googleapi_auth_email_hint", profile.email),
+                            { email: profile.email, imageUrl: profile.picture, name: profile.name }
                         )
                     )
                     .catch(() => reject(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.loading-failed"))));
             }
             async getAccessToken() {
                 (await this.isSignedIn()) || (await this.signIn());
-                const e = await gContainer.getProperty("googleapi_auth_key");
-                return { expires: e.expires_at, accessToken: e.access_token };
+                const authKey = await gContainer.getProperty("googleapi_auth_key");
+                return { expires: authKey.expires_at, accessToken: authKey.access_token };
             }
         })();
     };

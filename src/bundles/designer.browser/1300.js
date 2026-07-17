@@ -4,12 +4,12 @@ module.exports = function (module, exports, require) {
         (require(58 /* polyfill:Array */), require(19), require(596 /* polyfill:Array */), require(328 /* polyfill:Array */), require(8 /* Symbol */), require(20 /* polyfill:RegExp */), require(71 /* polyfill:String */), require(34), require(4), require(41), require(13), require(32), require(38), require(97), require(33), require(26));
         var GObject = require(1),
             GPlatform = require(15),
-            GContainer = _interopRequireDefault(require(85)),
+            GContainer = _interopRequireDefault(require(85 /* GContainer */)),
             GFilesPanelConstants = require(858),
-            GDrive = _interopRequireDefault(require(802)),
+            GDrive = _interopRequireDefault(require(802 /* CloudDrive */)),
             GSystemDialog = _interopRequireDefault(require(44 /* GSystemDialog */)),
             Utils = require(40),
-            GUser = _interopRequireDefault(require(177)),
+            GUser = _interopRequireDefault(require(177 /* GUser */)),
             designerConfig = require(10),
             AppError = _interopRequireDefault(require(355)),
             configBase = require(519);

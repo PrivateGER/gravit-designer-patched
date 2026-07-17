@@ -3,10 +3,10 @@ module.exports = function (module, exports, require) {
         require(3);
         var GObject = require(1),
             GCategory = require(18),
-            a = require(31),
+            GAction = require(31),
             GCommonNames = require(119);
         function s() {}
-        (GObject.GObject.inherit(s, a),
+        (GObject.GObject.inherit(s, GAction),
             (s.ID = "file.open-from-template"),
             (s.TITLE = new GObject.GLocaleKey("GNewFromTemplateAction", "title")),
             (s.prototype.getId = function () {

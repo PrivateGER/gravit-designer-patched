@@ -3,7 +3,7 @@ module.exports = function (module, exports, require) {
         var _interopRequireDefault = require(16);
         (require(20 /* polyfill:RegExp */), require(34));
         var GObject = require(1),
-            a = _interopRequireDefault(require(31));
+            a = _interopRequireDefault(require(31 /* GAction */));
         class r extends a.default {
             static getSubActionId(e, t) {
                 return "".concat(e, ".").concat(t);

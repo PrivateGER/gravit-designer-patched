@@ -2,7 +2,7 @@ module.exports = function (module, exports, require) {
         "use strict";
         var o,
             i = require(94),
-            a = require(464),
+            a = require(464 /* lib:pako */),
             r = require(310),
             s = require(311),
             l = require(225);

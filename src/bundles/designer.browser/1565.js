@@ -1,7 +1,7 @@
 module.exports = function (module, exports, require) {
         "use strict";
         (require(30 /* polyfill:Object */), require(3));
-        const o = require(433);
+        const GShareRoleFactory = require(433);
         function i() {
             let e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
             Object.assign(
@@ -15,7 +15,7 @@ module.exports = function (module, exports, require) {
                     sharing: false,
                     isPrivate: false,
                     comment: false,
-                    role: o.ROLES.NO_ACCESS_ROLE,
+                    role: GShareRoleFactory.ROLES.NO_ACCESS_ROLE,
                     realtimeCollaborators: [],
                 },
                 e
@@ -28,7 +28,7 @@ module.exports = function (module, exports, require) {
             (i.prototype.share = false),
             (i.prototype.sharing = false),
             (i.prototype.comment = false),
-            (i.prototype.role = o.ROLES.NO_ACCESS_ROLE),
+            (i.prototype.role = GShareRoleFactory.ROLES.NO_ACCESS_ROLE),
             (i.prototype.isPrivate = false),
             (i.prototype.realtimeCollaborators = []),
             (i.prototype.toString = function () {

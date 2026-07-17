@@ -1,11 +1,11 @@
 module.exports = function (module, exports, require) {
         "use strict";
         const { GLocale, GLocaleKey } = require(1 /* GObject */),
-            a = require(883);
+            UserMention = require(883);
         module.exports = {
             createAdditionalMentions: function () {
                 return {
-                    MENTION_ALL_REVIEWERS: new a({
+                    MENTION_ALL_REVIEWERS: new UserMention({
                         name: GLocale.get(new GLocaleKey("GAnnotationPanel", "text.additional-collaborators-all-reviewers-name")),
                         showText: GLocale.get(new GLocaleKey("GAnnotationPanel", "text.additional-collaborators-all-reviewers-show-text")),
                         id: "@reviewers",
@@ -16,7 +16,7 @@ module.exports = function (module, exports, require) {
                         email: "",
                         additional: true,
                     }),
-                    MENTION_ALL_APPROVERS: new a({
+                    MENTION_ALL_APPROVERS: new UserMention({
                         name: GLocale.get(new GLocaleKey("GAnnotationPanel", "text.additional-collaborators-all-approvers-name")),
                         showText: GLocale.get(new GLocaleKey("GAnnotationPanel", "text.additional-collaborators-all-approvers-show-text")),
                         id: "@approvers",
@@ -27,7 +27,7 @@ module.exports = function (module, exports, require) {
                         email: "",
                         additional: true,
                     }),
-                    MENTION_ALL_CO_AUTHORS: new a({
+                    MENTION_ALL_CO_AUTHORS: new UserMention({
                         name: GLocale.get(new GLocaleKey("GAnnotationPanel", "text.additional-collaborators-all-co-author-name")),
                         showText: GLocale.get(new GLocaleKey("GAnnotationPanel", "text.additional-collaborators-all-co-author-show-text")),
                         id: "@coauthors",
@@ -38,7 +38,7 @@ module.exports = function (module, exports, require) {
                         email: "",
                         additional: true,
                     }),
-                    MENTION_ALL: new a({
+                    MENTION_ALL: new UserMention({
                         name: GLocale.get(new GLocaleKey("GAnnotationPanel", "text.additional-collaborators-all-name")),
                         showText: GLocale.get(new GLocaleKey("GAnnotationPanel", "text.additional-collaborators-all-show-text")),
                         id: "@all",
@@ -49,7 +49,7 @@ module.exports = function (module, exports, require) {
                         email: "",
                         additional: true,
                     }),
-                    MENTION_OWNER: new a({
+                    MENTION_OWNER: new UserMention({
                         name: GLocale.get(new GLocaleKey("GAnnotationPanel", "text.additional-collaborators-owner-name")),
                         showText: GLocale.get(new GLocaleKey("GAnnotationPanel", "text.additional-collaborators-owner-show-text")),
                         id: "@owner",

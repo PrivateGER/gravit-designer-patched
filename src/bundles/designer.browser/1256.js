@@ -3,17 +3,17 @@ module.exports = function (module, exports, require) {
         var _interopRequireDefault = require(16);
         require(3);
         var GObject = require(1),
-            a = _interopRequireDefault(require(31)),
-            r = _interopRequireDefault(require(18 /* GCategory */)),
-            s = _interopRequireDefault(require(119 /* GCommonNames */)),
-            l = _interopRequireDefault(require(1159)),
-            c = _interopRequireDefault(require(219)),
-            d = _interopRequireDefault(require(256 /* GOfflineDialog */)),
-            u = require(67);
-        function p() {
+            GAction = _interopRequireDefault(require(31 /* GAction */)),
+            GCategory = _interopRequireDefault(require(18 /* GCategory */)),
+            GCommonNames = _interopRequireDefault(require(119 /* GCommonNames */)),
+            VersionHistoryEvent = _interopRequireDefault(require(1159)),
+            AlertDialog = _interopRequireDefault(require(219)),
+            GOfflineDialog = _interopRequireDefault(require(256 /* GOfflineDialog */)),
+            GRichTooltipConfig = require(67);
+        function GVersionsHistoryAction() {
             ((this._title = new GObject.GLocaleKey("GVersionsHistoryAction", "title")),
-                (p.TOOLTIP_CONFIG = {
-                    [u.TOOLTIP_AREA.MAIN_MENU.TRY_PRO_COMMON]: u.GRichTooltipConfig.from({
+                (GVersionsHistoryAction.TOOLTIP_CONFIG = {
+                    [GRichTooltipConfig.TOOLTIP_AREA.MAIN_MENU.TRY_PRO_COMMON]: GRichTooltipConfig.GRichTooltipConfig.from({
                         title: GObject.GLocale.get(new GObject.GLocaleKey("GVersionsHistoryAction", "text.try-this-feature-pro-tooltip-title")),
                         description: GObject.GLocale.get(
                             new GObject.GLocaleKey("GVersionsHistoryAction", "text.try-this-feature-pro-tooltip-description")
@@ -26,56 +26,56 @@ module.exports = function (module, exports, require) {
                     }),
                 }));
         }
-        (GObject.GObject.inherit(p, a.default),
-            (p.ID = "gravit-versions-history"),
-            (p.GroupID = "file"),
-            (p.TOOLTIP_CONFIG = null),
-            (p.prototype._title = null),
-            (p.prototype.getId = function () {
-                return p.ID;
+        (GObject.GObject.inherit(GVersionsHistoryAction, GAction.default),
+            (GVersionsHistoryAction.ID = "gravit-versions-history"),
+            (GVersionsHistoryAction.GroupID = "file"),
+            (GVersionsHistoryAction.TOOLTIP_CONFIG = null),
+            (GVersionsHistoryAction.prototype._title = null),
+            (GVersionsHistoryAction.prototype.getId = function () {
+                return GVersionsHistoryAction.ID;
             }),
-            (p.prototype.getTitle = function () {
+            (GVersionsHistoryAction.prototype.getTitle = function () {
                 return this._title;
             }),
-            (p.prototype.isPro = function () {
+            (GVersionsHistoryAction.prototype.isPro = function () {
                 return true;
             }),
-            (p.prototype.getTooltipArea = function () {
-                return u.TOOLTIP_AREA.MAIN_MENU.TRY_PRO_COMMON;
+            (GVersionsHistoryAction.prototype.getTooltipArea = function () {
+                return GRichTooltipConfig.TOOLTIP_AREA.MAIN_MENU.TRY_PRO_COMMON;
             }),
-            (p.prototype.getTooltipConfig = function (e) {
-                return (e && p.TOOLTIP_CONFIG[e]) || null;
+            (GVersionsHistoryAction.prototype.getTooltipConfig = function (tooltipArea) {
+                return (tooltipArea && GVersionsHistoryAction.TOOLTIP_CONFIG[tooltipArea]) || null;
             }),
-            (p.prototype.getIcon = function () {
+            (GVersionsHistoryAction.prototype.getIcon = function () {
                 return "gravit-icon-versions";
             }),
-            (p.prototype.getCategory = function () {
-                return r.default.CATEGORY_FILE;
+            (GVersionsHistoryAction.prototype.getCategory = function () {
+                return GCategory.default.CATEGORY_FILE;
             }),
-            (p.prototype.getGroup = function () {
-                return p.GroupID;
+            (GVersionsHistoryAction.prototype.getGroup = function () {
+                return GVersionsHistoryAction.GroupID;
             }),
-            (p.prototype.isEnabled = function () {
+            (GVersionsHistoryAction.prototype.isEnabled = function () {
                 if (!gDesigner.getApplicationManager().isShareEnabled()) return false;
-                var e = (gDesigner.getActiveDocument() && gDesigner.getActiveDocument().getStorageItem()) || null,
-                    t = !!gDesigner.getActiveDocument() && gDesigner.getActiveDocument().getScene().isCloudSynchronization();
-                return s.default.isOnline() && e && t;
+                var storageItem = (gDesigner.getActiveDocument() && gDesigner.getActiveDocument().getStorageItem()) || null,
+                    isCloudSynced = !!gDesigner.getActiveDocument() && gDesigner.getActiveDocument().getScene().isCloudSynchronization();
+                return GCommonNames.default.isOnline() && storageItem && isCloudSynced;
             }),
-            (p.prototype.execute = function () {
+            (GVersionsHistoryAction.prototype.execute = function () {
                 if (gDesigner.getWindows().getActiveWindow().getDocument().isModified())
-                    return (new c.default(GObject.GLocale.get(new GObject.GLocaleKey("GVersionsHistoryAction", "unsaved-modifications"))).open(), false);
-                const e = () => {
+                    return (new AlertDialog.default(GObject.GLocale.get(new GObject.GLocaleKey("GVersionsHistoryAction", "unsaved-modifications"))).open(), false);
+                const openVersionHistory = () => {
                     gDesigner &&
-                        gDesigner.hasEventListeners(l.default) &&
+                        gDesigner.hasEventListeners(VersionHistoryEvent.default) &&
                         (gDesigner.trigger(
-                            new l.default(l.default.Type.Enable, gDesigner.getActiveDocument().getScene().getProperty("cid"))
+                            new VersionHistoryEvent.default(VersionHistoryEvent.default.Type.Enable, gDesigner.getActiveDocument().getScene().getProperty("cid"))
                         ),
                         gDesigner.intercomStats("Entered version history"));
                 };
-                gDesigner.isOffline() ? d.default.openUnavailableFeature(e) : e();
+                gDesigner.isOffline() ? GOfflineDialog.default.openUnavailableFeature(openVersionHistory) : openVersionHistory();
             }),
-            (p.prototype.toString = function () {
+            (GVersionsHistoryAction.prototype.toString = function () {
                 return "[Object GVersionsHistoryAction]";
             }),
-            (module.exports = p));
+            (module.exports = GVersionsHistoryAction));
     };

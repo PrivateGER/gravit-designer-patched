@@ -3,47 +3,47 @@ module.exports = function (module, exports, require) {
         require(8 /* Symbol */);
         var GObject = require(1),
             designerConfig = require(10),
-            a = require(357),
+            Constants = require(357),
             GProfileDialog = require(604),
-            s = (require(1158), null),
-            l = null;
-        var c = {
+            loginPanel = (require(1158), null),
+            fadeOverlay = null;
+        var methods = {
             init: function () {
                 return this.each(function () {
-                    l = $("<div/>")
+                    fadeOverlay = $("<div/>")
                         .addClass("overlay-fade")
                         .on("click", function () {
-                            (this.remove(), s.gOverlay("close"));
+                            (this.remove(), loginPanel.gOverlay("close"));
                         })
                         .appendTo($("body"));
-                    var e = a.USERLOGIN.loadLogo();
-                    ((s = $("<div></div>")
+                    var logo = Constants.USERLOGIN.loadLogo();
+                    ((loginPanel = $("<div></div>")
                         .addClass("loading")
                         .addClass("g-user-details")
-                        .addClass(a.USERLOGIN.OVERLAY_CLASS)
-                        .append(e)
+                        .addClass(Constants.USERLOGIN.OVERLAY_CLASS)
+                        .append(logo)
                         .gOverlay({
-                            clazz: "g-user-login-dialog" + (a.USERLOGIN.OVERLAY_CLASS ? " " + a.USERLOGIN.OVERLAY_CLASS : ""),
+                            clazz: "g-user-login-dialog" + (Constants.USERLOGIN.OVERLAY_CLASS ? " " + Constants.USERLOGIN.OVERLAY_CLASS : ""),
                             padding: false,
                             releaseOnClose: true,
                             closeCallback: function () {
-                                l.remove();
+                                fadeOverlay.remove();
                             },
                         })
                         .gOverlay("open", this)),
-                        gDesigner.getUser().then(async (e) => {
-                            let t = !designerConfig.PROFILE_DIALOG_URL;
-                            (designerConfig.PROFILE_DIALOG_URL && (t = await designerConfig.gApi.hasPurchases().catch(() => false)),
-                                s.removeClass("loading"),
-                                s.append(
-                                    (function (e, t) {
+                        gDesigner.getUser().then(async (user) => {
+                            let showInternalDialog = !designerConfig.PROFILE_DIALOG_URL;
+                            (designerConfig.PROFILE_DIALOG_URL && (showInternalDialog = await designerConfig.gApi.hasPurchases().catch(() => false)),
+                                loginPanel.removeClass("loading"),
+                                loginPanel.append(
+                                    (function (user, showInternalDialog) {
                                         gDesigner.getLicense();
-                                        const n = () => {
-                                                s.gOverlay("close");
+                                        const closeDialog = () => {
+                                                loginPanel.gOverlay("close");
                                             },
-                                            a = e.canUpdateSelfAccountData();
-                                        var l = $("<div/>"),
-                                            c = $("<div/>")
+                                            canManageAccount = user.canUpdateSelfAccountData();
+                                        var container = $("<div/>"),
+                                            footer = $("<div/>")
                                                 .addClass("footer")
                                                 .append(
                                                     $("<div/>")
@@ -52,15 +52,15 @@ module.exports = function (module, exports, require) {
                                                             $("<button/>")
                                                                 .html(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "action.settings")))
                                                                 .addClass("highlight")
-                                                                .css("display", a ? "" : "none")
-                                                                .on("click", async (o) => {
+                                                                .css("display", canManageAccount ? "" : "none")
+                                                                .on("click", async (event) => {
                                                                     (gDesigner.stats("profile_click_open-button"),
-                                                                        designerConfig.ALWAYS_SHOW_ACCOUNT_SETTING_DIALOG || t
-                                                                            ? new GProfileDialog(e).open()
+                                                                        designerConfig.ALWAYS_SHOW_ACCOUNT_SETTING_DIALOG || showInternalDialog
+                                                                            ? new GProfileDialog(user).open()
                                                                             : designerConfig.PROFILE_DIALOG_URL
-                                                                              ? gContainer.openExternalLink(o, designerConfig.PROFILE_DIALOG_URL)
-                                                                              : gContainer.openExternalLink(o, designerConfig.gApi.url + "/profile"),
-                                                                        n());
+                                                                              ? gContainer.openExternalLink(event, designerConfig.PROFILE_DIALOG_URL)
+                                                                              : gContainer.openExternalLink(event, designerConfig.gApi.url + "/profile"),
+                                                                        closeDialog());
                                                                 }),
                                                             $("<button/>")
                                                                 .html(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "action.sign-out")))
@@ -68,19 +68,19 @@ module.exports = function (module, exports, require) {
                                                                 .on("click", function () {
                                                                     (gDesigner.stats("profile_click_signout-button"),
                                                                         gDesigner.signout(),
-                                                                        n());
+                                                                        closeDialog());
                                                                 }),
                                                         ])
                                                 );
                                         return (
-                                            e.hasOwnPictureAvatar()
-                                                ? l
+                                            user.hasOwnPictureAvatar()
+                                                ? container
                                                       .append(
                                                           $("<div/>")
                                                               .append(
                                                                   $("<div/>")
                                                                       .addClass("avatar")
-                                                                      .css("background-image", 'url("' + e.avatar + '")')
+                                                                      .css("background-image", 'url("' + user.avatar + '")')
                                                               )
                                                               .append(
                                                                   $("<div/>")
@@ -89,16 +89,16 @@ module.exports = function (module, exports, require) {
                                                                           $("<div/>")
                                                                               .addClass("username")
                                                                               .append(
-                                                                                  $("<span/>").addClass("name").text(e.getFullUserName())
+                                                                                  $("<span/>").addClass("name").text(user.getFullUserName())
                                                                               )
                                                                               .append(
-                                                                                  $("<span/>").addClass("email").text(e.getAccountName())
+                                                                                  $("<span/>").addClass("email").text(user.getAccountName())
                                                                               )
                                                                       )
                                                               )
                                                       )
-                                                      .append(c)
-                                                : l
+                                                      .append(footer)
+                                                : container
                                                       .append(
                                                           $("<div/>")
                                                               .append(
@@ -106,9 +106,9 @@ module.exports = function (module, exports, require) {
                                                                       .addClass("avatar")
                                                                       .addClass("g-user-login-avatar")
                                                                       .css({
-                                                                          "background-color": e.getUserColor(),
+                                                                          "background-color": user.getUserColor(),
                                                                       })
-                                                                      .text(e.getUserNameInitials())
+                                                                      .text(user.getUserNameInitials())
                                                               )
                                                               .append(
                                                                   $("<div/>")
@@ -117,28 +117,28 @@ module.exports = function (module, exports, require) {
                                                                           $("<div/>")
                                                                               .addClass("username")
                                                                               .append(
-                                                                                  $("<span/>").addClass("name").text(e.getFullUserName())
+                                                                                  $("<span/>").addClass("name").text(user.getFullUserName())
                                                                               )
                                                                               .append(
-                                                                                  $("<span/>").addClass("email").text(e.getAccountName())
+                                                                                  $("<span/>").addClass("email").text(user.getAccountName())
                                                                               )
                                                                       )
                                                               )
                                                       )
-                                                      .append(c),
-                                            l
+                                                      .append(footer),
+                                            container
                                         );
-                                    })(e, t)
+                                    })(user, showInternalDialog)
                                 ));
                         }));
                 });
             },
         };
-        $.fn.gUserLogin = function (e) {
-            return c[e]
-                ? c[e].apply(this, Array.prototype.slice.call(arguments, 1))
-                : "object" != typeof e && e
-                  ? void $.error("Method " + e + " does not exist on jQuery.myPlugin")
-                  : c.init.apply(this, arguments);
+        $.fn.gUserLogin = function (method) {
+            return methods[method]
+                ? methods[method].apply(this, Array.prototype.slice.call(arguments, 1))
+                : "object" != typeof method && method
+                  ? void $.error("Method " + method + " does not exist on jQuery.myPlugin")
+                  : methods.init.apply(this, arguments);
         };
     };

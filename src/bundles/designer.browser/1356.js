@@ -3,11 +3,11 @@ module.exports = function (module, exports, require) {
         var _interopRequireDefault = require(16);
         (require(58 /* polyfill:Array */), require(19), require(30 /* polyfill:Object */), require(8 /* Symbol */), require(20 /* polyfill:RegExp */), require(71 /* polyfill:String */), require(151), require(34), require(91 /* polyfill:String */), require(4), require(41), require(13), require(32), require(38), require(33), require(26));
         var designerConfig = require(10),
-            assigneeUtil = require(882),
+            assigneeUtil = require(882 /* collabApi */),
             GAnnotationAdditionalMentions = require(1353),
             GRegex = require(263),
-            richTooltip = require(67),
-            ownerUtil = _interopRequireDefault(require(358)),
+            richTooltip = require(67 /* GRichTooltipConfig */),
+            ownerUtil = _interopRequireDefault(require(358 /* GAnnotationsUtils */)),
             Collaborator = _interopRequireDefault(require(1324)),
             Mention = _interopRequireDefault(require(883));
         const { GSystem, GLocale, GLocaleKey, GUtil, GComment, GAnnotation, GObject, GNode } = require(1 /* GObject */),

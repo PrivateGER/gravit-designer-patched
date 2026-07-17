@@ -5,7 +5,7 @@ module.exports = function (module, exports, require) {
             GObject = require(1),
             GPlatform = require(15),
             Utils = require(40),
-            GRichTooltip = require(67),
+            GRichTooltipConfig = require(67),
             GSwatchesChangedEvent = require(1151),
             GInputSlider = require(857),
             GSystemDialog = require(44);
@@ -2314,7 +2314,7 @@ module.exports = function (module, exports, require) {
                                         )
                                         .gPatternTarget()
                                         .gRichTooltip(
-                                            GRichTooltip.GRichTooltipConfig.from({
+                                            GRichTooltipConfig.GRichTooltipConfig.from({
                                                 title: GObject.GLocale.get(
                                                     new GObject.GLocaleKey("GPatternChooser", "text.color-picker-tooltip-title")
                                                 ),
@@ -2341,7 +2341,7 @@ module.exports = function (module, exports, require) {
                                         })
                                         .removeClass("g-button")
                                         .gRichTooltip(
-                                            GRichTooltip.GRichTooltipConfig.from({
+                                            GRichTooltipConfig.GRichTooltipConfig.from({
                                                 title: GObject.GLocale.get(new GObject.GLocaleKey("GPatternChooser", "text.eyedropper-tooltip-title")),
                                                 description: GObject.GLocale.get(
                                                     new GObject.GLocaleKey("GPatternChooser", "text.eyedropper-tooltip-description")

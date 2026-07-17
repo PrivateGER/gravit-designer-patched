@@ -1,18 +1,18 @@
 module.exports = function (module, exports, require) {
             var IsFiniteNonNegativeNumber = require(0),
-                r = require(47);
+                GLocaleKey = require(47);
 
-            function o() {}
-            (IsFiniteNonNegativeNumber.inherit(o, IsFiniteNonNegativeNumber),
-                (o.prototype._failed = false),
-                (o.Features = {
+            function GFont() {}
+            (IsFiniteNonNegativeNumber.inherit(GFont, IsFiniteNonNegativeNumber),
+                (GFont.prototype._failed = false),
+                (GFont.Features = {
                     SmallCaps: "smcp",
                     Fractions: "frac",
                     Variants: "fvar",
                     StylisticSet: "stylisticset",
                     LocalizedForm: "locl",
                 }),
-                (o.SmallCapsUnicodeMap = {
+                (GFont.SmallCapsUnicodeMap = {
                     a: "ᴀ",
                     b: "ʙ",
                     c: "ᴄ",
@@ -40,11 +40,11 @@ module.exports = function (module, exports, require) {
                     y: "ʏ",
                     z: "ᴢ",
                 }),
-                (o.Style = {
+                (GFont.Style = {
                     Normal: "N",
                     Italic: "I",
                 }),
-                (o.Weight = {
+                (GFont.Weight = {
                     Thin: 100,
                     ExtraLight: 200,
                     Light: 300,
@@ -55,57 +55,57 @@ module.exports = function (module, exports, require) {
                     ExtraBold: 800,
                     Heavy: 900,
                 }),
-                (o.WeightName = {
-                    100: new r("GFont", "weight.thin"),
-                    200: new r("GFont", "weight.extra-light"),
-                    300: new r("GFont", "weight.light"),
-                    400: new r("GFont", "weight.regular"),
-                    500: new r("GFont", "weight.medium"),
-                    600: new r("GFont", "weight.semi-bold"),
-                    700: new r("GFont", "weight.bold"),
-                    800: new r("GFont", "weight.extra-bold"),
-                    900: new r("GFont", "weight.heavy"),
+                (GFont.WeightName = {
+                    100: new GLocaleKey("GFont", "weight.thin"),
+                    200: new GLocaleKey("GFont", "weight.extra-light"),
+                    300: new GLocaleKey("GFont", "weight.light"),
+                    400: new GLocaleKey("GFont", "weight.regular"),
+                    500: new GLocaleKey("GFont", "weight.medium"),
+                    600: new GLocaleKey("GFont", "weight.semi-bold"),
+                    700: new GLocaleKey("GFont", "weight.bold"),
+                    800: new GLocaleKey("GFont", "weight.extra-bold"),
+                    900: new GLocaleKey("GFont", "weight.heavy"),
                 }),
-                (o.WeightNameItalic = {
-                    100: new r("GFont", "weight.thin-italic"),
-                    200: new r("GFont", "weight.extra-light-italic"),
-                    300: new r("GFont", "weight.light-italic"),
-                    400: new r("GFont", "weight.regular-italic"),
-                    500: new r("GFont", "weight.medium-italic"),
-                    600: new r("GFont", "weight.semi-bold-italic"),
-                    700: new r("GFont", "weight.bold-italic"),
-                    800: new r("GFont", "weight.extra-bold-italic"),
-                    900: new r("GFont", "weight.heavy-italic"),
+                (GFont.WeightNameItalic = {
+                    100: new GLocaleKey("GFont", "weight.thin-italic"),
+                    200: new GLocaleKey("GFont", "weight.extra-light-italic"),
+                    300: new GLocaleKey("GFont", "weight.light-italic"),
+                    400: new GLocaleKey("GFont", "weight.regular-italic"),
+                    500: new GLocaleKey("GFont", "weight.medium-italic"),
+                    600: new GLocaleKey("GFont", "weight.semi-bold-italic"),
+                    700: new GLocaleKey("GFont", "weight.bold-italic"),
+                    800: new GLocaleKey("GFont", "weight.extra-bold-italic"),
+                    900: new GLocaleKey("GFont", "weight.heavy-italic"),
                 }),
-                (o.equals = function (e, t) {
-                    return e && t
-                        ? e.getFamily() === t.getFamily() && e.getStyle() === t.getStyle() && e.getWeight() === t.getWeight()
-                        : !!e == !!t;
+                (GFont.equals = function (font, otherFont) {
+                    return font && otherFont
+                        ? font.getFamily() === otherFont.getFamily() && font.getStyle() === otherFont.getStyle() && font.getWeight() === otherFont.getWeight()
+                        : !!font == !!otherFont;
                 }),
-                (o.getFontFamilyCorrected = function (e) {
-                    return "Noto Sans CS" === e ? "Noto Sans CJK SC" : "Noto Sans CT" === e ? "Noto Sans CJK TC" : e;
+                (GFont.getFontFamilyCorrected = function (fontFamily) {
+                    return "Noto Sans CS" === fontFamily ? "Noto Sans CJK SC" : "Noto Sans CT" === fontFamily ? "Noto Sans CJK TC" : fontFamily;
                 }),
-                (o.prototype.isResolved = function () {
+                (GFont.prototype.isResolved = function () {
                     throw new Error("Unsupported operation.");
                 }),
-                (o.prototype.isEmbedded = function () {
+                (GFont.prototype.isEmbedded = function () {
                     return false;
                 }),
-                (o.prototype.setFailed = function (e) {
-                    this._failed = e;
+                (GFont.prototype.setFailed = function (failed) {
+                    this._failed = failed;
                 }),
-                (o.prototype.isFailed = function () {
+                (GFont.prototype.isFailed = function () {
                     return this._failed;
                 }),
-                (o.prototype.toFontFaceSrc = function () {
+                (GFont.prototype.toFontFaceSrc = function () {
                     return null;
                 }),
-                (o.prototype.toCssProperties = function () {
-                    var e = function () {
+                (GFont.prototype.toCssProperties = function () {
+                    var getStyleName = function () {
                         switch (this.getStyle()) {
-                            case o.Style.Normal:
+                            case GFont.Style.Normal:
                                 return "normal";
-                            case o.Style.Italic:
+                            case GFont.Style.Italic:
                                 return "italic";
                             default:
                                 throw new Error("Unknown style");
@@ -113,48 +113,48 @@ module.exports = function (module, exports, require) {
                     }.bind(this);
                     return {
                         "font-family": this.getFamily(),
-                        "font-style": e(),
+                        "font-style": getStyleName(),
                         "font-weight": this.getWeight() ? this.getWeight().toString() : null,
                     };
                 }),
-                (o.prototype.getFamily = function () {
+                (GFont.prototype.getFamily = function () {
                     throw new Error("Unsupported operation.");
                 }),
-                (o.prototype.getStyle = function () {
+                (GFont.prototype.getStyle = function () {
                     throw new Error("Unsupported operation.");
                 }),
-                (o.prototype.getWeight = function () {
+                (GFont.prototype.getWeight = function () {
                     throw new Error("Unsupported operation.");
                 }),
-                (o.prototype.getGlyphBaseline = function (e) {
+                (GFont.prototype.getGlyphBaseline = function (fontSize) {
                     throw new Error("Unsupported operation.");
                 }),
-                (o.prototype.stringToGlyphs = function (e, t, i, n, r) {
+                (GFont.prototype.stringToGlyphs = function (text, x, y, fontSize, options) {
                     throw new Error("Unsupported operation.");
                 }),
-                (o.prototype.getGlyphBoundingRect = function (e, t) {
+                (GFont.prototype.getGlyphBoundingRect = function (fontSize, glyph) {
                     throw new Error("Unsupported operation.");
                 }),
-                (o.prototype.getGlyphOutline = function (e, t, i, n) {
+                (GFont.prototype.getGlyphOutline = function (fontSize, x, y, glyph) {
                     throw new Error("Unsupported operation.");
                 }),
-                (o.prototype.getLeftSideBearing = function (e, t) {
+                (GFont.prototype.getLeftSideBearing = function (fontSize, glyph) {
                     throw new Error("Unsupported operation.");
                 }),
-                (o.prototype.getMaxFontHeight = function (e) {
+                (GFont.prototype.getMaxFontHeight = function (fontSize) {
                     throw new Error("Unsupported operation.");
                 }),
-                (o.prototype.getAdvance = function (e, t, i) {
+                (GFont.prototype.getAdvance = function (fontSize, glyph, previousGlyph) {
                     throw new Error("Unsupported operation.");
                 }),
-                (o.prototype.hasFeature = function (e) {
+                (GFont.prototype.hasFeature = function (feature) {
                     return false;
                 }),
-                (o.prototype.getAvailableStylisticSets = function (e) {
+                (GFont.prototype.getAvailableStylisticSets = function (script) {
                     return [];
                 }),
-                (o.prototype.getAvailableLanguageSystemTags = function (e) {
+                (GFont.prototype.getAvailableLanguageSystemTags = function (script) {
                     return [];
                 }),
-                (module.exports = o));
+                (module.exports = GFont));
         };

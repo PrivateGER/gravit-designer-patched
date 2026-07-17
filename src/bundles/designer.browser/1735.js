@@ -2,9 +2,9 @@ module.exports = function (module, exports, require) {
         "use strict";
         (require(168 /* PDFFetchStream */), require(4), require(41), require(13), require(169 /* PDFNetworkStream */));
         var GObject = require(1);
-        const i = require(238),
-            a = (e) => {
-                e.empty().append(
+        const GMenu = require(238),
+            renderDropdownCaption = (element) => {
+                element.empty().append(
                     $("<div/>")
                         .addClass("container")
                         .append($("<span/>").addClass("gravit-icon-pages"))
@@ -12,103 +12,103 @@ module.exports = function (module, exports, require) {
                         .append($("<span/>").addClass("gravit-icon-down"))
                 );
             },
-            r = (e, t) => {
-                e.empty()
+            renderTouchButton = (element, reference) => {
+                element.empty()
                     .append(
                         $("<div />")
                             .addClass("action-button")
                             .append($("<span />").addClass("gravit-icon-touch-pages-panel"))
                             .append($("<span />").addClass("caption"))
                     )
-                    .append(t);
+                    .append(reference);
             },
-            s = {
+            methods = {
                 init: function () {
                     return this.each(function () {
-                        const e = $(this),
-                            t = $("<button />").addClass("dropdown-button").append($("<span></span>").addClass("gravit-icon-down"));
-                        e.data("g-page-button-dropdownbutton", t);
-                        let n = new i(void 0, "g-page-menu");
-                        (e.addClass("g-page-button").gMenuButton({
+                        const element = $(this),
+                            dropdownButton = $("<button />").addClass("dropdown-button").append($("<span></span>").addClass("gravit-icon-down"));
+                        element.data("g-page-button-dropdownbutton", dropdownButton);
+                        let menu = new GMenu(void 0, "g-page-menu");
+                        (element.addClass("g-page-button").gMenuButton({
                             menu: () => {
-                                const t = e.data("options") && e.data("options").scene;
+                                const scene = element.data("options") && element.data("options").scene;
                                 return (
-                                    t &&
-                                        (n.clearItems(),
-                                        t
+                                    scene &&
+                                        (menu.clearItems(),
+                                        scene
                                             .getChildren()
-                                            .filter((e) => e instanceof GObject.GPage && e.isVisible())
+                                            .filter((child) => child instanceof GObject.GPage && child.isVisible())
                                             .reduce(
-                                                (e, t) => (
-                                                    e.createAddItem(t.getLabel(), () => {
-                                                        t.setFlag(GObject.GNode.Flag.Active);
+                                                (menuAcc, page) => (
+                                                    menuAcc.createAddItem(page.getLabel(), () => {
+                                                        page.setFlag(GObject.GNode.Flag.Active);
                                                     }),
-                                                    e
+                                                    menuAcc
                                                 ),
-                                                n
+                                                menu
                                             )),
-                                    n
+                                    menu
                                 );
                             },
                             getActiveItem: () => {
-                                const t = e.data("options") && e.data("options").scene;
-                                if (t) {
-                                    const e = t.getActivePage();
-                                    if (e) return n.findItem(e.getLabel());
+                                const scene = element.data("options") && element.data("options").scene;
+                                if (scene) {
+                                    const activePage = scene.getActivePage();
+                                    if (activePage) return menu.findItem(activePage.getLabel());
                                 }
                                 return null;
                             },
-                            reference: () => (gDesigner.isTouchEnabled() ? t : null),
+                            reference: () => (gDesigner.isTouchEnabled() ? dropdownButton : null),
                         }),
-                            gDesigner.isTouchEnabled() ? r(e) : a(e));
+                            gDesigner.isTouchEnabled() ? renderTouchButton(element) : renderDropdownCaption(element));
                     });
                 },
-                scene: function (e) {
-                    const t = $(this),
-                        n = t.data("options") || {};
+                scene: function (newScene) {
+                    const element = $(this),
+                        options = element.data("options") || {};
                     return (
-                        n.scene !== e &&
-                            (n.scene && n.scene.removeEventListener(GObject.GNode.AfterFlagChangeEvent, s._afterFlagChangeEvent, this),
-                            (n.scene = e),
-                            e &&
-                                (s._activatePage.call(this, e.getActivePage()),
-                                e.addEventListener(GObject.GNode.AfterFlagChangeEvent, s._afterFlagChangeEvent, this))),
-                        t.data("options", n),
+                        options.scene !== newScene &&
+                            (options.scene && options.scene.removeEventListener(GObject.GNode.AfterFlagChangeEvent, methods._afterFlagChangeEvent, this),
+                            (options.scene = newScene),
+                            newScene &&
+                                (methods._activatePage.call(this, newScene.getActivePage()),
+                                newScene.addEventListener(GObject.GNode.AfterFlagChangeEvent, methods._afterFlagChangeEvent, this))),
+                        element.data("options", options),
                         this
                     );
                 },
                 reinit: function () {
-                    const e = $(this);
-                    gDesigner.isTouchEnabled() ? r(e, e.data("g-page-button-dropdownbutton")) : a(e);
-                    const t = (e.data("options") || {}).scene;
-                    t &&
-                        (s._activatePage.call(this, t.getActivePage()),
-                        t.hasEventListeners(GObject.GNode.AfterFlagChangeEvent, s._afterFlagChangeEvent, this) ||
-                            t.addEventListener(GObject.GNode.AfterFlagChangeEvent, s._afterFlagChangeEvent, this));
+                    const element = $(this);
+                    gDesigner.isTouchEnabled() ? renderTouchButton(element, element.data("g-page-button-dropdownbutton")) : renderDropdownCaption(element);
+                    const scene = (element.data("options") || {}).scene;
+                    scene &&
+                        (methods._activatePage.call(this, scene.getActivePage()),
+                        scene.hasEventListeners(GObject.GNode.AfterFlagChangeEvent, methods._afterFlagChangeEvent, this) ||
+                            scene.addEventListener(GObject.GNode.AfterFlagChangeEvent, methods._afterFlagChangeEvent, this));
                 },
                 release: function () {
-                    const e = $(this),
-                        t = e.data("options");
+                    const element = $(this),
+                        options = element.data("options");
                     return (
-                        t && t.scene && t.scene.removeEventListener(GObject.GNode.AfterFlagChangeEvent, s._afterFlagChangeEvent, this),
-                        e.remove(),
+                        options && options.scene && options.scene.removeEventListener(GObject.GNode.AfterFlagChangeEvent, methods._afterFlagChangeEvent, this),
+                        element.remove(),
                         this
                     );
                 },
-                _afterFlagChangeEvent: function (e) {
-                    e.node instanceof GObject.GPage && e.flag === GObject.GNode.Flag.Active && s._activatePage.call(this, e.node);
+                _afterFlagChangeEvent: function (event) {
+                    event.node instanceof GObject.GPage && event.flag === GObject.GNode.Flag.Active && methods._activatePage.call(this, event.node);
                 },
-                _activatePage: function (e) {
+                _activatePage: function (page) {
                     $(this)
                         .find(".caption")
-                        .text(e ? e.getLabel() : "");
+                        .text(page ? page.getLabel() : "");
                 },
             };
-        $.fn.gPageButton = function (e) {
-            return s[e]
-                ? s[e].apply(this, Array.prototype.slice.call(arguments, 1))
-                : "object" != typeof e && e
-                  ? void $.error("Method " + e + " does not exist on jQuery.gPageButton")
-                  : s.init.apply(this, arguments);
+        $.fn.gPageButton = function (method) {
+            return methods[method]
+                ? methods[method].apply(this, Array.prototype.slice.call(arguments, 1))
+                : "object" != typeof method && method
+                  ? void $.error("Method " + method + " does not exist on jQuery.gPageButton")
+                  : methods.init.apply(this, arguments);
         };
     };

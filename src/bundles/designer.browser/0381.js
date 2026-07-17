@@ -1,61 +1,61 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        function o(e) {
-            this._providerManager = e;
+        function GFontsProvider(providerManager) {
+            this._providerManager = providerManager;
         }
         (require(20 /* polyfill:RegExp */),
             require(34),
             require(134 /* polyfill:String */),
-            (o.Errors = { UnknownError: 0, ConnectionError: 1 }),
-            (o.prototype._providerManager = null),
-            (o.prototype._enabled = true),
-            (o.prototype.addPreviews = function (e) {
+            (GFontsProvider.Errors = { UnknownError: 0, ConnectionError: 1 }),
+            (GFontsProvider.prototype._providerManager = null),
+            (GFontsProvider.prototype._enabled = true),
+            (GFontsProvider.prototype.addPreviews = function (fonts) {
                 throw new Error("GFontsProvider.addPreviews: virtual");
             }),
-            (o.prototype.load = function (e, t, n, o) {
+            (GFontsProvider.prototype.load = function (query, offset, count, callback) {
                 throw new Error("GFontsProvider.load: virtual");
             }),
-            (o.prototype.getTotalFonts = function (e) {
+            (GFontsProvider.prototype.getTotalFonts = function (query) {
                 throw new Error("GFontsProvider.getTotalFonts: virtual");
             }),
-            (o.prototype.getProviderId = function () {
+            (GFontsProvider.prototype.getProviderId = function () {
                 throw new Error("GFontsProvider.getProviderId: virtual");
             }),
-            (o.prototype.resolveFont = function (e, t, n, o) {
+            (GFontsProvider.prototype.resolveFont = function (family, style, weight, callback) {
                 throw new Error("GFontsProvider.resolveFont: virtual");
             }),
-            (o.prototype.isInitialized = function () {
+            (GFontsProvider.prototype.isInitialized = function () {
                 return true;
             }),
-            (o.prototype.resetProvider = function () {}),
-            (o.prototype.hasEnabler = function () {
+            (GFontsProvider.prototype.resetProvider = function () {}),
+            (GFontsProvider.prototype.hasEnabler = function () {
                 return false;
             }),
-            (o.prototype.getEnabler = function () {
+            (GFontsProvider.prototype.getEnabler = function () {
                 return null;
             }),
-            (o.prototype.setEnabled = function (e) {
-                this._enabled = !!e;
+            (GFontsProvider.prototype.setEnabled = function (enabled) {
+                this._enabled = !!enabled;
             }),
-            (o.prototype.isEnabled = function () {
+            (GFontsProvider.prototype.isEnabled = function () {
                 return this._enabled;
             }),
-            (o.prototype._searchFilter = function (e) {
-                return function (t) {
-                    return e.indexOf("%") >= 0
-                        ? t.family.toLowerCase().startsWith(e.replace(/%/g, ""))
-                        : t.family.toLowerCase() == e.toLowerCase();
+            (GFontsProvider.prototype._searchFilter = function (query) {
+                return function (font) {
+                    return query.indexOf("%") >= 0
+                        ? font.family.toLowerCase().startsWith(query.replace(/%/g, ""))
+                        : font.family.toLowerCase() == query.toLowerCase();
                 };
             }),
-            (o.prototype._getClosestKey = function (e, t, n, o) {
-                var i,
-                    a = Number.POSITIVE_INFINITY;
-                n = Number(n);
-                for (var r = -1, s = 0; s < e.length; s++) {
-                    var l = e[s];
-                    l.family === t && ((i = (n - l.weight) * (n - l.weight)), o !== l.style && (i += 9e4), i < a && ((a = i), (r = s)));
+            (GFontsProvider.prototype._getClosestKey = function (fonts, family, weight, style) {
+                var distance,
+                    minDistance = Number.POSITIVE_INFINITY;
+                weight = Number(weight);
+                for (var bestIndex = -1, s = 0; s < fonts.length; s++) {
+                    var l = fonts[s];
+                    l.family === family && ((distance = (weight - l.weight) * (weight - l.weight)), style !== l.style && (distance += 9e4), distance < minDistance && ((minDistance = distance), (bestIndex = s)));
                 }
-                return r;
+                return bestIndex;
             }),
-            (module.exports = o));
+            (module.exports = GFontsProvider));
     };

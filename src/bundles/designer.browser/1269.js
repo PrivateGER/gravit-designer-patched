@@ -2,46 +2,46 @@ module.exports = function (module, exports, require) {
         "use strict";
         (require(3), require(4), require(13), require(32), require(33));
         var GObject = require(1),
-            i = require(53),
-            a = require(357),
-            r = require(67),
-            s = require(123),
-            l = (require(173), require(135));
-        function c() {
+            GEditorModule = require(53),
+            uiConstants = require(357),
+            GRichTooltipConfig = require(67),
+            PanelBase = require(123),
+            settingsChangeEvent = (require(173), require(135));
+        function GPathProperties() {
             this._pathes = [];
         }
-        (GObject.GObject.inherit(c, s),
-            (c.prototype._panel = null),
-            (c.prototype._document = null),
-            (c.prototype._pathes = null),
-            (c.prototype._points = null),
-            (c.prototype.init = function (e, t) {
-                this._panel = e;
-                const n = (e) => {
-                    const t = this._getTargetNodeType($(e.target));
-                    this.assignNodeType(t);
+        (GObject.GObject.inherit(GPathProperties, PanelBase),
+            (GPathProperties.prototype._panel = null),
+            (GPathProperties.prototype._document = null),
+            (GPathProperties.prototype._pathes = null),
+            (GPathProperties.prototype._points = null),
+            (GPathProperties.prototype.init = function (panel, t) {
+                this._panel = panel;
+                const applyNodeType = (event) => {
+                    const nodeType = this._getTargetNodeType($(event.target));
+                    this.assignNodeType(nodeType);
                 };
-                var i = function (e) {
-                    var t = this;
-                    if ("x" === e || "y" === e)
+                var createPropertyInput = function (propertyKey) {
+                    var self = this;
+                    if ("x" === propertyKey || "y" === propertyKey)
                         return $("<div/>")
                             .append(
                                 $("<input>")
                                     .attr("type", "text")
-                                    .attr("data-point-property", e)
+                                    .attr("data-point-property", propertyKey)
                                     .on("change", function (n) {
-                                        var o = t._document.getScene().stringToPoint($(this).val());
-                                        ("x" === e
+                                        var value = self._document.getScene().stringToPoint($(this).val());
+                                        ("x" === propertyKey
                                             ? gDesigner.stats("pathproperties_modify_x")
                                             : gDesigner.stats("pathproperties_modify_y"),
-                                            null !== o && "number" == typeof o ? t._assignPointProperty(e, o) : t._updatePointProperties());
+                                            null !== value && "number" == typeof value ? self._assignPointProperty(propertyKey, value) : self._updatePointProperties());
                                     })
                                     .gInputBox()
                             )
-                            .gInputLabel({ label: e });
-                    if ("tp" === e)
+                            .gInputLabel({ label: propertyKey });
+                    if ("tp" === propertyKey)
                         return $("<select></select>")
-                            .attr("data-point-property", e)
+                            .attr("data-point-property", propertyKey)
                             .append(
                                 $("<option></option>")
                                     .attr("value", "-")
@@ -67,36 +67,36 @@ module.exports = function (module, exports, require) {
                                     .attr("value", GObject.GPathBase.AnchorPoint.Type.Connector)
                                     .text(GObject.GLocale.get(new GObject.GLocaleKey("GPathBase", "anchor-point.connector")))
                             )
-                            .on("change", function (e) {
-                                n(e);
+                            .on("change", function (event) {
+                                applyNodeType(event);
                             });
-                    if ("ctp" === e)
+                    if ("ctp" === propertyKey)
                         return $("<span></span>")
                             .addClass("clickable")
                             .addClass("g-button")
                             .addClass("corner-type")
-                            .attr("data-point-property", e)
+                            .attr("data-point-property", propertyKey)
                             .gCornerTypePicker()
-                            .on("cornertypechange", function (e, n) {
-                                t._assignPointProperty("tp", n);
+                            .on("cornertypechange", function (e, cornerType) {
+                                self._assignPointProperty("tp", cornerType);
                             });
-                    if ("cu" === e)
+                    if ("cu" === propertyKey)
                         return $("<button></button>")
                             .addClass("g-flat")
-                            .attr("data-point-property", e)
+                            .attr("data-point-property", propertyKey)
                             .on("click", function () {
                                 (gDesigner.stats("pathproperties_modify_uniform"),
-                                    t._assignPointProperty(e, !$(this).hasClass("g-active")),
-                                    t._updatePointProperties());
+                                    self._assignPointProperty(propertyKey, !$(this).hasClass("g-active")),
+                                    self._updatePointProperties());
                             })
                             .append($("<span></span>").addClass("gravit-icon-lock").css("font-size", "10px"));
-                    if ("cl-slider" === e)
+                    if ("cl-slider" === propertyKey)
                         return $("<div/>")
                             .attr("data-point-property", "cl")
                             .gInputSlider({
                                 min: 0,
                                 max: 100,
-                                richTooltipConfig: r.GRichTooltipConfig.from({
+                                richTooltipConfig: GRichTooltipConfig.GRichTooltipConfig.from({
                                     title: GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.corner-radius-slider-tooltip-title")),
                                     description: GObject.GLocale.get(
                                         new GObject.GLocaleKey("GCommonNames", "text.corner-radius-slider-tooltip-description")
@@ -104,42 +104,42 @@ module.exports = function (module, exports, require) {
                                 }),
                             })
                             .on("mousedown", function () {
-                                (t._document.getEditor().hideSelection(),
+                                (self._document.getEditor().hideSelection(),
                                     $(document).one("mouseup", function () {
-                                        t._document.getEditor().resetHideSelection();
+                                        self._document.getEditor().resetHideSelection();
                                     }));
                             })
                             .on("input", function () {
                                 for (
-                                    var e = t._document.getScene().stringToPoint($(this).gInputSlider("value")), n = 0;
-                                    n < t._points.length;
+                                    var value = self._document.getScene().stringToPoint($(this).gInputSlider("value")), n = 0;
+                                    n < self._points.length;
                                     ++n
                                 )
-                                    t._points[n].setProperty("cl", e, false, false, true);
-                                t._panel
+                                    self._points[n].setProperty("cl", value, false, false, true);
+                                self._panel
                                     .find('[type="text"][data-point-property="cl"]')
                                     .gInputBox(
                                         "value",
-                                        t._document.getScene().pointToString(e, t._document.getScene().getOptimalDecimalsCount())
+                                        self._document.getScene().pointToString(value, self._document.getScene().getOptimalDecimalsCount())
                                     );
                             })
                             .on("change", function () {
-                                var e = t._document.getScene().stringToPoint($(this).gInputSlider("value"));
-                                (gDesigner.stats("pathproperties_modify_corner"), t._assignPointProperty("cl", e));
+                                var value = self._document.getScene().stringToPoint($(this).gInputSlider("value"));
+                                (gDesigner.stats("pathproperties_modify_corner"), self._assignPointProperty("cl", value));
                             });
-                    if ("cl-input" === e)
+                    if ("cl-input" === propertyKey)
                         return $("<input>")
                             .attr("type", "text")
                             .attr("data-point-property", "cl")
                             .addClass("corner-radius")
                             .on("change", function () {
-                                var e = t._document.getScene().stringToPoint($(this).val());
-                                null !== e && "number" == typeof e && e >= 0
-                                    ? (gDesigner.stats("pathproperties_modify_corner"), t._assignPointProperty("cl", e))
-                                    : t._updatePointProperties();
+                                var value = self._document.getScene().stringToPoint($(this).val());
+                                null !== value && "number" == typeof value && value >= 0
+                                    ? (gDesigner.stats("pathproperties_modify_corner"), self._assignPointProperty("cl", value))
+                                    : self._updatePointProperties();
                             })
                             .gInputBox({ minValue: 0 });
-                    throw new Error("Unknown input property: " + e);
+                    throw new Error("Unknown input property: " + propertyKey);
                 }.bind(this);
                 ($("<div></div>")
                     .attr("path-only", true)
@@ -156,10 +156,10 @@ module.exports = function (module, exports, require) {
                                             .attr("data-path-property", "closed")
                                             .on(
                                                 "change",
-                                                function (e) {
-                                                    ($(e.target).is(":checked") || this._setBorderAlignmentCenter(),
+                                                function (event) {
+                                                    ($(event.target).is(":checked") || this._setBorderAlignmentCenter(),
                                                         gDesigner.stats("pathproperties_modify_closed"),
-                                                        this._assignPathProperty("closed", $(e.target).is(":checked")));
+                                                        this._assignPathProperty("closed", $(event.target).is(":checked")));
                                                 }.bind(this)
                                             )
                                     )
@@ -176,9 +176,9 @@ module.exports = function (module, exports, require) {
                                             .attr("data-path-property", "csc")
                                             .on(
                                                 "change",
-                                                function (e) {
+                                                function (event) {
                                                     (gDesigner.stats("pathproperties_modify_autoscale"),
-                                                        this._assignPathProperty("csc", $(e.target).is(":checked")));
+                                                        this._assignPathProperty("csc", $(event.target).is(":checked")));
                                                 }.bind(this)
                                             )
                                     )
@@ -195,14 +195,14 @@ module.exports = function (module, exports, require) {
                         .gPropertyRow({
                             label: GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.position")),
                             columns: [
-                                { width: "32%", content: i("x") },
-                                { width: "32%", content: i("y") },
-                                { width: "auto", content: i("tp") },
+                                { width: "32%", content: createPropertyInput("x") },
+                                { width: "32%", content: createPropertyInput("y") },
+                                { width: "auto", content: createPropertyInput("tp") },
                             ],
                         })
-                        .appendTo(e),
+                        .appendTo(panel),
                     $("<div></div>")
-                        .addClass(a.PATHPROPERTIES.PATH_JOIN_CLASS)
+                        .addClass(uiConstants.PATHPROPERTIES.PATH_JOIN_CLASS)
                         .addClass("joint-row")
                         .attr("point-only", true)
                         .gPropertyRow({
@@ -221,7 +221,7 @@ module.exports = function (module, exports, require) {
                                         .attr("data-node-type", "-")
                                         .attr("data-title", GObject.GLocale.get(new GObject.GLocaleKey("GPathProperties", "text.straight")))
                                         .append($("<span></span>").addClass("gravit-icon-node-straight"))
-                                        .on("click", n),
+                                        .on("click", applyNodeType),
                                 },
                                 {
                                     width: "25%",
@@ -232,7 +232,7 @@ module.exports = function (module, exports, require) {
                                         .attr("data-node-type", GObject.GPathBase.AnchorPoint.Type.Mirror)
                                         .attr("data-title", GObject.GLocale.get(new GObject.GLocaleKey("GPathBase", "anchor-point.mirror")))
                                         .append($("<span></span>").addClass("gravit-icon-node-mirrored"))
-                                        .on("click", n),
+                                        .on("click", applyNodeType),
                                 },
                                 {
                                     width: "25%",
@@ -243,7 +243,7 @@ module.exports = function (module, exports, require) {
                                         .attr("data-node-type", GObject.GPathBase.AnchorPoint.Type.Asymmetric)
                                         .attr("data-title", GObject.GLocale.get(new GObject.GLocaleKey("GPathBase", "anchor-point.asymmetric")))
                                         .append($("<span></span>").addClass("gravit-icon-node-disconnected"))
-                                        .on("click", n),
+                                        .on("click", applyNodeType),
                                 },
                                 {
                                     width: "25%",
@@ -258,13 +258,13 @@ module.exports = function (module, exports, require) {
                                         .attr("data-node-type", GObject.GPathBase.AnchorPoint.Type.Symmetric)
                                         .attr("data-title", GObject.GLocale.get(new GObject.GLocaleKey("GPathBase", "anchor-point.symmetric")))
                                         .append($("<span></span>").addClass("gravit-icon-node-assymetric"))
-                                        .on("click", n),
+                                        .on("click", applyNodeType),
                                 },
                             ],
                         })
                         .addClass("joint")
                         .appendTo(this._panel),
-                    $("<hr/>").attr("point-only", true).attr("corner-only", true).appendTo(e),
+                    $("<hr/>").attr("point-only", true).attr("corner-only", true).appendTo(panel),
                     $("<div></div>")
                         .attr("point-only", true)
                         .attr("corner-only", true)
@@ -272,17 +272,17 @@ module.exports = function (module, exports, require) {
                         .gPropertyRow({
                             label: GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.corner")),
                             columns: [
-                                { width: "auto", content: i("cl-slider") },
+                                { width: "auto", content: createPropertyInput("cl-slider") },
                                 { clazz: "corners-radius-no-padding" },
-                                { width: "35px", content: i("cl-input") },
+                                { width: "35px", content: createPropertyInput("cl-input") },
                                 { width: "3x" },
-                                { width: "40px", content: i("ctp") },
+                                { width: "40px", content: createPropertyInput("ctp") },
                             ],
                         })
                         .addClass("corner-radius")
                         .appendTo(this._panel));
             }),
-            (c.prototype.update = function (e, t) {
+            (GPathProperties.prototype.update = function (document, elements) {
                 if (
                     (gDesigner.isTouchEnabled()
                         ? (this._panel.find(".closed-checkbox").gCheckboxSlider(), this._panel.find(".csc-checkbox").gCheckboxSlider())
@@ -291,34 +291,34 @@ module.exports = function (module, exports, require) {
                     this._document &&
                         (this._document.getScene().removeEventListener(GObject.GNode.AfterPropertiesChangeEvent, this._afterPropertiesChange),
                         this._document.getScene().removeEventListener(GObject.GElement.AfterFlagChangeEvent, this._afterFlagChange),
-                        this._document.getEditor().removeEventListener(i.GEditor.EdGeometryChangeEvent, this._edGeometryChange, this),
-                        gDesigner.removeEventListener(l, this._settingChanged),
+                        this._document.getEditor().removeEventListener(GEditorModule.GEditor.EdGeometryChangeEvent, this._edGeometryChange, this),
+                        gDesigner.removeEventListener(settingsChangeEvent, this._settingChanged),
                         (this._document = null)),
                     (this._pathes = []),
                     (this._points = []),
-                    e)
+                    document)
                 ) {
-                    for (var n = 0; n < t.length; ++n)
-                        if (t[n] instanceof GObject.GPath || t[n] instanceof GObject.GCompoundPath) {
-                            var a = t[n];
+                    for (var n = 0; n < elements.length; ++n)
+                        if (elements[n] instanceof GObject.GPath || elements[n] instanceof GObject.GCompoundPath) {
+                            var a = elements[n];
                             this._pathes.push(a);
-                            var r = function (e) {
-                                for (var t = e.getAnchorPoints().getFirstChild(); null !== t; t = t.getNext())
-                                    t.hasFlag(GObject.GNode.Flag.Selected) &&
-                                        (this._points.push(t), 1 == this._points.legth && (this._mainPath = e));
+                            var r = function (path) {
+                                for (var point = path.getAnchorPoints().getFirstChild(); null !== point; point = point.getNext())
+                                    point.hasFlag(GObject.GNode.Flag.Selected) &&
+                                        (this._points.push(point), 1 == this._points.legth && (this._mainPath = path));
                             }.bind(this);
                             if (a instanceof GObject.GPath) r(a);
                             else for (var s = a.getPaths().getFirstChild(); null !== s; s = s.getNext()) r(s);
                         }
-                    if (this._pathes.length && this._pathes.length === t.length)
+                    if (this._pathes.length && this._pathes.length === elements.length)
                         return (
-                            (this._document = e),
+                            (this._document = document),
                             this._document
                                 .getScene()
                                 .addEventListener(GObject.GNode.AfterPropertiesChangeEvent, this._afterPropertiesChange, this),
                             this._document.getScene().addEventListener(GObject.GElement.AfterFlagChangeEvent, this._afterFlagChange, this),
-                            this._document.getEditor().addEventListener(i.GEditor.EdGeometryChangeEvent, this._edGeometryChange, this),
-                            gDesigner.addEventListener(l, this._settingChanged, this),
+                            this._document.getEditor().addEventListener(GEditorModule.GEditor.EdGeometryChangeEvent, this._edGeometryChange, this),
+                            gDesigner.addEventListener(settingsChangeEvent, this._settingChanged, this),
                             this._updatePathProperties(),
                             this._updatePointProperties(),
                             true
@@ -326,11 +326,11 @@ module.exports = function (module, exports, require) {
                 }
                 return false;
             }),
-            (c.prototype._getTargetNodeType = function (e) {
-                return e.is("select") ? e.val() : e.closest("[data-node-type]").attr("data-node-type");
+            (GPathProperties.prototype._getTargetNodeType = function (element) {
+                return element.is("select") ? element.val() : element.closest("[data-node-type]").attr("data-node-type");
             }),
-            (c.prototype._getStatsNodeType = function (e) {
-                switch (e) {
+            (GPathProperties.prototype._getStatsNodeType = function (nodeType) {
+                switch (nodeType) {
                     case GObject.GPathBase.AnchorPoint.Type.Mirror:
                         return "Mirror";
                     case GObject.GPathBase.AnchorPoint.Type.Asymmetric:
@@ -343,233 +343,233 @@ module.exports = function (module, exports, require) {
                         return "Straight";
                 }
             }),
-            (c.prototype.assignNodeType = function () {
-                let e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : "-";
-                gDesigner.stats("pathproperties_assign_nodetype", this._getStatsNodeType(e));
-                const t = this._document,
-                    n = t && t.getEditor();
-                if (n) {
-                    n.beginTransaction();
+            (GPathProperties.prototype.assignNodeType = function () {
+                let nodeType = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : "-";
+                gDesigner.stats("pathproperties_assign_nodetype", this._getStatsNodeType(nodeType));
+                const document = this._document,
+                    editor = document && document.getEditor();
+                if (editor) {
+                    editor.beginTransaction();
                     try {
-                        let t = null,
-                            i = null;
-                        ("-" === e &&
-                            ((t = ["tp", "hlx", "hly", "hrx", "hry", "ah"]),
-                            (i = [GObject.GPathBase.CornerType.Rounded, null, null, null, null, false])),
-                            this._points.forEach((n) => {
+                        let propertyNames = null,
+                            propertyValues = null;
+                        ("-" === nodeType &&
+                            ((propertyNames = ["tp", "hlx", "hly", "hrx", "hry", "ah"]),
+                            (propertyValues = [GObject.GPathBase.CornerType.Rounded, null, null, null, null, false])),
+                            this._points.forEach((point) => {
                                 if (
-                                    "-" !== e &&
-                                    ((t = ["ah", "tp"]), (i = [false, e]), null === n.getProperty("hlx") && null === n.getProperty("hrx"))
+                                    "-" !== nodeType &&
+                                    ((propertyNames = ["ah", "tp"]), (propertyValues = [false, nodeType]), null === point.getProperty("hlx") && null === point.getProperty("hrx"))
                                 ) {
-                                    const a = n.getParent().getPreviousPoint(n),
-                                        r = a ? a.getProperty("hrx") : null,
-                                        s = n.getParent().getNextPoint(n),
-                                        l = s ? s.getProperty("hlx") : null;
-                                    if (e != GObject.GPathBase.AnchorPoint.Type.Asymmetric || null !== r || null !== l) i[0] = true;
+                                    const previousPoint = point.getParent().getPreviousPoint(point),
+                                        previousHandleX = previousPoint ? previousPoint.getProperty("hrx") : null,
+                                        nextPoint = point.getParent().getNextPoint(point),
+                                        nextHandleX = nextPoint ? nextPoint.getProperty("hlx") : null;
+                                    if (nodeType != GObject.GPathBase.AnchorPoint.Type.Asymmetric || null !== previousHandleX || null !== nextHandleX) propertyValues[0] = true;
                                     else {
-                                        const e = n.getProperty("x"),
-                                            r = n.getProperty("y");
-                                        if (a && a.getProperty("tp") != GObject.GPathBase.AnchorPoint.Type.Connector) {
-                                            const n = a.getProperty("x"),
-                                                s = a.getProperty("y");
-                                            if (!GObject.GMath.isEqualEps(e, n) || !GObject.GMath.isEqualEps(r, s)) {
-                                                const a = e + (n - e) * GObject.GPathBase.AnchorPoint.HANDLE_COEFF,
-                                                    l = r + (s - r) * GObject.GPathBase.AnchorPoint.HANDLE_COEFF;
-                                                (t.push("hlx"), t.push("hly"), i.push(a), i.push(l));
+                                        const pointX = point.getProperty("x"),
+                                            pointY = point.getProperty("y");
+                                        if (previousPoint && previousPoint.getProperty("tp") != GObject.GPathBase.AnchorPoint.Type.Connector) {
+                                            const previousPointX = previousPoint.getProperty("x"),
+                                                previousPointY = previousPoint.getProperty("y");
+                                            if (!GObject.GMath.isEqualEps(pointX, previousPointX) || !GObject.GMath.isEqualEps(pointY, previousPointY)) {
+                                                const handleLX = pointX + (previousPointX - pointX) * GObject.GPathBase.AnchorPoint.HANDLE_COEFF,
+                                                    handleLY = pointY + (previousPointY - pointY) * GObject.GPathBase.AnchorPoint.HANDLE_COEFF;
+                                                (propertyNames.push("hlx"), propertyNames.push("hly"), propertyValues.push(handleLX), propertyValues.push(handleLY));
                                             }
                                         }
-                                        if (s && s.getProperty("tp") != GObject.GPathBase.AnchorPoint.Type.Connector) {
-                                            const n = s.getProperty("x"),
-                                                a = s.getProperty("y");
-                                            if (!GObject.GMath.isEqualEps(e, n) || !GObject.GMath.isEqualEps(r, a)) {
-                                                const s = e + (n - e) * GObject.GPathBase.AnchorPoint.HANDLE_COEFF,
-                                                    l = r + (a - r) * GObject.GPathBase.AnchorPoint.HANDLE_COEFF;
-                                                (t.push("hrx"), t.push("hry"), i.push(s), i.push(l));
+                                        if (nextPoint && nextPoint.getProperty("tp") != GObject.GPathBase.AnchorPoint.Type.Connector) {
+                                            const nextPointX = nextPoint.getProperty("x"),
+                                                nextPointY = nextPoint.getProperty("y");
+                                            if (!GObject.GMath.isEqualEps(pointX, nextPointX) || !GObject.GMath.isEqualEps(pointY, nextPointY)) {
+                                                const handleRX = pointX + (nextPointX - pointX) * GObject.GPathBase.AnchorPoint.HANDLE_COEFF,
+                                                    handleRY = pointY + (nextPointY - pointY) * GObject.GPathBase.AnchorPoint.HANDLE_COEFF;
+                                                (propertyNames.push("hrx"), propertyNames.push("hry"), propertyValues.push(handleRX), propertyValues.push(handleRY));
                                             }
                                         }
                                     }
                                 }
-                                n.setProperties(t, i);
-                                let a = n.getProperty("tp");
-                                const r = n.getProperty("ah");
-                                a == GObject.GPathBase.AnchorPoint.Type.Mirror && r && n.setProperty("ah", false);
+                                point.setProperties(propertyNames, propertyValues);
+                                let pointType = point.getProperty("tp");
+                                const autoHandle = point.getProperty("ah");
+                                pointType == GObject.GPathBase.AnchorPoint.Type.Mirror && autoHandle && point.setProperty("ah", false);
                             }));
                     } finally {
-                        n.commitTransaction(GObject.GLocale.get(new GObject.GLocaleKey("GPathProperties", "action.modify-path-node-type")));
+                        editor.commitTransaction(GObject.GLocale.get(new GObject.GLocaleKey("GPathProperties", "action.modify-path-node-type")));
                     }
                 }
             }),
-            (c.prototype._afterPropertiesChange = function (e) {
-                e.temporary ||
-                    (this._pathes.length > 0 && this._pathes[0] === e.node && this._updatePathProperties(),
-                    this._points.length > 0 && this._points[0] === e.node && this._updatePointProperties());
+            (GPathProperties.prototype._afterPropertiesChange = function (event) {
+                event.temporary ||
+                    (this._pathes.length > 0 && this._pathes[0] === event.node && this._updatePathProperties(),
+                    this._points.length > 0 && this._points[0] === event.node && this._updatePointProperties());
             }),
-            (c.prototype._afterFlagChange = function (e) {
-                if (e.flag === GObject.GNode.Flag.Selected && e.node instanceof GObject.GPathBase.AnchorPoint) {
-                    var t = e.node.getParent() ? e.node.getParent().getParent() : null,
-                        n = t && t.getParent() && t.getParent().getParent() ? t.getParent().getParent() : null;
-                    ((t && this._pathes.indexOf(t) >= 0) || (n && this._pathes.indexOf(n) >= 0)) &&
-                        (e.set ? this._points.push(e.node) : this._points.splice(this._points.indexOf(e.node), 1),
+            (GPathProperties.prototype._afterFlagChange = function (event) {
+                if (event.flag === GObject.GNode.Flag.Selected && event.node instanceof GObject.GPathBase.AnchorPoint) {
+                    var path = event.node.getParent() ? event.node.getParent().getParent() : null,
+                        compoundPath = path && path.getParent() && path.getParent().getParent() ? path.getParent().getParent() : null;
+                    ((path && this._pathes.indexOf(path) >= 0) || (compoundPath && this._pathes.indexOf(compoundPath) >= 0)) &&
+                        (event.set ? this._points.push(event.node) : this._points.splice(this._points.indexOf(event.node), 1),
                         this._updatePathProperties(),
                         this._updatePointProperties());
                 }
             }),
-            (c.prototype._edGeometryChange = function (e) {
+            (GPathProperties.prototype._edGeometryChange = function (e) {
                 this._updatePointProperties();
             }),
-            (c.prototype._updatePathProperties = function () {
+            (GPathProperties.prototype._updatePathProperties = function () {
                 if (this._points.length) this._panel.find("[path-only]").css("display", "none");
                 else {
                     this._panel.find("[path-only]").css("display", "");
-                    var e = this._pathes[0];
-                    e instanceof GObject.GPath
+                    var path = this._pathes[0];
+                    path instanceof GObject.GPath
                         ? (this._panel
                               .find('input[data-path-property="closed"]')
                               .prop("disabled", false)
-                              .prop("checked", e.getProperty("closed")),
-                          this._panel.find('input[data-path-property="csc"]').prop("disabled", false).prop("checked", !!e.getProperty("csc")))
+                              .prop("checked", path.getProperty("closed")),
+                          this._panel.find('input[data-path-property="csc"]').prop("disabled", false).prop("checked", !!path.getProperty("csc")))
                         : (this._panel.find('input[data-path-property="closed"]').prop("disabled", true).prop("checked", false),
-                          this._panel.find('input[data-path-property="csc"]').prop("disabled", false).prop("checked", !!e.getProperty("csc")));
+                          this._panel.find('input[data-path-property="csc"]').prop("disabled", false).prop("checked", !!path.getProperty("csc")));
                 }
             }),
-            (c.prototype._settingChanged = function (e) {
-                "decimals_num" === e.key && this._updatePointProperties();
+            (GPathProperties.prototype._settingChanged = function (event) {
+                "decimals_num" === event.key && this._updatePointProperties();
             }),
-            (c.prototype._updatePointProperties = function () {
-                var e = this._points.length > 0 ? this._points[0] : null;
-                if (e) {
+            (GPathProperties.prototype._updatePointProperties = function () {
+                var point = this._points.length > 0 ? this._points[0] : null;
+                if (point) {
                     this._panel.find("[point-only]").css("display", "");
-                    var t = this._getPointCoord(e);
+                    var coord = this._getPointCoord(point);
                     (this._panel
                         .find('input[data-point-property="x"]')
-                        .val(this._document.getScene().pointToString(t.getX(), this._document.getScene().getOptimalDecimalsCount())),
+                        .val(this._document.getScene().pointToString(coord.getX(), this._document.getScene().getOptimalDecimalsCount())),
                         this._panel
                             .find('input[data-point-property="y"]')
-                            .val(this._document.getScene().pointToString(t.getY(), this._document.getScene().getOptimalDecimalsCount())));
-                    var n = true,
-                        i = e.getProperty("tp");
+                            .val(this._document.getScene().pointToString(coord.getY(), this._document.getScene().getOptimalDecimalsCount())));
+                    var isStraight = true,
+                        tpValue = point.getProperty("tp");
                     for (var a in GObject.GPathBase.AnchorPoint.Type)
-                        if (GObject.GPathBase.AnchorPoint.Type[a] === i) {
-                            n = false;
+                        if (GObject.GPathBase.AnchorPoint.Type[a] === tpValue) {
+                            isStraight = false;
                             break;
                         }
-                    var r = n ? "-" : i;
-                    (this._panel.find('select[data-point-property="tp"]').val(r),
-                        this._panel.find("[data-node-type]").each(function (e, t) {
-                            var n = $(t);
-                            n.toggleClass("g-active", n.attr("data-node-type") === r);
+                    var effectiveType = isStraight ? "-" : tpValue;
+                    (this._panel.find('select[data-point-property="tp"]').val(effectiveType),
+                        this._panel.find("[data-node-type]").each(function (e, element) {
+                            var button = $(element);
+                            button.toggleClass("g-active", button.attr("data-node-type") === effectiveType);
                         }),
-                        this._panel.find("[corner-only]").css("display", n ? "" : "none"),
+                        this._panel.find("[corner-only]").css("display", isStraight ? "" : "none"),
                         this._panel
                             .find('[data-point-property="ctp"]')
-                            .css("display", n ? "" : "none")
-                            .gCornerTypePicker("value", n ? i : GObject.GPathBase.CornerType.Rounded),
+                            .css("display", isStraight ? "" : "none")
+                            .gCornerTypePicker("value", isStraight ? tpValue : GObject.GPathBase.CornerType.Rounded),
                         this._panel
                             .find('div[data-point-property="cl"]')
-                            .prop("disabled", !n)
+                            .prop("disabled", !isStraight)
                             .gInputSlider(
                                 "value",
                                 this._document
                                     .getScene()
-                                    .pointToString(e.getProperty("cl"), this._document.getScene().getOptimalDecimalsCount())
+                                    .pointToString(point.getProperty("cl"), this._document.getScene().getOptimalDecimalsCount())
                             ),
                         this._panel
                             .find('input[data-point-property="cl"]')
-                            .prop("disabled", !n)
+                            .prop("disabled", !isStraight)
                             .val(
                                 this._document
                                     .getScene()
-                                    .pointToString(e.getProperty("cl"), this._document.getScene().getOptimalDecimalsCount())
+                                    .pointToString(point.getProperty("cl"), this._document.getScene().getOptimalDecimalsCount())
                             ),
                         this._panel
                             .find('input[data-point-property="cr"]')
-                            .prop("disabled", !n || e.getProperty("cu"))
+                            .prop("disabled", !isStraight || point.getProperty("cu"))
                             .val(
                                 this._document
                                     .getScene()
-                                    .pointToString(e.getProperty("cr"), this._document.getScene().getOptimalDecimalsCount())
+                                    .pointToString(point.getProperty("cr"), this._document.getScene().getOptimalDecimalsCount())
                             ),
                         this._panel
                             .find('button[data-point-property="cu"]')
-                            .prop("disabled", !n)
-                            .toggleClass("g-active", !!e.getProperty("cu")));
+                            .prop("disabled", !isStraight)
+                            .toggleClass("g-active", !!point.getProperty("cu")));
                 } else this._panel.find("[point-only]").css("display", "none");
             }),
-            (c.prototype._getPointCoord = function (e) {
-                var t,
-                    n,
-                    a = e.getPath();
-                a && (t = i.GElementEditor.getEditor(a))
-                    ? (t.getPaintElement() != a && (e = t.getPathPointPreview(e)), (n = t.getPointCoord(e)))
-                    : (n = new GObject.GPoint(e.getProperty("x"), e.getProperty("y")));
-                return n;
+            (GPathProperties.prototype._getPointCoord = function (point) {
+                var editor,
+                    coord,
+                    path = point.getPath();
+                path && (editor = GEditorModule.GElementEditor.getEditor(path))
+                    ? (editor.getPaintElement() != path && (point = editor.getPathPointPreview(point)), (coord = editor.getPointCoord(point)))
+                    : (coord = new GObject.GPoint(point.getProperty("x"), point.getProperty("y")));
+                return coord;
             }),
-            (c.prototype._transformPoint = function (e, t, n) {
-                t && (n = t.mapPoint(n));
-                var o = e.getPath(),
-                    a = i.GElementEditor.getEditor(o);
-                a ? a.movePoint(e, n) : e.setProperties(["x", "y"], [n.getX(), n.getY()]);
+            (GPathProperties.prototype._transformPoint = function (point, transform, targetPoint) {
+                transform && (targetPoint = transform.mapPoint(targetPoint));
+                var path = point.getPath(),
+                    editor = GEditorModule.GElementEditor.getEditor(path);
+                editor ? editor.movePoint(point, targetPoint) : point.setProperties(["x", "y"], [targetPoint.getX(), targetPoint.getY()]);
             }),
-            (c.prototype._assignPathProperty = function (e, t) {
-                this._assignPathProperties([e], [t]);
+            (GPathProperties.prototype._assignPathProperty = function (propertyName, propertyValue) {
+                this._assignPathProperties([propertyName], [propertyValue]);
             }),
-            (c.prototype._assignPathProperties = function (e, t) {
-                var n = this._document.getEditor();
-                n.beginTransaction();
+            (GPathProperties.prototype._assignPathProperties = function (propertyNames, propertyValues) {
+                var editor = this._document.getEditor();
+                editor.beginTransaction();
                 try {
-                    for (var i = 0; i < this._pathes.length; ++i) this._pathes[i].setProperties(e, t);
+                    for (var i = 0; i < this._pathes.length; ++i) this._pathes[i].setProperties(propertyNames, propertyValues);
                 } finally {
-                    n.commitTransaction(GObject.GLocale.get(new GObject.GLocaleKey("GPathProperties", "action.modify-path-properties")));
+                    editor.commitTransaction(GObject.GLocale.get(new GObject.GLocaleKey("GPathProperties", "action.modify-path-properties")));
                 }
             }),
-            (c.prototype._setBorderAlignmentCenter = function () {
-                var e,
-                    t,
-                    n = ["_ba"],
-                    i = [GObject.GStylable.BorderAlignment.Center],
-                    a = this._document.getEditor();
-                a.beginTransaction();
+            (GPathProperties.prototype._setBorderAlignmentCenter = function () {
+                var borderLayers,
+                    layer,
+                    propertyNames = ["_ba"],
+                    propertyValues = [GObject.GStylable.BorderAlignment.Center],
+                    editor = this._document.getEditor();
+                editor.beginTransaction();
                 try {
                     for (var r = 0, s = this._pathes.length; r < s; ++r) {
-                        e = this._pathes[r].getPaintLayers().getBorderLayers();
-                        for (var l = 0, c = e.length; l < c; l++)
-                            (t = e[l]) instanceof GObject.GStylable.BorderPaintLayer && t.setProperties(n, i);
+                        borderLayers = this._pathes[r].getPaintLayers().getBorderLayers();
+                        for (var l = 0, c = borderLayers.length; l < c; l++)
+                            (layer = borderLayers[l]) instanceof GObject.GStylable.BorderPaintLayer && layer.setProperties(propertyNames, propertyValues);
                     }
                 } finally {
-                    a.commitTransaction(GObject.GLocale.get(new GObject.GLocaleKey("GPathProperties", "action.modify-path-properties")));
+                    editor.commitTransaction(GObject.GLocale.get(new GObject.GLocaleKey("GPathProperties", "action.modify-path-properties")));
                 }
             }),
-            (c.prototype._assignPointProperty = function (e, t) {
-                var n = this._document.getEditor();
-                n.beginTransaction();
+            (GPathProperties.prototype._assignPointProperty = function (propertyName, propertyValue) {
+                var editor = this._document.getEditor();
+                editor.beginTransaction();
                 try {
                     for (var i = 0; i < this._points.length; ++i) {
                         var a = this._points[i];
-                        if ("x" === e) {
+                        if ("x" === propertyName) {
                             var r = this._getPointCoord(a),
-                                s = new GObject.GTransform(1, 0, 0, 1, t - r.getX(), 0);
+                                s = new GObject.GTransform(1, 0, 0, 1, propertyValue - r.getX(), 0);
                             this._transformPoint(a, s, r);
-                        } else if ("y" === e) {
-                            ((r = this._getPointCoord(a)), (s = new GObject.GTransform(1, 0, 0, 1, 0, t - r.getY())));
+                        } else if ("y" === propertyName) {
+                            ((r = this._getPointCoord(a)), (s = new GObject.GTransform(1, 0, 0, 1, 0, propertyValue - r.getY())));
                             this._transformPoint(a, s, r);
-                        } else a.setProperties([e], [t]);
+                        } else a.setProperties([propertyName], [propertyValue]);
                     }
                 } finally {
-                    n.commitTransaction(GObject.GLocale.get(new GObject.GLocaleKey("GPathProperties", "action.modify-point-properties")));
+                    editor.commitTransaction(GObject.GLocale.get(new GObject.GLocaleKey("GPathProperties", "action.modify-point-properties")));
                 }
             }),
-            (c.prototype._assignPointProperties = function (e, t) {
+            (GPathProperties.prototype._assignPointProperties = function (propertyNames, propertyValues) {
                 gDesigner.stats("pathproperties_modify_point-properties");
-                var n = this._document.getEditor();
-                n.beginTransaction();
+                var editor = this._document.getEditor();
+                editor.beginTransaction();
                 try {
-                    for (var i = 0; i < this._points.length; ++i) this._points[i].setProperties(e, t);
+                    for (var i = 0; i < this._points.length; ++i) this._points[i].setProperties(propertyNames, propertyValues);
                 } finally {
-                    n.commitTransaction(GObject.GLocale.get(new GObject.GLocaleKey("GPathProperties", "action.modify-point-properties")));
+                    editor.commitTransaction(GObject.GLocale.get(new GObject.GLocaleKey("GPathProperties", "action.modify-point-properties")));
                 }
             }),
-            (c.prototype.toString = function () {
+            (GPathProperties.prototype.toString = function () {
                 return "[Object GPathProperties]";
             }),
-            (module.exports = c));
+            (module.exports = GPathProperties));
     };

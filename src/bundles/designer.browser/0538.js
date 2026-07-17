@@ -1,7 +1,7 @@
 module.exports = function (module, exports, require) {
         var o, i, a, r;
         module.exports =
-            ((o = require(55)),
+            ((o = require(55 /* lib:crypto-js */)),
             (a = (i = o).lib.Base),
             (r = i.enc.Utf8),
             void (i.algo.HMAC = a.extend({

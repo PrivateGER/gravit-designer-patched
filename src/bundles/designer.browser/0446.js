@@ -2,64 +2,64 @@ module.exports = function (module, exports, require) {
         "use strict";
         var _interopRequireDefault = require(16),
             GObject = require(1),
-            a = _interopRequireDefault(require(119 /* GCommonNames */)),
-            r = _interopRequireDefault(require(860));
-        function s(e) {
-            let t = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : () => {};
-            ((this._cb = e), (this._showFormCb = t), this._run());
+            GCloudUtil = _interopRequireDefault(require(119 /* GCommonNames */)),
+            GEmbeddedLoginDialog = _interopRequireDefault(require(860 /* GEmbeddedLogin */));
+        function GLoginPanel(callback) {
+            let showFormCallback = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : () => {};
+            ((this._cb = callback), (this._showFormCb = showFormCallback), this._run());
         }
-        (GObject.GObject.inherit(s, GObject.GObject),
-            (s.prototype._close = function () {
+        (GObject.GObject.inherit(GLoginPanel, GObject.GObject),
+            (GLoginPanel.prototype._close = function () {
                 this._dialog && this._dialog.gDialog("close");
             }),
-            (s.prototype._run = function () {
+            (GLoginPanel.prototype._run = function () {
                 if (gDesigner.isAnonymous())
                     return (
-                        new r.default((e) => {
-                            e && !e.anonymous && this._logged(e);
+                        new GEmbeddedLoginDialog.default((user) => {
+                            user && !user.anonymous && this._logged(user);
                         }).open({ anonymous: true, signup: true, animate: true }),
                         void this._showFormCb()
                     );
                 this._cb && this._cb();
             }),
-            (s.prototype._logged = function (e) {
-                (this._close(), this._cb && this._cb(e));
+            (GLoginPanel.prototype._logged = function (user) {
+                (this._close(), this._cb && this._cb(user));
             }),
-            (s.prototype._build = function () {
+            (GLoginPanel.prototype._build = function () {
                 ((this._dialog = $("<div/>")),
-                    gDesigner.getUser().then((e) => {
-                        if (e) this._logged(e);
+                    gDesigner.getUser().then((user) => {
+                        if (user) this._logged(user);
                         else {
                             this._dialog.closest(".loading").removeClass("loading");
-                            var t = $("<div/>");
-                            (t.addClass("container").appendTo(this._dialog),
-                                $("<div/>").addClass("logo").appendTo(t),
+                            var container = $("<div/>");
+                            (container.addClass("container").appendTo(this._dialog),
+                                $("<div/>").addClass("logo").appendTo(container),
                                 $("<span/>")
                                     .addClass("title")
                                     .text(GObject.GLocale.get(new GObject.GLocaleKey("GLoginPanel", "text.title")))
-                                    .appendTo(t),
+                                    .appendTo(container),
                                 $("<span/>")
                                     .addClass("subtitle")
                                     .text(GObject.GLocale.get(new GObject.GLocaleKey("GLoginPanel", "text.subtitle")))
-                                    .appendTo(t));
-                            var n = $("<div/>");
-                            n.addClass("buttons").appendTo(t);
-                            var o = (e, t) => {
-                                var o = $("<div/>");
-                                (o.on("click", t),
-                                    o
-                                        .addClass(e)
-                                        .text(GObject.GLocale.get(new GObject.GLocaleKey("GLoginPanel", "text." + e)))
-                                        .appendTo(n));
+                                    .appendTo(container));
+                            var buttonsContainer = $("<div/>");
+                            buttonsContainer.addClass("buttons").appendTo(container);
+                            var createButton = (action, onClick) => {
+                                var button = $("<div/>");
+                                (button.on("click", onClick),
+                                    button
+                                        .addClass(action)
+                                        .text(GObject.GLocale.get(new GObject.GLocaleKey("GLoginPanel", "text." + action)))
+                                        .appendTo(buttonsContainer));
                             };
-                            (o("login", () => {
-                                a.default.performLogin().then((e) => {
-                                    this._logged(e);
+                            (createButton("login", () => {
+                                GCloudUtil.default.performLogin().then((user) => {
+                                    this._logged(user);
                                 });
                             }),
-                                o("signup", () => {
-                                    a.default.performSignup().then((e) => {
-                                        this._logged(e);
+                                createButton("signup", () => {
+                                    GCloudUtil.default.performSignup().then((user) => {
+                                        this._logged(user);
                                     });
                                 }));
                         }
@@ -70,5 +70,5 @@ module.exports = function (module, exports, require) {
                     }),
                     this._dialog.gDialog("open", true));
             }),
-            (module.exports = s));
+            (module.exports = GLoginPanel));
     };

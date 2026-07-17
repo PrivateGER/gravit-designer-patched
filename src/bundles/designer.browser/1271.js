@@ -2,118 +2,118 @@ module.exports = function (module, exports, require) {
         "use strict";
         (require(57), require(3), require(4), require(13));
         var GObject = require(1),
-            i = require(53),
-            a = require(67),
-            r = require(123),
-            s = (require(173), require(135));
-        function l() {
+            GEditor = require(53),
+            richTooltipModule = require(67 /* GRichTooltipConfig */),
+            GProperties = require(123),
+            GSettingChangedEvent = (require(173), require(135));
+        function GRectangleProperties() {
             this._rectangles = [];
         }
-        (GObject.GObject.inherit(l, r),
-            (l.prototype._panel = null),
-            (l.prototype._advancedPanel = null),
-            (l.prototype._document = null),
-            (l.prototype._rectangles = null),
-            (l.prototype.isGroup = function (e) {
+        (GObject.GObject.inherit(GRectangleProperties, GProperties),
+            (GRectangleProperties.prototype._panel = null),
+            (GRectangleProperties.prototype._advancedPanel = null),
+            (GRectangleProperties.prototype._document = null),
+            (GRectangleProperties.prototype._rectangles = null),
+            (GRectangleProperties.prototype.isGroup = function (e) {
                 return true;
             }),
-            (l.prototype.init = function (e, t) {
-                this._panel = e;
-                var n = this,
-                    r = function (e) {
-                        if ("uf" === e)
+            (GRectangleProperties.prototype.init = function (panel, toolbar) {
+                this._panel = panel;
+                var self = this,
+                    createControl = function (property) {
+                        if ("uf" === property)
                             return $("<input>")
                                 .addClass("uf-checkbox")
                                 .attr("type", "checkbox")
-                                .attr("data-property", e)
+                                .attr("data-property", property)
                                 .on("change", function () {
                                     (gDesigner.stats("rectangleproperties_toggle_uniform", $(this).is(":checked") ? "enabled" : "disabled"),
-                                        n._assignProperty(e, $(this).is(":checked")),
-                                        n._updateProperties());
+                                        self._assignProperty(property, $(this).is(":checked")),
+                                        self._updateProperties());
                                 });
-                        if ("csc" === e)
+                        if ("csc" === property)
                             return $("<input>")
                                 .addClass("csc-checkbox")
                                 .attr("type", "checkbox")
-                                .attr("data-property", e)
+                                .attr("data-property", property)
                                 .on("change", function () {
                                     (gDesigner.stats(
                                         "rectangleproperties_toggle_scale-corners",
                                         $(this).is(":checked") ? "enabled" : "disabled"
                                     ),
-                                        n._assignProperty(e, $(this).is(":checked")));
+                                        self._assignProperty(property, $(this).is(":checked")));
                                 });
                         if (
-                            "tl_sx" === e ||
-                            "tl_sy" === e ||
-                            "tr_sx" === e ||
-                            "tr_sy" === e ||
-                            "bl_sx" === e ||
-                            "bl_sy" === e ||
-                            "br_sx" === e ||
-                            "br_sy" === e
+                            "tl_sx" === property ||
+                            "tl_sy" === property ||
+                            "tr_sx" === property ||
+                            "tr_sy" === property ||
+                            "bl_sx" === property ||
+                            "bl_sy" === property ||
+                            "br_sx" === property ||
+                            "br_sy" === property
                         ) {
-                            var t = "";
+                            var extraClass = "";
                             return (
-                                ("tl_sy" !== e && "tr_sy" !== e && "bl_sy" !== e && "br_sy" !== e) || (t = "sy-input"),
+                                ("tl_sy" !== property && "tr_sy" !== property && "bl_sy" !== property && "br_sy" !== property) || (extraClass = "sy-input"),
                                 $("<input>")
                                     .addClass("corner-input")
-                                    .addClass(t)
+                                    .addClass(extraClass)
                                     .attr("type", "text")
-                                    .attr("data-property", e)
+                                    .attr("data-property", property)
                                     .on("change", function () {
                                         gDesigner.stats("rectangleproperties_scale_individual-corners");
-                                        var t = n._document.getScene().stringToPoint($(this).val());
-                                        null !== t && "number" == typeof t && t >= 0 ? n._assignProperty(e, t) : n._updateProperties();
+                                        var value = self._document.getScene().stringToPoint($(this).val());
+                                        null !== value && "number" == typeof value && value >= 0 ? self._assignProperty(property, value) : self._updateProperties();
                                     })
                                     .gInputBox()
                             );
                         }
-                        if ("tl_ct" === e || "tr_ct" === e || "bl_ct" === e || "br_ct" === e) {
-                            var r = 0,
-                                s = "right";
+                        if ("tl_ct" === property || "tr_ct" === property || "bl_ct" === property || "br_ct" === property) {
+                            var rotate = 0,
+                                cornerSide = "right";
                             return (
-                                "tl_ct" === e
-                                    ? ((r = 270), (s = "left"))
-                                    : "bl_ct" === e
-                                      ? ((r = 180), (s = "left"))
-                                      : "br_ct" === e && (r = 90),
+                                "tl_ct" === property
+                                    ? ((rotate = 270), (cornerSide = "left"))
+                                    : "bl_ct" === property
+                                      ? ((rotate = 180), (cornerSide = "left"))
+                                      : "br_ct" === property && (rotate = 90),
                                 $("<button></button>")
                                     .addClass("g-flat")
-                                    .addClass(s)
-                                    .attr("data-property", e)
+                                    .addClass(cornerSide)
+                                    .attr("data-property", property)
                                     .css("width", "32px")
-                                    .gCornerTypePicker({ rotate: r })
-                                    .on("cornertypechange", function (t, o) {
-                                        n._assignProperty(e, o);
+                                    .gCornerTypePicker({ rotate: rotate })
+                                    .on("cornertypechange", function (event, value) {
+                                        self._assignProperty(property, value);
                                     })
                             );
                         }
-                        if ("tl_uf" === e || "tr_uf" === e || "bl_uf" === e || "br_uf" === e) {
-                            var l = "uf-right";
+                        if ("tl_uf" === property || "tr_uf" === property || "bl_uf" === property || "br_uf" === property) {
+                            var lockSide = "uf-right";
                             return (
-                                ("tl_uf" !== e && "bl_uf" !== e) || (l = "uf-left"),
+                                ("tl_uf" !== property && "bl_uf" !== property) || (lockSide = "uf-left"),
                                 $("<button></button>")
                                     .addClass("g-flat")
                                     .addClass("uf-btn")
-                                    .addClass(l)
-                                    .attr("data-property", e)
+                                    .addClass(lockSide)
+                                    .attr("data-property", property)
                                     .on("click", function () {
                                         (gDesigner.stats("rectangleproperties_toggle_individual-uniform-corners"),
-                                            n._assignProperty(e, !$(this).hasClass("g-active")),
-                                            n._updateProperties());
+                                            self._assignProperty(property, !$(this).hasClass("g-active")),
+                                            self._updateProperties());
                                     })
                                     .append($("<span></span>").addClass("gravit-icon-lock"))
                             );
                         }
-                        if ("corners-type" !== e) {
-                            if ("corners-radius-slider" === e)
+                        if ("corners-type" !== property) {
+                            if ("corners-radius-slider" === property)
                                 return $("<div/>")
                                     .attr("data-property", "corners-radius")
                                     .gInputSlider({
                                         min: 0,
                                         max: 100,
-                                        richTooltipConfig: a.GRichTooltipConfig.from({
+                                        richTooltipConfig: richTooltipModule.GRichTooltipConfig.from({
                                             title: GObject.GLocale.get(
                                                 new GObject.GLocaleKey("GCommonNames", "text.corner-radius-slider-tooltip-title")
                                             ),
@@ -125,48 +125,48 @@ module.exports = function (module, exports, require) {
                                         }),
                                     })
                                     .on("mousedown", function () {
-                                        (n._document.getEditor().hideSelection(),
+                                        (self._document.getEditor().hideSelection(),
                                             $(document).one("mouseup", function () {
-                                                n._document.getEditor().resetHideSelection();
+                                                self._document.getEditor().resetHideSelection();
                                             }));
                                     })
                                     .on("input", function () {
-                                        var e = n._assignCorners(parseInt($(this).gInputSlider("value")) / 100, void 0, true),
-                                            t = n._document.getScene().getProperty("ut"),
-                                            a =
-                                                (t == GObject.GLength.Unit.PX || t == GObject.GLength.Unit.PT) &&
-                                                i.GGuides.options.guides &&
-                                                i.GGuides.options.guides.indexOf(i.GFullPixelsGuide.ID) >= 0
+                                        var computedRadius = self._assignCorners(parseInt($(this).gInputSlider("value")) / 100, void 0, true),
+                                            unit = self._document.getScene().getProperty("ut"),
+                                            decimals =
+                                                (unit == GObject.GLength.Unit.PX || unit == GObject.GLength.Unit.PT) &&
+                                                GEditor.GGuides.options.guides &&
+                                                GEditor.GGuides.options.guides.indexOf(GEditor.GFullPixelsGuide.ID) >= 0
                                                     ? 0
-                                                    : n._document.getScene().getOptimalDecimalsCount();
-                                        n._panel
+                                                    : self._document.getScene().getOptimalDecimalsCount();
+                                        self._panel
                                             .find('[type="text"][data-property="corners-radius"]')
-                                            .val(n._document.getScene().pointToString(e, a));
+                                            .val(self._document.getScene().pointToString(computedRadius, decimals));
                                     })
                                     .on("change", function () {
                                         (gDesigner.stats("rectangleproperties_input_corners-radius"),
-                                            n._assignCorners(parseInt($(this).gInputSlider("value")) / 100, void 0, false));
+                                            self._assignCorners(parseInt($(this).gInputSlider("value")) / 100, void 0, false));
                                     });
-                            if ("corners-radius-input" === e)
+                            if ("corners-radius-input" === property)
                                 return $("<input>")
                                     .attr("type", "text")
                                     .attr("data-property", "corners-radius")
                                     .addClass("corner-radius")
                                     .on("change", function () {
                                         gDesigner.stats("rectangleproperties_slide_corners-radius");
-                                        var e = n._document.getScene().stringToPoint($(this).gInputBox("value"));
-                                        null !== e && "number" == typeof e && e >= 0
-                                            ? n._assignProperties(["uf", "tl_sx"], [true, e])
-                                            : n._updateProperties();
+                                        var value = self._document.getScene().stringToPoint($(this).gInputBox("value"));
+                                        null !== value && "number" == typeof value && value >= 0
+                                            ? self._assignProperties(["uf", "tl_sx"], [true, value])
+                                            : self._updateProperties();
                                     })
                                     .gInputBox({ minValue: 0 });
-                            throw new Error("Unknown input property: " + e);
+                            throw new Error("Unknown input property: " + property);
                         }
                     }.bind(this),
-                    s = GObject.GLocale.get(new GObject.GLocaleKey("GRectangleProperties", "text.uniform-corner-smoothness")),
-                    l = GObject.GLocale.get(new GObject.GLocaleKey("GRectangleProperties", "text.horizontal-corner-smoothness")),
-                    c = GObject.GLocale.get(new GObject.GLocaleKey("GRectangleProperties", "text.vertical-corner-smoothness")),
-                    d = GObject.GLocale.get(new GObject.GLocaleKey("GRectangleProperties", "text.corner-type"));
+                    uniformSmoothnessLabel = GObject.GLocale.get(new GObject.GLocaleKey("GRectangleProperties", "text.uniform-corner-smoothness")),
+                    horizontalSmoothnessLabel = GObject.GLocale.get(new GObject.GLocaleKey("GRectangleProperties", "text.horizontal-corner-smoothness")),
+                    verticalSmoothnessLabel = GObject.GLocale.get(new GObject.GLocaleKey("GRectangleProperties", "text.vertical-corner-smoothness")),
+                    cornerTypeLabel = GObject.GLocale.get(new GObject.GLocaleKey("GRectangleProperties", "text.corner-type"));
                 ((this._advancedPanel = $("<div></div>")
                     .addClass("advanced-panel-wrapper")
                     .addClass("rectangle-properties")
@@ -177,20 +177,20 @@ module.exports = function (module, exports, require) {
                             .attr("data-property", "corners-type")
                             .addClass("corner-type")
                             .gCornerTypePicker({ notOverlay: true })
-                            .on("cornertypechange", function (e, t) {
-                                n._assignCorners(void 0, t);
+                            .on("cornertypechange", function (event, value) {
+                                self._assignCorners(void 0, value);
                             })
                     )
                     .append(
                         $("<label></label>")
                             .addClass("g-checkbox-label")
-                            .append(r("csc"))
+                            .append(createControl("csc"))
                             .append($("<span></span>").text(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.autoscale-corners"))))
                     )
                     .append(
                         $("<label></label>")
                             .addClass("g-checkbox-label")
-                            .append(r("uf"))
+                            .append(createControl("uf"))
                             .append(
                                 $("<span></span>").text(GObject.GLocale.get(new GObject.GLocaleKey("GRectangleProperties", "text.uniform-corners")))
                             )
@@ -201,34 +201,34 @@ module.exports = function (module, exports, require) {
                             .append(
                                 $("<div></div>")
                                     .addClass("corners-item-row with-padding")
-                                    .append(r("tl_ct").attr("data-title", s))
-                                    .append(r("tl_sx").attr("data-title", l))
-                                    .append(r("tr_sx").attr("data-title", l))
-                                    .append(r("tr_ct").attr("data-title", s))
+                                    .append(createControl("tl_ct").attr("data-title", uniformSmoothnessLabel))
+                                    .append(createControl("tl_sx").attr("data-title", horizontalSmoothnessLabel))
+                                    .append(createControl("tr_sx").attr("data-title", horizontalSmoothnessLabel))
+                                    .append(createControl("tr_ct").attr("data-title", uniformSmoothnessLabel))
                             )
                             .append(
                                 $("<div></div>")
                                     .addClass("corners-item-row with-padding")
-                                    .append(r("tl_sy").attr("data-title", c))
-                                    .append(r("tl_uf").attr("data-title", d))
-                                    .append(r("tr_uf").attr("data-title", d))
-                                    .append(r("tr_sy").attr("data-title", c))
+                                    .append(createControl("tl_sy").attr("data-title", verticalSmoothnessLabel))
+                                    .append(createControl("tl_uf").attr("data-title", cornerTypeLabel))
+                                    .append(createControl("tr_uf").attr("data-title", cornerTypeLabel))
+                                    .append(createControl("tr_sy").attr("data-title", verticalSmoothnessLabel))
                             )
                             .append(
                                 $("<div></div>")
                                     .addClass("corners-item-row with-padding")
-                                    .append(r("bl_sy").attr("data-title", c))
-                                    .append(r("bl_uf").attr("data-title", d))
-                                    .append(r("br_uf").attr("data-title", d))
-                                    .append(r("br_sy").attr("data-title", c))
+                                    .append(createControl("bl_sy").attr("data-title", verticalSmoothnessLabel))
+                                    .append(createControl("bl_uf").attr("data-title", cornerTypeLabel))
+                                    .append(createControl("br_uf").attr("data-title", cornerTypeLabel))
+                                    .append(createControl("br_sy").attr("data-title", verticalSmoothnessLabel))
                             )
                             .append(
                                 $("<div></div>")
                                     .addClass("corners-item-row with-padding")
-                                    .append(r("bl_ct").attr("data-title", s))
-                                    .append(r("bl_sx").attr("data-title", l))
-                                    .append(r("br_sx").attr("data-title", l))
-                                    .append(r("br_ct").attr("data-title", s))
+                                    .append(createControl("bl_ct").attr("data-title", uniformSmoothnessLabel))
+                                    .append(createControl("bl_sx").attr("data-title", horizontalSmoothnessLabel))
+                                    .append(createControl("br_sx").attr("data-title", horizontalSmoothnessLabel))
+                                    .append(createControl("br_ct").attr("data-title", uniformSmoothnessLabel))
                             )
                     )),
                     $("<div></div>")
@@ -238,12 +238,12 @@ module.exports = function (module, exports, require) {
                                 {
                                     width: "auto",
                                     clazz: "corners-radius-slider-wrapper",
-                                    content: r("corners-radius-slider"),
+                                    content: createControl("corners-radius-slider"),
                                 },
                                 { clazz: "corners-radius-no-padding" },
                                 {
                                     clazz: "corners-radius-input-wrapper",
-                                    content: r("corners-radius-input"),
+                                    content: createControl("corners-radius-input"),
                                 },
                                 { width: "3px" },
                                 {
@@ -259,16 +259,16 @@ module.exports = function (module, exports, require) {
                                         )
                                         .on(
                                             "click",
-                                            function (e) {
+                                            function (event) {
                                                 (gDesigner.stats("rectangleproperties_open_advanced"),
-                                                    this._advancedPanel.gOverlay("open", $(e.target).closest(".g-button")),
+                                                    this._advancedPanel.gOverlay("open", $(event.target).closest(".g-button")),
                                                     gDesigner.isTouchEnabled()
                                                         ? (this._advancedPanel.find(".uf-checkbox").gCheckboxSlider(),
                                                           this._advancedPanel.find(".csc-checkbox").gCheckboxSlider())
                                                         : (this._advancedPanel.find(".uf-checkbox").gCheckboxSlider("unmount"),
                                                           this._advancedPanel.find(".csc-checkbox").gCheckboxSlider("unmount")));
-                                                var t = $('div[data-property="corners-type"]');
-                                                t.gCornerTypePicker("update", t.gCornerTypePicker("value"));
+                                                var cornerTypePicker = $('div[data-property="corners-type"]');
+                                                cornerTypePicker.gCornerTypePicker("update", cornerTypePicker.gCornerTypePicker("value"));
                                             }.bind(this)
                                         ),
                                 },
@@ -277,123 +277,123 @@ module.exports = function (module, exports, require) {
                         .addClass("corner-radius")
                         .appendTo(this._panel));
             }),
-            (l.prototype.update = function (e, t) {
+            (GRectangleProperties.prototype.update = function (document, elements) {
                 if (
                     (this._document &&
                         (this._document.getScene().removeEventListener(GObject.GNode.AfterPropertiesChangeEvent, this._afterPropertiesChange),
-                        gDesigner.removeEventListener(s, this._settingChanged),
+                        gDesigner.removeEventListener(GSettingChangedEvent, this._settingChanged),
                         (this._document = null)),
                     (this._rectangles = []),
-                    e)
+                    document)
                 ) {
-                    for (var n = 0; n < t.length; ++n) t[n] instanceof GObject.GRectangle && this._rectangles.push(t[n]);
-                    if (this._rectangles.length && this._rectangles.length === t.length)
+                    for (var n = 0; n < elements.length; ++n) elements[n] instanceof GObject.GRectangle && this._rectangles.push(elements[n]);
+                    if (this._rectangles.length && this._rectangles.length === elements.length)
                         return (
-                            (this._document = e),
+                            (this._document = document),
                             this._document
                                 .getScene()
                                 .addEventListener(GObject.GNode.AfterPropertiesChangeEvent, this._afterPropertiesChange, this),
-                            gDesigner.addEventListener(s, this._settingChanged, this),
+                            gDesigner.addEventListener(GSettingChangedEvent, this._settingChanged, this),
                             this._updateProperties(),
                             true
                         );
                 }
                 return false;
             }),
-            (l.prototype._afterPropertiesChange = function (e) {
-                !e.temporary && this._rectangles.length > 0 && this._rectangles[0] === e.node && this._updateProperties();
+            (GRectangleProperties.prototype._afterPropertiesChange = function (event) {
+                !event.temporary && this._rectangles.length > 0 && this._rectangles[0] === event.node && this._updateProperties();
             }),
-            (l.prototype._settingChanged = function (e) {
-                "decimals_num" === e.key && this._updateProperties();
+            (GRectangleProperties.prototype._settingChanged = function (event) {
+                "decimals_num" === event.key && this._updateProperties();
             }),
-            (l.prototype._updateProperties = function () {
-                var e = this._rectangles[0],
-                    t = e.getProperty("tl_sx"),
-                    n = e.getGeometryBBox(),
-                    a = this._panel.find('.g-input-slider[data-property="corners-radius"]'),
-                    r = this._panel.find('input[type="text"][data-property="corners-radius"]'),
-                    s = this._advancedPanel.find('[data-property="corners-type"]'),
-                    l = null === n;
-                if ((a.prop("disabled", l), r.prop("disabled", l), this._panel.find("button").prop("disabled", l), l))
-                    s.addClass("g-disabled");
+            (GRectangleProperties.prototype._updateProperties = function () {
+                var rectangle = this._rectangles[0],
+                    radius = rectangle.getProperty("tl_sx"),
+                    bbox = rectangle.getGeometryBBox(),
+                    radiusSlider = this._panel.find('.g-input-slider[data-property="corners-radius"]'),
+                    radiusInput = this._panel.find('input[type="text"][data-property="corners-radius"]'),
+                    cornerTypePicker = this._advancedPanel.find('[data-property="corners-type"]'),
+                    disabled = null === bbox;
+                if ((radiusSlider.prop("disabled", disabled), radiusInput.prop("disabled", disabled), this._panel.find("button").prop("disabled", disabled), disabled))
+                    cornerTypePicker.addClass("g-disabled");
                 else {
-                    s.removeClass("g-disabled");
-                    var c = (t / (e.getPointsMinDistance() / 2)) * 100,
-                        d = this._document.getScene().getProperty("ut"),
-                        u =
-                            (d == GObject.GLength.Unit.PX || d == GObject.GLength.Unit.PT) &&
-                            i.GGuides.options.guides &&
-                            i.GGuides.options.guides.indexOf(i.GFullPixelsGuide.ID) >= 0
+                    cornerTypePicker.removeClass("g-disabled");
+                    var percent = (radius / (rectangle.getPointsMinDistance() / 2)) * 100,
+                        unit = this._document.getScene().getProperty("ut"),
+                        decimals =
+                            (unit == GObject.GLength.Unit.PX || unit == GObject.GLength.Unit.PT) &&
+                            GEditor.GGuides.options.guides &&
+                            GEditor.GGuides.options.guides.indexOf(GEditor.GFullPixelsGuide.ID) >= 0
                                 ? 0
                                 : this._document.getScene().getOptimalDecimalsCount();
-                    (a.gInputSlider("value", Math.round(c)),
-                        r.gInputBox("value", this._document.getScene().pointToString(t, u)),
-                        s.gCornerTypePicker("value", e.getProperty("tl_ct")),
+                    (radiusSlider.gInputSlider("value", Math.round(percent)),
+                        radiusInput.gInputBox("value", this._document.getScene().pointToString(radius, decimals)),
+                        cornerTypePicker.gCornerTypePicker("value", rectangle.getProperty("tl_ct")),
                         this._advancedPanel
                             .find('input[data-property="csc"]')
-                            .prop("disabled", l || e instanceof GObject.GImage)
-                            .prop("checked", !!e.getProperty("csc")));
-                    var p = e.getProperty("uf");
-                    if ((this._advancedPanel.find('input[data-property="uf"]').prop("checked", p), p))
+                            .prop("disabled", disabled || rectangle instanceof GObject.GImage)
+                            .prop("checked", !!rectangle.getProperty("csc")));
+                    var uniform = rectangle.getProperty("uf");
+                    if ((this._advancedPanel.find('input[data-property="uf"]').prop("checked", uniform), uniform))
                         this._advancedPanel.find(".corners-panel").css("display", "none");
                     else
                         (this._advancedPanel.find(".corners-panel").css("display", ""),
-                            function (t) {
-                                for (var n = 0; n < t.length; ++n) {
-                                    var o = t[n],
+                            function (cornerPrefixes) {
+                                for (var n = 0; n < cornerPrefixes.length; ++n) {
+                                    var o = cornerPrefixes[n],
                                         i = this._advancedPanel.find('button[data-property="' + o + '_uf"]'),
                                         a = this._advancedPanel.find('input[data-property="' + o + '_sx"]'),
                                         r = this._advancedPanel.find('input[data-property="' + o + '_sy"]'),
                                         s = this._advancedPanel.find('button[data-property="' + o + '_ct"]');
-                                    (a.val(this._document.getScene().pointToString(e.getProperty(o + "_sx"), u)),
-                                        r.val(this._document.getScene().pointToString(e.getProperty(o + "_sy"), u)),
-                                        e.getProperty(o + "_uf")
+                                    (a.val(this._document.getScene().pointToString(rectangle.getProperty(o + "_sx"), decimals)),
+                                        r.val(this._document.getScene().pointToString(rectangle.getProperty(o + "_sy"), decimals)),
+                                        rectangle.getProperty(o + "_uf")
                                             ? (i.addClass("g-active"), r.prop("disabled", true))
                                             : (i.removeClass("g-active"), r.prop("disabled", false)),
-                                        i.prop("disabled", p),
-                                        s.gCornerTypePicker("value", e.getProperty(o + "_ct")));
+                                        i.prop("disabled", uniform),
+                                        s.gCornerTypePicker("value", rectangle.getProperty(o + "_ct")));
                                 }
                             }.bind(this)(["tl", "tr", "bl", "br"]));
                 }
             }),
-            (l.prototype._assignCorners = function (e, t, n) {
-                n || this._document.getEditor().beginTransaction();
-                var i = 0;
+            (GRectangleProperties.prototype._assignCorners = function (ratio, cornerType, temporary) {
+                temporary || this._document.getEditor().beginTransaction();
+                var firstRadius = 0;
                 try {
                     for (var a = 0; a < this._rectangles.length; ++a)
                         if (this._rectangles[a].isVisible()) {
                             var r = this._rectangles[a].getProperty("tl_sx"),
                                 s = this._rectangles[a].getProperty("tl_ct");
-                            if ((0 === r && "string" == typeof t && "number" != typeof e && (e = 0.25), "number" == typeof e)) {
+                            if ((0 === r && "string" == typeof cornerType && "number" != typeof ratio && (ratio = 0.25), "number" == typeof ratio)) {
                                 this._rectangles[a].getGeometryBBox();
-                                r = e * (this._rectangles[a].getPointsMinDistance() / 2);
+                                r = ratio * (this._rectangles[a].getPointsMinDistance() / 2);
                             }
-                            ("string" == typeof t && (s = t),
-                                0 === a && (i = r),
-                                this._rectangles[a].setProperties(["uf", "tl_sx", "tl_ct"], [true, r, s], false, false, n));
+                            ("string" == typeof cornerType && (s = cornerType),
+                                0 === a && (firstRadius = r),
+                                this._rectangles[a].setProperties(["uf", "tl_sx", "tl_ct"], [true, r, s], false, false, temporary));
                         }
                 } finally {
-                    n ||
+                    temporary ||
                         this._document
                             .getEditor()
                             .commitTransaction(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "action.change-corners")));
                 }
-                return i;
+                return firstRadius;
             }),
-            (l.prototype._assignProperty = function (e, t) {
-                this._assignProperties([e], [t]);
+            (GRectangleProperties.prototype._assignProperty = function (property, value) {
+                this._assignProperties([property], [value]);
             }),
-            (l.prototype._assignProperties = function (e, t) {
-                var n = this._document.getEditor();
-                n.beginTransaction();
+            (GRectangleProperties.prototype._assignProperties = function (properties, values) {
+                var editor = this._document.getEditor();
+                editor.beginTransaction();
                 try {
-                    for (var i = 0; i < this._rectangles.length; ++i) this._rectangles[i].setProperties(e, t);
+                    for (var i = 0; i < this._rectangles.length; ++i) this._rectangles[i].setProperties(properties, values);
                 } finally {
-                    n.commitTransaction(GObject.GLocale.get(new GObject.GLocaleKey("GRectangleProperties", "action.modify-rectangle-properties")));
+                    editor.commitTransaction(GObject.GLocale.get(new GObject.GLocaleKey("GRectangleProperties", "action.modify-rectangle-properties")));
                 }
             }),
-            (l.prototype.toString = function () {
+            (GRectangleProperties.prototype.toString = function () {
                 return "[Object GRectangleProperties]";
             }),
-            (module.exports = l));
+            (module.exports = GRectangleProperties));
     };

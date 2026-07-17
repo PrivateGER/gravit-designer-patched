@@ -3,7 +3,7 @@ module.exports = function (module, exports, require) {
             require(30 /* polyfill:Object */);
             const { ACCESS, INSPECT, COMMENT, COPY, SHARE, EDIT, OWNER, APPROVE, PASSWORD_PROTECT } = require(352),
                 { GLocale, GLocaleKey } = require(209 /* GLocale */),
-                d = (e) =>
+                createRole = (role) =>
                     Object.freeze(
                         Object.assign(
                             {
@@ -22,20 +22,20 @@ module.exports = function (module, exports, require) {
                                 get status() {
                                     return this.getStatus();
                                 },
-                                getName: (t) => GLocale.get(new GLocaleKey("GShareRoles", "text.role-".concat(e.i18n || e.id, "-name")), null, t),
-                                getDescription: (t) =>
-                                    GLocale.get(new GLocaleKey("GShareRoles", "text.role-".concat(e.i18n || e.id, "-description")), null, t),
-                                getInvitationMessage: (t) =>
-                                    GLocale.get(new GLocaleKey("GShareRoles", "text.role-".concat(e.i18n || e.id, "-invitation-message")), null, t),
-                                getInvitationInfo: (t) =>
-                                    GLocale.get(new GLocaleKey("GShareRoles", "text.role-".concat(e.i18n || e.id, "-invitation-info")), null, t),
-                                getStatus: (t) => GLocale.get(new GLocaleKey("GShareRoles", "text.role-".concat(e.i18n || e.id, "-status")), null, t),
+                                getName: (locale) => GLocale.get(new GLocaleKey("GShareRoles", "text.role-".concat(role.i18n || role.id, "-name")), null, locale),
+                                getDescription: (locale) =>
+                                    GLocale.get(new GLocaleKey("GShareRoles", "text.role-".concat(role.i18n || role.id, "-description")), null, locale),
+                                getInvitationMessage: (locale) =>
+                                    GLocale.get(new GLocaleKey("GShareRoles", "text.role-".concat(role.i18n || role.id, "-invitation-message")), null, locale),
+                                getInvitationInfo: (locale) =>
+                                    GLocale.get(new GLocaleKey("GShareRoles", "text.role-".concat(role.i18n || role.id, "-invitation-info")), null, locale),
+                                getStatus: (locale) => GLocale.get(new GLocaleKey("GShareRoles", "text.role-".concat(role.i18n || role.id, "-status")), null, locale),
                             },
-                            e
+                            role
                         )
                     );
             module.exports = Object.freeze({
-                NoAccess: d({
+                NoAccess: createRole({
                     id: "no_access",
                     i18n: "no-access",
                     level: 0,
@@ -43,7 +43,7 @@ module.exports = function (module, exports, require) {
                         [ACCESS]: false,
                     },
                 }),
-                Viewer: d({
+                Viewer: createRole({
                     id: "viewer",
                     level: 1,
                     mentionName: "viewers",
@@ -51,7 +51,7 @@ module.exports = function (module, exports, require) {
                         [ACCESS]: true,
                     },
                 }),
-                Developer: d({
+                Developer: createRole({
                     id: "developer",
                     level: 2,
                     mentionName: "developers",
@@ -61,7 +61,7 @@ module.exports = function (module, exports, require) {
                         [COPY]: true,
                     },
                 }),
-                Reviewer: d({
+                Reviewer: createRole({
                     id: "reviewer",
                     level: 3,
                     mentionName: "reviewers",
@@ -71,7 +71,7 @@ module.exports = function (module, exports, require) {
                         [COMMENT]: true,
                     },
                 }),
-                Approver: d({
+                Approver: createRole({
                     id: "approver",
                     level: 4,
                     mentionName: "approvers",
@@ -82,7 +82,7 @@ module.exports = function (module, exports, require) {
                         [APPROVE]: true,
                     },
                 }),
-                CoAuthor: d({
+                CoAuthor: createRole({
                     id: "co_author",
                     i18n: "co-author",
                     level: 5,
@@ -97,7 +97,7 @@ module.exports = function (module, exports, require) {
                         [EDIT]: true,
                     },
                 }),
-                Owner: d({
+                Owner: createRole({
                     id: "owner",
                     level: 6,
                     mentionName: "owner",

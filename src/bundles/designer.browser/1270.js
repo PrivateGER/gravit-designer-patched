@@ -2,7 +2,7 @@ module.exports = function (module, exports, require) {
         "use strict";
         (require(57), require(3), require(4), require(13));
         var GObject = require(1),
-            richTooltipModule = require(67),
+            richTooltipModule = require(67 /* GRichTooltipConfig */),
             GProperties = require(123),
             GSettingChangedEvent = (require(173), require(135));
         function GPolygonProperties() {

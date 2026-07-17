@@ -1,9 +1,9 @@
 module.exports = function (module, exports, require) {
         "use strict";
         (require(8 /* Symbol */), require(196 /* polyfill:Promise */), require(4), require(13));
-        const o = require(1190),
-            i = require(292),
-            a = require(291),
+        const PaymentProvider = require(1190),
+            UserLoggedEvent = require(292),
+            NetworkAvailabilityChangedEvent = require(291),
             {
                 gApi,
                 MicrosoftB2BKeyType,
@@ -15,35 +15,35 @@ module.exports = function (module, exports, require) {
             {
                 ERROR_CODES: { ERR_MICROSOFT_STORE_SERVICES_B2B_KEY_NOT_FOUND },
             } = gApi;
-        module.exports = class extends o {
+        module.exports = class extends PaymentProvider {
             constructor() {
                 if ((super(), !window.napi)) return;
                 const { remote } = require(881),
-                    t = remote.getCurrentWindow().getNativeWindowHandle();
+                    windowHandle = remote.getCurrentWindow().getNativeWindowHandle();
                 ((this._store = new window.napi.windowsStore.StoreContext()),
-                    this._store.initialize(t),
-                    gDesigner.addEventListener(i, this._userLoggedEvent, this),
-                    gDesigner.addEventListener(a, this._networkAvailabilityChangedEvent, this),
+                    this._store.initialize(windowHandle),
+                    gDesigner.addEventListener(UserLoggedEvent, this._userLoggedEvent, this),
+                    gDesigner.addEventListener(NetworkAvailabilityChangedEvent, this._networkAvailabilityChangedEvent, this),
                     (this._intervalId = setInterval(() => this.syncLicense(), DateAPI.daysToMilliseconds(1))));
             }
-            async purchase(e, t) {
+            async purchase(product, t) {
                 try {
-                    if ((gDesigner.toggleLoading(true), e || (e = await this.getProduct()), !e)) return;
+                    if ((gDesigner.toggleLoading(true), product || (product = await this.getProduct()), !product)) return;
                 } finally {
                     gDesigner.toggleLoading(false);
                 }
-                return new Promise((t, n) => {
-                    const o = setTimeout(() => {
-                        n();
+                return new Promise((resolve, reject) => {
+                    const timeoutId = setTimeout(() => {
+                        reject();
                     }, DateAPI.minutesToMilliseconds(3));
-                    this._store.requestPurchaseAsync(e.productId, (e, i) => {
-                        (clearTimeout(o),
-                            e
-                                ? n(e)
+                    this._store.requestPurchaseAsync(product.productId, (error, i) => {
+                        (clearTimeout(timeoutId),
+                            error
+                                ? reject(error)
                                 : (gDesigner.toggleLoading(true),
                                   this.syncLicense()
-                                      .then(t)
-                                      .catch(n)
+                                      .then(resolve)
+                                      .catch(reject)
                                       .finally(() => {
                                           gDesigner.toggleLoading(false);
                                       })));
@@ -51,67 +51,67 @@ module.exports = function (module, exports, require) {
                 });
             }
             async getProduct() {
-                return new Promise((e, t) => {
-                    this._store.getAssociatedStoreProductsAsync(["Durable"], (n, o) => {
-                        if (n) return t(n);
-                        if (!o) return t();
-                        const i = this._getInAppOfferToken();
-                        if (!i) return t();
-                        const a = Object.values(o).find((e) => e.inAppOfferToken === i);
-                        if (!a) return t();
-                        e({
+                return new Promise((resolve, reject) => {
+                    this._store.getAssociatedStoreProductsAsync(["Durable"], (error, products) => {
+                        if (error) return reject(error);
+                        if (!products) return reject();
+                        const offerToken = this._getInAppOfferToken();
+                        if (!offerToken) return reject();
+                        const matchedProduct = Object.values(products).find((candidate) => candidate.inAppOfferToken === offerToken);
+                        if (!matchedProduct) return reject();
+                        resolve({
                             provider: PaymentProviders.WindowsStore,
-                            formattedPrice: a.price.formattedRecurrencePrice,
-                            currency: a.price.currencyCode,
-                            productId: a.storeId,
+                            formattedPrice: matchedProduct.price.formattedRecurrencePrice,
+                            currency: matchedProduct.price.currencyCode,
+                            productId: matchedProduct.storeId,
                         });
                     });
                 });
             }
             async syncLicense() {
-                const e = await gDesigner.getUser();
-                if (e)
+                const user = await gDesigner.getUser();
+                if (user)
                     return gApi.microsoftStoreServices
                         .syncLicense()
                         .then(() => gDesigner.requestLicenseUpdate())
-                        .catch(async (t) => {
-                            if (t.cloud && t.code === ERR_MICROSOFT_STORE_SERVICES_B2B_KEY_NOT_FOUND) {
-                                const t = await gApi.microsoftStoreServices.getAccessToken(),
-                                    n = await this._createB2BKeyForPurchaseAPI(e, t),
-                                    o = await this._createB2BKeyForCollectionsAPI(e, t);
+                        .catch(async (error) => {
+                            if (error.cloud && error.code === ERR_MICROSOFT_STORE_SERVICES_B2B_KEY_NOT_FOUND) {
+                                const accessToken = await gApi.microsoftStoreServices.getAccessToken(),
+                                    purchaseKey = await this._createB2BKeyForPurchaseAPI(user, accessToken),
+                                    collectionsKey = await this._createB2BKeyForCollectionsAPI(user, accessToken);
                                 return (
                                     await gApi.microsoftStoreServices.updateB2BKeys({
-                                        accessToken: t,
-                                        keys: { [MicrosoftB2BKeyType.Purchase]: n, [MicrosoftB2BKeyType.Collections]: o },
+                                        accessToken: accessToken,
+                                        keys: { [MicrosoftB2BKeyType.Purchase]: purchaseKey, [MicrosoftB2BKeyType.Collections]: collectionsKey },
                                     }),
                                     gApi.microsoftStoreServices.syncLicense().then(() => gDesigner.requestLicenseUpdate())
                                 );
                             }
-                            throw t;
+                            throw error;
                         });
             }
             _getInAppOfferToken() {
                 return IS_PRODUCTION ? production : IS_BETA ? beta : IS_LTS ? lts : IS_RC ? rc : trunk;
             }
-            _createB2BKeyForPurchaseAPI(e, t) {
-                return new Promise(async (n, o) => {
-                    this._store.getCustomerPurchaseIdAsync(t, e.getUID(), (e, t) => {
-                        e ? o(e) : n(t);
+            _createB2BKeyForPurchaseAPI(user, accessToken) {
+                return new Promise(async (resolve, reject) => {
+                    this._store.getCustomerPurchaseIdAsync(accessToken, user.getUID(), (error, key) => {
+                        error ? reject(error) : resolve(key);
                     });
                 });
             }
-            _createB2BKeyForCollectionsAPI(e, t) {
-                return new Promise(async (n, o) => {
-                    this._store.getCustomerCollectionsIdAsync(t, e.getUID(), (e, t) => {
-                        e ? o(e) : n(t);
+            _createB2BKeyForCollectionsAPI(user, accessToken) {
+                return new Promise(async (resolve, reject) => {
+                    this._store.getCustomerCollectionsIdAsync(accessToken, user.getUID(), (error, key) => {
+                        error ? reject(error) : resolve(key);
                     });
                 });
             }
-            _userLoggedEvent(e) {
+            _userLoggedEvent(event) {
                 this.syncLicense();
             }
-            _networkAvailabilityChangedEvent(e) {
-                e.connected && this.syncLicense();
+            _networkAvailabilityChangedEvent(event) {
+                event.connected && this.syncLicense();
             }
         };
     };

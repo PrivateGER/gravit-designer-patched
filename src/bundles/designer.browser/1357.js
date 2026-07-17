@@ -2,14 +2,14 @@ module.exports = function (module, exports, require) {
         "use strict";
         (require(58 /* polyfill:Array */), require(19), require(71 /* polyfill:String */), require(91 /* polyfill:String */), require(4), require(41), require(13), require(26));
         var GPlatform = require(15),
-            i = require(882);
+            assigneeUtil = require(882 /* collabApi */);
         const GSystemDialog = require(44),
             { GSystem, GLocale, GLocaleKey, GObject, GNode } = require(1 /* GObject */),
-            u = require(1191),
+            GPanelItem = require(1191),
             { getAnnotationType } = require(40 /* Utils */);
-        require(85);
-        function g(e) {
-            let { container, annotation, onSubmit, onCancel, onAssignTo, mentionData } = e;
+        require(85 /* GContainer */);
+        function GAnnotationReplyDocker(options) {
+            let { container, annotation, onSubmit, onCancel, onAssignTo, mentionData } = options;
             ((this._containter = container),
                 (this._annotation = annotation),
                 (this._onSubmit = onSubmit),
@@ -24,45 +24,45 @@ module.exports = function (module, exports, require) {
                 (this._mentionData = mentionData),
                 this._init());
         }
-        function h(e) {
-            if (13 === e.keyCode)
+        function isSubmitEnterKey(event) {
+            if (13 === event.keyCode)
                 if (GSystem.operatingSystem !== GSystem.OperatingSystem.OSX_IOS) {
-                    if (!e.shiftKey) return true;
+                    if (!event.shiftKey) return true;
                 } else {
-                    if (!e.altKey) return true;
-                    if ("keydown" === e.type) {
-                        let t = $(e.target).val();
-                        $(e.target).val(t + "\n");
+                    if (!event.altKey) return true;
+                    if ("keydown" === event.type) {
+                        let text = $(event.target).val();
+                        $(event.target).val(text + "\n");
                     }
                 }
             return false;
         }
-        (GObject.inherit(g, u),
-            (g.prototype._init = function () {
-                var e = this._containter;
+        (GObject.inherit(GAnnotationReplyDocker, GPanelItem),
+            (GAnnotationReplyDocker.prototype._init = function () {
+                var container = this._containter;
                 this._containter.addClass("reply-docker");
-                var t,
-                    n = getAnnotationType(this._annotation);
-                e.toggleClass("g-active", this._annotation.hasFlag(GNode.Flag.Active)).toggleClass(
+                var buttonRow,
+                    annotationType = getAnnotationType(this._annotation);
+                container.toggleClass("g-active", this._annotation.hasFlag(GNode.Flag.Active)).toggleClass(
                     "g-selected",
                     this._annotation.hasFlag(GNode.Flag.Selected)
                 );
-                const c = !this._annotation.isFillingCompleted();
-                e.on("focusout", (n) => {
-                    if (e.find(n.relatedTarget).length) return (n.stopPropagation(), n.preventDefault(), false);
-                    $(n.target).val() || GSystemDialog.isDialogOpen(".g-system-dialog.g-confirm-dialog") || ($(n.target).attr("rows", 1), t.hide());
+                const isFillingRequired = !this._annotation.isFillingCompleted();
+                container.on("focusout", (event) => {
+                    if (container.find(event.relatedTarget).length) return (event.stopPropagation(), event.preventDefault(), false);
+                    $(event.target).val() || GSystemDialog.isDialogOpen(".g-system-dialog.g-confirm-dialog") || ($(event.target).attr("rows", 1), buttonRow.hide());
                 })
-                    .on("keydown", function (e) {
-                        h(e) && e.preventDefault();
+                    .on("keydown", function (event) {
+                        isSubmitEnterKey(event) && event.preventDefault();
                     })
-                    .on("keypress", function (e) {
-                        GSystem.operatingSystem === GSystem.OperatingSystem.OSX_IOS && 13 === e.keyCode && e.altKey && e.preventDefault();
+                    .on("keypress", function (event) {
+                        GSystem.operatingSystem === GSystem.OperatingSystem.OSX_IOS && 13 === event.keyCode && event.altKey && event.preventDefault();
                     })
-                    .on("keyup", (e) => {
-                        const t = u.find(".mentions-autocomplete-list").data("assign");
-                        h(e) && !t && (this._addContent(), e.preventDefault());
+                    .on("keyup", (event) => {
+                        const mentionsAutocompleteItemCount = commentArea.find(".mentions-autocomplete-list").data("assign");
+                        isSubmitEnterKey(event) && !mentionsAutocompleteItemCount && (this._addContent(), event.preventDefault());
                     });
-                var u = $("<span>").addClass("annotations-comment-area").appendTo(e);
+                var commentArea = $("<span>").addClass("annotations-comment-area").appendTo(container);
                 ((this._onlyOneAssignee = $("<span>")
                     .addClass("only-one-assignee")
                     .html(1 === this._mentionsCollection.length ? this._mentionsCollection[0].name : "")
@@ -71,15 +71,15 @@ module.exports = function (module, exports, require) {
                         .addClass("assignee-selector")
                         .css("display", "none")
                         .append(
-                            $("<select>").on("change", (e) => {
-                                i.updateAssignee.call(this, $(e.target).val());
+                            $("<select>").on("change", (event) => {
+                                assigneeUtil.updateAssignee.call(this, $(event.target).val());
                             })
                         )),
                     (this._assigneeCheckBox = $("<input>")
                         .attr("type", "checkbox")
                         .prop("checked", this._shouldAssign)
-                        .on("change", (e) => {
-                            ((this._shouldAssign = $(e.target).prop("checked")), gDesigner.stats("replydocker_mention_assign-user", n));
+                        .on("change", (event) => {
+                            ((this._shouldAssign = $(event.target).prop("checked")), gDesigner.stats("replydocker_mention_assign-user", annotationType));
                         })),
                     (this._assigneeRow = $("<div>")
                         .css("display", "none")
@@ -93,18 +93,18 @@ module.exports = function (module, exports, require) {
                                 .append(this._onlyOneAssignee)
                                 .append(this._assigneeSelector)
                         )
-                        .appendTo(u)),
-                    (t = $("<div>")
+                        .appendTo(commentArea)),
+                    (buttonRow = $("<div>")
                         .css("display", "none")
                         .addClass("annotations-buttonrow")
                         .append(
                             $("<button>")
                                 .addClass("annotations-cancelcomment")
                                 .text(GLocale.get(new GLocaleKey("GAnnotationPanel", "text.cancel")))
-                                .on("click", (e) => {
-                                    (e.stopImmediatePropagation(),
-                                        gDesigner.stats("replydocker_cancel-reply", n),
-                                        t.hide(),
+                                .on("click", (event) => {
+                                    (event.stopImmediatePropagation(),
+                                        gDesigner.stats("replydocker_cancel-reply", annotationType),
+                                        buttonRow.hide(),
                                         this._input.val("").attr("rows", 1).trigger("input"),
                                         this._onCancel());
                                 })
@@ -113,84 +113,84 @@ module.exports = function (module, exports, require) {
                             $("<button>")
                                 .addClass("annotations-addcomment")
                                 .text(
-                                    c
+                                    isFillingRequired
                                         ? GLocale.get(new GLocaleKey("GAnnotationPanel", "text.fill-contents"))
                                         : GLocale.get(new GLocaleKey("GAnnotationPanel", "text.comment"))
                                 )
                                 .on("click", () => {
-                                    (gDesigner.stats("replydocker_add-reply", n), this._addContent());
+                                    (gDesigner.stats("replydocker_add-reply", annotationType), this._addContent());
                                 })
                         )
-                        .appendTo(u)),
-                    e.attr("draggable", false));
-                const g = c && GPlatform.GPlatform.webBrowser !== GPlatform.GPlatform.constructor.WebBrowser.Safari;
+                        .appendTo(commentArea)),
+                    container.attr("draggable", false));
+                const shouldAutofocus = isFillingRequired && GPlatform.GPlatform.webBrowser !== GPlatform.GPlatform.constructor.WebBrowser.Safari;
                 ((this._input = $("<textarea>")
-                    .attr("placeholder", GLocale.get(new GLocaleKey("GAnnotationPanel", c ? "text.write-annotation-here" : "text.write-reply-here")))
+                    .attr("placeholder", GLocale.get(new GLocaleKey("GAnnotationPanel", isFillingRequired ? "text.write-annotation-here" : "text.write-reply-here")))
                     .attr("rows", 1)
-                    .attr("autofocus", g)
+                    .attr("autofocus", shouldAutofocus)
                     .addClass("annotations-comment-placeholder")
                     .addClass("mention")
                     .on("input", function () {
                         if (gDesigner.isTouchEnabled()) ((this.style.height = 0), (this.style.height = this.scrollHeight + "px"));
                         else {
-                            const t = 18;
-                            var e = Math.ceil(this.scrollHeight / t);
-                            this.rows = Math.max(e, 5);
+                            const lineHeight = 18;
+                            var computedRows = Math.ceil(this.scrollHeight / lineHeight);
+                            this.rows = Math.max(computedRows, 5);
                         }
                     })
-                    .on("click", (e) => {
-                        ($(e.target).attr("rows") <= 5 && $(e.target).attr("rows", 5),
-                            t.show(),
-                            i.showAssigneeRow.call(this, this._input),
+                    .on("click", (event) => {
+                        ($(event.target).attr("rows") <= 5 && $(event.target).attr("rows", 5),
+                            buttonRow.show(),
+                            assigneeUtil.showAssigneeRow.call(this, this._input),
                             gDesigner.isTouchEnabled() && this.requestFocus());
                     })
-                    .prependTo(u)),
+                    .prependTo(commentArea)),
                     this._input
                         .mentionsInput({
-                            onDataRequest: (e, t, n) => {
-                                let o = this._data.filter(
-                                    (e) =>
-                                        e.getFullUserName().toLowerCase().includes(t.toLowerCase()) ||
-                                        (e.getEmail() && e.getEmail().toLowerCase().includes(t.toLowerCase()))
+                            onDataRequest: (mode, query, callback) => {
+                                let matches = this._data.filter(
+                                    (user) =>
+                                        user.getFullUserName().toLowerCase().includes(query.toLowerCase()) ||
+                                        (user.getEmail() && user.getEmail().toLowerCase().includes(query.toLowerCase()))
                                 );
-                                (o.push(...this._additionalMentions), n.call(this, o));
+                                (matches.push(...this._additionalMentions), callback.call(this, matches));
                             },
                             onSelectItem: () => {
-                                gDesigner.stats("replydocker_mention_select-user", n);
+                                gDesigner.stats("replydocker_mention_select-user", annotationType);
                             },
                         })
                         .on("input", () => {
-                            i.showAssigneeRow.call(this, this._input);
+                            assigneeUtil.showAssigneeRow.call(this, this._input);
                         }),
-                    u.find(".mentions-autocomplete-list").delegate("li", "mousedown", () => {
-                        i.showAssigneeRow.call(this, this._input);
+                    commentArea.find(".mentions-autocomplete-list").delegate("li", "mousedown", () => {
+                        assigneeUtil.showAssigneeRow.call(this, this._input);
                     }),
-                    c && (this._input.trigger("click"), this._input.focus()));
+                    isFillingRequired && (this._input.trigger("click"), this._input.focus()));
             }),
-            (g.prototype._addContent = function () {
-                var e = i.replaceAdditionalCollabShowTextBeforeSend.call(this, $(this._input).val());
-                ((e = e.trim()),
-                    this._onSubmit(e),
+            (GAnnotationReplyDocker.prototype._addContent = function () {
+                var content = assigneeUtil.replaceAdditionalCollabShowTextBeforeSend.call(this, $(this._input).val());
+                ((content = content.trim()),
+                    this._onSubmit(content),
                     this._shouldAssign && this._assignees && this._assignees.length && this._onAssignTo(this._assignees));
             }),
-            (g.prototype.requestFocus = function () {
-                const e = this._input[0];
-                e && e.focus ? e.focus() : this._input.focus();
+            (GAnnotationReplyDocker.prototype.requestFocus = function () {
+                const inputElement = this._input[0];
+                inputElement && inputElement.focus ? inputElement.focus() : this._input.focus();
             }),
-            (g.prototype.forceSubmit = function () {
+            (GAnnotationReplyDocker.prototype.forceSubmit = function () {
                 this._addContent();
             }),
-            (g.prototype.isVisible = function () {
+            (GAnnotationReplyDocker.prototype.isVisible = function () {
                 return "none" !== this._containter.find(".annotations-buttonrow").css("display");
             }),
-            (g.prototype.show = function () {
+            (GAnnotationReplyDocker.prototype.show = function () {
                 this._containter.find(".annotations-buttonrow").show();
             }),
-            (g.prototype.hide = function () {
+            (GAnnotationReplyDocker.prototype.hide = function () {
                 this._containter.find(".annotations-buttonrow").hide();
             }),
-            (g.prototype.scrollIntoView = function () {
+            (GAnnotationReplyDocker.prototype.scrollIntoView = function () {
                 this._scrollToElement(this._input);
             }),
-            (module.exports = g));
+            (module.exports = GAnnotationReplyDocker));
     };

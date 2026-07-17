@@ -3,49 +3,49 @@ module.exports = function (module, exports, require) {
         var _interopRequireDefault = require(16);
         (require(58 /* polyfill:Array */), require(30 /* polyfill:Object */), require(8 /* Symbol */), require(196 /* polyfill:Promise */), require(3));
         var GObject = require(1),
-            a = require(847),
-            r = _interopRequireDefault(require(1239 /* GSharePointClient */)),
-            s = _interopRequireDefault(require(388)),
-            l = _interopRequireDefault(require(1481)),
+            cdrSaveUtils = require(847),
+            GSharePointClient = _interopRequireDefault(require(1239 /* GSharePointClient */)),
+            GExternalStorage = _interopRequireDefault(require(388 /* GExternalStorage */)),
+            SPBasePermissions = _interopRequireDefault(require(1481)),
             designerConfig = require(10),
-            d = _interopRequireDefault(require(594));
-        const u = require(86),
-            p = require(336),
-            g = require(436),
-            h = require(78),
-            f = require(156),
-            m = 10,
-            y = 50,
-            v = 80,
-            _ = 100;
-        function b() {}
-        (GObject.GObject.inherit(b, s.default),
-            (b.Item = function (e, t) {
-                let n = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : null;
-                (s.default.Item.call(this, e, t),
+            GError = _interopRequireDefault(require(594));
+        const StorageItemStatus = require(86),
+            StorageItemEvent = require(336),
+            CollaborativeFileMixin = require(436),
+            GDocumentEvent = require(78),
+            CloudFile = require(156),
+            progressPrepared = 10,
+            progressBlobReady = 50,
+            progressUploaded = 80,
+            progressDone = 100;
+        function GSharePointStorage() {}
+        (GObject.GObject.inherit(GSharePointStorage, GExternalStorage.default),
+            (GSharePointStorage.Item = function (id, file) {
+                let token = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : null;
+                (GExternalStorage.default.Item.call(this, id, file),
                     (this._ext = null),
-                    (this._token = n),
+                    (this._token = token),
                     this._setExtension(),
-                    g.call(this, designerConfig.FILE_ID_PREFIX.SHAREPOINT));
+                    CollaborativeFileMixin.call(this, designerConfig.FILE_ID_PREFIX.SHAREPOINT));
             }),
-            GObject.GObject.inheritAndMix(b.Item, s.default.Item, [g]),
-            (b.Item.prototype._app = designerConfig.FILE_ID_PREFIX.SHAREPOINT),
-            (b.Item.prototype.getId = function () {
-                const e = this._getSharepointId();
-                return e ? "".concat(this._app, "_").concat(e) : null;
+            GObject.GObject.inheritAndMix(GSharePointStorage.Item, GExternalStorage.default.Item, [CollaborativeFileMixin]),
+            (GSharePointStorage.Item.prototype._app = designerConfig.FILE_ID_PREFIX.SHAREPOINT),
+            (GSharePointStorage.Item.prototype.getId = function () {
+                const sharepointId = this._getSharepointId();
+                return sharepointId ? "".concat(this._app, "_").concat(sharepointId) : null;
             }),
-            (b.Item.prototype.setFile = function (e) {
-                (e &&
-                    ((e.storage = f.Storage.SharePoint),
-                    !e.relativeUrl &&
-                        e instanceof f &&
-                        (e.relativeUrl = e.parent && e.parent.relativeUrl + "/" + e.getNameWithExtension())),
-                    s.default.Item.prototype.setFile.call(this, e));
+            (GSharePointStorage.Item.prototype.setFile = function (file) {
+                (file &&
+                    ((file.storage = CloudFile.Storage.SharePoint),
+                    !file.relativeUrl &&
+                        file instanceof CloudFile &&
+                        (file.relativeUrl = file.parent && file.parent.relativeUrl + "/" + file.getNameWithExtension())),
+                    GExternalStorage.default.Item.prototype.setFile.call(this, file));
             }),
-            (b.Item.prototype._getSharepointId = function () {
+            (GSharePointStorage.Item.prototype._getSharepointId = function () {
                 return this._id ? this._id : null;
             }),
-            (b.Item.prototype.getCollaborativeFile = async function () {
+            (GSharePointStorage.Item.prototype.getCollaborativeFile = async function () {
                 return (
                     (this._collaborativeFile = await gDesigner
                         .getCloudCommunicationManager()
@@ -54,248 +54,248 @@ module.exports = function (module, exports, require) {
                     this._collaborativeFile
                 );
             }),
-            (b.Item.prototype.setCollaborativeFileStatus = async function (e) {
-                const t = this._collaborativeFile;
-                if (t && t.status !== e) {
-                    var n = t.status;
-                    ((t.status = e),
-                        gDesigner.hasEventListeners(p.FileStatusUpdate) && gDesigner.trigger(new p.FileStatusUpdate(this, n, e)));
+            (GSharePointStorage.Item.prototype.setCollaborativeFileStatus = async function (status) {
+                const collaborativeFile = this._collaborativeFile;
+                if (collaborativeFile && collaborativeFile.status !== status) {
+                    var oldStatus = collaborativeFile.status;
+                    ((collaborativeFile.status = status),
+                        gDesigner.hasEventListeners(StorageItemEvent.FileStatusUpdate) && gDesigner.trigger(new StorageItemEvent.FileStatusUpdate(this, oldStatus, status)));
                 }
             }),
-            (b.Item.prototype.getOrCreateCollaborativeFile = async function () {
-                var e = await this.getCollaborativeFile();
-                return (e || (await this.createShadowFile(), (e = await this.getCollaborativeFile())), e);
+            (GSharePointStorage.Item.prototype.getOrCreateCollaborativeFile = async function () {
+                var collaborativeFile = await this.getCollaborativeFile();
+                return (collaborativeFile || (await this.createShadowFile(), (collaborativeFile = await this.getCollaborativeFile())), collaborativeFile);
             }),
-            (b.Item.prototype.read = function (e, t) {
-                const n = this.getFile();
+            (GSharePointStorage.Item.prototype.read = function (onSuccess, onError) {
+                const file = this.getFile();
                 if (this._rawData) {
-                    var o = this._rawData;
-                    return ((this._rawData = null), e(o));
+                    var rawData = this._rawData;
+                    return ((this._rawData = null), onSuccess(rawData));
                 }
-                return function o() {
-                    let i = arguments.length > 0 && void 0 !== arguments[0] && arguments[0];
+                return function attemptRead() {
+                    let alreadyRetried = arguments.length > 0 && void 0 !== arguments[0] && arguments[0];
                     return this._getClient()
-                        .getFile(n)
-                        .then(async (t) => {
-                            const o = r.default.convertFileToCloudItem(await this._getClient().getFileDetails(this.getFile()));
-                            ((o.status = n.status),
-                                (o.checkOutStatus = n.checkOutStatus),
-                                this.setFile(o),
+                        .getFile(file)
+                        .then(async (rawFileData) => {
+                            const cloudItem = GSharePointClient.default.convertFileToCloudItem(await this._getClient().getFileDetails(this.getFile()));
+                            ((cloudItem.status = file.status),
+                                (cloudItem.checkOutStatus = file.checkOutStatus),
+                                this.setFile(cloudItem),
                                 this._setExtension(),
                                 await this.syncShadowFile(),
-                                e(t));
+                                onSuccess(rawFileData));
                         })
-                        .catch((e) => {
-                            const { id } = n;
-                            return !i && e && e.status && 404 === e.status && id
+                        .catch((error) => {
+                            const { id } = file;
+                            return !alreadyRetried && error && error.status && 404 === error.status && id
                                 ? this._getClient()
                                       .findFileById(id)
-                                      .then((e) => {
-                                          let { relativeUrl, name, type } = e;
-                                          const r = Object.assign(n, {
+                                      .then((foundFile) => {
+                                          let { relativeUrl, name, type } = foundFile;
+                                          const mergedFile = Object.assign(file, {
                                               name: name,
                                               relativeUrl: relativeUrl,
                                               type: type,
                                           });
-                                          return (this.setFile(r), this._setExtension(), this.updateShadowFile(), o.call(this, true));
+                                          return (this.setFile(mergedFile), this._setExtension(), this.updateShadowFile(), attemptRead.call(this, true));
                                       })
-                                      .catch(r)
-                                : r();
-                            function r() {
-                                if (!t) throw e;
-                                t(e);
+                                      .catch(handleError)
+                                : handleError();
+                            function handleError() {
+                                if (!onError) throw error;
+                                onError(error);
                             }
                         });
                 }.call(this);
             }),
-            (b.Item.prototype.isVersionNewerThan = function (e) {
+            (GSharePointStorage.Item.prototype.isVersionNewerThan = function (otherItem) {
                 if (
-                    e instanceof b.Item &&
-                    this.getFile().id === e.getFile().id &&
-                    new Date(this.getFile().updated) > new Date(e.getFile().updated)
+                    otherItem instanceof GSharePointStorage.Item &&
+                    this.getFile().id === otherItem.getFile().id &&
+                    new Date(this.getFile().updated) > new Date(otherItem.getFile().updated)
                 )
                     return true;
-                const t = this.getFile(),
-                    n = e.getFile();
-                return new Date(t.getModificationTime()).getTime() > new Date(n.getModificationTime()).getTime();
+                const file = this.getFile(),
+                    otherFile = otherItem.getFile();
+                return new Date(file.getModificationTime()).getTime() > new Date(otherFile.getModificationTime()).getTime();
             }),
-            (b.Item.prototype.hasVersionControl = function () {
+            (GSharePointStorage.Item.prototype.hasVersionControl = function () {
                 return true;
             }),
-            (b.Item.prototype.hasUpdates = async function () {
-                const e = this.getFile();
-                if (!this.getId() || !e || (!e.updated && !e.getModificationTime())) return false;
-                const t = await this.getLatestFileInfo();
-                return new b.Item(this.getStorage(), t).isVersionNewerThan(this);
+            (GSharePointStorage.Item.prototype.hasUpdates = async function () {
+                const file = this.getFile();
+                if (!this.getId() || !file || (!file.updated && !file.getModificationTime())) return false;
+                const latestFileInfo = await this.getLatestFileInfo();
+                return new GSharePointStorage.Item(this.getStorage(), latestFileInfo).isVersionNewerThan(this);
             }),
-            (b.Item.prototype.getLatestFileVersion = async function () {
-                let e = this._getClient();
-                const t = this.getFile(),
-                    n = await this.getLatestFileInfo(),
-                    o = new b.Item(
+            (GSharePointStorage.Item.prototype.getLatestFileVersion = async function () {
+                let client = this._getClient();
+                const file = this.getFile(),
+                    latestFileInfo = await this.getLatestFileInfo(),
+                    latestItem = new GSharePointStorage.Item(
                         this.getStorage(),
-                        Object.assign(n, {
-                            settings: t.settings,
-                            relativeUrl: t.relativeUrl,
+                        Object.assign(latestFileInfo, {
+                            settings: file.settings,
+                            relativeUrl: file.relativeUrl,
                         })
                     );
-                return ((o._rawData = await e.getFile(t)), o.setCloudClient(e), o);
+                return ((latestItem._rawData = await client.getFile(file)), latestItem.setCloudClient(client), latestItem);
             }),
-            (b.Item.prototype.getLatestFileInfo = async function () {
-                const e = this.getFile(),
-                    t = { relativeUrl: e.relativeUrl };
-                if (!t.relativeUrl) {
-                    const n = e.getParent();
-                    n instanceof f && (t.relativeUrl = "".concat(n.relativeUrl, "/").concat(e.getNameWithExtension()));
+            (GSharePointStorage.Item.prototype.getLatestFileInfo = async function () {
+                const file = this.getFile(),
+                    fileQuery = { relativeUrl: file.relativeUrl };
+                if (!fileQuery.relativeUrl) {
+                    const parent = file.getParent();
+                    parent instanceof CloudFile && (fileQuery.relativeUrl = "".concat(parent.relativeUrl, "/").concat(file.getNameWithExtension()));
                 }
-                const n = await this._getClient().getFileDetails(t);
-                return r.default.convertFileToCloudItem(n);
+                const fileDetails = await this._getClient().getFileDetails(fileQuery);
+                return GSharePointClient.default.convertFileToCloudItem(fileDetails);
             }),
-            (b.Item.prototype.exists = async function () {
-                const e = this.getFile();
-                return this._getClient().fileExists(e.getNameWithExtension(), e.getParent());
+            (GSharePointStorage.Item.prototype.exists = async function () {
+                const file = this.getFile();
+                return this._getClient().fileExists(file.getNameWithExtension(), file.getParent());
             }),
-            (b.Item.prototype._setFileSizeAfterSaved = async function (e) {
+            (GSharePointStorage.Item.prototype._setFileSizeAfterSaved = async function (file) {
                 return this._getClient()
-                    .getFileDetails(e)
-                    .then((e) => {
-                        this._fileSizeAfterSaved = e.size;
+                    .getFileDetails(file)
+                    .then((fileDetails) => {
+                        this._fileSizeAfterSaved = fileDetails.size;
                     });
             }),
-            (b.Item.prototype.write = async function (e, t, n, o, a) {
+            (GSharePointStorage.Item.prototype.write = async function (document, onSuccess, onError, onProgress, options) {
                 if (this._writing) return;
                 this._writing = true;
-                let r = null;
+                let savePoint = null;
                 try {
-                    (gContainer.verifyEnoughMemoryToSave(e), (r = e.getEditor().markSavePoint()));
-                    const n = {};
-                    e.updateStatus(u.Saving, n);
-                    const s = o || n.progress,
-                        l = (e) => {
-                            s && s(e);
+                    (gContainer.verifyEnoughMemoryToSave(document), (savePoint = document.getEditor().markSavePoint()));
+                    const statusOptions = {};
+                    document.updateStatus(StorageItemStatus.Saving, statusOptions);
+                    const progressHandler = onProgress || statusOptions.progress,
+                        reportProgress = (percent) => {
+                            progressHandler && progressHandler(percent);
                         },
-                        c = e.isNew();
-                    (l(m), GObject.GUtil.prepareForSaving(e.getScene(), this.getExtension()));
-                    const d = await this._getDocumentBlob(e, o, a);
-                    (l(y),
-                        this._verifyFileNotTooSmall(d.size, e),
-                        this._setFileSizeBeforeSaved(d.size),
-                        await this._createOrUpdateFile(d),
-                        l(v),
-                        c && (await this.createShadowFile()));
+                        isNewFile = document.isNew();
+                    (reportProgress(progressPrepared), GObject.GUtil.prepareForSaving(document.getScene(), this.getExtension()));
+                    const documentBlob = await this._getDocumentBlob(document, onProgress, options);
+                    (reportProgress(progressBlobReady),
+                        this._verifyFileNotTooSmall(documentBlob.size, document),
+                        this._setFileSizeBeforeSaved(documentBlob.size),
+                        await this._createOrUpdateFile(documentBlob),
+                        reportProgress(progressUploaded),
+                        isNewFile && (await this.createShadowFile()));
                     try {
-                        (await this._setFileSizeAfterSaved(this.getFile()).catch((e) => {
-                            console.error(e);
+                        (await this._setFileSizeAfterSaved(this.getFile()).catch((error) => {
+                            console.error(error);
                         }),
                             this._verifyFileSizeAfterSaved());
-                    } catch (e) {
-                        console.error(e);
+                    } catch (error) {
+                        console.error(error);
                     }
-                    (e.updateStatus(u.Saved),
-                        gDesigner.hasEventListeners(h) && gDesigner.trigger(new h(h.Type.StorageItemUpdated, e)),
+                    (document.updateStatus(StorageItemStatus.Saved),
+                        gDesigner.hasEventListeners(GDocumentEvent) && gDesigner.trigger(new GDocumentEvent(GDocumentEvent.Type.StorageItemUpdated, document)),
                         await this._updateModificationTime(),
-                        l(_),
-                        t && t(this.getFile()));
-                } catch (t) {
-                    (e.updateStatus(u.SaveFailed), r && r.rollback(), n && n(t));
+                        reportProgress(progressDone),
+                        onSuccess && onSuccess(this.getFile()));
+                } catch (error) {
+                    (document.updateStatus(StorageItemStatus.SaveFailed), savePoint && savePoint.rollback(), onError && onError(error));
                 } finally {
                     this._writing = false;
                 }
             }),
-            (b.Item.prototype._getDocumentBlob = async function (e, t, n) {
-                let o = null;
+            (GSharePointStorage.Item.prototype._getDocumentBlob = async function (document, onProgress, saveOptions) {
+                let blob = null;
                 if ("CDR" === this.getExtension() || "DES" === this.getExtension()) {
-                    var a = { progress: t, ext: this.getExtension().toLowerCase() };
-                    o = await this._exportDocumentToCDR(e, a, n);
+                    var cdrOptions = { progress: onProgress, ext: this.getExtension().toLowerCase() };
+                    blob = await this._exportDocumentToCDR(document, cdrOptions, saveOptions);
                 } else {
-                    var r = e.getScene(),
-                        s = GObject.GNode.serialize(r, GObject.GUtil.extend({ save: true }, n));
-                    o = new Blob([s]);
+                    var scene = document.getScene(),
+                        serializedScene = GObject.GNode.serialize(scene, GObject.GUtil.extend({ save: true }, saveOptions));
+                    blob = new Blob([serializedScene]);
                 }
-                return o;
+                return blob;
             }),
-            (b.Item.prototype._checkHttpResponseAndThrowIfNecessary = function (e) {
-                if (e.status >= designerConfig.HTTP_STATUS_CODES.BAD_REQUEST) {
-                    if (e.status === designerConfig.HTTP_STATUS_CODES.BAD_REQUEST)
-                        throw Error("Invalid this.response, probably corrupted upload: " + e.status);
-                    throw Error("Invalid response status: " + e.status);
+            (GSharePointStorage.Item.prototype._checkHttpResponseAndThrowIfNecessary = function (response) {
+                if (response.status >= designerConfig.HTTP_STATUS_CODES.BAD_REQUEST) {
+                    if (response.status === designerConfig.HTTP_STATUS_CODES.BAD_REQUEST)
+                        throw Error("Invalid this.response, probably corrupted upload: " + response.status);
+                    throw Error("Invalid response status: " + response.status);
                 }
             }),
-            (b.Item.prototype._updateFileWithCreatedResponse = function (e) {
-                const t = r.default.convertFileToCloudItem(e);
-                ((t.settings = f.GCloudSettings.from(this._getClient().getSettings())), this.setFile(Object.assign(this.getFile(), t)));
+            (GSharePointStorage.Item.prototype._updateFileWithCreatedResponse = function (response) {
+                const cloudItem = GSharePointClient.default.convertFileToCloudItem(response);
+                ((cloudItem.settings = CloudFile.GCloudSettings.from(this._getClient().getSettings())), this.setFile(Object.assign(this.getFile(), cloudItem)));
             }),
-            (b.Item.prototype._updateModificationTime = async function () {
-                const e = this._getClient();
+            (GSharePointStorage.Item.prototype._updateModificationTime = async function () {
+                const client = this._getClient();
                 if (this.getFile().relativeUrl) {
-                    const t = r.default.convertFileToCloudItem(await e.getFileDetails(this.getFile()));
-                    (this.getFile().setModificationTime(t.updated), this.setFile(Object.assign(this.getFile(), { updated: t.updated })));
+                    const cloudItem = GSharePointClient.default.convertFileToCloudItem(await client.getFileDetails(this.getFile()));
+                    (this.getFile().setModificationTime(cloudItem.updated), this.setFile(Object.assign(this.getFile(), { updated: cloudItem.updated })));
                 }
             }),
-            (b.Item.prototype.createOrUpdateFileWithMetadata = async function (e) {
+            (GSharePointStorage.Item.prototype.createOrUpdateFileWithMetadata = async function (data) {
                 if (!this._writing) {
                     this._writing = true;
                     try {
-                        await this._createOrUpdateFile(e);
+                        await this._createOrUpdateFile(data);
                     } finally {
                         this._writing = false;
                     }
                 }
             }),
-            (b.Item.prototype._createOrUpdateFile = async function (e) {
-                let t;
-                const n = this._getClient(),
-                    o = e instanceof Blob ? e : new Blob([e]);
+            (GSharePointStorage.Item.prototype._createOrUpdateFile = async function (data) {
+                let response;
+                const client = this._getClient(),
+                    blob = data instanceof Blob ? data : new Blob([data]);
                 (this._getSharepointId()
-                    ? ((t = await n.updateFileContentById(this._getSharepointId(), o)), this._checkHttpResponseAndThrowIfNecessary(t))
-                    : ((t = await n.createFile(this.getFile(), o)),
-                      this._checkHttpResponseAndThrowIfNecessary(t),
-                      this._updateFileWithCreatedResponse(await t.json())),
+                    ? ((response = await client.updateFileContentById(this._getSharepointId(), blob)), this._checkHttpResponseAndThrowIfNecessary(response))
+                    : ((response = await client.createFile(this.getFile(), blob)),
+                      this._checkHttpResponseAndThrowIfNecessary(response),
+                      this._updateFileWithCreatedResponse(await response.json())),
                     await async function () {
-                        const e = this.getFile(),
-                            t = this._getClient();
-                        let n = Object.assign(e, {
-                            settings: f.GCloudSettings.from(t.getSettings()),
+                        const file = this.getFile(),
+                            client = this._getClient();
+                        let updatedFile = Object.assign(file, {
+                            settings: CloudFile.GCloudSettings.from(client.getSettings()),
                         });
-                        e.relativeUrl || (e.relativeUrl = e.parent && e.parent.relativeUrl + "/" + e.getNameWithExtension());
-                        if (e.relativeUrl) {
-                            const o = await t.getFileDetails(e),
-                                i = r.default.convertFileToCloudItem(o);
-                            Object.assign(n, i);
+                        file.relativeUrl || (file.relativeUrl = file.parent && file.parent.relativeUrl + "/" + file.getNameWithExtension());
+                        if (file.relativeUrl) {
+                            const fileDetails = await client.getFileDetails(file),
+                                cloudItem = GSharePointClient.default.convertFileToCloudItem(fileDetails);
+                            Object.assign(updatedFile, cloudItem);
                         }
-                        this.setFile(n);
+                        this.setFile(updatedFile);
                     }.call(this));
             }),
-            (b.Item.prototype.getToken = function () {
+            (GSharePointStorage.Item.prototype.getToken = function () {
                 return this._token;
             }),
-            (b.Item.prototype.checkOut = async function () {
+            (GSharePointStorage.Item.prototype.checkOut = async function () {
                 try {
-                    const e = this.getFile(),
-                        t = await this._getAndUpdateCheckOutFileStatus();
+                    const file = this.getFile(),
+                        checkOutStatus = await this._getAndUpdateCheckOutFileStatus();
                     if (this.isCheckedOutByMe()) return;
-                    if (t === r.default.FILE_STATUS.LOCKED)
-                        throw new d.default(GObject.GLocale.get(new GObject.GLocaleKey("GSharePointStorage", "text.error-failed-check-out-file")));
-                    (await this._getClient().checkOutFile(e), this._setCheckOutStatus(r.default.FILE_STATUS.LOCKED_BY_ME));
-                } catch (e) {
-                    throw e instanceof d.default
-                        ? e
-                        : new d.default(GObject.GLocale.get(new GObject.GLocaleKey("GSharePointStorage", "text.error-failed-check-out-file")));
+                    if (checkOutStatus === GSharePointClient.default.FILE_STATUS.LOCKED)
+                        throw new GError.default(GObject.GLocale.get(new GObject.GLocaleKey("GSharePointStorage", "text.error-failed-check-out-file")));
+                    (await this._getClient().checkOutFile(file), this._setCheckOutStatus(GSharePointClient.default.FILE_STATUS.LOCKED_BY_ME));
+                } catch (error) {
+                    throw error instanceof GError.default
+                        ? error
+                        : new GError.default(GObject.GLocale.get(new GObject.GLocaleKey("GSharePointStorage", "text.error-failed-check-out-file")));
                 }
             }),
-            (b.Item.prototype.checkIn = async function (e, t) {
+            (GSharePointStorage.Item.prototype.checkIn = async function (comment, checkinType) {
                 try {
-                    const n = this.getFile();
-                    (await this._getClient().checkInFile(n, e, t),
+                    const file = this.getFile();
+                    (await this._getClient().checkInFile(file, comment, checkinType),
                         await this._updateModificationTime(),
-                        this._setCheckOutStatus(r.default.FILE_STATUS.AVAILABLE),
-                        this._triggerStorageItemEvent(p.Type.FileCheckIn));
-                } catch (e) {
+                        this._setCheckOutStatus(GSharePointClient.default.FILE_STATUS.AVAILABLE),
+                        this._triggerStorageItemEvent(StorageItemEvent.Type.FileCheckIn));
+                } catch (error) {
                     throw (
-                        console.error("Error checking in", e),
-                        e instanceof d.default
-                            ? e
-                            : new d.default(
+                        console.error("Error checking in", error),
+                        error instanceof GError.default
+                            ? error
+                            : new GError.default(
                                   GObject.GLocale.get(
                                       GObject.GLocale.get(new GObject.GLocaleKey("GFilesPanelViewSharepoint", "text.error-could-not-check-in"))
                                   )
@@ -303,98 +303,98 @@ module.exports = function (module, exports, require) {
                     );
                 }
             }),
-            (b.Item.prototype._setCheckOutStatus = function (e) {
-                const t = this.getFile();
-                (e === r.default.FILE_STATUS.AVAILABLE
-                    ? (t.checkedOut = false)
-                    : (e !== r.default.FILE_STATUS.LOCKED_BY_ME && e !== r.default.FILE_STATUS.LOCKED) || (t.checkedOut = true),
-                    (t.checkOutStatus = e),
-                    this._triggerStorageItemEvent(p.Type.FileUpdated));
+            (GSharePointStorage.Item.prototype._setCheckOutStatus = function (status) {
+                const file = this.getFile();
+                (status === GSharePointClient.default.FILE_STATUS.AVAILABLE
+                    ? (file.checkedOut = false)
+                    : (status !== GSharePointClient.default.FILE_STATUS.LOCKED_BY_ME && status !== GSharePointClient.default.FILE_STATUS.LOCKED) || (file.checkedOut = true),
+                    (file.checkOutStatus = status),
+                    this._triggerStorageItemEvent(StorageItemEvent.Type.FileUpdated));
             }),
-            (b.Item.prototype.refreshCheckOutStatus = async function () {
+            (GSharePointStorage.Item.prototype.refreshCheckOutStatus = async function () {
                 return (
                     this._refreshCheckOutPromise ||
-                        ((this.getFile().checkOutStatus = r.default.FILE_STATUS.LOADING),
+                        ((this.getFile().checkOutStatus = GSharePointClient.default.FILE_STATUS.LOADING),
                         (this._refreshCheckOutPromise = this._getAndUpdateCheckOutFileStatus().finally(() => {
                             delete this._refreshCheckOutPromise;
                         }))),
                     this._refreshCheckOutPromise
                 );
             }),
-            (b.Item.prototype.isCheckedOutByMe = function () {
-                return this.getFile().checkOutStatus === r.default.FILE_STATUS.LOCKED_BY_ME;
+            (GSharePointStorage.Item.prototype.isCheckedOutByMe = function () {
+                return this.getFile().checkOutStatus === GSharePointClient.default.FILE_STATUS.LOCKED_BY_ME;
             }),
-            (b.Item.prototype.isCheckedOutLoading = function () {
-                return this.getFile().checkOutStatus === r.default.FILE_STATUS.LOADING;
+            (GSharePointStorage.Item.prototype.isCheckedOutLoading = function () {
+                return this.getFile().checkOutStatus === GSharePointClient.default.FILE_STATUS.LOADING;
             }),
-            (b.Item.prototype.isEditingEnabled = function () {
+            (GSharePointStorage.Item.prototype.isEditingEnabled = function () {
                 return !designerConfig.msTeamsMode || this.isCheckedOutByMe();
             }),
-            (b.Item.prototype._getAndUpdateCheckOutFileStatus = async function () {
-                const e = await this._getCheckOutFileStatus();
-                return (this._setCheckOutStatus(e), this.getFile().checkOutStatus);
+            (GSharePointStorage.Item.prototype._getAndUpdateCheckOutFileStatus = async function () {
+                const status = await this._getCheckOutFileStatus();
+                return (this._setCheckOutStatus(status), this.getFile().checkOutStatus);
             }),
-            (b.Item.prototype._triggerStorageItemEvent = async function (e) {
-                gDesigner.hasEventListeners(p) && gDesigner.trigger(new p(e, this));
+            (GSharePointStorage.Item.prototype._triggerStorageItemEvent = async function (eventType) {
+                gDesigner.hasEventListeners(StorageItemEvent) && gDesigner.trigger(new StorageItemEvent(eventType, this));
             }),
-            (b.Item.prototype._getCheckOutFileStatus = async function () {
-                const e = this.getFile();
-                return e.checkOutStatus && e.checkOutStatus !== r.default.FILE_STATUS.LOADING
-                    ? e.checkOutStatus
-                    : this._getClient().getCheckOutFileStatus(e);
+            (GSharePointStorage.Item.prototype._getCheckOutFileStatus = async function () {
+                const file = this.getFile();
+                return file.checkOutStatus && file.checkOutStatus !== GSharePointClient.default.FILE_STATUS.LOADING
+                    ? file.checkOutStatus
+                    : this._getClient().getCheckOutFileStatus(file);
             }),
-            (b.Item.prototype.getMimeType = function () {
+            (GSharePointStorage.Item.prototype.getMimeType = function () {
                 return this.getFile().type;
             }),
-            (b.Item.prototype.isEmailFromCorporateDomain = async function (e) {
-                const t = this._getClient();
-                return !!(await t.getAccountByEmail(e).catch(() => null));
+            (GSharePointStorage.Item.prototype.isEmailFromCorporateDomain = async function (email) {
+                const client = this._getClient();
+                return !!(await client.getAccountByEmail(email).catch(() => null));
             }),
-            (b.Item.prototype._exportDocumentToCDR = function (e, t) {
-                let n = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {};
-                return new Promise(async (o, i) => {
-                    (0, a.prepareCDRforSaving)(
-                        e,
-                        function (e) {
-                            return i(e);
+            (GSharePointStorage.Item.prototype._exportDocumentToCDR = function (document, cdrOptions) {
+                let extraOptions = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {};
+                return new Promise(async (resolve, reject) => {
+                    (0, cdrSaveUtils.prepareCDRforSaving)(
+                        document,
+                        function (error) {
+                            return reject(error);
                         },
-                        t,
-                        n,
-                        function (e) {
-                            return o(new Blob([e]));
+                        cdrOptions,
+                        extraOptions,
+                        function (blobData) {
+                            return resolve(new Blob([blobData]));
                         }
                     );
                 });
             }),
-            (b.Item.prototype._getClient = function () {
-                let e = this.getCloudClient();
-                const t = this.getFile();
-                return (!e && t && t.settings && ((e = r.default.getInstance(t.settings)), this.setCloudClient(e)), e);
+            (GSharePointStorage.Item.prototype._getClient = function () {
+                let client = this.getCloudClient();
+                const file = this.getFile();
+                return (!client && file && file.settings && ((client = GSharePointClient.default.getInstance(file.settings)), this.setCloudClient(client)), client);
             }),
-            (b.Item.prototype._setExtension = function (e) {
-                const t = e || this.getFile();
-                t &&
-                    t.type &&
-                    (["application/vnd.corel-draw", "application/cdr"].includes(t.type)
+            (GSharePointStorage.Item.prototype._setExtension = function (fileOverride) {
+                const file = fileOverride || this.getFile();
+                file &&
+                    file.type &&
+                    (["application/vnd.corel-draw", "application/cdr"].includes(file.type)
                         ? (this._ext = "CDR")
-                        : "application/des" === t.type && (this._ext = "DES"));
+                        : "application/des" === file.type && (this._ext = "DES"));
             }),
-            (b.Item.prototype.getMyPermissionsList = async function () {
-                const e = this._getClient(),
-                    t = this.getFile(),
-                    { High, Low } = await e.getFileEffectiveBasePermissions(t).catch(() => ({ High: 0, Low: 0 }));
-                if (new l.default(High, Low).hasPermission(l.default.Permissions.EditListItems)) {
-                    const n = await e._getUser(),
-                        o = await e.getFileCreator(t);
+            (GSharePointStorage.Item.prototype.getMyPermissionsList = async function () {
+                const client = this._getClient(),
+                    file = this.getFile(),
+                    { High, Low } = await client.getFileEffectiveBasePermissions(file).catch(() => ({ High: 0, Low: 0 }));
+                if (new SPBasePermissions.default(High, Low).hasPermission(SPBasePermissions.default.Permissions.EditListItems)) {
+                    const user = await client._getUser(),
+                        creator = await client.getFileCreator(file);
                     return [
-                        { email: n.getEmail(), role: designerConfig.ShareRoles.ContentEditor.id },
-                        { email: o.getEmail(), role: designerConfig.ShareRoles.Owner.id },
+                        { email: user.getEmail(), role: designerConfig.ShareRoles.ContentEditor.id },
+                        { email: creator.getEmail(), role: designerConfig.ShareRoles.Owner.id },
                     ];
                 }
                 return [];
             }),
-            (b.Item.prototype.toString = function () {
+            (GSharePointStorage.Item.prototype.toString = function () {
                 return "[Object GSharePointStorage.Item]";
             }),
-            (module.exports = b));
+            (module.exports = GSharePointStorage));
     };

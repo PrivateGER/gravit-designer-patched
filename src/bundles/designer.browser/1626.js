@@ -2,75 +2,75 @@ module.exports = function (module, exports, require) {
         "use strict";
         require(3);
         var GObject = require(1);
-        const i = require(31);
-        function a(e) {
-            this._action = e;
+        const GAction = require(31);
+        function GProFeatureAction(action) {
+            this._action = action;
         }
-        (GObject.GObject.inherit(a, i),
-            (a.prototype._action = null),
-            (a.prototype.getId = function () {
+        (GObject.GObject.inherit(GProFeatureAction, GAction),
+            (GProFeatureAction.prototype._action = null),
+            (GProFeatureAction.prototype.getId = function () {
                 return this._action.getId();
             }),
-            (a.prototype.getTitle = function () {
+            (GProFeatureAction.prototype.getTitle = function () {
                 return this._action.getTitle();
             }),
-            (a.prototype.getIcon = function () {
+            (GProFeatureAction.prototype.getIcon = function () {
                 return this._action.getIcon();
             }),
-            (a.prototype.getCategory = function () {
+            (GProFeatureAction.prototype.getCategory = function () {
                 return this._action.getCategory();
             }),
-            (a.prototype.getGroup = function () {
+            (GProFeatureAction.prototype.getGroup = function () {
                 return this._action.getGroup();
             }),
-            (a.prototype.getGroupIcon = function () {
+            (GProFeatureAction.prototype.getGroupIcon = function () {
                 return this._action.getGroupIcon();
             }),
-            (a.prototype.getShortcut = function () {
+            (GProFeatureAction.prototype.getShortcut = function () {
                 return this._action.getShortcut();
             }),
-            (a.prototype.isShortcutGlobal = function () {
+            (GProFeatureAction.prototype.isShortcutGlobal = function () {
                 return this._action.isShortcutGlobal();
             }),
-            (a.prototype.isRegisterShortcut = function () {
+            (GProFeatureAction.prototype.isRegisterShortcut = function () {
                 return this._action.isRegisterShortcut();
             }),
-            (a.prototype.getAdditionalShortcuts = function () {
+            (GProFeatureAction.prototype.getAdditionalShortcuts = function () {
                 return this._action.getAdditionalShortcuts();
             }),
-            (a.prototype.isEnabled = function () {
+            (GProFeatureAction.prototype.isEnabled = function () {
                 return this._action.isEnabled();
             }),
-            (a.prototype.isCheckable = function () {
+            (GProFeatureAction.prototype.isCheckable = function () {
                 return this._action.isCheckable();
             }),
-            (a.prototype.isChecked = function () {
+            (GProFeatureAction.prototype.isChecked = function () {
                 return this._action.isChecked();
             }),
-            (a.prototype.isAvailable = function (e) {
-                return this._action.isAvailable(e);
+            (GProFeatureAction.prototype.isAvailable = function (context) {
+                return this._action.isAvailable(context);
             }),
-            (a.prototype.execute = function () {
+            (GProFeatureAction.prototype.execute = function () {
                 if (gDesigner.isEnabledProFeatures(this._action.getId())) return this._action.execute.apply(this._action, arguments);
                 gDesigner.handlePROFeatureInterruption();
             }),
-            (a.prototype.executeFromShortcut = function () {
+            (GProFeatureAction.prototype.executeFromShortcut = function () {
                 return this.execute.apply(this, arguments);
             }),
-            (a.prototype.isPro = function () {
+            (GProFeatureAction.prototype.isPro = function () {
                 return true;
             }),
-            (a.prototype.getTooltipArea = function () {
+            (GProFeatureAction.prototype.getTooltipArea = function () {
                 return this._action.getTooltipArea();
             }),
-            (a.prototype.getTooltipConfig = function (e) {
-                return this._action.getTooltipConfig(e);
+            (GProFeatureAction.prototype.getTooltipConfig = function (area) {
+                return this._action.getTooltipConfig(area);
             }),
-            (a.prototype.statsValue = function () {
+            (GProFeatureAction.prototype.statsValue = function () {
                 return this._action.statsValue();
             }),
-            (a.prototype.toString = function () {
+            (GProFeatureAction.prototype.toString = function () {
                 return this._action.toString();
             }),
-            (module.exports = a));
+            (module.exports = GProFeatureAction));
     };

@@ -1,7 +1,7 @@
 module.exports = function (module, exports, require) {
         var o;
         module.exports =
-            ((o = require(55)),
+            ((o = require(55 /* lib:crypto-js */)),
             (function () {
                 if ("function" == typeof ArrayBuffer) {
                     var e = o.lib.WordArray,

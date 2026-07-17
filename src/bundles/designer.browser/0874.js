@@ -4,54 +4,54 @@ module.exports = function (module, exports, require) {
         var GObject = require(1),
             GPlatform = require(15),
             GCategory = require(18),
-            r = require(106);
-        function s() {}
-        (GObject.GObject.inherit(s, r),
-            (s.ID = "modify.detachsymbol"),
-            (s.TITLE = new GObject.GLocaleKey("GDetachSymbolAction", "title")),
-            (s.prototype.getId = function () {
-                return s.ID;
+            GElementAction = require(106);
+        function DetachSymbolAction() {}
+        (GObject.GObject.inherit(DetachSymbolAction, GElementAction),
+            (DetachSymbolAction.ID = "modify.detachsymbol"),
+            (DetachSymbolAction.TITLE = new GObject.GLocaleKey("GDetachSymbolAction", "title")),
+            (DetachSymbolAction.prototype.getId = function () {
+                return DetachSymbolAction.ID;
             }),
-            (s.prototype.getTitle = function () {
-                return s.TITLE;
+            (DetachSymbolAction.prototype.getTitle = function () {
+                return DetachSymbolAction.TITLE;
             }),
-            (s.prototype.getCategory = function () {
+            (DetachSymbolAction.prototype.getCategory = function () {
                 return GCategory.CATEGORY_MODIFY_SYMBOL;
             }),
-            (s.prototype.getGroup = function () {
+            (DetachSymbolAction.prototype.getGroup = function () {
                 return "structure/modify";
             }),
-            (s.prototype.getIcon = function () {
+            (DetachSymbolAction.prototype.getIcon = function () {
                 return gDesigner.isTouchEnabled() ? "gravit-icon-detach-symbol" : null;
             }),
-            (s.prototype.getShortcut = function () {
+            (DetachSymbolAction.prototype.getShortcut = function () {
                 return [GPlatform.GKey.Constant.SHIFT, GPlatform.GKey.Constant.META, GPlatform.GKey.Constant.F8];
             }),
-            (s.prototype.isEnabled = function () {
-                if (!r.prototype.isEnabled.call(this)) return false;
-                var e = gDesigner.getActiveDocument();
-                if (e) {
-                    var t = e.getEditor().getIndividualSelection();
-                    if (t && t.length)
-                        for (var n = t.length - 1; n >= 0; --n) {
-                            var i = t[n];
+            (DetachSymbolAction.prototype.isEnabled = function () {
+                if (!GElementAction.prototype.isEnabled.call(this)) return false;
+                var activeDocument = gDesigner.getActiveDocument();
+                if (activeDocument) {
+                    var individualSelection = activeDocument.getEditor().getIndividualSelection();
+                    if (individualSelection && individualSelection.length)
+                        for (var n = individualSelection.length - 1; n >= 0; --n) {
+                            var i = individualSelection[n];
                             if (i instanceof GObject.GSymbol && !i.isMaster() && i.getMasterSymbol()) return true;
                         }
                 }
                 return false;
             }),
-            (s.prototype.execute = function () {
-                var e = gDesigner.getActiveDocument().getEditor(),
-                    t = GObject.GNode.order(e.getIndividualSelection().slice());
-                if (t.length && t[0].getScene()) {
-                    e.beginTransaction();
+            (DetachSymbolAction.prototype.execute = function () {
+                var editor = gDesigner.getActiveDocument().getEditor(),
+                    orderedSelection = GObject.GNode.order(editor.getIndividualSelection().slice());
+                if (orderedSelection.length && orderedSelection[0].getScene()) {
+                    editor.beginTransaction();
                     try {
-                        for (var n = 0, i = 0; i < t.length; ++i) {
-                            var a = t[i];
+                        for (var n = 0, i = 0; i < orderedSelection.length; ++i) {
+                            var a = orderedSelection[i];
                             a instanceof GObject.GSymbol && a.detach() && n++;
                         }
                     } finally {
-                        e.commitTransaction(
+                        editor.commitTransaction(
                             GObject.GLocale.get(new GObject.GLocaleKey("GDetachSymbolAction", "text.number-detached")).replace(
                                 "%number",
                                 n > 1 ? "s" : ""
@@ -60,8 +60,8 @@ module.exports = function (module, exports, require) {
                     }
                 }
             }),
-            (s.prototype.toString = function () {
+            (DetachSymbolAction.prototype.toString = function () {
                 return "[Object GDetachSymbolAction]";
             }),
-            (module.exports = s));
+            (module.exports = DetachSymbolAction));
     };

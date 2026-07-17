@@ -4,69 +4,69 @@ module.exports = function (module, exports, require) {
         require(3);
         var GObject = require(1),
             GPlatform = require(15),
-            r = _interopRequireDefault(require(18 /* GCategory */)),
-            s = _interopRequireDefault(require(31)),
-            l = _interopRequireDefault(require(442));
-        function c() {}
-        (GObject.GObject.inherit(c, s.default),
-            (c.ID = "view.outline-view"),
-            (c.TITLE = new GObject.GLocaleKey("GOutlineViewAction", "title")),
-            (c.GroupID = "view"),
-            (c.StoragePropertyName = "designer.settings.outline-view.enabled"),
-            (c.prototype.getId = function () {
-                return c.ID;
+            GCategory = _interopRequireDefault(require(18 /* GCategory */)),
+            GAction = _interopRequireDefault(require(31 /* GAction */)),
+            GSceneProperties = _interopRequireDefault(require(442));
+        function GOutlineViewAction() {}
+        (GObject.GObject.inherit(GOutlineViewAction, GAction.default),
+            (GOutlineViewAction.ID = "view.outline-view"),
+            (GOutlineViewAction.TITLE = new GObject.GLocaleKey("GOutlineViewAction", "title")),
+            (GOutlineViewAction.GroupID = "view"),
+            (GOutlineViewAction.StoragePropertyName = "designer.settings.outline-view.enabled"),
+            (GOutlineViewAction.prototype.getId = function () {
+                return GOutlineViewAction.ID;
             }),
-            (c.prototype.getTitle = function () {
-                return GObject.GLocale.get(c.TITLE);
+            (GOutlineViewAction.prototype.getTitle = function () {
+                return GObject.GLocale.get(GOutlineViewAction.TITLE);
             }),
-            (c.prototype.getCategory = function () {
-                return r.default.CATEGORY_VIEW;
+            (GOutlineViewAction.prototype.getCategory = function () {
+                return GCategory.default.CATEGORY_VIEW;
             }),
-            (c.prototype.getGroup = function () {
-                return c.GroupID;
+            (GOutlineViewAction.prototype.getGroup = function () {
+                return GOutlineViewAction.GroupID;
             }),
-            (c.prototype.isCheckable = function () {
+            (GOutlineViewAction.prototype.isCheckable = function () {
                 return true;
             }),
-            (c.prototype.getIcon = function () {
+            (GOutlineViewAction.prototype.getIcon = function () {
                 return gDesigner.isTouchEnabled() ? "gravit-icon-out-line" : null;
             }),
-            (c.prototype.isChecked = function () {
-                const e = gDesigner.getWindows().getActiveWindow();
-                if (e) {
-                    const t = e.getView().getViewConfiguration();
-                    return !!t && t.paintMode === GObject.GScenePaintConfiguration.PaintMode.Outline;
+            (GOutlineViewAction.prototype.isChecked = function () {
+                const window = gDesigner.getWindows().getActiveWindow();
+                if (window) {
+                    const viewConfiguration = window.getView().getViewConfiguration();
+                    return !!viewConfiguration && viewConfiguration.paintMode === GObject.GScenePaintConfiguration.PaintMode.Outline;
                 }
                 return false;
             }),
-            (c.prototype.isEnabled = function () {
+            (GOutlineViewAction.prototype.isEnabled = function () {
                 return !!gDesigner.getWindows().getActiveWindow();
             }),
-            (c.prototype.getShortcut = function () {
+            (GOutlineViewAction.prototype.getShortcut = function () {
                 return [GPlatform.GKey.Constant.OPTION, "Y"];
             }),
-            (c.prototype.execute = function () {
-                let e;
+            (GOutlineViewAction.prototype.execute = function () {
+                let paintMode;
                 if (
                     gDesigner.getWindows().getActiveWindow().getView().getViewConfiguration().paintMode ===
                     GObject.GScenePaintConfiguration.PaintMode.Outline
                 ) {
-                    var t = gDesigner.getActiveDocument();
-                    if (t) {
-                        var n = t.getScene().getActivePage();
-                        if (n && !n.isFixedSized()) e = GObject.GScenePaintConfiguration.PaintMode.Full;
+                    var document = gDesigner.getActiveDocument();
+                    if (document) {
+                        var page = document.getScene().getActivePage();
+                        if (page && !page.isFixedSized()) paintMode = GObject.GScenePaintConfiguration.PaintMode.Full;
                         else
-                            e =
-                                (n.getProperty(l.default.PAGE_CLIP_PROPERTY_NAME, true) || l.default.PAGE_CLIP_CONTENT_ENABLED) ===
-                                l.default.PAGE_CLIP_CONTENT_ENABLED
+                            paintMode =
+                                (page.getProperty(GSceneProperties.default.PAGE_CLIP_PROPERTY_NAME, true) || GSceneProperties.default.PAGE_CLIP_CONTENT_ENABLED) ===
+                                GSceneProperties.default.PAGE_CLIP_CONTENT_ENABLED
                                     ? GObject.GScenePaintConfiguration.PaintMode.Output
                                     : GObject.GScenePaintConfiguration.PaintMode.Full;
-                    } else e = GObject.GScenePaintConfiguration.PaintMode.Output;
-                } else e = GObject.GScenePaintConfiguration.PaintMode.Outline;
-                (gDesigner.setPaintMode(e), gDesigner.updateGEditorSceneConfigurationPaintMode(e));
+                    } else paintMode = GObject.GScenePaintConfiguration.PaintMode.Output;
+                } else paintMode = GObject.GScenePaintConfiguration.PaintMode.Outline;
+                (gDesigner.setPaintMode(paintMode), gDesigner.updateGEditorSceneConfigurationPaintMode(paintMode));
             }),
-            (c.prototype.toString = function () {
+            (GOutlineViewAction.prototype.toString = function () {
                 return "[Object GOutlineViewAction]";
             }),
-            (module.exports = c));
+            (module.exports = GOutlineViewAction));
     };

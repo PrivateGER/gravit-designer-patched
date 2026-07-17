@@ -3,7 +3,7 @@ module.exports = function (module, exports, require) {
         (require(193), require(57), require(8 /* Symbol */), require(3), require(4), require(13));
         var GObject = require(1),
             uiConfig = require(357),
-            richTooltip = require(67),
+            richTooltip = require(67 /* GRichTooltipConfig */),
             GProperties = require(123),
             GGravitCloudAction = require(448),
             GSaveAsAction = require(445),

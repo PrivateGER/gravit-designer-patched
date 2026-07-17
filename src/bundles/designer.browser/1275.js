@@ -3,16 +3,16 @@ module.exports = function (module, exports, require) {
         var _interopRequireDefault = require(16);
         (require(57), require(8 /* Symbol */), require(4), require(13), require(32), require(33));
         var GObject = require(1),
-            a = require(53),
+            editorOptionsModule = require(53),
             designerConfig = require(10),
             GAutoSave = require(1276),
-            l = _interopRequireDefault(require(1278)),
-            c = require(85),
-            d = null;
-        function u() {
+            scrubbingModule = _interopRequireDefault(require(1278)),
+            runtimeModule = require(85 /* GContainer */),
+            themes = null;
+        function SettingsDialog() {
             return (
-                d ||
-                    (d = [
+                themes ||
+                    (themes = [
                         {
                             name:
                                 GObject.GLocale.get(new GObject.GLocaleKey("GSettingsDialog", "text.light-theme")) +
@@ -28,16 +28,16 @@ module.exports = function (module, exports, require) {
                             key: "dark",
                         },
                     ]),
-                new Promise((e, t) => {
+                new Promise((resolve, reject) => {
                     this._buildDialog()
-                        .then(() => e(this))
-                        .catch(() => t(false));
+                        .then(() => resolve(this))
+                        .catch(() => reject(false));
                 })
             );
         }
-        (GObject.GObject.inherit(u, GObject.GObject),
-            (u.prototype._buildDialog = async function () {
-                let e = (await designerConfig.gApi.getUserSettings().catch(() => ({ notifications_disabled: false }))).notifications_disabled;
+        (GObject.GObject.inherit(SettingsDialog, GObject.GObject),
+            (SettingsDialog.prototype._buildDialog = async function () {
+                let notificationsDisabled = (await designerConfig.gApi.getUserSettings().catch(() => ({ notifications_disabled: false }))).notifications_disabled;
                 ((this._dialog = $("<div></div>")
                     .append(
                         this._createSetting(
@@ -94,8 +94,8 @@ module.exports = function (module, exports, require) {
                                             .attr("type", "checkbox")
                                             .attr("data-setting", GAutoSave.DISABLE_WARNING_SETTING_NAME)
                                             .on("change", function () {
-                                                const e = !!this.checked;
-                                                gDesigner.stats("settings_toggle_auto-save-warning-enabled", e);
+                                                const autoSaveWarningEnabled = !!this.checked;
+                                                gDesigner.stats("settings_toggle_auto-save-warning-enabled", autoSaveWarningEnabled);
                                             })
                                             .prop("checked", !gDesigner.getSetting(GAutoSave.DISABLE_WARNING_SETTING_NAME, false))
                                     )
@@ -119,7 +119,7 @@ module.exports = function (module, exports, require) {
                                             .on("change", () => {
                                                 gDesigner.stats("settings_toggle_steps-debug");
                                             })
-                                            .prop("checked", gDesigner.getSetting("enable_steps_debug", a.GEditorOptions.debugTransactions))
+                                            .prop("checked", gDesigner.getSetting("enable_steps_debug", editorOptionsModule.GEditorOptions.debugTransactions))
                                     )
                                     .append($("<div></div>"))
                             )
@@ -240,7 +240,7 @@ module.exports = function (module, exports, require) {
                                         .on("change", () => {
                                             gDesigner.stats("settings_toggle_disable-notifications");
                                         })
-                                        .prop("checked", e)
+                                        .prop("checked", notificationsDisabled)
                                 )
                                 .append($("<div></div>"))
                         )
@@ -254,17 +254,17 @@ module.exports = function (module, exports, require) {
                                 .append(
                                     $("<input>")
                                         .attr("type", "checkbox")
-                                        .attr("data-setting", l.default.getSetting())
-                                        .on("change", (e) => {
-                                            const t = $(e.target).closest("input").is(":checked");
-                                            gDesigner.stats("settings_toggle_disable-scrubbing", t);
+                                        .attr("data-setting", scrubbingModule.default.getSetting())
+                                        .on("change", (event) => {
+                                            const checked = $(event.target).closest("input").is(":checked");
+                                            gDesigner.stats("settings_toggle_disable-scrubbing", checked);
                                         })
-                                        .prop("checked", !l.default.isEnabled())
+                                        .prop("checked", !scrubbingModule.default.isEnabled())
                                 )
                                 .append($("<div></div>"))
                         )
                     ),
-                    gContainer.getRuntime() === c.Runtime.Electron &&
+                    gContainer.getRuntime() === runtimeModule.Runtime.Electron &&
                         this._dialog.append(
                             this._createSetting(
                                 GObject.GLocale.get(new GObject.GLocaleKey("GSettingsDialog", "setting.create-backup-copy-of-file")),
@@ -303,30 +303,30 @@ module.exports = function (module, exports, require) {
                         ],
                     }));
             }),
-            (u.prototype.open = function () {
+            (SettingsDialog.prototype.open = function () {
                 this._dialog.gDialog("open", false);
             }),
-            (u.prototype.close = function () {
+            (SettingsDialog.prototype.close = function () {
                 this._dialog.gDialog("close");
             }),
-            (u.prototype.save = async function (e) {
-                (this._saveBasicSettings(), await this._saveNotificationSetting(), e(), $(".symbols-container").triggerHandler("scroll"));
+            (SettingsDialog.prototype.save = async function (callback) {
+                (this._saveBasicSettings(), await this._saveNotificationSetting(), callback(), $(".symbols-container").triggerHandler("scroll"));
             }),
-            (u.prototype._saveNotificationSetting = async function () {
-                var e = this._dialog.find('[data-setting="notifications_disabled"]').prop("checked"),
-                    t = await designerConfig.gApi.getUserSettings();
-                t && t.notifications_disabled !== e && (await designerConfig.gApi.updateUserSettings({ notifications_disabled: e }, true));
+            (SettingsDialog.prototype._saveNotificationSetting = async function () {
+                var notificationsDisabled = this._dialog.find('[data-setting="notifications_disabled"]').prop("checked"),
+                    userSettings = await designerConfig.gApi.getUserSettings();
+                userSettings && userSettings.notifications_disabled !== notificationsDisabled && (await designerConfig.gApi.updateUserSettings({ notifications_disabled: notificationsDisabled }, true));
             }),
-            (u.prototype._saveBasicSettings = function () {
-                var e =
+            (SettingsDialog.prototype._saveBasicSettings = function () {
+                var autoSaveInterval =
                         designerConfig.AUTOSAVE_INTERVALS[
                             parseInt(this._dialog.find('[data-setting="'.concat(GAutoSave.AUTO_SAVE_INTERVAL_SETTING, '"]')).val())
                         ],
-                    t = null;
+                    decimalsNum = null;
                 if (this._dialog.find('[data-setting="decimals-num-onoff"]').prop("checked")) {
-                    var n = this._dialog.find('[data-setting="decimals-num-val"]').gInputBox("value"),
-                        o = GObject.GUtil.parseNumber(n);
-                    "number" != typeof o || isNaN(o) || (t = o);
+                    var rawDecimalsNum = this._dialog.find('[data-setting="decimals-num-val"]').gInputBox("value"),
+                        parsedDecimalsNum = GObject.GUtil.parseNumber(rawDecimalsNum);
+                    "number" != typeof parsedDecimalsNum || isNaN(parsedDecimalsNum) || (decimalsNum = parsedDecimalsNum);
                 }
                 gDesigner.setSetting(
                     [
@@ -345,7 +345,7 @@ module.exports = function (module, exports, require) {
                         "decimals_num",
                         GAutoSave.AUTO_SAVE_INTERVAL_SETTING,
                         "create_backup_copy",
-                        l.default.getSetting(),
+                        scrubbingModule.default.getSetting(),
                     ],
                     [
                         this._dialog.find('[data-setting="highlight_on_hover"]').prop("checked"),
@@ -360,50 +360,50 @@ module.exports = function (module, exports, require) {
                         this._dialog.find('[data-setting="disable_warning_unsupported_features"]').prop("checked"),
                         this._dialog.find('[data-setting="eps_outline_fonts"]').prop("checked"),
                         this._dialog.find('[data-setting="ui_toolbar_alignment"]').prop("checked"),
-                        t,
-                        e,
+                        decimalsNum,
+                        autoSaveInterval,
                         this._dialog.find('[data-setting="create_backup_copy"]').prop("checked"),
-                        !this._dialog.find('[data-setting="'.concat(l.default.getSetting(), '"]')).prop("checked"),
+                        !this._dialog.find('[data-setting="'.concat(scrubbingModule.default.getSetting(), '"]')).prop("checked"),
                     ]
                 );
             }),
-            (u.prototype._createSetting = function (e, t, n) {
-                var o = $("<div></div>").addClass("text-description").append($("<div></div>").text(e).addClass("label"));
+            (SettingsDialog.prototype._createSetting = function (labelText, descriptionHtml, editorElement) {
+                var labelBlock = $("<div></div>").addClass("text-description").append($("<div></div>").text(labelText).addClass("label"));
                 return (
-                    t
-                        ? (o = o.append($("<div></div>").addClass("description").html(t))).find("a").attr("target", "_blank")
-                        : o.css({ verticalAlign: "middle" }),
+                    descriptionHtml
+                        ? (labelBlock = labelBlock.append($("<div></div>").addClass("description").html(descriptionHtml))).find("a").attr("target", "_blank")
+                        : labelBlock.css({ verticalAlign: "middle" }),
                     $("<div></div>")
                         .addClass("setting")
-                        .append($("<div></div>").addClass("form").append(o).append($("<div></div>").addClass("editor").append(n)))
+                        .append($("<div></div>").addClass("form").append(labelBlock).append($("<div></div>").addClass("editor").append(editorElement)))
                 );
             }),
-            (u.prototype._createThemeSelector = function () {
+            (SettingsDialog.prototype._createThemeSelector = function () {
                 for (
-                    var e,
-                        t = function (e, t) {
+                    var selectedTheme,
+                        t = function (theme, t) {
                             return $("<div/>")
-                                .html(e.name)
+                                .html(theme.name)
                                 .addClass("g-theme-row")
                                 .on("click", function () {
                                     (gDesigner.stats(
                                         "settings_change_theme",
-                                        GObject.GLocale.get(e.localeClass, null, GObject.GLocaleLanguage.English)
+                                        GObject.GLocale.get(theme.localeClass, null, GObject.GLocaleLanguage.English)
                                     ),
-                                        $(".g-theme-selector").data("theme", e.key).text(e.name),
+                                        $(".g-theme-selector").data("theme", theme.key).text(theme.name),
                                         t && t());
                                 });
                         },
                         n = 0;
-                    n < d.length;
+                    n < themes.length;
                     ++n
                 )
-                    if (d[n].key === gDesigner.getSetting("theme", "light")) {
-                        e = d[n];
+                    if (themes[n].key === gDesigner.getSetting("theme", "light")) {
+                        selectedTheme = themes[n];
                         break;
                     }
-                e = e || d[0];
-                var o = function () {
+                selectedTheme = selectedTheme || themes[0];
+                var selectHoveredTheme = function () {
                     $(".g-overlay.theme-selector").find(".g-theme-row:hover").trigger("click");
                 };
                 return $("<div/>")
@@ -411,28 +411,28 @@ module.exports = function (module, exports, require) {
                     .addClass("g-select")
                     .css("min-width", "170px")
                     .css("width", "max-content")
-                    .text(e.name)
+                    .text(selectedTheme.name)
                     .attr("data-setting", "theme")
-                    .data("theme", e.key)
+                    .data("theme", selectedTheme.key)
                     .addClass("g-theme-selector")
-                    .on("click", function (e) {
-                        for (var n = $("<div/>"), i = 0; i < d.length; ++i)
-                            n.append(
-                                t(d[i], function () {
-                                    n.gOverlay("close");
+                    .on("click", function (event) {
+                        for (var themeList = $("<div/>"), i = 0; i < themes.length; ++i)
+                            themeList.append(
+                                t(themes[i], function () {
+                                    themeList.gOverlay("close");
                                 })
                             );
-                        n.gOverlay({
+                        themeList.gOverlay({
                             padding: false,
                             releaseOnClose: true,
                             clazz: "theme-selector",
-                            enterCallback: o,
-                        }).gOverlay("open", e.target);
+                            enterCallback: selectHoveredTheme,
+                        }).gOverlay("open", event.target);
                     });
             }),
-            (u.prototype._createDecimalsNum = function () {
-                var e = gDesigner.getSetting("decimals_num", GObject.GScene.decimalsNum),
-                    t = $("<div/>").append(
+            (SettingsDialog.prototype._createDecimalsNum = function () {
+                var currentDecimalsNum = gDesigner.getSetting("decimals_num", GObject.GScene.decimalsNum),
+                    decimalsInput = $("<div/>").append(
                         $("<input>")
                             .attr("type", "text")
                             .css("width", "60px")
@@ -441,15 +441,15 @@ module.exports = function (module, exports, require) {
                             .gInputBox({ minValue: 0, maxVal: 6 })
                             .on(
                                 "change",
-                                function (e) {
+                                function (event) {
                                     gDesigner.stats("settings_change_decimals-num");
-                                    var t = $(e.target).gInputBox("value");
-                                    ((t = GObject.GUtil.parseNumber(t)) < 0 && (t = 0),
-                                        t > 6 && (t = 6),
-                                        $(e.target).gInputBox("value", null !== t ? GObject.GUtil.formatNumber(t, 0) : "2"));
+                                    var parsedValue = $(event.target).gInputBox("value");
+                                    ((parsedValue = GObject.GUtil.parseNumber(parsedValue)) < 0 && (parsedValue = 0),
+                                        parsedValue > 6 && (parsedValue = 6),
+                                        $(event.target).gInputBox("value", null !== parsedValue ? GObject.GUtil.formatNumber(parsedValue, 0) : "2"));
                                 }.bind(this)
                             )
-                            .gInputBox("value", null !== e ? GObject.GUtil.formatNumber(e, 0) : "2")
+                            .gInputBox("value", null !== currentDecimalsNum ? GObject.GUtil.formatNumber(currentDecimalsNum, 0) : "2")
                     );
                 return $("<div/>")
                     .append(
@@ -463,49 +463,49 @@ module.exports = function (module, exports, require) {
                             )
                             .on(
                                 "change",
-                                function (e) {
+                                function (event) {
                                     gDesigner.stats("settings_change_decimals-num");
-                                    var t = gDesigner.getSetting("decimals_num", GObject.GScene.decimalsNum),
-                                        n = "2";
-                                    (null !== t && (n = GObject.GUtil.formatNumber(t, 0)),
+                                    var currentDecimalsNum = gDesigner.getSetting("decimals_num", GObject.GScene.decimalsNum),
+                                        decimalsNumText = "2";
+                                    (null !== currentDecimalsNum && (decimalsNumText = GObject.GUtil.formatNumber(currentDecimalsNum, 0)),
                                         this._dialog
                                             .find('[data-setting="decimals-num-val"]')
-                                            .css("display", $(e.target).prop("checked") ? "" : "none")
-                                            .gInputBox("value", n));
+                                            .css("display", $(event.target).prop("checked") ? "" : "none")
+                                            .gInputBox("value", decimalsNumText));
                                 }.bind(this)
                             )
                             .append($("<div></div>"))
                     )
-                    .append(t);
+                    .append(decimalsInput);
             }),
-            (u.prototype._createAutoSaveSetting = function () {
-                var e = $("<label/>")
+            (SettingsDialog.prototype._createAutoSaveSetting = function () {
+                var autoSaveToggle = $("<label/>")
                         .addClass("g-switch")
                         .append(
                             $("<input>")
                                 .attr("type", "checkbox")
                                 .attr("data-setting", "auto_save")
                                 .on("change", function () {
-                                    const e = !!this.checked;
-                                    gDesigner.stats("settings_toggle_auto-save", e);
+                                    const enabled = !!this.checked;
+                                    gDesigner.stats("settings_toggle_auto-save", enabled);
                                 })
                                 .prop("checked", gDesigner.getSetting("auto_save", true))
                         )
                         .append($("<div/>")),
-                    t = $("<select/>")
+                    intervalSelect = $("<select/>")
                         .attr("data-setting", GAutoSave.AUTO_SAVE_INTERVAL_SETTING)
                         .on("change", function () {
-                            const e = designerConfig.AUTOSAVE_INTERVALS[$(this).val()];
-                            gDesigner.stats("settings_change_auto-save-interval", e);
+                            const selectedInterval = designerConfig.AUTOSAVE_INTERVALS[$(this).val()];
+                            gDesigner.stats("settings_change_auto-save-interval", selectedInterval);
                         });
                 return (
-                    designerConfig.AUTOSAVE_INTERVALS.forEach((e, n) => {
-                        var o = $("<option/>").text(e).val(n);
-                        t.append(o);
+                    designerConfig.AUTOSAVE_INTERVALS.forEach((interval, index) => {
+                        var optionElement = $("<option/>").text(interval).val(index);
+                        intervalSelect.append(optionElement);
                     }),
-                    t.val(designerConfig.AUTOSAVE_INTERVALS.indexOf(gDesigner.getSetting(GAutoSave.AUTO_SAVE_INTERVAL_SETTING, designerConfig.AUTOSAVE_INTERVAL_DEFAULT))),
-                    [e, t]
+                    intervalSelect.val(designerConfig.AUTOSAVE_INTERVALS.indexOf(gDesigner.getSetting(GAutoSave.AUTO_SAVE_INTERVAL_SETTING, designerConfig.AUTOSAVE_INTERVAL_DEFAULT))),
+                    [autoSaveToggle, intervalSelect]
                 );
             }),
-            (module.exports = u));
+            (module.exports = SettingsDialog));
     };

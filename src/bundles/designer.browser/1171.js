@@ -3,45 +3,45 @@ module.exports = function (module, exports, require) {
         (require(20 /* polyfill:RegExp */), require(3), require(34));
         var GObject = require(1),
             GPlatform = require(15),
-            a = require(67),
+            GRichTooltipConfig = require(67),
             GCategory = require(18),
-            s = require(31);
-        function l() {
-            l.TOOLTIP_CONFIG = {
-                [a.TOOLTIP_AREA.TOOLBAR]: a.GRichTooltipConfig.from({
+            GAction = require(31);
+        function GUndoAction() {
+            GUndoAction.TOOLTIP_CONFIG = {
+                [GRichTooltipConfig.TOOLTIP_AREA.TOOLBAR]: GRichTooltipConfig.GRichTooltipConfig.from({
                     title: GObject.GLocale.get(new GObject.GLocaleKey("GUndoAction", "tooltip-title")),
                     description: GObject.GLocale.get(new GObject.GLocaleKey("GUndoAction", "tooltip-description")),
-                    shortcut: l.SHORTCUT,
+                    shortcut: GUndoAction.SHORTCUT,
                 }),
             };
         }
-        (GObject.GObject.inherit(l, s),
-            (l.ID = "edit.undo"),
-            (l.TITLE = new GObject.GLocaleKey("GUndoAction", "title")),
-            (l.SHORTCUT = [GPlatform.GKey.Constant.META, "z"]),
-            (l.TOOLTIP_CONFIG = null),
-            (l.prototype.getId = function () {
-                return l.ID;
+        (GObject.GObject.inherit(GUndoAction, GAction),
+            (GUndoAction.ID = "edit.undo"),
+            (GUndoAction.TITLE = new GObject.GLocaleKey("GUndoAction", "title")),
+            (GUndoAction.SHORTCUT = [GPlatform.GKey.Constant.META, "z"]),
+            (GUndoAction.TOOLTIP_CONFIG = null),
+            (GUndoAction.prototype.getId = function () {
+                return GUndoAction.ID;
             }),
-            (l.prototype.getTitle = function () {
-                var e = gDesigner.getActiveDocument();
-                return e && e.getEditor() && e.getEditor().hasUndoState()
-                    ? GObject.GLocale.get(new GObject.GLocaleKey("GUndoAction", "undo-action")).replace("%action", e.getEditor().getUndoStateName())
-                    : GObject.GLocale.get(l.TITLE);
+            (GUndoAction.prototype.getTitle = function () {
+                var activeDocument = gDesigner.getActiveDocument();
+                return activeDocument && activeDocument.getEditor() && activeDocument.getEditor().hasUndoState()
+                    ? GObject.GLocale.get(new GObject.GLocaleKey("GUndoAction", "undo-action")).replace("%action", activeDocument.getEditor().getUndoStateName())
+                    : GObject.GLocale.get(GUndoAction.TITLE);
             }),
-            (l.prototype.getIcon = function () {
+            (GUndoAction.prototype.getIcon = function () {
                 return "gravit-icon-undo";
             }),
-            (l.prototype.getCategory = function () {
+            (GUndoAction.prototype.getCategory = function () {
                 return GCategory.CATEGORY_EDIT;
             }),
-            (l.prototype.getGroup = function () {
+            (GUndoAction.prototype.getGroup = function () {
                 return "undo_redo";
             }),
-            (l.prototype.getShortcut = function () {
-                return l.SHORTCUT;
+            (GUndoAction.prototype.getShortcut = function () {
+                return GUndoAction.SHORTCUT;
             }),
-            (l.prototype.isEnabled = function () {
+            (GUndoAction.prototype.isEnabled = function () {
                 return (
                     !(gDesigner.getActiveDocument() && !gDesigner.getActiveDocument().isEditingEnabled()) &&
                     (!(
@@ -58,7 +58,7 @@ module.exports = function (module, exports, require) {
                         ))
                 );
             }),
-            (l.prototype.execute = function () {
+            (GUndoAction.prototype.execute = function () {
                 !document.activeElement ||
                 !$(document.activeElement).is(":editable") ||
                 $(document.activeElement).is(":button") ||
@@ -67,11 +67,11 @@ module.exports = function (module, exports, require) {
                     ? gDesigner.getActiveDocument().getEditor().undoState()
                     : document.execCommand("undo");
             }),
-            (l.prototype.getTooltipConfig = function (e) {
-                return (e && l.TOOLTIP_CONFIG[e]) || null;
+            (GUndoAction.prototype.getTooltipConfig = function (area) {
+                return (area && GUndoAction.TOOLTIP_CONFIG[area]) || null;
             }),
-            (l.prototype.toString = function () {
+            (GUndoAction.prototype.toString = function () {
                 return "[Object GUndoAction]";
             }),
-            (module.exports = l));
+            (module.exports = GUndoAction));
     };

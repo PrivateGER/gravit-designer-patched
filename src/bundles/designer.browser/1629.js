@@ -6,11 +6,11 @@ module.exports = function (module, exports, require) {
             a = _interopRequireDefault(require(443));
         const { isExecutingOnMSTeamsSync } = a.default;
         var GCategory = require(18),
-            l = require(31);
-        const c = require(1152),
+            GAction = require(31);
+        const GSharePointStorage = require(1152),
             GSystemDialog = require(44);
         function u() {}
-        (GObject.GObject.inherit(u, l),
+        (GObject.GObject.inherit(u, GAction),
             (u.ID = "file.sharepoint-checkout"),
             (u.TITLE = new GObject.GLocaleKey("GSharePointCheckOutAction", "title")),
             (u.prototype.getId = function () {
@@ -30,7 +30,7 @@ module.exports = function (module, exports, require) {
                 const e = gDesigner.getActiveDocument();
                 if (!e) return false;
                 const t = e.getStorageItem();
-                return !!t && t instanceof c.Item;
+                return !!t && t instanceof GSharePointStorage.Item;
             }),
             (u.prototype.isVisible = function () {
                 return this.isEnabled();

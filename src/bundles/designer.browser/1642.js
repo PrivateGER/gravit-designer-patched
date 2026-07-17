@@ -3,30 +3,30 @@ module.exports = function (module, exports, require) {
         var _interopRequireDefault = require(16);
         (require(4), require(32), require(33));
         var GObject = require(1),
-            a = require(53),
+            GEditor = require(53),
             GPlatform = require(15),
-            s = _interopRequireDefault(require(31)),
-            l = _interopRequireDefault(require(18 /* GCategory */));
-        class c extends s.default {
-            constructor(e) {
+            GAction = _interopRequireDefault(require(31 /* GAction */)),
+            GCategory = _interopRequireDefault(require(18 /* GCategory */));
+        class GTogglePaintLayersVisibilityAction extends GAction.default {
+            constructor(layerType) {
                 (super(),
-                    (this._type = e),
+                    (this._type = layerType),
                     (this._title = new GObject.GLocaleKey("GTogglePaintLayersVisibilityAction", "title.".concat(this._type))));
             }
             getId() {
-                return "".concat(c.ID, ".").concat(this._type);
+                return "".concat(GTogglePaintLayersVisibilityAction.ID, ".").concat(this._type);
             }
             getTitle() {
                 return this._title;
             }
             getCategory() {
-                return l.default.CATEGORY_VIEW;
+                return GCategory.default.CATEGORY_VIEW;
             }
             getShortcut() {
                 switch (this._type) {
-                    case c.Type.Fill:
+                    case GTogglePaintLayersVisibilityAction.Type.Fill:
                         return ["F"];
-                    case c.Type.Border:
+                    case GTogglePaintLayersVisibilityAction.Type.Border:
                         return [GPlatform.GKey.Constant.SHIFT, "B"];
                 }
             }
@@ -36,80 +36,80 @@ module.exports = function (module, exports, require) {
             isEnabled() {
                 return !document.activeElement || !$(document.activeElement).is(":input");
             }
-            _getSingleLevelSelection(e) {
-                let t = [];
+            _getSingleLevelSelection(elements) {
+                let result = [];
                 return (
-                    e.forEach((e) => {
-                        if (e) {
-                            const n = e.getChildren();
-                            (e instanceof GObject.GLayer || t.push(e),
-                                Array.isArray(n) && n.length > 0 && (t = t.concat(this._getSingleLevelSelection(n))));
+                    elements.forEach((element) => {
+                        if (element) {
+                            const children = element.getChildren();
+                            (element instanceof GObject.GLayer || result.push(element),
+                                Array.isArray(children) && children.length > 0 && (result = result.concat(this._getSingleLevelSelection(children))));
                         }
                     }),
-                    t
+                    result
                 );
             }
-            _getPaintLayers(e) {
-                const t = e && e.hasMixin(GObject.GStylable) && e.getPaintLayers();
-                if (!t) return null;
+            _getPaintLayers(element) {
+                const paintLayers = element && element.hasMixin(GObject.GStylable) && element.getPaintLayers();
+                if (!paintLayers) return null;
                 switch (this._type) {
-                    case c.Type.Fill:
-                        return t.getFillLayers();
-                    case c.Type.Border:
-                        return t.getBorderLayers();
+                    case GTogglePaintLayersVisibilityAction.Type.Fill:
+                        return paintLayers.getFillLayers();
+                    case GTogglePaintLayersVisibilityAction.Type.Border:
+                        return paintLayers.getBorderLayers();
                     default:
                         return null;
                 }
             }
-            _checkPaintLayersVisibility(e) {
-                let t = false,
-                    n = false;
-                for (let o = 0; e.length > o && (!t || !n); o++) {
-                    const i = e[o],
-                        a = this._getPaintLayers(i);
-                    if (Array.isArray(a))
-                        for (let e = 0; a.length > e && (!t || !n); e++) {
-                            a[e].getProperty("_vs") ? (n = true) : (t = true);
+            _checkPaintLayersVisibility(elements) {
+                let hasHidden = false,
+                    hasVisible = false;
+                for (let o = 0; elements.length > o && (!hasHidden || !hasVisible); o++) {
+                    const element = elements[o],
+                        paintLayers = this._getPaintLayers(element);
+                    if (Array.isArray(paintLayers))
+                        for (let e = 0; paintLayers.length > e && (!hasHidden || !hasVisible); e++) {
+                            paintLayers[e].getProperty("_vs") ? (hasVisible = true) : (hasHidden = true);
                         }
                 }
-                return { hasHiddenPaintLayers: t, hasVisiblePaintLayers: n };
+                return { hasHiddenPaintLayers: hasHidden, hasVisiblePaintLayers: hasVisible };
             }
-            _setVisibilityPaintLayersState(e, t) {
-                const n = gDesigner.getActiveDocument(),
-                    o = n && n.getScene();
-                o &&
-                    a.GEditor.tryRunTransaction(
-                        o,
+            _setVisibilityPaintLayersState(elements, visible) {
+                const activeDocument = gDesigner.getActiveDocument(),
+                    scene = activeDocument && activeDocument.getScene();
+                scene &&
+                    GEditor.GEditor.tryRunTransaction(
+                        scene,
                         () => {
-                            e.forEach((e) => {
-                                e.beginUpdate();
-                                const n = this._getPaintLayers(e);
-                                (Array.isArray(n) &&
-                                    n.forEach((e) => {
-                                        e.setProperty("_vs", t);
+                            elements.forEach((element) => {
+                                element.beginUpdate();
+                                const paintLayers = this._getPaintLayers(element);
+                                (Array.isArray(paintLayers) &&
+                                    paintLayers.forEach((paintLayer) => {
+                                        paintLayer.setProperty("_vs", visible);
                                     }),
-                                    e.endUpdate());
+                                    element.endUpdate());
                             });
                         },
-                        GObject.GLocale.get(c.TITLE)
+                        GObject.GLocale.get(GTogglePaintLayersVisibilityAction.TITLE)
                     );
             }
             execute() {
-                const e = gDesigner.getActiveDocument(),
-                    t = e && e.getScene(),
-                    n = e && e.getEditor(),
-                    o = n && n.getSelection();
-                if (t) {
-                    t.beginUpdate();
+                const activeDocument = gDesigner.getActiveDocument(),
+                    scene = activeDocument && activeDocument.getScene(),
+                    editor = activeDocument && activeDocument.getEditor(),
+                    selection = editor && editor.getSelection();
+                if (scene) {
+                    scene.beginUpdate();
                     try {
-                        if (Array.isArray(o) && o.length > 0) {
-                            const e = this._getSingleLevelSelection(o),
-                                { hasHiddenPaintLayers, hasVisiblePaintLayers } = this._checkPaintLayersVisibility(e);
+                        if (Array.isArray(selection) && selection.length > 0) {
+                            const elements = this._getSingleLevelSelection(selection),
+                                { hasHiddenPaintLayers, hasVisiblePaintLayers } = this._checkPaintLayersVisibility(elements);
                             if (!hasHiddenPaintLayers && !hasVisiblePaintLayers) return;
-                            hasHiddenPaintLayers && hasVisiblePaintLayers ? this._setVisibilityPaintLayersState(e, false) : this._setVisibilityPaintLayersState(e, hasHiddenPaintLayers);
+                            hasHiddenPaintLayers && hasVisiblePaintLayers ? this._setVisibilityPaintLayersState(elements, false) : this._setVisibilityPaintLayersState(elements, hasHiddenPaintLayers);
                         }
                     } finally {
-                        t.endUpdate();
+                        scene.endUpdate();
                     }
                 }
             }
@@ -117,5 +117,5 @@ module.exports = function (module, exports, require) {
                 return "[Object GTogglePaintLayersVisibilityAction]";
             }
         }
-        ((c.ID = "view.toggle-paint-layers-visibility"), (c.Type = { Fill: "fill", Border: "border" }), (module.exports = c));
+        ((GTogglePaintLayersVisibilityAction.ID = "view.toggle-paint-layers-visibility"), (GTogglePaintLayersVisibilityAction.Type = { Fill: "fill", Border: "border" }), (module.exports = GTogglePaintLayersVisibilityAction));
     };

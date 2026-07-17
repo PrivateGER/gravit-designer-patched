@@ -3,45 +3,45 @@ module.exports = function (module, exports, require) {
         (require(20 /* polyfill:RegExp */), require(3), require(34));
         var GObject = require(1),
             GPlatform = require(15),
-            a = require(67),
+            GRichTooltipConfig = require(67),
             GCategory = require(18),
-            s = require(31);
-        function l() {
-            l.TOOLTIP_CONFIG = {
-                [a.TOOLTIP_AREA.TOOLBAR]: a.GRichTooltipConfig.from({
+            GAction = require(31);
+        function GRedoAction() {
+            GRedoAction.TOOLTIP_CONFIG = {
+                [GRichTooltipConfig.TOOLTIP_AREA.TOOLBAR]: GRichTooltipConfig.GRichTooltipConfig.from({
                     title: GObject.GLocale.get(new GObject.GLocaleKey("GRedoAction", "tooltip-title")),
                     description: GObject.GLocale.get(new GObject.GLocaleKey("GRedoAction", "tooltip-description")),
-                    shortcut: l.SHORTCUT,
+                    shortcut: GRedoAction.SHORTCUT,
                 }),
             };
         }
-        (GObject.GObject.inherit(l, s),
-            (l.ID = "edit.redo"),
-            (l.TITLE = new GObject.GLocaleKey("GRedoAction", "title")),
-            (l.SHORTCUT = [GPlatform.GKey.Constant.SHIFT, GPlatform.GKey.Constant.META, "z"]),
-            (l.TOOLTIP_CONFIG = null),
-            (l.prototype.getId = function () {
-                return l.ID;
+        (GObject.GObject.inherit(GRedoAction, GAction),
+            (GRedoAction.ID = "edit.redo"),
+            (GRedoAction.TITLE = new GObject.GLocaleKey("GRedoAction", "title")),
+            (GRedoAction.SHORTCUT = [GPlatform.GKey.Constant.SHIFT, GPlatform.GKey.Constant.META, "z"]),
+            (GRedoAction.TOOLTIP_CONFIG = null),
+            (GRedoAction.prototype.getId = function () {
+                return GRedoAction.ID;
             }),
-            (l.prototype.getTitle = function () {
-                var e = gDesigner.getActiveDocument();
-                return e && e.getEditor().hasRedoState()
-                    ? GObject.GLocale.get(new GObject.GLocaleKey("GRedoAction", "redo-action")).replace("%action", e.getEditor().getRedoStateName())
-                    : GObject.GLocale.get(l.TITLE);
+            (GRedoAction.prototype.getTitle = function () {
+                var activeDocument = gDesigner.getActiveDocument();
+                return activeDocument && activeDocument.getEditor().hasRedoState()
+                    ? GObject.GLocale.get(new GObject.GLocaleKey("GRedoAction", "redo-action")).replace("%action", activeDocument.getEditor().getRedoStateName())
+                    : GObject.GLocale.get(GRedoAction.TITLE);
             }),
-            (l.prototype.getIcon = function () {
+            (GRedoAction.prototype.getIcon = function () {
                 return "gravit-icon-redo";
             }),
-            (l.prototype.getCategory = function () {
+            (GRedoAction.prototype.getCategory = function () {
                 return GCategory.CATEGORY_EDIT;
             }),
-            (l.prototype.getGroup = function () {
+            (GRedoAction.prototype.getGroup = function () {
                 return "undo_redo";
             }),
-            (l.prototype.getShortcut = function () {
-                return l.SHORTCUT;
+            (GRedoAction.prototype.getShortcut = function () {
+                return GRedoAction.SHORTCUT;
             }),
-            (l.prototype.isEnabled = function () {
+            (GRedoAction.prototype.isEnabled = function () {
                 return (
                     !(gDesigner.getActiveDocument() && !gDesigner.getActiveDocument().isEditingEnabled()) &&
                     (!(
@@ -54,7 +54,7 @@ module.exports = function (module, exports, require) {
                         !(!gDesigner.getActiveDocument() || !gDesigner.getActiveDocument().getEditor().hasRedoState()))
                 );
             }),
-            (l.prototype.execute = function () {
+            (GRedoAction.prototype.execute = function () {
                 !document.activeElement ||
                 !$(document.activeElement).is(":editable") ||
                 $(document.activeElement).is(":button") ||
@@ -63,11 +63,11 @@ module.exports = function (module, exports, require) {
                     ? gDesigner.getActiveDocument().getEditor().redoState()
                     : document.execCommand("redo");
             }),
-            (l.prototype.getTooltipConfig = function (e) {
-                return (e && l.TOOLTIP_CONFIG[e]) || null;
+            (GRedoAction.prototype.getTooltipConfig = function (area) {
+                return (area && GRedoAction.TOOLTIP_CONFIG[area]) || null;
             }),
-            (l.prototype.toString = function () {
+            (GRedoAction.prototype.toString = function () {
                 return "[Object GRedoAction]";
             }),
-            (module.exports = l));
+            (module.exports = GRedoAction));
     };

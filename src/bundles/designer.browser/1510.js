@@ -3,11 +3,11 @@ module.exports = function (module, exports, require) {
         require(8 /* Symbol */);
         var GObject = require(1),
             Utils = require(40),
-            a = require(257);
-        class r {
-            constructor(e) {
+            styles = require(257);
+        class SaveChooserDialog {
+            constructor(callback) {
                 let { closeCallback } = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
-                var n = this;
+                var self = this;
                 ((this._dialog = $("<div/>")
                     .addClass("g-save-chooser")
                     .append(
@@ -24,7 +24,7 @@ module.exports = function (module, exports, require) {
                                     )
                             )
                             .on("click", async function () {
-                                (gDesigner.stats("savedialog_save_file"), await n.close(), e(r.file()));
+                                (gDesigner.stats("savedialog_save_file"), await self.close(), callback(SaveChooserDialog.file()));
                             })
                     )
                     .append($("<hr/>"))
@@ -34,7 +34,7 @@ module.exports = function (module, exports, require) {
                             .append(
                                 $("<div/>")
                                     .addClass("content")
-                                    .append($("<span/>").addClass(a["gravit-icon-cloud-save-choose"]).addClass("icon"))
+                                    .append($("<span/>").addClass(styles["gravit-icon-cloud-save-choose"]).addClass("icon"))
                                     .append(
                                         $("<span/>")
                                             .addClass("label")
@@ -42,7 +42,7 @@ module.exports = function (module, exports, require) {
                                     )
                             )
                             .on("click", async function () {
-                                (gDesigner.stats("savedialog_save_cloud"), await n.close(), e(r.cloud()));
+                                (gDesigner.stats("savedialog_save_cloud"), await self.close(), callback(SaveChooserDialog.cloud()));
                             })
                     )),
                     this._dialog.gDialog({
@@ -65,5 +65,5 @@ module.exports = function (module, exports, require) {
                 return "cloud";
             }
         }
-        module.exports = r;
+        module.exports = SaveChooserDialog;
     };

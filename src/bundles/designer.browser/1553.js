@@ -6,12 +6,12 @@ module.exports = function (module, exports, require) {
             GDocument = _interopRequireDefault(require(163 /* GDocument */)),
             GDocumentEvent = _interopRequireDefault(require(78)),
             DocumentStatus = _interopRequireDefault(require(86)),
-            GDrive = _interopRequireDefault(require(802)),
+            GDrive = _interopRequireDefault(require(802 /* CloudDrive */)),
             AppError = _interopRequireDefault(require(355));
         const QueryBuilder = require(1554),
             SearchQuery = require(1301),
             GGoogleDrive = require(556 /* GGoogleDriveStorage */),
-            CloudItem = require(156),
+            CloudFile = require(156),
             ResultsPage = require(1555),
             GGoogleDriveClient = require(848),
             TokenIssuer = require(595),
@@ -133,7 +133,7 @@ module.exports = function (module, exports, require) {
                 }
             }),
             (GGoogleDriveStorage.prototype.getPreviousSelectedFolder = function () {
-                return GDrive.default.prototype.getPreviousSelectedFolder.apply(this, arguments).then((folder) => (folder ? CloudItem.from(folder) : folder));
+                return GDrive.default.prototype.getPreviousSelectedFolder.apply(this, arguments).then((folder) => (folder ? CloudFile.from(folder) : folder));
             }),
             (GGoogleDriveStorage.prototype._openFilePicker = function (panelView) {
                 const self = this;
@@ -220,7 +220,7 @@ module.exports = function (module, exports, require) {
             (GGoogleDriveStorage.prototype.getRootFolder = function () {
                 return this.getCorporateStorage()
                     ? this.getCorporateStorage()
-                    : CloudItem.from({
+                    : CloudFile.from({
                           id: "root",
                           name: GObject.GLocale.get(new GObject.GLocaleKey("GFilesPanel", "action.my-cloud")),
                       });
@@ -342,7 +342,7 @@ module.exports = function (module, exports, require) {
                 var parent = parentFolder ? this._getParentReference(parentFolder) : this._getParentContext();
                 return this._search(
                     SearchQuery.from({
-                        type: CloudItem.Type.Folder,
+                        type: CloudFile.Type.Folder,
                         limit: limit > 0 ? limit : 1e3,
                         orderBy: GGoogleDriveStorage.SearchEngine.SortMap[sortOrder],
                         parent: parent,
@@ -362,8 +362,8 @@ module.exports = function (module, exports, require) {
             (GGoogleDriveStorage.prototype._buildSearchQuery = function (query) {
                 const queryBuilder = new QueryBuilder();
                 var type = query.hasValue("type") && query.type;
-                const isFolder = type === CloudItem.Type.Folder,
-                    isFile = type === CloudItem.Type.File;
+                const isFolder = type === CloudFile.Type.Folder,
+                    isFile = type === CloudFile.Type.File;
                 return (
                     isFolder
                         ? queryBuilder.add("mimeType", "=", GGoogleDriveClient.MimeType.Folder)
@@ -455,7 +455,7 @@ module.exports = function (module, exports, require) {
                 var parent = parentFolder ? this._getParentReference(parentFolder) : this._getParentContext();
                 return this._search(
                     SearchQuery.from({
-                        type: CloudItem.Type.File,
+                        type: CloudFile.Type.File,
                         parent: parent,
                         exactname: "".concat(name, ".").concat(extension),
                         fileExtension: extension,
@@ -464,7 +464,7 @@ module.exports = function (module, exports, require) {
             }),
             (GGoogleDriveStorage.prototype.folderExists = function (name, parentFolder) {
                 var parent = parentFolder ? this._getParentReference(parentFolder) : this._getParentContext();
-                return this._search(SearchQuery.from({ type: CloudItem.Type.Folder, parent: parent, exactname: name })).then((resultsPage) => !!resultsPage.getItems().length);
+                return this._search(SearchQuery.from({ type: CloudFile.Type.Folder, parent: parent, exactname: name })).then((resultsPage) => !!resultsPage.getItems().length);
             }),
             (GGoogleDriveStorage.prototype.getRawFile = function (file, signal, downloadOptions) {
                 return this._googleDriveClient.getFile(
@@ -617,7 +617,7 @@ module.exports = function (module, exports, require) {
                 }
                 return this._search(
                     SearchQuery.from({
-                        type: CloudItem.Type.File,
+                        type: CloudFile.Type.File,
                         limit: this.getQueryLimit(),
                         orderBy: GGoogleDriveStorage.SearchEngine.SortMap[sortOrder],
                         nextPageToken: loadedCount ? page && page.nextPageToken : "",
@@ -627,10 +627,10 @@ module.exports = function (module, exports, require) {
                 );
             }),
             (GGoogleDriveStorage.prototype.isItemAllowedToBeRendered = function (item) {
-                return item.hasPermission(CloudItem.Permission.Download);
+                return item.hasPermission(CloudFile.Permission.Download);
             }),
             (GGoogleDriveStorage.prototype.isFileAllowedToBeOpened = function (item) {
-                return item.hasPermission(CloudItem.Permission.Download);
+                return item.hasPermission(CloudFile.Permission.Download);
             }),
             (GGoogleDriveStorage.prototype.supportsCorporateStorage = function () {
                 return true;

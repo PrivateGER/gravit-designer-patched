@@ -4,38 +4,38 @@ module.exports = function (module, exports, require) {
         require(3);
         var GObject = require(1),
             GPlatform = require(15),
-            r = _interopRequireDefault(require(1172)),
-            s = _interopRequireDefault(require(1173));
-        function l(e) {
-            const t = (e) => {
-                if (GPlatform.GKey.translateKey(e.keyCode) === GPlatform.GKey.Constant.ESC)
-                    return (e.preventDefault(), e.stopPropagation(), $(document).off("keydown", t), this._dialog.gDialog("close"), false);
+            GInstallToDesktopAction = _interopRequireDefault(require(1172)),
+            PwaInstallSupport = _interopRequireDefault(require(1173));
+        function InstallPwaDialog(isDarkMode) {
+            const onKeyDown = (event) => {
+                if (GPlatform.GKey.translateKey(event.keyCode) === GPlatform.GKey.Constant.ESC)
+                    return (event.preventDefault(), event.stopPropagation(), $(document).off("keydown", onKeyDown), this._dialog.gDialog("close"), false);
             };
-            let n = "g-install-pwa-dialog";
-            (e && (n += "-dark"),
+            let className = "g-install-pwa-dialog";
+            (isDarkMode && (className += "-dark"),
                 (this._dialog = $("<div />").gDialog({
                     releaseOnClose: true,
-                    className: n,
+                    className: className,
                     alwaysCloseable: true,
-                    closeCallback: () => $(document).off("keydown", t),
+                    closeCallback: () => $(document).off("keydown", onKeyDown),
                 })),
-                $(document).on("keydown", t),
+                $(document).on("keydown", onKeyDown),
                 this._dialog.append(this._getCloseButton()).append(this._getDialogContent()));
         }
-        (GObject.GObject.inherit(l, GObject.GObject),
-            (l.prototype._getCloseButton = function () {
+        (GObject.GObject.inherit(InstallPwaDialog, GObject.GObject),
+            (InstallPwaDialog.prototype._getCloseButton = function () {
                 return $("<div />")
                     .addClass("g-btn-close")
                     .append($("<span />").addClass("gravit-icon-close"))
                     .on("click", this.close.bind(this));
             }),
-            (l.prototype._getDialogContent = function () {
+            (InstallPwaDialog.prototype._getDialogContent = function () {
                 return $("<div />").addClass("content").append(this._getHeader()).append(this._getMainContent());
             }),
-            (l.prototype._getHeader = function () {
+            (InstallPwaDialog.prototype._getHeader = function () {
                 return $("<div />").addClass("header");
             }),
-            (l.prototype._getMainContent = function () {
+            (InstallPwaDialog.prototype._getMainContent = function () {
                 return $("<div />")
                     .addClass("main-content")
                     .append(
@@ -55,11 +55,11 @@ module.exports = function (module, exports, require) {
                             )
                             .append($("<span />").text(GObject.GLocale.get(new GObject.GLocaleKey("GInstallPwaDialog", "text.end-sentence-dot"))))
                     )
-                    .append(s.default.isSupported() ? this._getButtons() : this._buildChromiumInfoSection())
+                    .append(PwaInstallSupport.default.isSupported() ? this._getButtons() : this._buildChromiumInfoSection())
                     .append(this._getFooter());
             }),
-            (l.prototype._getButtons = function () {
-                var e = this;
+            (InstallPwaDialog.prototype._getButtons = function () {
+                var self = this;
                 return $("<div />")
                     .addClass("buttons")
                     .append(
@@ -67,13 +67,13 @@ module.exports = function (module, exports, require) {
                             .addClass("primary")
                             .addClass("g-button")
                             .text(GObject.GLocale.get(new GObject.GLocaleKey("GInstallPwaDialog", "action.install-button")))
-                            .on("click", function (t) {
+                            .on("click", function (event) {
                                 try {
-                                    gDesigner.executeAction(r.default.ID);
-                                } catch (t) {
-                                    r.default.install();
+                                    gDesigner.executeAction(GInstallToDesktopAction.default.ID);
+                                } catch (error) {
+                                    GInstallToDesktopAction.default.install();
                                 }
-                                e.close();
+                                self.close();
                             })
                     )
                     .append(
@@ -81,12 +81,12 @@ module.exports = function (module, exports, require) {
                             .addClass("g-button")
                             .text(GObject.GLocale.get(new GObject.GLocaleKey("GInstallPwaDialog", "action.not-now-button")))
                             .on("click", () => {
-                                const e = gDesigner.now().getTime();
-                                (gContainer.setProperty(r.default.closedInstallPWADialogDatePropName, e), this.close());
+                                const closedDate = gDesigner.now().getTime();
+                                (gContainer.setProperty(GInstallToDesktopAction.default.closedInstallPWADialogDatePropName, closedDate), this.close());
                             })
                     );
             }),
-            (l.prototype._buildChromiumInfoSection = function () {
+            (InstallPwaDialog.prototype._buildChromiumInfoSection = function () {
                 return $("<div />")
                     .addClass("chromium-section")
                     .append(
@@ -95,7 +95,7 @@ module.exports = function (module, exports, require) {
                             .html(GObject.GLocale.get(new GObject.GLocaleKey("GInstallPwaDialog", "text.pwa-requires")))
                     );
             }),
-            (l.prototype._getFooter = function () {
+            (InstallPwaDialog.prototype._getFooter = function () {
                 return $("<div />")
                     .addClass("footer")
                     .append($("<span />").text(GObject.GLocale.get(new GObject.GLocaleKey("GInstallPwaDialog", "text.footer-main-text"))))
@@ -109,15 +109,15 @@ module.exports = function (module, exports, require) {
                             .text(GObject.GLocale.get(new GObject.GLocaleKey("GInstallPwaDialog", "action.footer-more-information")))
                     );
             }),
-            (l.prototype._dialog = null),
-            (l.prototype.open = function () {
+            (InstallPwaDialog.prototype._dialog = null),
+            (InstallPwaDialog.prototype.open = function () {
                 this._dialog.gDialog("open", false);
             }),
-            (l.prototype.close = function () {
+            (InstallPwaDialog.prototype.close = function () {
                 this._dialog.gDialog("close");
             }),
-            (l.prototype.toString = function () {
+            (InstallPwaDialog.prototype.toString = function () {
                 return "[Object GInstallPwaDialog]";
             }),
-            (module.exports = l));
+            (module.exports = InstallPwaDialog));
     };

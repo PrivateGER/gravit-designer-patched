@@ -86954,5 +86954,5 @@ module.exports = function (module, exports, require) {
                             return (ge(), e);
                         });
                 module.exports = s;
-            }).call(this, "/index.js", require(183), "/", require(221 /* Buffer */).Buffer);
+            }).call(this, "/index.js", require(183 /* lib:process */), "/", require(221 /* Buffer */).Buffer);
         };

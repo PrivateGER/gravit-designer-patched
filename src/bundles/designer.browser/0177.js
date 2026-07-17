@@ -4,10 +4,10 @@ module.exports = function (module, exports, require) {
         var GRegex = require(263),
             designerConfig = require(10);
         const { GObject } = require(1 /* GObject */),
-            r = require(733),
-            s = require(589),
-            l = {},
-            c = [
+            GRole = require(733),
+            GEntity = require(589),
+            userColorCache = {},
+            colorPalette = [
                 "#B30000",
                 "#B35900",
                 "#999900",
@@ -27,27 +27,27 @@ module.exports = function (module, exports, require) {
                 "#5500FF",
                 "#BF00FF",
             ];
-        function d() {
-            let e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
-            Object.assign(this, e);
+        function GUser() {
+            let attributes = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
+            Object.assign(this, attributes);
         }
-        (GObject.inheritAndMix(d, s, [r, designerConfig.User], true),
-            (d.equals = function (e, t) {
-                return new d(e).getUID() === new d(t).getUID();
+        (GObject.inheritAndMix(GUser, GEntity, [GRole, designerConfig.User], true),
+            (GUser.equals = function (firstUser, secondUser) {
+                return new GUser(firstUser).getUID() === new GUser(secondUser).getUID();
             }),
-            (d.prototype.hasOwnPictureAvatar = function () {
+            (GUser.prototype.hasOwnPictureAvatar = function () {
                 return this.avatar && this.avatar.split("?")[1] && "v=" === this.avatar.split("?")[1].substr(0, 2);
             }),
-            (d.prototype.getUID = function () {
+            (GUser.prototype.getUID = function () {
                 return !this.id && designerConfig.ANONYMOUS_SESSION_ENABLED ? this.user_id || this.session_id || "" : this.id || this.user_id || "";
             }),
-            (d.prototype.getUserColor = function () {
+            (GUser.prototype.getUserColor = function () {
                 if (!this._color) {
-                    const t = this.getUID();
-                    if (!l[t]) {
-                        var e = c.shift();
-                        l[t] =
-                            e ||
+                    const uid = this.getUID();
+                    if (!userColorCache[uid]) {
+                        var presetColor = colorPalette.shift();
+                        userColorCache[uid] =
+                            presetColor ||
                             "#" +
                                 (
                                     (((32 * Math.random()) | 0) << 3) |
@@ -55,27 +55,27 @@ module.exports = function (module, exports, require) {
                                     (((32 * Math.random()) | 0) << 19)
                                 ).toString(16);
                     }
-                    this._color = l[t];
+                    this._color = userColorCache[uid];
                 }
                 return this._color;
             }),
-            (d.prototype.getEmail = function () {
+            (GUser.prototype.getEmail = function () {
                 return designerConfig.CloudUtils.getUserEmail(this);
             }),
-            (d.prototype.isDeactivated = function () {
+            (GUser.prototype.isDeactivated = function () {
                 return !!this.deactivated;
             }),
-            (d.prototype.isAnonymous = function () {
+            (GUser.prototype.isAnonymous = function () {
                 return this.anonymous;
             }),
-            (d.prototype.isGravitAccount = function () {
-                const e = this.getEmail();
-                return /\@(gravit\.io|designer\.io|corel\.com|corelvector\.com)$/.test(e);
+            (GUser.prototype.isGravitAccount = function () {
+                const email = this.getEmail();
+                return /\@(gravit\.io|designer\.io|corel\.com|corelvector\.com)$/.test(email);
             }),
-            (d.prototype.isEmailVerified = function () {
+            (GUser.prototype.isEmailVerified = function () {
                 return !!this.email_verified;
             }),
-            (d.prototype.getFirstName = function () {
+            (GUser.prototype.getFirstName = function () {
                 try {
                     if (this.name && this.name.trim()) {
                         return this.name.trim().split(GRegex.GRegex.String.SpacesLineBreak)[0];
@@ -85,26 +85,26 @@ module.exports = function (module, exports, require) {
                     return "";
                 }
             }),
-            (d.prototype.getUserNameInitials = function () {
-                const e = this.getFirstName();
+            (GUser.prototype.getUserNameInitials = function () {
+                const firstName = this.getFirstName();
                 try {
                     if (this.last_name && this.last_name.trim()) {
-                        const t = this.last_name;
-                        return "".concat(e.substr(0, 1)).concat(t.substr(0, 1)).toLocaleUpperCase();
+                        const lastName = this.last_name;
+                        return "".concat(firstName.substr(0, 1)).concat(lastName.substr(0, 1)).toLocaleUpperCase();
                     }
-                    return e ? "".concat(e.substr(0, 1)) : "";
+                    return firstName ? "".concat(firstName.substr(0, 1)) : "";
                 } catch (t) {
-                    return e ? "".concat(e.substr(0, 1)) : "";
+                    return firstName ? "".concat(firstName.substr(0, 1)) : "";
                 }
             }),
-            (d.prototype.getLastName = function () {
+            (GUser.prototype.getLastName = function () {
                 return this.last_name;
             }),
-            (d.prototype.getUserReference = function () {
+            (GUser.prototype.getUserReference = function () {
                 return this.email || this.login || this.getFullUserName();
             }),
-            (d.prototype.getAccountName = function () {
+            (GUser.prototype.getAccountName = function () {
                 return this.email || this.login || "";
             }),
-            (module.exports = d));
+            (module.exports = GUser));
     };

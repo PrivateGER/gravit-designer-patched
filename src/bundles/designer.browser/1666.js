@@ -5,20 +5,20 @@ module.exports = function (module, exports, require) {
         const {
                 DESIGNER: { TITLE },
             } = require(10 /* designerConfig */),
-            a = require(606),
-            r = require(394),
-            s = require(1321),
-            l = require(78),
-            c = require(860),
-            d = require(1667);
-        function u() {}
-        (GObject.GObject.inherit(u, a),
-            (u.ID = "notification-panel"),
-            (u.prototype._htmlElement = null),
-            (u.prototype._lastNotification = null),
-            (u.prototype._closeCallback = null),
-            (u.prototype.init = function (e) {
-                ((this._htmlElement = e),
+            GPanel = require(606),
+            GView = require(394),
+            GNotificationEvent = require(1321),
+            GDocumentEvent = require(78),
+            GEmbeddedLogin = require(860),
+            GNotificationBuilder = require(1667);
+        function GNotificationPanel() {}
+        (GObject.GObject.inherit(GNotificationPanel, GPanel),
+            (GNotificationPanel.ID = "notification-panel"),
+            (GNotificationPanel.prototype._htmlElement = null),
+            (GNotificationPanel.prototype._lastNotification = null),
+            (GNotificationPanel.prototype._closeCallback = null),
+            (GNotificationPanel.prototype.init = function (htmlElement) {
+                ((this._htmlElement = htmlElement),
                     this._htmlElement
                         .addClass("g-hide")
                         .addClass("g-notification-panel")
@@ -32,45 +32,45 @@ module.exports = function (module, exports, require) {
                             this._close(true);
                         })
                         .appendTo(this._htmlElement),
-                    gDesigner.addEventListener(s, this._notificationEvent, this),
-                    gDesigner.addEventListener(l, this._documentEvent, this));
+                    gDesigner.addEventListener(GNotificationEvent, this._notificationEvent, this),
+                    gDesigner.addEventListener(GDocumentEvent, this._documentEvent, this));
             }),
-            (u.prototype.isEnabled = function () {
+            (GNotificationPanel.prototype.isEnabled = function () {
                 return !this._htmlElement.hasClass("g-hide");
             }),
-            (u.prototype._documentEvent = function (e) {
-                if (!e.document.isLockedByVersionHistory() && this._lastNotification && this._lastNotification.document)
-                    switch (e.type) {
-                        case l.Type.Activated: {
-                            let t = e.document !== this._lastNotification.document;
-                            (this._htmlElement.toggleClass("g-hide", t),
-                                this._htmlElement.toggleClass("bring-to-front", t),
-                                t && gDesigner.sendSideBarAndAssistBarToBack());
+            (GNotificationPanel.prototype._documentEvent = function (event) {
+                if (!event.document.isLockedByVersionHistory() && this._lastNotification && this._lastNotification.document)
+                    switch (event.type) {
+                        case GDocumentEvent.Type.Activated: {
+                            let documentChanged = event.document !== this._lastNotification.document;
+                            (this._htmlElement.toggleClass("g-hide", documentChanged),
+                                this._htmlElement.toggleClass("bring-to-front", documentChanged),
+                                documentChanged && gDesigner.sendSideBarAndAssistBarToBack());
                             break;
                         }
-                        case l.Type.Removed:
-                            e.document === this._lastNotification.document && this._close();
+                        case GDocumentEvent.Type.Removed:
+                            event.document === this._lastNotification.document && this._close();
                     }
             }),
-            (u.prototype._notificationEvent = async function (e) {
+            (GNotificationPanel.prototype._notificationEvent = async function (event) {
                 if (
-                    ((this._lastNotification = e.notification),
-                    (this._closeCallback = e.notification.closeCallback),
+                    ((this._lastNotification = event.notification),
+                    (this._closeCallback = event.notification.closeCallback),
                     this._htmlElement.removeClass("g-hide"),
                     this._htmlElement.toggleClass("bring-to-front", true),
                     gDesigner.sendSideBarAndAssistBarToBack(),
-                    this._htmlElement.toggleClass("popup", !!e.notification.popup && !e.notification.anonymous),
-                    e.notification.anonymous)
+                    this._htmlElement.toggleClass("popup", !!event.notification.popup && !event.notification.anonymous),
+                    event.notification.anonymous)
                 ) {
-                    const t = gDesigner.getActiveDocument(),
-                        n = t && t.isDocumentFromTemplate() && t.isShared(),
-                        a = (e) => {
-                            e && !e.isAnonymous() && ((this._lastNotification = null), this._htmlElement.addClass("g-hide"));
+                    const activeDocument = gDesigner.getActiveDocument(),
+                        isSharedTemplate = activeDocument && activeDocument.isDocumentFromTemplate() && activeDocument.isShared(),
+                        handleAuthenticated = (user) => {
+                            user && !user.isAnonymous() && ((this._lastNotification = null), this._htmlElement.addClass("g-hide"));
                         };
-                    let r = n
+                    let introMessage = isSharedTemplate
                         ? GObject.GLocale.get(new GObject.GLocaleKey("GNotificationPanel", "text.create-account-template"))
                         : GObject.GLocale.get(new GObject.GLocaleKey("GNotificationPanel", "text.create-account"));
-                    const s = $("<div/>")
+                    const panelElement = $("<div/>")
                         .addClass("anonymous")
                         .append($("<div/>").addClass("logo"))
                         .append(
@@ -85,12 +85,12 @@ module.exports = function (module, exports, require) {
                                 )
                                 .append(
                                     $("<span/>")
-                                        .text(e.notification.message)
-                                        .css("display", e.notification.message && !n ? "" : "none")
+                                        .text(event.notification.message)
+                                        .css("display", event.notification.message && !isSharedTemplate ? "" : "none")
                                 )
                                 .append(
                                     $("<span/>").html(
-                                        r
+                                        introMessage
                                             .replace("%signup", () =>
                                                 $("<span/>")
                                                     .attr("id", "signup-link")
@@ -117,62 +117,62 @@ module.exports = function (module, exports, require) {
                                         )
                                 )
                         );
-                    (s.find("#signup-link").on("click", () => {
-                        (gDesigner.stats("open-shared_click_create-account"), new c(a).open({ anonymous: true, signup: true, animate: true }));
+                    (panelElement.find("#signup-link").on("click", () => {
+                        (gDesigner.stats("open-shared_click_create-account"), new GEmbeddedLogin(handleAuthenticated).open({ anonymous: true, signup: true, animate: true }));
                     }),
-                        s.find("#signin-link").on("click", () => {
-                            (gDesigner.stats("open-shared_click_login"), new c(a).open({ anonymous: true, animate: true }));
+                        panelElement.find("#signin-link").on("click", () => {
+                            (gDesigner.stats("open-shared_click_login"), new GEmbeddedLogin(handleAuthenticated).open({ anonymous: true, animate: true }));
                         }),
-                        s.find("#learnmore-link").on("click", (e) => {
+                        panelElement.find("#learnmore-link").on("click", (event) => {
                             (gDesigner.stats("open-shared_click_learn-more"),
-                                gContainer.openExternalLink(e, "https://gravit.linusrath.de/?utm_campaign=gdsharedfile"));
+                                gContainer.openExternalLink(event, "https://gravit.linusrath.de/?utm_campaign=gdsharedfile"));
                         }),
-                        this._updateContent(s));
-                } else if (e.notification.custom) {
+                        this._updateContent(panelElement));
+                } else if (event.notification.custom) {
                     if (
-                        ((this._closeCallback = e.notification.closeCallback),
-                        this._htmlElement.addClass([e.notification.class, e.notification.enter]),
-                        this._updateContent(e.notification.content),
-                        e.notification.timeout)
+                        ((this._closeCallback = event.notification.closeCallback),
+                        this._htmlElement.addClass([event.notification.class, event.notification.enter]),
+                        this._updateContent(event.notification.content),
+                        event.notification.timeout)
                     ) {
-                        let t = this;
-                        new Promise(function (n) {
+                        let self = this;
+                        new Promise(function (resolve) {
                             setTimeout(function () {
-                                (t._htmlElement.removeClass(e.notification.enter), t._htmlElement.addClass(e.notification.exit), n(true));
-                            }, e.notification.timeout);
+                                (self._htmlElement.removeClass(event.notification.enter), self._htmlElement.addClass(event.notification.exit), resolve(true));
+                            }, event.notification.timeout);
                         }).then(function () {
                             setTimeout(function () {
-                                (t._htmlElement.removeClass(e.notification.exit), t._close(false));
+                                (self._htmlElement.removeClass(event.notification.exit), self._close(false));
                             }, 600);
                         });
                     }
                 } else
-                    e.builder instanceof d
-                        ? (e.builder.addEventListener(d.Event, (e) => {
-                              e.type === d.Event.Type.Close && this._close();
+                    event.builder instanceof GNotificationBuilder
+                        ? (event.builder.addEventListener(GNotificationBuilder.Event, (event) => {
+                              event.type === GNotificationBuilder.Event.Type.Close && this._close();
                           }),
                           this._updateContent(
                               $("<div></div>")
                                   .addClass("message")
-                                  .append(await e.builder.build())
+                                  .append(await event.builder.build())
                           ))
-                        : this._updateContent($("<div></div>").addClass("message").append(e.notification.message));
-                this.trigger(r.UPDATE_EVENT);
+                        : this._updateContent($("<div></div>").addClass("message").append(event.notification.message));
+                this.trigger(GView.UPDATE_EVENT);
             }),
-            (u.prototype._updateContent = function (e) {
-                (this._htmlElement.find(".content").remove(), this._htmlElement.append($("<div></div>").addClass("content").append(e)));
+            (GNotificationPanel.prototype._updateContent = function (content) {
+                (this._htmlElement.find(".content").remove(), this._htmlElement.append($("<div></div>").addClass("content").append(content)));
             }),
-            (u.prototype._close = function (e) {
+            (GNotificationPanel.prototype._close = function (invokeCallback) {
                 ((this._lastNotification = null),
                     this._htmlElement.addClass("g-hide"),
-                    this._closeCallback && e && this._closeCallback(),
-                    this.trigger(r.UPDATE_EVENT));
+                    this._closeCallback && invokeCallback && this._closeCallback(),
+                    this.trigger(GView.UPDATE_EVENT));
             }),
-            (u.prototype.toString = function () {
+            (GNotificationPanel.prototype.toString = function () {
                 return "[Object GNotificationPanel]";
             }),
-            (u.prototype.getId = function () {
-                return u.ID;
+            (GNotificationPanel.prototype.getId = function () {
+                return GNotificationPanel.ID;
             }),
-            (module.exports = u));
+            (module.exports = GNotificationPanel));
     };

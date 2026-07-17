@@ -3,12 +3,12 @@ module.exports = function (module, exports, require) {
         (require(20 /* polyfill:RegExp */), require(3), require(34));
         var GObject = require(1),
             GCategory = require(18),
-            a = require(31);
+            GAction = require(31);
         require(173);
         function r(e, t) {
             ((this._guideId = e), (this._guideName = t));
         }
-        (GObject.GObject.inherit(r, a),
+        (GObject.GObject.inherit(r, GAction),
             (r.ID = "view.toggle-guide"),
             (r.prototype._guideId = null),
             (r.prototype._guideName = false),

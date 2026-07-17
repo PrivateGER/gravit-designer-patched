@@ -1,30 +1,30 @@
 module.exports = function (module, exports, require) {
         "use strict";
         (require(865 /* polyfill:Number */), require(193), require(57), require(3), require(4), require(13));
-        var o = require(53),
+        var GEditor = require(53),
             GObject = require(1),
-            a = require(67),
-            r = require(123),
-            s = (require(173), require(135));
+            richTooltipModule = require(67 /* GRichTooltipConfig */),
+            GProperties = require(123),
+            GSettingChangedEvent = (require(173), require(135));
         require(1162 /* GBorderPaintLayerProperties */);
-        function l() {
+        function GTransformProperties() {
             this._elements = [];
         }
-        (GObject.GObject.inherit(l, r),
-            (l.prototype._panel = null),
-            (l.prototype._copiesAndApply = null),
-            (l.prototype._copiesAndApplyTouch = null),
-            (l.prototype._document = null),
-            (l.prototype._elements = null),
-            (l.prototype.isGroup = function (e) {
+        (GObject.GObject.inherit(GTransformProperties, GProperties),
+            (GTransformProperties.prototype._panel = null),
+            (GTransformProperties.prototype._copiesAndApply = null),
+            (GTransformProperties.prototype._copiesAndApplyTouch = null),
+            (GTransformProperties.prototype._document = null),
+            (GTransformProperties.prototype._elements = null),
+            (GTransformProperties.prototype.isGroup = function (otherProperties) {
                 return false;
             }),
-            (l.prototype._scaleKeepRatio = false),
-            (l.prototype._preserveScaleX = 100),
-            (l.prototype._preserveScaleY = 100),
-            (l.prototype.init = function (e, t) {
-                (t.addClass("advanced-transform-toolbar"), (this._panel = e.addClass("advanced-transform-properties")));
-                var n = this;
+            (GTransformProperties.prototype._scaleKeepRatio = false),
+            (GTransformProperties.prototype._preserveScaleX = 100),
+            (GTransformProperties.prototype._preserveScaleY = 100),
+            (GTransformProperties.prototype.init = function (panel, toolbar) {
+                (toolbar.addClass("advanced-transform-toolbar"), (this._panel = panel.addClass("advanced-transform-properties")));
+                var self = this;
                 ((this._advancedTransformPanel = $("<div></div>").css("width", "180px").gOverlay({
                     releaseOnClose: false,
                     clazz: "g-overlay-advanced-transform",
@@ -45,7 +45,7 @@ module.exports = function (module, exports, require) {
                                                         "transformproperties_toggle_autoscale-borders",
                                                         $(this).prop("checked") ? "enabled" : "disabled"
                                                     ),
-                                                        n._setBorderScale($(this).prop("checked")));
+                                                        self._setBorderScale($(this).prop("checked")));
                                                 })
                                         )
                                         .append(
@@ -73,7 +73,7 @@ module.exports = function (module, exports, require) {
                                                         "transformproperties_toggle_autoscale-corners",
                                                         $(this).prop("checked") ? "enabled" : "disabled"
                                                     ),
-                                                        n._setCornersScale($(this).prop("checked")));
+                                                        self._setCornersScale($(this).prop("checked")));
                                                 })
                                         )
                                         .append(
@@ -87,56 +87,56 @@ module.exports = function (module, exports, require) {
                         .appendTo(this._advancedTransformPanel),
                     $("<label></label>")
                         .text(GObject.GLocale.get(new GObject.GLocaleKey("GTransformProperties", "title")))
-                        .appendTo(t),
+                        .appendTo(toolbar),
                     $("<button></button>")
                         .attr("data-action", "stroke-settings")
                         .attr("data-title", GObject.GLocale.get(new GObject.GLocaleKey("GTransformProperties", "text.advanced-transform-settings")))
                         .append($("<span></span>").addClass("gravit-icon-settings"))
                         .on(
                             "click",
-                            function (e) {
+                            function (event) {
                                 (gDesigner.stats("transformproperties_open_advanced"),
-                                    this._advancedTransformPanel.gOverlay("open", $(e.target).closest("button")));
+                                    this._advancedTransformPanel.gOverlay("open", $(event.target).closest("button")));
                             }.bind(this)
                         )
-                        .appendTo(t));
-                const o = a.GRichTooltipConfig.from({
+                        .appendTo(toolbar));
+                const moveTooltip = richTooltipModule.GRichTooltipConfig.from({
                         title: GObject.GLocale.get(new GObject.GLocaleKey("GTransformProperties", "text.move-tooltip-title")),
                         description: GObject.GLocale.get(new GObject.GLocaleKey("GTransformProperties", "text.move-tooltip-description")),
                         middle: false,
                         learnMore: "/docs/basics/transform-panel/#moving-objects",
                     }),
-                    r = a.GRichTooltipConfig.from({
+                    scaleTooltip = richTooltipModule.GRichTooltipConfig.from({
                         title: GObject.GLocale.get(new GObject.GLocaleKey("GTransformProperties", "text.scale-tooltip-title")),
                         description: GObject.GLocale.get(new GObject.GLocaleKey("GTransformProperties", "text.scale-tooltip-description")),
                         middle: false,
                         learnMore: "/docs/basics/transform-panel/#scaling-objects",
                     }),
-                    s = a.GRichTooltipConfig.from({
+                    rotateTooltip = richTooltipModule.GRichTooltipConfig.from({
                         title: GObject.GLocale.get(new GObject.GLocaleKey("GTransformProperties", "text.rotate-tooltip-title")),
                         description: GObject.GLocale.get(new GObject.GLocaleKey("GTransformProperties", "text.rotate-tooltip-description")),
                         middle: false,
                         learnMore: "/docs/basics/transform-panel/#rotating-objects",
                     }),
-                    l = a.GRichTooltipConfig.from({
+                    reflectTooltip = richTooltipModule.GRichTooltipConfig.from({
                         title: GObject.GLocale.get(new GObject.GLocaleKey("GTransformProperties", "text.rotate-axis-tooltip-title")),
                         description: GObject.GLocale.get(new GObject.GLocaleKey("GTransformProperties", "text.rotate-axis-tooltip-description")),
                         middle: false,
                         learnMore: "/docs/basics/transform-panel/#rotating-objects",
                     }),
-                    c = a.GRichTooltipConfig.from({
+                    skewTooltip = richTooltipModule.GRichTooltipConfig.from({
                         title: GObject.GLocale.get(new GObject.GLocaleKey("GTransformProperties", "text.skew-tooltip-title")),
                         description: GObject.GLocale.get(new GObject.GLocaleKey("GTransformProperties", "text.skew-tooltip-description")),
                         middle: false,
                         learnMore: "/docs/basics/transform-panel/#skewing-objects",
                     }),
-                    d = a.GRichTooltipConfig.from({
+                    copiesTooltip = richTooltipModule.GRichTooltipConfig.from({
                         title: GObject.GLocale.get(new GObject.GLocaleKey("GTransformProperties", "text.copies-tooltip-title")),
                         description: GObject.GLocale.get(new GObject.GLocaleKey("GTransformProperties", "text.copies-tooltip-description")),
                         middle: false,
                         learnMore: "/docs/basics/transform-panel/#transform-and-copy-objects",
                     }),
-                    u = a.GRichTooltipConfig.from({
+                    pivotTooltip = richTooltipModule.GRichTooltipConfig.from({
                         title: GObject.GLocale.get(new GObject.GLocaleKey("GTransformProperties", "text.transdorm-origin-tooltip-title")),
                         description: GObject.GLocale.get(new GObject.GLocaleKey("GTransformProperties", "text.transdorm-origin-tooltip-description")),
                         learnMore: "/docs/basics/transform-panel/#reference-point",
@@ -151,13 +151,13 @@ module.exports = function (module, exports, require) {
                                     .append(
                                         $("<input/>")
                                             .on("keydown", this._confirmEvent.bind(this))
-                                            .on("change", (e) => gDesigner.stats("transformproperties_change_move-x"))
+                                            .on("change", (event) => gDesigner.stats("transformproperties_change_move-x"))
                                             .attr({ type: "text", "data-property": "move-x" })
                                             .gInputBox()
                                             .gInputBox("value", "0")
                                     )
                                     .gInputLabel({ label: "x" })
-                                    .gRichTooltip(o),
+                                    .gRichTooltip(moveTooltip),
                             },
                             { width: "12%" },
                             {
@@ -166,13 +166,13 @@ module.exports = function (module, exports, require) {
                                     .append(
                                         $("<input/>")
                                             .on("keydown", this._confirmEvent.bind(this))
-                                            .on("change", (e) => gDesigner.stats("transformproperties_change_move-y"))
+                                            .on("change", (event) => gDesigner.stats("transformproperties_change_move-y"))
                                             .attr({ type: "text", "data-property": "move-y" })
                                             .gInputBox()
                                             .gInputBox("value", "0")
                                     )
                                     .gInputLabel({ label: "y" })
-                                    .gRichTooltip(o),
+                                    .gRichTooltip(moveTooltip),
                             },
                         ],
                     })
@@ -187,16 +187,16 @@ module.exports = function (module, exports, require) {
                                         .append(
                                             $("<input/>")
                                                 .attr({ type: "text", "data-property": "scale-x" })
-                                                .on("change", (e) => {
+                                                .on("change", (event) => {
                                                     gDesigner.stats("transformproperties_change_scale-x");
-                                                    var t = parseFloat($(e.target).gInputBox("value")) || 100;
+                                                    var scaleXValue = parseFloat($(event.target).gInputBox("value")) || 100;
                                                     if (this._scaleKeepRatio) {
-                                                        var n = t / this._preserveScaleX,
-                                                            o = this._panel.find('[data-property="scale-y"]'),
-                                                            i = parseFloat(o.gInputBox("value")) || 100;
-                                                        ((i *= n), o.gInputBox("value", parseFloat(i).toFixed(1)));
+                                                        var ratio = scaleXValue / this._preserveScaleX,
+                                                            scaleYField = this._panel.find('[data-property="scale-y"]'),
+                                                            scaleYValue = parseFloat(scaleYField.gInputBox("value")) || 100;
+                                                        ((scaleYValue *= ratio), scaleYField.gInputBox("value", parseFloat(scaleYValue).toFixed(1)));
                                                     }
-                                                    this._preserveScaleX = t;
+                                                    this._preserveScaleX = scaleXValue;
                                                 })
                                                 .gInputBox({ postfix: "%" })
                                                 .gInputBox("value", "100")
@@ -204,7 +204,7 @@ module.exports = function (module, exports, require) {
                                         .gInputLabel({
                                             label: GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "property-w"), "w"),
                                         })
-                                        .gRichTooltip(r),
+                                        .gRichTooltip(scaleTooltip),
                                 },
                                 {
                                     width: "12%",
@@ -212,13 +212,13 @@ module.exports = function (module, exports, require) {
                                         .addClass("gravit-icon-unlinked transform-scale-link")
                                         .css("text-align", "center")
                                         .css("cursor", "pointer")
-                                        .on("click", function (e) {
-                                            var t = $(this);
-                                            "yes" === t.attr("data-ratio")
-                                                ? (t.attr("data-ratio", "no").attr("class", "gravit-icon-unlinked transform-scale-link"),
-                                                  (n._scaleKeepRatio = false))
-                                                : (t.attr("data-ratio", "yes").attr("class", "gravit-icon-linked transform-scale-link"),
-                                                  (n._scaleKeepRatio = true));
+                                        .on("click", function (event) {
+                                            var linkIcon = $(this);
+                                            "yes" === linkIcon.attr("data-ratio")
+                                                ? (linkIcon.attr("data-ratio", "no").attr("class", "gravit-icon-unlinked transform-scale-link"),
+                                                  (self._scaleKeepRatio = false))
+                                                : (linkIcon.attr("data-ratio", "yes").attr("class", "gravit-icon-linked transform-scale-link"),
+                                                  (self._scaleKeepRatio = true));
                                         })
                                         .attr("data-title", GObject.GLocale.get(new GObject.GLocaleKey("GDimensionProperties", "action.keep-ratio")))
                                         .attr("data-ratio", "no"),
@@ -229,16 +229,16 @@ module.exports = function (module, exports, require) {
                                         .append(
                                             $("<input/>")
                                                 .attr({ type: "text", "data-property": "scale-y" })
-                                                .on("change", (e) => {
+                                                .on("change", (event) => {
                                                     gDesigner.stats("transformproperties_change_scale-y");
-                                                    var t = parseFloat($(e.target).gInputBox("value")) || 100;
+                                                    var scaleYValue = parseFloat($(event.target).gInputBox("value")) || 100;
                                                     if (this._scaleKeepRatio) {
-                                                        var n = t / this._preserveScaleY,
-                                                            o = this._panel.find('[data-property="scale-x"]'),
-                                                            i = parseFloat(o.gInputBox("value")) || 100;
-                                                        ((i *= n), o.gInputBox("value", parseFloat(i).toFixed(1)));
+                                                        var ratio = scaleYValue / this._preserveScaleY,
+                                                            scaleXField = this._panel.find('[data-property="scale-x"]'),
+                                                            scaleXValue = parseFloat(scaleXField.gInputBox("value")) || 100;
+                                                        ((scaleXValue *= ratio), scaleXField.gInputBox("value", parseFloat(scaleXValue).toFixed(1)));
                                                     }
-                                                    this._preserveScaleY = t;
+                                                    this._preserveScaleY = scaleYValue;
                                                 })
                                                 .gInputBox({ postfix: "%" })
                                                 .gInputBox("value", "100")
@@ -246,7 +246,7 @@ module.exports = function (module, exports, require) {
                                         .gInputLabel({
                                             label: GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "property-h"), "h"),
                                         })
-                                        .gRichTooltip(r),
+                                        .gRichTooltip(scaleTooltip),
                                 },
                             ],
                         })
@@ -261,12 +261,12 @@ module.exports = function (module, exports, require) {
                                         .append(
                                             $("<input/>")
                                                 .attr({ type: "text", "data-property": "rotate" })
-                                                .on("change", (e) => gDesigner.stats("transformproperties_change_rotate-up"))
+                                                .on("change", (event) => gDesigner.stats("transformproperties_change_rotate-up"))
                                                 .gInputBox({ postfix: "°" })
                                                 .gInputBox("value", "0")
                                         )
                                         .gInputLabel({ label: "&#x2191;" })
-                                        .gRichTooltip(s),
+                                        .gRichTooltip(rotateTooltip),
                                 },
                                 { width: "12%" },
                                 {
@@ -275,12 +275,12 @@ module.exports = function (module, exports, require) {
                                         .append(
                                             $("<input/>")
                                                 .attr({ type: "text", "data-property": "reflect" })
-                                                .on("change", (e) => gDesigner.stats("transformproperties_change_rotate-down"))
+                                                .on("change", (event) => gDesigner.stats("transformproperties_change_rotate-down"))
                                                 .gInputBox({ postfix: "°" })
                                                 .gInputBox("value", "0")
                                         )
                                         .gInputLabel({ label: "&#x2193;" })
-                                        .gRichTooltip(l),
+                                        .gRichTooltip(reflectTooltip),
                                 },
                             ],
                         })
@@ -295,12 +295,12 @@ module.exports = function (module, exports, require) {
                                         .append(
                                             $("<input/>")
                                                 .attr({ type: "text", "data-property": "skew-x" })
-                                                .on("change", (e) => gDesigner.stats("transformproperties_change_skew-x"))
+                                                .on("change", (event) => gDesigner.stats("transformproperties_change_skew-x"))
                                                 .gInputBox({ postfix: "°" })
                                                 .gInputBox("value", "0")
                                         )
                                         .gInputLabel({ label: "X" })
-                                        .gRichTooltip(c),
+                                        .gRichTooltip(skewTooltip),
                                 },
                                 { width: "12%" },
                                 {
@@ -309,12 +309,12 @@ module.exports = function (module, exports, require) {
                                         .append(
                                             $("<input/>")
                                                 .attr({ type: "text", "data-property": "skew-y" })
-                                                .on("change", (e) => gDesigner.stats("transformproperties_change_skew-y"))
+                                                .on("change", (event) => gDesigner.stats("transformproperties_change_skew-y"))
                                                 .gInputBox({ postfix: "°" })
                                                 .gInputBox("value", "0")
                                         )
                                         .gInputLabel({ label: "Y" })
-                                        .gRichTooltip(c),
+                                        .gRichTooltip(skewTooltip),
                                 },
                             ],
                         })
@@ -322,7 +322,7 @@ module.exports = function (module, exports, require) {
                     $("<hr/>").appendTo(this._panel),
                     (this._copiesAndApply = $("<div/>").addClass("copies-apply").appendTo(this._panel)),
                     (this._copiesAndApplyTouch = $("<div/>").addClass("copies-apply-touch").appendTo(this._panel)));
-                (((e) => {
+                (((container) => {
                     ($("<div></div>")
                         .gPropertyRow({
                             label: GObject.GLocale.get(new GObject.GLocaleKey("GTransformProperties", "text.copies")),
@@ -330,11 +330,11 @@ module.exports = function (module, exports, require) {
                                 {
                                     width: "44%",
                                     content: $("<input/>")
-                                        .on("change", (e) => gDesigner.stats("transformproperties_change_copies"))
+                                        .on("change", (event) => gDesigner.stats("transformproperties_change_copies"))
                                         .attr({ type: "text", "data-property": "copies" })
                                         .gInputBox()
                                         .gInputBox("value", "0")
-                                        .gRichTooltip(d),
+                                        .gRichTooltip(copiesTooltip),
                                 },
                                 { width: "12%" },
                                 {
@@ -350,11 +350,11 @@ module.exports = function (module, exports, require) {
                                                 .gPivot()
                                                 .gPivot("value", GObject.GRect.Side.CENTER)
                                         )
-                                        .gRichTooltip(u),
+                                        .gRichTooltip(pivotTooltip),
                                 },
                             ],
                         })
-                        .appendTo(e),
+                        .appendTo(container),
                         $("<div></div>")
                             .gPropertyRow({
                                 label: "",
@@ -369,10 +369,10 @@ module.exports = function (module, exports, require) {
                                     },
                                 ],
                             })
-                            .appendTo(e));
+                            .appendTo(container));
                 })(this._copiesAndApply),
-                    ((e) => {
-                        var t = $("<div/>").addClass("left");
+                    ((container) => {
+                        var leftColumn = $("<div/>").addClass("left");
                         ($("<div></div>")
                             .gPropertyRow({
                                 label: GObject.GLocale.get(new GObject.GLocaleKey("GTransformProperties", "text.copies")),
@@ -380,15 +380,15 @@ module.exports = function (module, exports, require) {
                                     {
                                         width: "100px",
                                         content: $("<input/>")
-                                            .on("change", (e) => gDesigner.stats("transformproperties_change_copies"))
+                                            .on("change", (event) => gDesigner.stats("transformproperties_change_copies"))
                                             .attr({ type: "text", "data-property": "copies" })
                                             .gInputBox()
                                             .gInputBox("value", "0")
-                                            .gRichTooltip(d),
+                                            .gRichTooltip(copiesTooltip),
                                     },
                                 ],
                             })
-                            .appendTo(t),
+                            .appendTo(leftColumn),
                             $("<div></div>")
                                 .addClass("transform-apply")
                                 .gPropertyRow({
@@ -402,35 +402,35 @@ module.exports = function (module, exports, require) {
                                         },
                                     ],
                                 })
-                                .appendTo(t),
-                            t.appendTo(e),
+                                .appendTo(leftColumn),
+                            leftColumn.appendTo(container),
                             $("<div></div>")
                                 .addClass("right")
                                 .append($("<div/>").attr("data-property", "pivot").gPivot().gPivot("value", GObject.GRect.Side.CENTER))
-                                .appendTo(e));
+                                .appendTo(container));
                     })(this._copiesAndApplyTouch));
             }),
-            (l.prototype.isAvailable = function (e) {
-                return true === e;
+            (GTransformProperties.prototype.isAvailable = function (transformMode) {
+                return true === transformMode;
             }),
-            (l.prototype._enableTouchModal = function (e) {
-                e
+            (GTransformProperties.prototype._enableTouchModal = function (touchEnabled) {
+                touchEnabled
                     ? (this._copiesAndApplyTouch.css("display", "block"), this._copiesAndApply.css("display", "none"))
                     : (this._copiesAndApplyTouch.css("display", "none"), this._copiesAndApply.css("display", "block"));
             }),
-            (l.prototype.update = function (e, t) {
+            (GTransformProperties.prototype.update = function (document, elements) {
                 if (
-                    (this._document && (gDesigner.removeEventListener(s, this._settingChanged), (this._document = null)),
+                    (this._document && (gDesigner.removeEventListener(GSettingChangedEvent, this._settingChanged), (this._document = null)),
                     this._enableTouchModal(gDesigner.isTouchEnabled()),
                     (this._elements = []),
-                    e)
+                    document)
                 ) {
-                    for (var n = 0; n < t.length; ++n)
-                        !t[n].hasMixin(GObject.GElement.Transform) || t[n] instanceof GObject.GPage || this._elements.push(t[n]);
-                    if (this._elements.length && this._elements.length === t.length)
+                    for (var n = 0; n < elements.length; ++n)
+                        !elements[n].hasMixin(GObject.GElement.Transform) || elements[n] instanceof GObject.GPage || this._elements.push(elements[n]);
+                    if (this._elements.length && this._elements.length === elements.length)
                         return (
-                            (this._document = e),
-                            gDesigner.addEventListener(s, this._settingChanged, this),
+                            (this._document = document),
+                            gDesigner.addEventListener(GSettingChangedEvent, this._settingChanged, this),
                             this._setBorderScale(this._getOwnBorderScale()),
                             this._setCornersScale(this._getOwnCornersScale()),
                             true
@@ -438,140 +438,140 @@ module.exports = function (module, exports, require) {
                 }
                 return false;
             }),
-            (l.prototype._confirmEvent = function (e) {
-                13 === e.keyCode && this._updateDisplayValues();
+            (GTransformProperties.prototype._confirmEvent = function (event) {
+                13 === event.keyCode && this._updateDisplayValues();
             }),
-            (l.prototype._settingChanged = function (e) {
-                "decimals_num" === e.key && this._updateDisplayValues();
+            (GTransformProperties.prototype._settingChanged = function (event) {
+                "decimals_num" === event.key && this._updateDisplayValues();
             }),
-            (l.prototype._updateDisplayValues = function () {
+            (GTransformProperties.prototype._updateDisplayValues = function () {
                 this._document.getScene();
-                var e = this._panel.find('[data-property="move-x"]'),
-                    t = parseFloat(e.gInputBox("value"));
-                ((t = isNaN(t) || t <= 0 || !t ? 0 : t),
-                    e.gInputBox("value", GObject.GUtil.formatNumber(t, this._document.getScene().getOptimalDecimalsCount())),
-                    (e = this._panel.find('[data-property="move-y"]')),
-                    (t = parseFloat(e.gInputBox("value"))),
-                    (t = isNaN(t) || t <= 0 || !t ? 0 : t),
-                    e.gInputBox("value", GObject.GUtil.formatNumber(t, this._document.getScene().getOptimalDecimalsCount())));
+                var field = this._panel.find('[data-property="move-x"]'),
+                    fieldValue = parseFloat(field.gInputBox("value"));
+                ((fieldValue = isNaN(fieldValue) || fieldValue <= 0 || !fieldValue ? 0 : fieldValue),
+                    field.gInputBox("value", GObject.GUtil.formatNumber(fieldValue, this._document.getScene().getOptimalDecimalsCount())),
+                    (field = this._panel.find('[data-property="move-y"]')),
+                    (fieldValue = parseFloat(field.gInputBox("value"))),
+                    (fieldValue = isNaN(fieldValue) || fieldValue <= 0 || !fieldValue ? 0 : fieldValue),
+                    field.gInputBox("value", GObject.GUtil.formatNumber(fieldValue, this._document.getScene().getOptimalDecimalsCount())));
             }),
-            (l.prototype._applyTransformation = function () {
+            (GTransformProperties.prototype._applyTransformation = function () {
                 gDesigner.stats("transformproperties_apply_transformation");
-                var e = this._document.getScene(),
-                    t = gDesigner.isTouchEnabled() ? this._copiesAndApplyTouch : this._copiesAndApply,
-                    n = parseInt(t.find('[data-property="copies"]').gInputBox("value")),
-                    a = t.find('[data-property="pivot"]').gPivot("value"),
-                    r = e.stringToPoint(this._panel.find('[data-property="move-x"]').gInputBox("value")) || 0,
-                    s = e.stringToPoint(this._panel.find('[data-property="move-y"]').gInputBox("value")) || 0,
-                    l = parseFloat(this._panel.find('[data-property="scale-x"]').gInputBox("value")) / 100 || 1,
-                    c = parseFloat(this._panel.find('[data-property="scale-y"]').gInputBox("value")) / 100 || 1,
-                    d = GObject.GMath.toRadians(parseFloat(this._panel.find('[data-property="rotate"]').gInputBox("value"))) || 0,
-                    u = GObject.GMath.toRadians(parseFloat(this._panel.find('[data-property="skew-x"]').gInputBox("value"))) || 0,
-                    p = GObject.GMath.toRadians(parseFloat(this._panel.find('[data-property="skew-y"]').gInputBox("value"))) || 0,
-                    g = parseFloat(parseFloat(this._panel.find('[data-property="reflect"]').gInputBox("value"))) || 0;
-                g = 0 !== g ? GObject.GMath.toRadians(-g) : g;
-                var h = function (e, t) {
-                    var n = o.GElementEditor.openEditor(e);
-                    n ? (n._setTransform(t), n.applyTransform(e, true, null, null)) : e.transform(e, true);
+                var scene = this._document.getScene(),
+                    copiesPanel = gDesigner.isTouchEnabled() ? this._copiesAndApplyTouch : this._copiesAndApply,
+                    copiesCount = parseInt(copiesPanel.find('[data-property="copies"]').gInputBox("value")),
+                    pivotSide = copiesPanel.find('[data-property="pivot"]').gPivot("value"),
+                    moveX = scene.stringToPoint(this._panel.find('[data-property="move-x"]').gInputBox("value")) || 0,
+                    moveY = scene.stringToPoint(this._panel.find('[data-property="move-y"]').gInputBox("value")) || 0,
+                    scaleX = parseFloat(this._panel.find('[data-property="scale-x"]').gInputBox("value")) / 100 || 1,
+                    scaleY = parseFloat(this._panel.find('[data-property="scale-y"]').gInputBox("value")) / 100 || 1,
+                    rotateAngle = GObject.GMath.toRadians(parseFloat(this._panel.find('[data-property="rotate"]').gInputBox("value"))) || 0,
+                    skewX = GObject.GMath.toRadians(parseFloat(this._panel.find('[data-property="skew-x"]').gInputBox("value"))) || 0,
+                    skewY = GObject.GMath.toRadians(parseFloat(this._panel.find('[data-property="skew-y"]').gInputBox("value"))) || 0,
+                    reflectAngle = parseFloat(parseFloat(this._panel.find('[data-property="reflect"]').gInputBox("value"))) || 0;
+                reflectAngle = 0 !== reflectAngle ? GObject.GMath.toRadians(-reflectAngle) : reflectAngle;
+                var applyTransformToElement = function (element, transform) {
+                    var editor = GEditor.GElementEditor.openEditor(element);
+                    editor ? (editor._setTransform(transform), editor.applyTransform(element, true, null, null)) : element.transform(element, true);
                 };
-                function f(e, t, n) {
-                    t.beginUpdate();
+                function applyCopyTransform(copyIndex, element, pivot) {
+                    element.beginUpdate();
                     try {
                         if (
-                            ((r || s) && h(t, new GObject.GTransform(1, 0, 0, 1, r * e, s * e)),
-                            (1 === l && 1 === c) ||
-                                h(
-                                    t,
+                            ((moveX || moveY) && applyTransformToElement(element, new GObject.GTransform(1, 0, 0, 1, moveX * copyIndex, moveY * copyIndex)),
+                            (1 === scaleX && 1 === scaleY) ||
+                                applyTransformToElement(
+                                    element,
                                     new GObject.GTransform()
-                                        .translated(-n.getX(), -n.getY())
-                                        .scaled(l + (l - 1) * (e - 1), c + (c - 1) * (e - 1))
-                                        .translated(n.getX(), n.getY())
+                                        .translated(-pivot.getX(), -pivot.getY())
+                                        .scaled(scaleX + (scaleX - 1) * (copyIndex - 1), scaleY + (scaleY - 1) * (copyIndex - 1))
+                                        .translated(pivot.getX(), pivot.getY())
                                 ),
-                            0 !== d &&
-                                h(
-                                    t,
+                            0 !== rotateAngle &&
+                                applyTransformToElement(
+                                    element,
                                     new GObject.GTransform()
-                                        .translated(-n.getX(), -n.getY())
-                                        .rotated(d * e)
-                                        .translated(n.getX(), n.getY())
+                                        .translated(-pivot.getX(), -pivot.getY())
+                                        .rotated(rotateAngle * copyIndex)
+                                        .translated(pivot.getX(), pivot.getY())
                                 ),
-                            (0 !== u || 0 !== p) &&
-                                u > -GObject.GMath.PIHALF &&
-                                p > -GObject.GMath.PIHALF &&
-                                u < GObject.GMath.PIHALF &&
-                                p < GObject.GMath.PIHALF &&
-                                h(
-                                    t,
+                            (0 !== skewX || 0 !== skewY) &&
+                                skewX > -GObject.GMath.PIHALF &&
+                                skewY > -GObject.GMath.PIHALF &&
+                                skewX < GObject.GMath.PIHALF &&
+                                skewY < GObject.GMath.PIHALF &&
+                                applyTransformToElement(
+                                    element,
                                     new GObject.GTransform()
-                                        .translated(-n.getX(), -n.getY())
-                                        .skewed(u * e, p * e)
-                                        .translated(n.getX(), n.getY())
+                                        .translated(-pivot.getX(), -pivot.getY())
+                                        .skewed(skewX * copyIndex, skewY * copyIndex)
+                                        .translated(pivot.getX(), pivot.getY())
                                 ),
-                            0 !== g)
+                            0 !== reflectAngle)
                         ) {
-                            var o = Math.cos(g),
-                                a = Math.sin(g);
-                            e % 2 &&
-                                h(
-                                    t,
+                            var cosReflect = Math.cos(reflectAngle),
+                                sinReflect = Math.sin(reflectAngle);
+                            copyIndex % 2 &&
+                                applyTransformToElement(
+                                    element,
                                     new GObject.GTransform()
-                                        .translated(-n.getX(), -n.getY())
-                                        .multiplied(new GObject.GTransform(o, -a, a, o, 0, 0))
+                                        .translated(-pivot.getX(), -pivot.getY())
+                                        .multiplied(new GObject.GTransform(cosReflect, -sinReflect, sinReflect, cosReflect, 0, 0))
                                         .multiplied(new GObject.GTransform(1, 0, 0, -1, 0, 0))
-                                        .multiplied(new GObject.GTransform(o, a, -a, o, 0, 0))
-                                        .translated(n.getX(), n.getY())
+                                        .multiplied(new GObject.GTransform(cosReflect, sinReflect, -sinReflect, cosReflect, 0, 0))
+                                        .translated(pivot.getX(), pivot.getY())
                                 );
                         }
                     } finally {
-                        t.endUpdate();
+                        element.endUpdate();
                     }
                 }
-                o.GEditor.tryRunTransaction(
-                    e,
+                GEditor.GEditor.tryRunTransaction(
+                    scene,
                     function () {
-                        for (var e = [], t = null, o = null, r = 0; r < this._elements.length; ++r) {
+                        for (var elementGroups = [], combinedBBox = null, elementBBox = null, r = 0; r < this._elements.length; ++r) {
                             var s = this._elements[r];
-                            a && (o = s.getGeometryBBox()) && (t = t ? t.united(o) : o);
+                            pivotSide && (elementBBox = s.getGeometryBBox()) && (combinedBBox = combinedBBox ? combinedBBox.united(elementBBox) : elementBBox);
                             var l = [s];
-                            if (n > 0)
-                                for (var c = s.getParent(), d = s.getNext() ? s.getNext() : null, u = 0; u < n; ++u) {
+                            if (copiesCount > 0)
+                                for (var c = s.getParent(), d = s.getNext() ? s.getNext() : null, u = 0; u < copiesCount; ++u) {
                                     var p = s.clone();
                                     (c.insertChild(p, d),
-                                        u == n - 1 && (p.setFlag(GObject.GNode.Flag.Selected), s.removeFlag(GObject.GNode.Flag.Selected)),
+                                        u == copiesCount - 1 && (p.setFlag(GObject.GNode.Flag.Selected), s.removeFlag(GObject.GNode.Flag.Selected)),
                                         l.push(p));
                                 }
-                            e.push(l);
+                            elementGroups.push(l);
                         }
-                        var g = null;
-                        if ((t && !t.isEmpty() && (g = t.getSide(a)), g))
-                            for (r = 0; r < e.length; ++r) {
-                                if ((l = e[r]).length > 1) for (var h = 0; h < l.length; ++h) f(h, l[h], g);
-                                else 1 == l.length && f(1, l[0], g);
+                        var pivotPoint = null;
+                        if ((combinedBBox && !combinedBBox.isEmpty() && (pivotPoint = combinedBBox.getSide(pivotSide)), pivotPoint))
+                            for (r = 0; r < elementGroups.length; ++r) {
+                                if ((l = elementGroups[r]).length > 1) for (var h = 0; h < l.length; ++h) applyCopyTransform(h, l[h], pivotPoint);
+                                else 1 == l.length && applyCopyTransform(1, l[0], pivotPoint);
                             }
                     }.bind(this),
                     GObject.GLocale.get(new GObject.GLocaleKey("GTransformProperties", "action.apply-transformation"))
                 );
             }),
-            (l.prototype._getOwnBorderScale = function () {
+            (GTransformProperties.prototype._getOwnBorderScale = function () {
                 return this._advancedTransformPanel.find('[data-property="_bs"]').prop("checked");
             }),
-            (l.prototype._setBorderScale = function (e) {
+            (GTransformProperties.prototype._setBorderScale = function (enabled) {
                 this._document &&
                     this._document
                         .getScene()
-                        .setBorderScale(e && (void 0 === o.GEditorOptions.scaleBorderWidth || o.GEditorOptions.scaleBorderWidth));
+                        .setBorderScale(enabled && (void 0 === GEditor.GEditorOptions.scaleBorderWidth || GEditor.GEditorOptions.scaleBorderWidth));
             }),
-            (l.prototype._getOwnCornersScale = function () {
+            (GTransformProperties.prototype._getOwnCornersScale = function () {
                 return this._advancedTransformPanel.find('[data-property="esc"]').prop("checked");
             }),
-            (l.prototype._setCornersScale = function (e) {
+            (GTransformProperties.prototype._setCornersScale = function (enabled) {
                 this._document &&
                     this._document
                         .getScene()
-                        .setCornersScale(e && (void 0 === o.GEditorOptions.scaleCorners || o.GEditorOptions.scaleCorners));
+                        .setCornersScale(enabled && (void 0 === GEditor.GEditorOptions.scaleCorners || GEditor.GEditorOptions.scaleCorners));
             }),
-            (l.prototype.toString = function () {
+            (GTransformProperties.prototype.toString = function () {
                 return "[Object GTransformProperties]";
             }),
-            (module.exports = l));
+            (module.exports = GTransformProperties));
     };

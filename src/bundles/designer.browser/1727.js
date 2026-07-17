@@ -1,20 +1,20 @@
 module.exports = function (module, exports, require) {
         "use strict";
         (require(57), require(4), require(13));
-        var o = [];
-        function i() {
-            if (o.length > 0) {
-                var e = $(o[o.length - 1]);
-                $(e).data("gdialog").closable && e.gDialog("close", true);
+        var openDialogs = [];
+        function closeTopDialog() {
+            if (openDialogs.length > 0) {
+                var topDialog = $(openDialogs[openDialogs.length - 1]);
+                $(topDialog).data("gdialog").closable && topDialog.gDialog("close", true);
             }
         }
-        document.addEventListener("keydown", function (e) {
-            27 === e.keyCode && i();
+        document.addEventListener("keydown", function (event) {
+            27 === event.keyCode && closeTopDialog();
         });
-        var a = {
-            init: function (e) {
+        var methods = {
+            init: function (options) {
                 return (
-                    (e = $.extend(
+                    (options = $.extend(
                         {
                             releaseOnClose: true,
                             className: "",
@@ -25,80 +25,80 @@ module.exports = function (module, exports, require) {
                             closeTimeout: null,
                             alwaysCloseable: false,
                         },
-                        e
+                        options
                     )),
                     this.each(function () {
-                        var t = $(this).data("gdialog", { options: e, closable: false });
+                        var element = $(this).data("gdialog", { options: options, closable: false });
                         if (
-                            (e.nowrap ||
-                                t.addClass("g-dialog-content").wrap(
+                            (options.nowrap ||
+                                element.addClass("g-dialog-content").wrap(
                                     $("<div></div>")
                                         .addClass("g-dialog")
-                                        .addClass(e.className || "")
+                                        .addClass(options.className || "")
                                 ),
-                            e.buttons && e.buttons.length)
+                            options.buttons && options.buttons.length)
                         )
                             for (
-                                var n = $("<div></div>").addClass("g-dialog-footer").appendTo(t.closest(".g-dialog")),
-                                    o = $("<div/>").addClass("buttons").appendTo(n),
+                                var footer = $("<div></div>").addClass("g-dialog-footer").appendTo(element.closest(".g-dialog")),
+                                    buttonsContainer = $("<div/>").addClass("buttons").appendTo(footer),
                                     i = 0;
-                                i < e.buttons.length;
+                                i < options.buttons.length;
                                 ++i
                             )
-                                $(e.buttons[i]).appendTo(o);
+                                $(options.buttons[i]).appendTo(buttonsContainer);
                     })
                 );
             },
-            open: function (e) {
-                var t = $(this),
-                    n = t.data("gdialog"),
-                    a = n.options || {};
-                n && (n.closable = e || false);
-                var r = t.closest(".g-dialog"),
-                    s = $("<div></div>")
+            open: function (closable) {
+                var element = $(this),
+                    data = element.data("gdialog"),
+                    options = data.options || {};
+                data && (data.closable = closable || false);
+                var dialogElement = element.closest(".g-dialog"),
+                    overlay = $("<div></div>")
                         .addClass("g-dialog-container")
-                        .on("mousedown", (e) =>
-                            $(e.target).hasClass("g-dialog-container") && 0 === $(e.target).find(".g-overlay").length ? i() : void 0
+                        .on("mousedown", (event) =>
+                            $(event.target).hasClass("g-dialog-container") && 0 === $(event.target).find(".g-overlay").length ? closeTopDialog() : void 0
                         )
-                        .append(r)
+                        .append(dialogElement)
                         .appendTo($("body"));
-                if (n) {
-                    const { options: { className } = {} } = n;
-                    className && s.addClass("".concat(className, "-container"));
+                if (data) {
+                    const { options: { className } = {} } = data;
+                    className && overlay.addClass("".concat(className, "-container"));
                 }
-                return (o.push(this[0]), t.trigger("open"), s.addClass("visible"), a && a.openCallback && a.openCallback.call(this), this);
+                return (openDialogs.push(this[0]), element.trigger("open"), overlay.addClass("visible"), options && options.openCallback && options.openCallback.call(this), this);
             },
             isOpen: function () {
-                return o.length && o[o.length - 1] === this[0];
+                return openDialogs.length && openDialogs[openDialogs.length - 1] === this[0];
             },
-            close: function (e, t) {
-                var n = $(this),
-                    i = n.data("gdialog").options || {};
-                if ((i.alwaysCloseable && o.indexOf(this[0]) >= 0) || (o.length && o[o.length - 1] === this[0])) {
-                    var a = n.closest(".g-dialog-container");
+            close: function (cancelled, timeoutOverride) {
+                var element = $(this),
+                    options = element.data("gdialog").options || {};
+                if ((options.alwaysCloseable && openDialogs.indexOf(this[0]) >= 0) || (openDialogs.length && openDialogs[openDialogs.length - 1] === this[0])) {
+                    var overlay = element.closest(".g-dialog-container");
                     if (
-                        (a.removeClass("visible"),
+                        (overlay.removeClass("visible"),
                         setTimeout(
                             () => {
-                                (i.releaseOnClose ? n.closest(".g-dialog").remove() : n.parents(".g-dialog").detach(), a.remove());
+                                (options.releaseOnClose ? element.closest(".g-dialog").remove() : element.parents(".g-dialog").detach(), overlay.remove());
                             },
-                            parseInt(isNaN(t) ? (isNaN(i.closeTimeout) ? 250 : i.closeTimeout) : t)
+                            parseInt(isNaN(timeoutOverride) ? (isNaN(options.closeTimeout) ? 250 : options.closeTimeout) : timeoutOverride)
                         ),
-                        i.alwaysCloseable)
+                        options.alwaysCloseable)
                     ) {
-                        var r = o.indexOf(this[0]);
-                        o.splice(r, 1);
-                    } else o.pop();
-                    i && i.closeCallback && i.closeCallback(e);
+                        var dialogIndex = openDialogs.indexOf(this[0]);
+                        openDialogs.splice(dialogIndex, 1);
+                    } else openDialogs.pop();
+                    options && options.closeCallback && options.closeCallback(cancelled);
                 }
                 return this;
             },
         };
-        $.fn.gDialog = function (e) {
-            return a[e]
-                ? a[e].apply(this, Array.prototype.slice.call(arguments, 1))
-                : "object" != typeof e && e
-                  ? void $.error("Method " + e + " does not exist on jQuery.myPlugin")
-                  : a.init.apply(this, arguments);
+        $.fn.gDialog = function (method) {
+            return methods[method]
+                ? methods[method].apply(this, Array.prototype.slice.call(arguments, 1))
+                : "object" != typeof method && method
+                  ? void $.error("Method " + method + " does not exist on jQuery.myPlugin")
+                  : methods.init.apply(this, arguments);
         };
     };

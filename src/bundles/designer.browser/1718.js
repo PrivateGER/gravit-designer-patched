@@ -2,70 +2,70 @@ module.exports = function (module, exports, require) {
         "use strict";
         (require(4), require(13), require(32), require(33));
         var GObject = require(1),
-            i = require(67),
+            richTooltipModule = require(67 /* GRichTooltipConfig */),
             GCreateSymbolAction = require(608);
-        function r(e) {
-            var t = $(this).data("gsymbolspanel"),
-                n = e.getMultireferenceId();
-            if (t.symbolNodes[n])
-                e.isMaster() &&
-                    !e.hasEventListeners(GObject.GSymbol.AfterThumbnailUpdate) &&
-                    e.addEventListener(GObject.GSymbol.AfterThumbnailUpdate, l.bind(this));
+        function registerSymbolNode(symbolNode) {
+            var panelData = $(this).data("gsymbolspanel"),
+                multireferenceId = symbolNode.getMultireferenceId();
+            if (panelData.symbolNodes[multireferenceId])
+                symbolNode.isMaster() &&
+                    !symbolNode.hasEventListeners(GObject.GSymbol.AfterThumbnailUpdate) &&
+                    symbolNode.addEventListener(GObject.GSymbol.AfterThumbnailUpdate, updateSymbolThumbnail.bind(this));
             else {
-                var i = c.call(this, e);
-                i && (i.appendTo($(this)), (t.symbolNodes[n] = e));
+                var symbolElement = createSymbolElement.call(this, symbolNode);
+                symbolElement && (symbolElement.appendTo($(this)), (panelData.symbolNodes[multireferenceId] = symbolNode));
             }
         }
-        function s(e, t) {
-            if (e.isMaster()) {
-                var n = $(this).data("gsymbolspanel"),
-                    i = e.getMultireferenceId(),
-                    a = $(this).find("#symbol_" + i);
-                if (a.length) {
-                    if (n.scene) {
-                        var r = d.call(this, e);
-                        if (r && (r.removeEventListener(GObject.GSymbol.AfterThumbnailUpdate, l), !t)) {
-                            var s = n.blockHandlers;
-                            ((n.blockHandlers = true), n.scene.removeSymbol(r), (n.blockHandlers = s));
+        function removeSymbolNode(symbolNode, skipSceneRemoval) {
+            if (symbolNode.isMaster()) {
+                var panelData = $(this).data("gsymbolspanel"),
+                    multireferenceId = symbolNode.getMultireferenceId(),
+                    symbolElement = $(this).find("#symbol_" + multireferenceId);
+                if (symbolElement.length) {
+                    if (panelData.scene) {
+                        var sceneSymbol = resolveSceneSymbol.call(this, symbolNode);
+                        if (sceneSymbol && (sceneSymbol.removeEventListener(GObject.GSymbol.AfterThumbnailUpdate, updateSymbolThumbnail), !skipSceneRemoval)) {
+                            var previousBlockHandlers = panelData.blockHandlers;
+                            ((panelData.blockHandlers = true), panelData.scene.removeSymbol(sceneSymbol), (panelData.blockHandlers = previousBlockHandlers));
                         }
                     }
-                    (delete n.symbolNodes[i], a.remove(), 0 === Object.keys(n.symbolNodes).length && y.call(this));
+                    (delete panelData.symbolNodes[multireferenceId], symbolElement.remove(), 0 === Object.keys(panelData.symbolNodes).length && renderEmptyState.call(this));
                 }
             }
         }
-        function l(e) {
-            var t = e.symbol,
-                n = t.getFrame();
-            if (n && t.getPaintBBox()) {
+        function updateSymbolThumbnail(event) {
+            var symbol = event.symbol,
+                frame = symbol.getFrame();
+            if (frame && symbol.getPaintBBox()) {
                 $(this).data("gsymbolspanel");
-                var i = t.getMultireferenceId(),
-                    a = $(this).find("#symbol_" + i),
-                    r = a.find(".symbol-image");
-                r.empty();
-                var s = n.getWidth(),
-                    l = n.getHeight() / s,
-                    c = 85,
-                    d = c * l;
-                (d > 85 && (c = (d = 85) / l), h(r, c, d));
-                var u = e.image.getBitmap().getHTMLElement(true);
-                if (($(u).css({ width: c, height: d, margin: "5px" }), t.hasFlag(GObject.GNode.Flag.Selected)))
-                    a.find(".symbol-title-group").addClass("g-highlighted");
-                $(u).appendTo(r);
+                var multireferenceId = symbol.getMultireferenceId(),
+                    symbolElement = $(this).find("#symbol_" + multireferenceId),
+                    imageContainer = symbolElement.find(".symbol-image");
+                imageContainer.empty();
+                var frameWidth = frame.getWidth(),
+                    aspectRatio = frame.getHeight() / frameWidth,
+                    thumbWidth = 85,
+                    thumbHeight = thumbWidth * aspectRatio;
+                (thumbHeight > 85 && (thumbWidth = (thumbHeight = 85) / aspectRatio), centerThumbnail(imageContainer, thumbWidth, thumbHeight));
+                var bitmapElement = event.image.getBitmap().getHTMLElement(true);
+                if (($(bitmapElement).css({ width: thumbWidth, height: thumbHeight, margin: "5px" }), symbol.hasFlag(GObject.GNode.Flag.Selected)))
+                    symbolElement.find(".symbol-title-group").addClass("g-highlighted");
+                $(bitmapElement).appendTo(imageContainer);
             }
         }
-        function c(e) {
-            var t = $(this).data("gsymbolspanel");
-            if (e.isMaster()) {
-                if (!(e instanceof GObject.GSymbol)) throw new Error("item not symbol");
-                var n = $(this).find(".symbol-panel-info").parent();
-                n.length && n.remove();
-                var a = $("<div />")
+        function createSymbolElement(symbolNode) {
+            var panelData = $(this).data("gsymbolspanel");
+            if (symbolNode.isMaster()) {
+                if (!(symbolNode instanceof GObject.GSymbol)) throw new Error("item not symbol");
+                var existingInfoParent = $(this).find(".symbol-panel-info").parent();
+                existingInfoParent.length && existingInfoParent.remove();
+                var entryElement = $("<div />")
                         .attr("draggable", false)
-                        .attr("id", "symbol_" + e.getMultireferenceId())
+                        .attr("id", "symbol_" + symbolNode.getMultireferenceId())
                         .css({ display: "inline" })
                         .gRichTooltip(
-                            i.GRichTooltipConfig.from({
-                                title: e.getProperty("name"),
+                            richTooltipModule.GRichTooltipConfig.from({
+                                title: symbolNode.getProperty("name"),
                                 description: GObject.GLocale.get(
                                     new GObject.GLocaleKey("GCommonNames", "text.symbol-panel-symbol-tooltip-description")
                                 ),
@@ -73,15 +73,15 @@ module.exports = function (module, exports, require) {
                                 learnMore: "/docs/organizing-your-designs/symbols/#symbols-panel",
                             })
                         ),
-                    r = $("<span></span>").addClass("symbol-title-group");
-                r.appendTo(a);
-                var s = e.getProperty("name");
-                s = s || e.getNodeNameTranslated();
-                var c = $("<span></span>");
-                (e.addEventListener(GObject.GSymbol.AfterThumbnailUpdate, l.bind(this)), c.addClass("symbol-image").appendTo(r));
-                var u = this;
+                    titleGroup = $("<span></span>").addClass("symbol-title-group");
+                titleGroup.appendTo(entryElement);
+                var symbolName = symbolNode.getProperty("name");
+                symbolName = symbolName || symbolNode.getNodeNameTranslated();
+                var imageSpan = $("<span></span>");
+                (symbolNode.addEventListener(GObject.GSymbol.AfterThumbnailUpdate, updateSymbolThumbnail.bind(this)), imageSpan.addClass("symbol-image").appendTo(titleGroup));
+                var panelElement = this;
                 return (
-                    r
+                    titleGroup
                         .attr("draggable", true)
                         .css({
                             display: "inline-block",
@@ -92,11 +92,11 @@ module.exports = function (module, exports, require) {
                             textAlign: "center",
                             lineHeight: "180px",
                         })
-                        .on("dragstart", function (n) {
+                        .on("dragstart", function (dragEvent) {
                             ($(this).addClass("g-dragging"),
-                                (n.originalEvent.dataTransfer.effectAllowed = "move"),
-                                n.originalEvent.dataTransfer.setData(GObject.GNode.MIME_TYPE, GObject.GNode.serialize(e)),
-                                (t.dragNode = e),
+                                (dragEvent.originalEvent.dataTransfer.effectAllowed = "move"),
+                                dragEvent.originalEvent.dataTransfer.setData(GObject.GNode.MIME_TYPE, GObject.GNode.serialize(symbolNode)),
+                                (panelData.dragNode = symbolNode),
                                 setTimeout(
                                     function () {
                                         $(this).removeClass("g-dragging");
@@ -104,69 +104,69 @@ module.exports = function (module, exports, require) {
                                     0
                                 ));
                         })
-                        .on("drop", function (e) {
+                        .on("drop", function (event) {
                             $(this).parent().parent().data("gsymbolspanel").dragNode = null;
                         })
-                        .on("click", function (n) {
+                        .on("click", function (event) {
                             gDesigner.stats("symbol_click_select");
-                            var o = d.call(u, e);
-                            o && (o.getScene() ? t.options.clickCallback(o) : r.toggleClass("g-highlighted"));
+                            var sceneSymbol = resolveSceneSymbol.call(panelElement, symbolNode);
+                            sceneSymbol && (sceneSymbol.getScene() ? panelData.options.clickCallback(sceneSymbol) : titleGroup.toggleClass("g-highlighted"));
                         })
-                        .on("dblclick", function (n) {
+                        .on("dblclick", function (event) {
                             gDesigner.stats("symbol_click_focus");
-                            var o = d.call(u, e);
-                            o && t.options.dblClickCallback(o);
+                            var sceneSymbol = resolveSceneSymbol.call(panelElement, symbolNode);
+                            sceneSymbol && panelData.options.dblClickCallback(sceneSymbol);
                         }),
-                    a
+                    entryElement
                 );
             }
         }
-        function d(e) {
-            if (e.getScene()) return e;
-            var t = $(this).data("gsymbolspanel");
-            if (!t.scene) return null;
-            for (var n = t.scene.getSymbols(), o = 0; o < n.length; o++)
-                if (n[o].getMultireferenceId() === e.getMultireferenceId()) return n[o];
+        function resolveSceneSymbol(symbolNode) {
+            if (symbolNode.getScene()) return symbolNode;
+            var panelData = $(this).data("gsymbolspanel");
+            if (!panelData.scene) return null;
+            for (var sceneSymbols = panelData.scene.getSymbols(), o = 0; o < sceneSymbols.length; o++)
+                if (sceneSymbols[o].getMultireferenceId() === symbolNode.getMultireferenceId()) return sceneSymbols[o];
         }
-        function u(e) {
-            var t = $(this).data("gsymbolspanel");
-            if (!t.blockHandlers && e.node instanceof GObject.GSymbol)
-                if (e.data.created) {
-                    r.call(this, e.node);
-                    var n = t.scene.getSymbolImage(e.node);
-                    n ? l.call(this, { symbol: e.node, image: n }) : e.node.toBitmap();
-                } else s.call(this, e.node, true);
+        function handleSpecialChange(event) {
+            var panelData = $(this).data("gsymbolspanel");
+            if (!panelData.blockHandlers && event.node instanceof GObject.GSymbol)
+                if (event.data.created) {
+                    registerSymbolNode.call(this, event.node);
+                    var symbolImage = panelData.scene.getSymbolImage(event.node);
+                    symbolImage ? updateSymbolThumbnail.call(this, { symbol: event.node, image: symbolImage }) : event.node.toBitmap();
+                } else removeSymbolNode.call(this, event.node, true);
         }
-        function p(e) {
-            !$(this).data("gsymbolspanel").blockHandlers && (e.node, GObject.GSymbol);
+        function handlePropertiesChange(event) {
+            !$(this).data("gsymbolspanel").blockHandlers && (event.node, GObject.GSymbol);
         }
-        function g(e) {
-            for (var t = $(this).data("gsymbolspanel"), n = e.node; n && !(n instanceof GObject.GSymbol && n.isMaster()); ) n = n.getParent();
-            if (!t.blockHandlers && n) {
-                var i = n.getMultireferenceId(),
-                    a = $(this)
-                        .find("#symbol_" + i)
+        function handleFlagChange(event) {
+            for (var panelData = $(this).data("gsymbolspanel"), symbolNode = event.node; symbolNode && !(symbolNode instanceof GObject.GSymbol && symbolNode.isMaster()); ) symbolNode = symbolNode.getParent();
+            if (!panelData.blockHandlers && symbolNode) {
+                var multireferenceId = symbolNode.getMultireferenceId(),
+                    titleGroup = $(this)
+                        .find("#symbol_" + multireferenceId)
                         .find(".symbol-title-group");
-                e.flag === GObject.GNode.Flag.Selected && (e.set ? a.addClass("g-highlighted") : a.removeClass("g-highlighted"));
+                event.flag === GObject.GNode.Flag.Selected && (event.set ? titleGroup.addClass("g-highlighted") : titleGroup.removeClass("g-highlighted"));
             }
         }
-        function h(e, t, n) {
-            e.css({ position: "relative", top: n / 2 - 42.5 + "px" });
+        function centerThumbnail(element, width, height) {
+            element.css({ position: "relative", top: height / 2 - 42.5 + "px" });
         }
-        function f() {
+        function relayoutThumbnails() {
             ($(this).data("gsymbolspanel"), $(this).data("gsymbolspanel"));
-            for (var e = $(this).find(".symbol-image"), t = 0; t < e.length; t++) {
-                var n = $(e[t]),
+            for (var imageElements = $(this).find(".symbol-image"), t = 0; t < imageElements.length; t++) {
+                var n = $(imageElements[t]),
                     o = n.find("canvas");
                 (o.css("width") || "0px").split("px")[0];
-                h(n, 0, (o.css("height") || "0px").split("px")[0]);
+                centerThumbnail(n, 0, (o.css("height") || "0px").split("px")[0]);
             }
         }
-        function m() {
-            var e = $(this).data("gsymbolspanel");
-            ((e.symbolNodes = {}), (e.scene = null), $(this).empty(), y.call(this));
+        function resetPanel() {
+            var panelData = $(this).data("gsymbolspanel");
+            ((panelData.symbolNodes = {}), (panelData.scene = null), $(this).empty(), renderEmptyState.call(this));
         }
-        function y() {
+        function renderEmptyState() {
             $("<div>")
                 .append(
                     $("<div>")
@@ -182,21 +182,21 @@ module.exports = function (module, exports, require) {
                 )
                 .appendTo($(this));
         }
-        var v = {
-            init: function (e) {
+        var pluginMethods = {
+            init: function (options) {
                 return (
-                    (e = $.extend(
+                    (options = $.extend(
                         {
                             moveCallback: null,
                             clickCallback: null,
                             dblClickCallback: null,
                             startDraggingCallback: null,
                         },
-                        e
+                        options
                     )),
                     this.each(function () {
                         $(this).addClass("g-symbols-panel").data("gsymbolspanel", {
-                            options: e,
+                            options: options,
                             symbolNodes: {},
                             scene: null,
                             currentFocus: null,
@@ -205,7 +205,7 @@ module.exports = function (module, exports, require) {
                 );
             },
             relayout: function () {
-                f.call(this);
+                relayoutThumbnails.call(this);
             },
             newSymbolClick: function () {
                 return (
@@ -219,54 +219,54 @@ module.exports = function (module, exports, require) {
                 return $(this).find(".g-highlighted").length > 0;
             },
             removeSelected: function () {
-                var e = $(this).data("gsymbolspanel"),
-                    t = $(this).find(".g-highlighted").parent().attr("id");
-                if (t) {
-                    var n = t.split("_")[1],
-                        o = e.symbolNodes[n];
-                    o && s.call(this, o);
+                var panelData = $(this).data("gsymbolspanel"),
+                    highlightedId = $(this).find(".g-highlighted").parent().attr("id");
+                if (highlightedId) {
+                    var multireferenceId = highlightedId.split("_")[1],
+                        symbolNode = panelData.symbolNodes[multireferenceId];
+                    symbolNode && removeSymbolNode.call(this, symbolNode);
                 }
             },
-            scene: function (e) {
-                var t = $(this),
-                    n = t.data("gsymbolspanel");
-                if (!arguments.length) return n.scene;
+            scene: function (scene) {
+                var element = $(this),
+                    panelData = element.data("gsymbolspanel");
+                if (!arguments.length) return panelData.scene;
                 if (
-                    e !== n.scene &&
-                    (n.scene &&
-                        n.scene.hasMixin(GObject.GEventTarget) &&
-                        (n.scene.removeEventListener(GObject.GNode.AfterSpecialChangeEvent, n.afterSpecialChangeHandler, this),
-                        n.scene.removeEventListener(GObject.GNode.AfterPropertiesChangeEvent, n.afterPropertiesChangeHandler, this),
-                        n.scene.removeEventListener(GObject.GNode.AfterFlagChangeEvent, n.afterFlagChangeHandler, this)),
-                    m.call(this),
-                    (n.scene = e),
-                    n.scene)
+                    scene !== panelData.scene &&
+                    (panelData.scene &&
+                        panelData.scene.hasMixin(GObject.GEventTarget) &&
+                        (panelData.scene.removeEventListener(GObject.GNode.AfterSpecialChangeEvent, panelData.afterSpecialChangeHandler, this),
+                        panelData.scene.removeEventListener(GObject.GNode.AfterPropertiesChangeEvent, panelData.afterPropertiesChangeHandler, this),
+                        panelData.scene.removeEventListener(GObject.GNode.AfterFlagChangeEvent, panelData.afterFlagChangeHandler, this)),
+                    resetPanel.call(this),
+                    (panelData.scene = scene),
+                    panelData.scene)
                 ) {
-                    n.scene.hasMixin(GObject.GEventTarget) &&
-                        ((n.afterSpecialChangeHandler = u.bind(this)),
-                        (n.afterPropertiesChangeHandler = p.bind(this)),
-                        (n.afterFlagChangeHandler = g.bind(this)),
-                        n.scene.addEventListener(GObject.GNode.AfterSpecialChangeEvent, n.afterSpecialChangeHandler, this),
-                        n.scene.addEventListener(GObject.GNode.AfterPropertiesChangeEvent, n.afterPropertiesChangeHandler, this),
-                        n.scene.addEventListener(GObject.GNode.AfterFlagChangeEvent, n.afterFlagChangeHandler, this));
-                    var i = n.scene.getSymbols();
-                    i &&
-                        i.forEach(
-                            function (e) {
-                                r.call(this, e);
-                                var t = n.scene.getSymbolImage(e);
-                                t ? l.call(this, { symbol: e, image: t }) : e.toBitmap();
+                    panelData.scene.hasMixin(GObject.GEventTarget) &&
+                        ((panelData.afterSpecialChangeHandler = handleSpecialChange.bind(this)),
+                        (panelData.afterPropertiesChangeHandler = handlePropertiesChange.bind(this)),
+                        (panelData.afterFlagChangeHandler = handleFlagChange.bind(this)),
+                        panelData.scene.addEventListener(GObject.GNode.AfterSpecialChangeEvent, panelData.afterSpecialChangeHandler, this),
+                        panelData.scene.addEventListener(GObject.GNode.AfterPropertiesChangeEvent, panelData.afterPropertiesChangeHandler, this),
+                        panelData.scene.addEventListener(GObject.GNode.AfterFlagChangeEvent, panelData.afterFlagChangeHandler, this));
+                    var sceneSymbols = panelData.scene.getSymbols();
+                    sceneSymbols &&
+                        sceneSymbols.forEach(
+                            function (symbol) {
+                                registerSymbolNode.call(this, symbol);
+                                var symbolImage = panelData.scene.getSymbolImage(symbol);
+                                symbolImage ? updateSymbolThumbnail.call(this, { symbol: symbol, image: symbolImage }) : symbol.toBitmap();
                             }.bind(this)
                         );
                 }
                 return this;
             },
         };
-        $.fn.gSymbolsPanel = function (e) {
-            return v[e]
-                ? v[e].apply(this, Array.prototype.slice.call(arguments, 1))
-                : "object" != typeof e && e
-                  ? void $.error("Method " + e + " does not exist on jQuery.myPlugin")
-                  : v.init.apply(this, arguments);
+        $.fn.gSymbolsPanel = function (methodName) {
+            return pluginMethods[methodName]
+                ? pluginMethods[methodName].apply(this, Array.prototype.slice.call(arguments, 1))
+                : "object" != typeof methodName && methodName
+                  ? void $.error("Method " + methodName + " does not exist on jQuery.myPlugin")
+                  : pluginMethods.init.apply(this, arguments);
         };
     };

@@ -3,13 +3,13 @@ module.exports = function (module, exports, require) {
         (require(19), require(3), require(26), require(125), require(126 /* polyfill:URL */), require(114));
         var GObject = require(1);
         const GCategory = require(18),
-            a = require(31),
+            GAction = require(31),
             GSystemDialog = require(44),
             GDocument = require(163),
-            l = require(85),
+            GContainer = require(85),
             c = require(1255);
         function d() {}
-        (GObject.GObject.inherit(d, a),
+        (GObject.GObject.inherit(d, GAction),
             (d.ID = "file.share.opensharedfile"),
             (d.TITLE = new GObject.GLocaleKey("GOpenSharedFileAction", "title")),
             (d.prototype.getId = function () {
@@ -33,9 +33,9 @@ module.exports = function (module, exports, require) {
                     (e) => {
                         if (void 0 !== e)
                             try {
-                                var t = new URL(e).searchParams.get(l.OpenFileRequest.Type.Token);
+                                var t = new URL(e).searchParams.get(GContainer.OpenFileRequest.Type.Token);
                                 if (t) {
-                                    let e = new l.OpenFileRequest(l.OpenFileRequest.Type.Token, t);
+                                    let e = new GContainer.OpenFileRequest(GContainer.OpenFileRequest.Type.Token, t);
                                     gApi.setToken({ token: t });
                                     let n = new GDocument();
                                     (n.setTitle(e.getContent()), gDesigner.addDocument(n), c.handleOpenFileRequest(n, e));

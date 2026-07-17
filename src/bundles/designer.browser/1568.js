@@ -2,136 +2,136 @@ module.exports = function (module, exports, require) {
         "use strict";
         (require(58 /* polyfill:Array */), require(19), require(8 /* Symbol */), require(20 /* polyfill:RegExp */), require(107 /* polyfill:RegExp */), require(71 /* polyfill:String */), require(134 /* polyfill:String */), require(4), require(41), require(26));
         var designerConfig = require(10);
-        const i = require(292),
+        const GUserLoggedEvent = require(292),
             GCloudStorage = require(220),
-            r = require(78),
-            s = require(536),
-            l = require(177),
-            c = require(393);
-        var d = null;
-        function u(e) {
-            if (d) throw new Error("GCloudCommunicationManager is a singleton");
-            (e.addEventListener(i, this._userLoggedEvent, this),
-                e.addEventListener(r, this._documentEvent, this),
-                (d = this),
+            GDocumentEvent = require(78),
+            CachedValue = require(536),
+            GUser = require(177),
+            GCollaborationEvent = require(393);
+        var singletonInstance = null;
+        function GCloudCommunicationManager(application) {
+            if (singletonInstance) throw new Error("GCloudCommunicationManager is a singleton");
+            (application.addEventListener(GUserLoggedEvent, this._userLoggedEvent, this),
+                application.addEventListener(GDocumentEvent, this._documentEvent, this),
+                (singletonInstance = this),
                 this.initialize());
         }
-        ((u.clearSingleton = function () {
-            d = null;
+        ((GCloudCommunicationManager.clearSingleton = function () {
+            singletonInstance = null;
         }),
-            (u.prototype._fileCacheMapExt = {}),
-            (u.prototype._userCache = null),
-            (u.prototype.getUser = async function () {
+            (GCloudCommunicationManager.prototype._fileCacheMapExt = {}),
+            (GCloudCommunicationManager.prototype._userCache = null),
+            (GCloudCommunicationManager.prototype.getUser = async function () {
                 this._initializeUserCache();
-                const e = await this._userCache.get();
-                return (e || this._userCache.reset(), e);
+                const cachedUser = await this._userCache.get();
+                return (cachedUser || this._userCache.reset(), cachedUser);
             }),
-            (u.prototype.confirmEmail = function (e) {
-                return designerConfig.gApi.confirmEmail(e).then((e) => (this._removeUserCache(), e));
+            (GCloudCommunicationManager.prototype.confirmEmail = function (token) {
+                return designerConfig.gApi.confirmEmail(token).then((result) => (this._removeUserCache(), result));
             }),
-            (u.prototype.updateUser = function (e) {
-                return designerConfig.gApi.updateUser(e).then((e) => (this._removeUserCache(), new l(e)));
+            (GCloudCommunicationManager.prototype.updateUser = function (userData) {
+                return designerConfig.gApi.updateUser(userData).then((updatedUser) => (this._removeUserCache(), new GUser(updatedUser)));
             }),
-            (u.prototype.updateAvatar = function (e) {
-                return designerConfig.gApi.updateAvatar(e).then((e) => (this._removeUserCache(), e));
+            (GCloudCommunicationManager.prototype.updateAvatar = function (avatarData) {
+                return designerConfig.gApi.updateAvatar(avatarData).then((result) => (this._removeUserCache(), result));
             }),
-            (u.prototype.useAuthorizationToken = function (e) {
-                (this._removeUserCache(), designerConfig.gApi.useAuthorizationToken(e));
+            (GCloudCommunicationManager.prototype.useAuthorizationToken = function (token) {
+                (this._removeUserCache(), designerConfig.gApi.useAuthorizationToken(token));
             }),
-            (u.prototype.userPropertiesChanged = function () {
+            (GCloudCommunicationManager.prototype.userPropertiesChanged = function () {
                 this._removeUserCache();
             }),
-            (u.prototype.getFileExtendedCached = async function (e) {
-                var t = (e = e || gDesigner.getActiveDocument()).getId();
-                return t
-                    ? (this._fileCacheMapExt[t] || (this._fileCacheMapExt[t] = new s(() => this._getFileExtended(e))),
-                      this._fileCacheMapExt[t].get())
+            (GCloudCommunicationManager.prototype.getFileExtendedCached = async function (document) {
+                var documentId = (document = document || gDesigner.getActiveDocument()).getId();
+                return documentId
+                    ? (this._fileCacheMapExt[documentId] || (this._fileCacheMapExt[documentId] = new CachedValue(() => this._getFileExtended(document))),
+                      this._fileCacheMapExt[documentId].get())
                     : null;
             }),
-            (u.prototype._userLoggedEvent = function (e) {
-                const { user } = e;
+            (GCloudCommunicationManager.prototype._userLoggedEvent = function (event) {
+                const { user } = event;
                 (user ? (this._initializeUserCache(), this._userCache.setCacheValue(user)) : this._removeUserCache(), this._resetAllCache());
             }),
-            (u.prototype._removeUserCache = function () {
+            (GCloudCommunicationManager.prototype._removeUserCache = function () {
                 this._userCache = null;
             }),
-            (u.prototype._initializeUserCache = async function () {
+            (GCloudCommunicationManager.prototype._initializeUserCache = async function () {
                 this._userCache ||
-                    (this._userCache = new s(
+                    (this._userCache = new CachedValue(
                         () =>
                             designerConfig.gApi
                                 .getUser()
-                                .then((e) => new l(e))
+                                .then((userData) => new GUser(userData))
                                 .catch(() => null),
                         designerConfig.USER_CHECK_MIN_WAIT
                     ));
             }),
-            (u.prototype._updateDocState = function (e) {
-                this._resetFileCache(e);
+            (GCloudCommunicationManager.prototype._updateDocState = function (document) {
+                this._resetFileCache(document);
             }),
-            (u.prototype._resetFileCache = function (e) {
-                if (e) {
-                    var t = e.getId();
-                    return t && this._fileCacheMapExt[t] ? this._fileCacheMapExt[t].reset() : void 0;
+            (GCloudCommunicationManager.prototype._resetFileCache = function (document) {
+                if (document) {
+                    var documentId = document.getId();
+                    return documentId && this._fileCacheMapExt[documentId] ? this._fileCacheMapExt[documentId].reset() : void 0;
                 }
             }),
-            (u.prototype._resetAllCache = function () {
+            (GCloudCommunicationManager.prototype._resetAllCache = function () {
                 this._fileCacheMapExt = {};
             }),
-            (u.prototype._documentEvent = function (e) {
-                const t = e.document;
-                if (t)
-                    switch (e.type) {
-                        case r.Type.Added:
-                            (this._updateDocState(t), t.addEventListener(c, this._collaborationEvent, this));
+            (GCloudCommunicationManager.prototype._documentEvent = function (event) {
+                const document = event.document;
+                if (document)
+                    switch (event.type) {
+                        case GDocumentEvent.Type.Added:
+                            (this._updateDocState(document), document.addEventListener(GCollaborationEvent, this._collaborationEvent, this));
                             break;
-                        case r.Type.Removed:
-                            t.removeEventListener(c, this._collaborationEvent, this);
+                        case GDocumentEvent.Type.Removed:
+                            document.removeEventListener(GCollaborationEvent, this._collaborationEvent, this);
                             break;
-                        case r.Type.Modified:
-                            this._updateDocState(t);
+                        case GDocumentEvent.Type.Modified:
+                            this._updateDocState(document);
                     }
             }),
-            (u.prototype._collaborationEvent = function (e) {
-                const { sender, type } = e;
-                type === c.Type.ShareUpdate && this._updateDocState(sender);
+            (GCloudCommunicationManager.prototype._collaborationEvent = function (event) {
+                const { sender, type } = event;
+                type === GCollaborationEvent.Type.ShareUpdate && this._updateDocState(sender);
             }),
-            (u.prototype._getFileExtended = async function (e) {
-                const t = (e = e || gDesigner.getActiveDocument()) && e.getStorageItem();
-                if (!t) return null;
-                const n = t.getId();
-                return n
-                    ? t instanceof GCloudStorage.Item
-                        ? this.getFileExtended(n).catch(() => null)
-                        : t && t.supportsSharing() && t.supportsShadowFile()
-                          ? t.getOrCreateCollaborativeFile()
+            (GCloudCommunicationManager.prototype._getFileExtended = async function (document) {
+                const storageItem = (document = document || gDesigner.getActiveDocument()) && document.getStorageItem();
+                if (!storageItem) return null;
+                const itemId = storageItem.getId();
+                return itemId
+                    ? storageItem instanceof GCloudStorage.Item
+                        ? this.getFileExtended(itemId).catch(() => null)
+                        : storageItem && storageItem.supportsSharing() && storageItem.supportsShadowFile()
+                          ? storageItem.getOrCreateCollaborativeFile()
                           : null
                     : null;
             }));
-        var p = {};
-        async function g(e, t, n) {
-            let i, a;
+        var inFlightCallsByMethod = {};
+        async function resolveCachedCall(cache, methodName, arg) {
+            let callResult, resolvedValue;
             try {
-                if (((i = designerConfig.gApi[t](n)), !(i instanceof Promise))) return i;
-                a = await i;
-            } catch (e) {
-                throw e;
+                if (((callResult = designerConfig.gApi[methodName](arg)), !(callResult instanceof Promise))) return callResult;
+                resolvedValue = await callResult;
+            } catch (error) {
+                throw error;
             } finally {
-                delete e[n];
+                delete cache[arg];
             }
-            return a;
+            return resolvedValue;
         }
-        ((u.prototype.initialize = function () {
-            const e = Object.keys(d).filter((e) => e.startsWith("get")),
-                t = designerConfig.CACHED_GAPI_FUNCTIONS.filter((t) => /^is|^get/.test(t) && !e.includes(t));
-            for (let e of t)
-                ((p[e] = {}),
-                    (d[e] = async function (e) {
-                        const t = p[this];
-                        if (void 0 !== t[e]) return t[e];
-                        const n = g(t, this, e);
-                        return (n instanceof Promise && (t[e] = n), n);
-                    }.bind(e)));
+        ((GCloudCommunicationManager.prototype.initialize = function () {
+            const cachedGetterNames = Object.keys(singletonInstance).filter((cachedGetterNames) => cachedGetterNames.startsWith("get")),
+                functionsToCache = designerConfig.CACHED_GAPI_FUNCTIONS.filter((functionsToCache) => /^is|^get/.test(functionsToCache) && !cachedGetterNames.includes(functionsToCache));
+            for (let methodName of functionsToCache)
+                ((inFlightCallsByMethod[methodName] = {}),
+                    (singletonInstance[methodName] = async function (callArg) {
+                        const methodCache = inFlightCallsByMethod[this];
+                        if (void 0 !== methodCache[callArg]) return methodCache[callArg];
+                        const callPromise = resolveCachedCall(methodCache, this, callArg);
+                        return (callPromise instanceof Promise && (methodCache[callArg] = callPromise), callPromise);
+                    }.bind(methodName)));
         }),
-            (module.exports = u));
+            (module.exports = GCloudCommunicationManager));
     };

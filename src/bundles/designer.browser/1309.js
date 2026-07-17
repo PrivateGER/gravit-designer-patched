@@ -3,7 +3,7 @@ module.exports = function (module, exports, require) {
         var _interopRequireDefault = require(16);
         require(3);
         var GObject = require(1),
-            a = _interopRequireDefault(require(609));
+            a = _interopRequireDefault(require(609 /* GSelectByAction */));
         function r() {
             a.default.call(this, r.ID, r.TITLE);
         }

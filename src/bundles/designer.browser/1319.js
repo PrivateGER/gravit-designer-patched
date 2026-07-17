@@ -1,67 +1,67 @@
 module.exports = function (module, exports, require) {
         "use strict";
         (require(19), require(3), require(26));
-        var o = require(53),
+        var GEditor = require(53),
             GObject = require(1),
             Utils = require(40),
             GCategory = require(18),
-            s = require(106);
-        function l() {}
-        (GObject.GObject.inherit(l, s),
-            (l.ID = "modify.split-line"),
-            (l.TITLE = new GObject.GLocaleKey("GSplitLineAction", "title")),
-            (l.prototype.getId = function () {
-                return l.ID;
+            GAction = require(106);
+        function GSplitLineAction() {}
+        (GObject.GObject.inherit(GSplitLineAction, GAction),
+            (GSplitLineAction.ID = "modify.split-line"),
+            (GSplitLineAction.TITLE = new GObject.GLocaleKey("GSplitLineAction", "title")),
+            (GSplitLineAction.prototype.getId = function () {
+                return GSplitLineAction.ID;
             }),
-            (l.prototype.getTitle = function () {
-                return l.TITLE;
+            (GSplitLineAction.prototype.getTitle = function () {
+                return GSplitLineAction.TITLE;
             }),
-            (l.prototype.getCategory = function () {
+            (GSplitLineAction.prototype.getCategory = function () {
                 return GCategory.CATEGORY_MODIFY_PATH;
             }),
-            (l.prototype.getGroup = function () {
+            (GSplitLineAction.prototype.getGroup = function () {
                 return "structure/path";
             }),
-            (l.prototype.getIcon = function () {
+            (GSplitLineAction.prototype.getIcon = function () {
                 return gDesigner.isTouchEnabled() ? "gravit-icon-break-curve" : null;
             }),
-            (l.prototype.isEnabled = function () {
-                if (!s.prototype.isEnabled.call(this)) return false;
-                var e = gDesigner.getActiveDocument() ? gDesigner.getActiveDocument().getEditor().getSelection() : null,
-                    t = false;
-                if (e) for (var n = 0; !t && n < e.length; ++n) e[n] instanceof GObject.GPath && (t = this._isPathSplittable(e[n]));
-                return t;
+            (GSplitLineAction.prototype.isEnabled = function () {
+                if (!GAction.prototype.isEnabled.call(this)) return false;
+                var selection = gDesigner.getActiveDocument() ? gDesigner.getActiveDocument().getEditor().getSelection() : null,
+                    enabled = false;
+                if (selection) for (var n = 0; !enabled && n < selection.length; ++n) selection[n] instanceof GObject.GPath && (enabled = this._isPathSplittable(selection[n]));
+                return enabled;
             }),
-            (l.prototype.execute = function () {
-                var e = gDesigner.getActiveDocument(),
-                    t = e ? e.getEditor() : null,
-                    n = t ? t.getSelection() : null,
-                    o = [];
-                if (n)
-                    for (var r = 0; r < n.length; ++r) {
-                        var s = n[r];
-                        s instanceof GObject.GPath && this._isPathSplittable(s) && o.push(s);
+            (GSplitLineAction.prototype.execute = function () {
+                var activeDocument = gDesigner.getActiveDocument(),
+                    editor = activeDocument ? activeDocument.getEditor() : null,
+                    selection = editor ? editor.getSelection() : null,
+                    splittablePaths = [];
+                if (selection)
+                    for (var r = 0; r < selection.length; ++r) {
+                        var s = selection[r];
+                        s instanceof GObject.GPath && this._isPathSplittable(s) && splittablePaths.push(s);
                     }
-                if (o.length) {
-                    t.beginTransaction();
+                if (splittablePaths.length) {
+                    editor.beginTransaction();
                     try {
-                        var l,
-                            c = [];
-                        l = new Set();
-                        for (r = 0; r < o.length; ++r) l.add(o[r].getParent());
+                        var parentSet,
+                            newPaths = [];
+                        parentSet = new Set();
+                        for (r = 0; r < splittablePaths.length; ++r) parentSet.add(splittablePaths[r].getParent());
                         try {
-                            (0, Utils.blockChanges)(t, l);
-                            for (r = 0; r < o.length; ++r) {
-                                var d,
-                                    u = o[r],
+                            (0, Utils.blockChanges)(editor, parentSet);
+                            for (r = 0; r < splittablePaths.length; ++r) {
+                                var point,
+                                    u = splittablePaths[r],
                                     p = u.getParent(),
                                     g = u.getNext(),
                                     h = u.getAnchorPoints(),
                                     f = false;
                                 if (u.getProperty("closed"))
-                                    for (d = h.getFirstChild(); null !== d && !d.hasFlag(GObject.GNode.Flag.Selected); d = d.getNext());
-                                else (d = h.getFirstChild()).hasFlag(GObject.GNode.Flag.Selected) || (f = true);
-                                var m = d,
+                                    for (point = h.getFirstChild(); null !== point && !point.hasFlag(GObject.GNode.Flag.Selected); point = point.getNext());
+                                else (point = h.getFirstChild()).hasFlag(GObject.GNode.Flag.Selected) || (f = true);
+                                var m = point,
                                     y = m,
                                     v = m ? m.getNext() || m.getPrevious() : null,
                                     _ = false;
@@ -70,18 +70,18 @@ module.exports = function (module, exports, require) {
                                     null !== m && (m.hasFlag(GObject.GNode.Flag.Selected) || f) && null !== v;
 
                                 ) {
-                                    var b,
+                                    var clonedPoint,
                                         w = new GObject.GPath(),
                                         C = w.getAnchorPoints();
-                                    if (((f = false), w.assignFrom(u), p.insertChild(w, g), c.push(w), (d = h.getNextPoint(m)), _))
-                                        ((b = new GObject.GPathBase.AnchorPoint()).deserialize(m.serialize()), (m = b), (_ = false));
+                                    if (((f = false), w.assignFrom(u), p.insertChild(w, g), newPaths.push(w), (point = h.getNextPoint(m)), _))
+                                        ((clonedPoint = new GObject.GPathBase.AnchorPoint()).deserialize(m.serialize()), (m = clonedPoint), (_ = false));
                                     else h.removeChild(m);
-                                    for (C.appendChild(m); null !== d && !d.hasFlag(GObject.GNode.Flag.Selected) && h.getFirstChild(); )
-                                        ((v = h.getNextPoint(d)), h.removeChild(d), C.appendChild(d), (d = v));
-                                    if (null !== d && d.hasFlag(GObject.GNode.Flag.Selected) && h.getFirstChild())
-                                        ((b = new GObject.GPathBase.AnchorPoint()).deserialize(d.serialize()),
-                                            C.appendChild(b),
-                                            (v = (m = d) === y ? null : h.getNextPoint(d)));
+                                    for (C.appendChild(m); null !== point && !point.hasFlag(GObject.GNode.Flag.Selected) && h.getFirstChild(); )
+                                        ((v = h.getNextPoint(point)), h.removeChild(point), C.appendChild(point), (point = v));
+                                    if (null !== point && point.hasFlag(GObject.GNode.Flag.Selected) && h.getFirstChild())
+                                        ((clonedPoint = new GObject.GPathBase.AnchorPoint()).deserialize(point.serialize()),
+                                            C.appendChild(clonedPoint),
+                                            (v = (m = point) === y ? null : h.getNextPoint(point)));
                                     else v = null;
                                     w.isLine() &&
                                         (w.getPaintLayers().getBorderLayers(true).length ||
@@ -92,27 +92,27 @@ module.exports = function (module, exports, require) {
                                 p.removeChild(u);
                             }
                         } finally {
-                            ((0, Utils.releaseChanges)(t, l), c.length && t.updateSelection(false, c.slice(-1)));
+                            ((0, Utils.releaseChanges)(editor, parentSet), newPaths.length && editor.updateSelection(false, newPaths.slice(-1)));
                         }
                     } finally {
-                        t.commitTransaction(GObject.GLocale.get(this.getTitle()));
+                        editor.commitTransaction(GObject.GLocale.get(this.getTitle()));
                     }
                 }
             }),
-            (l.prototype._isPathSplittable = function (e) {
-                var t = false,
-                    n = o.GElementEditor.getEditor(e),
-                    i = n ? n.getPartSelection() : null;
-                if (i && i.length)
-                    for (var a = 0; !t && a < i.length; ++a)
-                        i[a].type == o.GPathEditor.PartType.Point &&
-                            (e.getProperty("closed") ||
-                                (i[a].point != e.getAnchorPoints().getFirstChild() && i[a].point != e.getAnchorPoints().getLastChild())) &&
-                            (t = true);
-                return t;
+            (GSplitLineAction.prototype._isPathSplittable = function (path) {
+                var splittable = false,
+                    editor = GEditor.GElementEditor.getEditor(path),
+                    partSelection = editor ? editor.getPartSelection() : null;
+                if (partSelection && partSelection.length)
+                    for (var a = 0; !splittable && a < partSelection.length; ++a)
+                        partSelection[a].type == GEditor.GPathEditor.PartType.Point &&
+                            (path.getProperty("closed") ||
+                                (partSelection[a].point != path.getAnchorPoints().getFirstChild() && partSelection[a].point != path.getAnchorPoints().getLastChild())) &&
+                            (splittable = true);
+                return splittable;
             }),
-            (l.prototype.toString = function () {
+            (GSplitLineAction.prototype.toString = function () {
                 return "[Object GSplitLineAction]";
             }),
-            (module.exports = l));
+            (module.exports = GSplitLineAction));
     };

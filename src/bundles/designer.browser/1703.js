@@ -2,7 +2,7 @@ module.exports = function (module, exports, require) {
         "use strict";
         (require(4), require(13), require(32), require(38), require(33));
         var GObject = require(1);
-        const i = require(238),
+        const GMenu = require(238),
             a = require(444);
         var r = {
             value: function (e) {
@@ -14,7 +14,7 @@ module.exports = function (module, exports, require) {
                 return (
                     this.each(function () {
                         e = GObject.GUtil.extend({ list: [] }, e);
-                        const t = new i();
+                        const t = new GMenu();
                         e.list
                             .map((e) => ("object" != typeof e ? { title: e, data: e } : e))
                             .forEach((e) => {

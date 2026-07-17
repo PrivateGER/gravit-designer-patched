@@ -1,11 +1,11 @@
 module.exports = function (module, exports, require) {
             "use strict";
-            const n = require(171),
-                r = require(375),
+            const $ = require(171),
+                trackEvent = require(375),
                 GOfferDialogV1 = require(526),
                 { learnmore } = require(253),
-                s = require(170),
-                l = require(325);
+                i18n = require(170),
+                LocKey = require(325);
             require(417 /* gApi */).self();
             module.exports = class {
                 static get ContentType() {
@@ -39,7 +39,7 @@ module.exports = function (module, exports, require) {
                         }
                     };
                 }
-                constructor(e) {
+                constructor(options) {
                     let {
                         title,
                         product,
@@ -49,22 +49,22 @@ module.exports = function (module, exports, require) {
                         page,
                         campaign,
                         withFooter,
-                        content: g = GOfferDialogV1.DEFAULT_CONTENT,
-                    } = e;
-                    ((this._impl = impl), s.setLanguage(this._impl.getLanguage()));
-                    let f = null;
+                        content: content = GOfferDialogV1.DEFAULT_CONTENT,
+                    } = options;
+                    ((this._impl = impl), i18n.setLanguage(this._impl.getLanguage()));
+                    let dismissAction = null;
                     dismiss &&
-                        (f = {
-                            title: s.get(new l("GReminderDialog", "text.continue-as-free")),
+                        (dismissAction = {
+                            title: i18n.get(new LocKey("GReminderDialog", "text.continue-as-free")),
                             execute: () => {
-                                (r("".concat(page, "_click_continuebutton")), this.close());
+                                (trackEvent("".concat(page, "_click_continuebutton")), this.close());
                             },
                         });
-                    const m = new GOfferDialogV1({
+                    const offerDialogElement = new GOfferDialogV1({
                         page: page,
                         title: title,
-                        content: g,
-                        action: f,
+                        content: content,
+                        action: dismissAction,
                         product: product,
                         cmd: {
                             close: this.close.bind(this),
@@ -81,13 +81,13 @@ module.exports = function (module, exports, require) {
                         closeable: closeable,
                         withFooter: withFooter,
                     }).getHTMLElement();
-                    ((this._htmlElement = n("<div></div>")
+                    ((this._htmlElement = $("<div></div>")
                         .addClass("g-cloud-ui-reminder-dialog g-dialog")
-                        .append(n("<div></div>").addClass("g-cloud-ui-reminder-dialog-content g-dialog-content").append(m))),
+                        .append($("<div></div>").addClass("g-cloud-ui-reminder-dialog-content g-dialog-content").append(offerDialogElement))),
                         learnmore || this._htmlElement.addClass("g-cloud-ui-no-learn-more"));
                 }
                 open() {
-                    n(".g-cloud-ui-reminder-dialog").length ||
+                    $(".g-cloud-ui-reminder-dialog").length ||
                         this._impl.open({
                             dialog: this,
                         });

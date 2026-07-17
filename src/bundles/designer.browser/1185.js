@@ -5,83 +5,83 @@ module.exports = function (module, exports, require) {
             GPlatform = require(15),
             Utils = require(40),
             GCategory = require(18),
-            s = require(106),
+            GElementAction = require(106),
             GSystemDialog = require(44);
-        function c() {}
-        (GObject.GObject.inherit(c, s),
-            (c.ID = "modify.ouline"),
-            (c.TITLE = new GObject.GLocaleKey("GOutlineAction", "title")),
-            (c.prototype.getId = function () {
-                return c.ID;
+        function GOutlineAction() {}
+        (GObject.GObject.inherit(GOutlineAction, GElementAction),
+            (GOutlineAction.ID = "modify.ouline"),
+            (GOutlineAction.TITLE = new GObject.GLocaleKey("GOutlineAction", "title")),
+            (GOutlineAction.prototype.getId = function () {
+                return GOutlineAction.ID;
             }),
-            (c.prototype.getTitle = function () {
-                return c.TITLE;
+            (GOutlineAction.prototype.getTitle = function () {
+                return GOutlineAction.TITLE;
             }),
-            (c.prototype.getCategory = function () {
+            (GOutlineAction.prototype.getCategory = function () {
                 return GCategory.CATEGORY_MODIFY_PATH;
             }),
-            (c.prototype.getGroup = function () {
+            (GOutlineAction.prototype.getGroup = function () {
                 return "structure/modify";
             }),
-            (c.prototype.getShortcut = function () {
+            (GOutlineAction.prototype.getShortcut = function () {
                 return [GPlatform.GKey.Constant.F5];
             }),
-            (c.prototype.isEnabled = function () {
-                if (!s.prototype.isEnabled.call(this)) return false;
-                var e = gDesigner.getActiveDocument() ? gDesigner.getActiveDocument().getEditor().getSelection() : null,
-                    t = false;
-                if (e) for (var n = 0; !t && n < e.length; ++n) e[n] instanceof GObject.GImage || !e[n].hasMixin(GObject.GVertexSource) || (t = true);
-                return t;
+            (GOutlineAction.prototype.isEnabled = function () {
+                if (!GElementAction.prototype.isEnabled.call(this)) return false;
+                var selection = gDesigner.getActiveDocument() ? gDesigner.getActiveDocument().getEditor().getSelection() : null,
+                    hasVertexSource = false;
+                if (selection) for (var n = 0; !hasVertexSource && n < selection.length; ++n) selection[n] instanceof GObject.GImage || !selection[n].hasMixin(GObject.GVertexSource) || (hasVertexSource = true);
+                return hasVertexSource;
             }),
-            (c.prototype.getIcon = function () {
+            (GOutlineAction.prototype.getIcon = function () {
                 return gDesigner.isTouchEnabled() ? "gravit-icon-convert-to-outline" : null;
             }),
-            (c.prototype.execute = function () {
-                var e = gDesigner.getActiveDocument(),
-                    t = e ? e.getEditor() : null,
-                    n = t ? t.getIndividualSelection() : null,
-                    i = [];
-                if (n)
-                    for (var r = 0; r < n.length; ++r) {
-                        var s = n[r];
-                        s.hasMixin(GObject.GVertexSource) && i.push(s);
+            (GOutlineAction.prototype.execute = function () {
+                var document = gDesigner.getActiveDocument(),
+                    editor = document ? document.getEditor() : null,
+                    individualSelection = editor ? editor.getIndividualSelection() : null,
+                    vertexElements = [];
+                if (individualSelection)
+                    for (var r = 0; r < individualSelection.length; ++r) {
+                        var s = individualSelection[r];
+                        s.hasMixin(GObject.GVertexSource) && vertexElements.push(s);
                     }
-                i.length &&
+                vertexElements.length &&
                     GSystemDialog.prompt(
                         this._dialogPromptMessage(),
-                        (e) => {
-                            if (e) {
-                                var n,
-                                    r,
-                                    s = parseFloat(e);
-                                if (isNaN(s) || !isFinite(s) || GObject.GMath.isEqualEps(s, 0))
+                        (inputValue) => {
+                            if (inputValue) {
+                                var newElements,
+                                    parentsSet,
+                                    offsetValue = parseFloat(inputValue);
+                                if (isNaN(offsetValue) || !isFinite(offsetValue) || GObject.GMath.isEqualEps(offsetValue, 0))
                                     GSystemDialog.alert(GObject.GLocale.get(new GObject.GLocaleKey("GOutlineAction", "text.invalid-value")));
                                 else {
-                                    t.beginTransaction();
+                                    editor.beginTransaction();
                                     try {
                                         try {
-                                            r = new Set();
-                                            for (var c = 0; c < i.length; ++c) {
-                                                var d = i[c].getParent();
-                                                d && r.add(d);
+                                            parentsSet = new Set();
+                                            for (var c = 0; c < vertexElements.length; ++c) {
+                                                var d = vertexElements[c].getParent();
+                                                d && parentsSet.add(d);
                                             }
-                                            ((0, Utils.blockChanges)(t, r), (n = []));
-                                            for (c = 0; c < i.length; ++c) {
-                                                var u = i[c],
+                                            ((0, Utils.blockChanges)(editor, parentsSet), (newElements = []));
+                                            for (c = 0; c < vertexElements.length; ++c) {
+                                                var u = vertexElements[c],
                                                     p = u.getParent();
                                                 if (p) {
                                                     var g = u.getNext(),
-                                                        h = this._makeOffsetter(s, u),
+                                                        h = this._makeOffsetter(offsetValue, u),
                                                         f = GObject.GPathUtil.createPathFromVertexSource(h);
-                                                    (f && (GObject.GElement.prototype.assignFrom.call(f, u), p.insertChild(f, g), n.push(f)),
+                                                    (f && (GObject.GElement.prototype.assignFrom.call(f, u), p.insertChild(f, g), newElements.push(f)),
                                                         p.removeChild(u));
                                                 }
                                             }
                                         } finally {
-                                            ((0, Utils.releaseChanges)(t, r), n.length && t.updateSelection(false, n));
+                                            ((0, Utils.releaseChanges)(editor, parentsSet), newElements.length && editor.updateSelection(false, newElements));
                                         }
                                     } finally {
-                                        t.commitTransaction(GObject.GLocale.get(this.getTitle()));
+                                        editor.commitTransaction(GObject.GLocale.get(this.getTitle()));
                                     }
                                 }
                             }
@@ -89,23 +89,23 @@ module.exports = function (module, exports, require) {
                         "1"
                     );
             }),
-            (c.prototype._dialogPromptMessage = function () {
+            (GOutlineAction.prototype._dialogPromptMessage = function () {
                 return GObject.GLocale.get(new GObject.GLocaleKey("GOutlineAction", "text.dialog-prompt-message"));
             }),
-            (c.prototype._makeOffsetter = function (e, t) {
-                var n;
-                if (t.hasMixin(GObject.GStylable)) {
-                    var i = t.getPaintLayers();
-                    if (i) {
-                        var a = i.getBorderLayers(true).pop();
-                        a && (n = a.$_blc);
+            (GOutlineAction.prototype._makeOffsetter = function (offset, element) {
+                var borderLineCap;
+                if (element.hasMixin(GObject.GStylable)) {
+                    var paintLayers = element.getPaintLayers();
+                    if (paintLayers) {
+                        var borderLayer = paintLayers.getBorderLayers(true).pop();
+                        borderLayer && (borderLineCap = borderLayer.$_blc);
                     }
                 }
-                var r = e > 0 ? e : -e;
-                return (t instanceof GObject.GPathBase && !t.isClockWise() && t.reverseOrder(), new GObject.GVertexOffsetter(t, r, true, true, 0, n));
+                var absoluteOffset = offset > 0 ? offset : -offset;
+                return (element instanceof GObject.GPathBase && !element.isClockWise() && element.reverseOrder(), new GObject.GVertexOffsetter(element, absoluteOffset, true, true, 0, borderLineCap));
             }),
-            (c.prototype.toString = function () {
+            (GOutlineAction.prototype.toString = function () {
                 return "[Object GOutlineAction]";
             }),
-            (module.exports = c));
+            (module.exports = GOutlineAction));
     };

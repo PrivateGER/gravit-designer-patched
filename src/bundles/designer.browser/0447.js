@@ -4,184 +4,184 @@ module.exports = function (module, exports, require) {
         var GObject = require(1),
             GPlatform = require(15),
             Utils = require(40),
-            r = require(1247),
+            SaveOptionsUtils = require(1247),
             designerConfig = require(10),
-            l = require(67),
+            GRichTooltipConfig = require(67),
             GCategory = require(18),
-            d = require(31),
+            GAction = require(31),
             GSaveAsAction = require(445),
-            p = require(448),
-            g = require(86),
+            GGravitCloudAction = require(448),
+            GDocumentStatus = require(86),
             GCommonNames = require(119),
-            f = require(1510),
+            SaveChooserDialog = require(1510),
             GWarnLinkedImageDialog = require(1511);
         const GSystemDialog = require(44),
-            v = require(1512);
-        var _ = require(85),
-            b = "." + designerConfig.FILE_FORMATS.find((e) => e.default).ext;
-        function w() {
-            w.TOOLTIP_CONFIG = {
-                [l.TOOLTIP_AREA.TOOLBAR]: l.GRichTooltipConfig.from({
+            FileSystemAccessStorage = require(1512);
+        var GContainer = require(85),
+            defaultFileExtension = "." + designerConfig.FILE_FORMATS.find((format) => format.default).ext;
+        function GSaveAction() {
+            GSaveAction.TOOLTIP_CONFIG = {
+                [GRichTooltipConfig.TOOLTIP_AREA.TOOLBAR]: GRichTooltipConfig.GRichTooltipConfig.from({
                     title: GObject.GLocale.get(new GObject.GLocaleKey("GSaveAction", "tooltip-title")),
                     description: GObject.GLocale.get(new GObject.GLocaleKey("GSaveAction", "tooltip-description")),
-                    shortcut: w.SHORTCUT,
+                    shortcut: GSaveAction.SHORTCUT,
                     learnMore: "/docs/basics/working-with-files/save-and-open-files/#save",
                 }),
             };
         }
-        (GObject.GObject.inherit(w, d),
-            (w.ID = "file.save"),
-            (w.TITLE = new GObject.GLocaleKey("GSaveAction", "title")),
-            (w.SHORTCUT = [GPlatform.GKey.Constant.META, "S"]),
-            (w.TOOLTIP_CONFIG = null),
-            (w.prototype.getId = function () {
-                return w.ID;
+        (GObject.GObject.inherit(GSaveAction, GAction),
+            (GSaveAction.ID = "file.save"),
+            (GSaveAction.TITLE = new GObject.GLocaleKey("GSaveAction", "title")),
+            (GSaveAction.SHORTCUT = [GPlatform.GKey.Constant.META, "S"]),
+            (GSaveAction.TOOLTIP_CONFIG = null),
+            (GSaveAction.prototype.getId = function () {
+                return GSaveAction.ID;
             }),
-            (w.prototype.getTitle = function () {
-                return w.TITLE;
+            (GSaveAction.prototype.getTitle = function () {
+                return GSaveAction.TITLE;
             }),
-            (w.prototype.getIcon = function () {
+            (GSaveAction.prototype.getIcon = function () {
                 return "gravit-icon-save";
             }),
-            (w.prototype.getCategory = function () {
+            (GSaveAction.prototype.getCategory = function () {
                 return GCategory.CATEGORY_FILE;
             }),
-            (w.prototype.getGroup = function () {
+            (GSaveAction.prototype.getGroup = function () {
                 return "file";
             }),
-            (w.prototype.getShortcut = function () {
-                return w.SHORTCUT;
+            (GSaveAction.prototype.getShortcut = function () {
+                return GSaveAction.SHORTCUT;
             }),
-            (w.prototype.isShortcutGlobal = function () {
+            (GSaveAction.prototype.isShortcutGlobal = function () {
                 return true;
             }),
-            (w.prototype.isEnabled = function (e) {
+            (GSaveAction.prototype.isEnabled = function (document) {
                 return (
                     !!gDesigner.getApplicationManager().isEditingEnabled() &&
-                    !(!(e = e || gDesigner.getActiveDocument()) || (!e.isModified() && !e.isNew())) &&
-                    !e.isSynchronizing() &&
-                    (!(e.isNew() || !e.getStorageItem() || !e.getStorageItem().getStorage().canSave()) ||
-                        gDesigner.canExecuteAction(GSaveAsAction.ID + b, [null, e], void 0, true))
+                    !(!(document = document || gDesigner.getActiveDocument()) || (!document.isModified() && !document.isNew())) &&
+                    !document.isSynchronizing() &&
+                    (!(document.isNew() || !document.getStorageItem() || !document.getStorageItem().getStorage().canSave()) ||
+                        gDesigner.canExecuteAction(GSaveAsAction.ID + defaultFileExtension, [null, document], void 0, true))
                 );
             }),
-            (w.prototype.execute = function (e, t, n) {
-                const o = e || gDesigner.getActiveDocument();
-                if (o && o.isCommercialProductFile()) return (o.openPaywall(this.getId()), false);
-                (gContainer.getRuntime() === _.Runtime.IPad && (n = true), this._save(o, t, n));
+            (GSaveAction.prototype.execute = function (document, callback, forceCloud) {
+                const targetDocument = document || gDesigner.getActiveDocument();
+                if (targetDocument && targetDocument.isCommercialProductFile()) return (targetDocument.openPaywall(this.getId()), false);
+                (gContainer.getRuntime() === GContainer.Runtime.IPad && (forceCloud = true), this._save(targetDocument, callback, forceCloud));
             }),
-            (w.prototype._performSave = async function (e, t) {
-                (await e.isUpdateAvailable())
+            (GSaveAction.prototype._performSave = async function (document, callback) {
+                (await document.isUpdateAvailable())
                     ? Utils.buildDialogDocumentHasUpdates.call(
                           this,
-                          e,
+                          document,
                           function () {
-                              e.reload();
+                              document.reload();
                           },
                           function () {
-                              GCommonNames.performSave(e, t);
+                              GCommonNames.performSave(document, callback);
                           }
                       )
-                    : GCommonNames.performSave(e, t);
+                    : GCommonNames.performSave(document, callback);
             }),
-            (w.prototype._save = async function (e, t, n) {
+            (GSaveAction.prototype._save = async function (document, callback, forceCloud) {
                 if (gDesigner.getDefaultStorage().canSave()) {
-                    if (!e.getScene().hasLinkedFiles()) return this._saveDesktop(e, t, n);
+                    if (!document.getScene().hasLinkedFiles()) return this._saveDesktop(document, callback, forceCloud);
                     new GWarnLinkedImageDialog(() => {
-                        this._saveDesktop(e, t, n);
+                        this._saveDesktop(document, callback, forceCloud);
                     }).open();
                 } else {
-                    if (e.isNew()) return this._saveToCloud(e, t);
-                    if (e.isCloudFile() && e.getId()) {
-                        if (!(await e.canSaveToCloud())) return this._saveToCloud(e, t);
-                        await this._performSave(e, t);
-                    } else if (e.isExternalFile()) e.storeToCloud(e.getScene(), t);
+                    if (document.isNew()) return this._saveToCloud(document, callback);
+                    if (document.isCloudFile() && document.getId()) {
+                        if (!(await document.canSaveToCloud())) return this._saveToCloud(document, callback);
+                        await this._performSave(document, callback);
+                    } else if (document.isExternalFile()) document.storeToCloud(document.getScene(), callback);
                     else {
-                        if (!e.hasCloudReference()) return this._saveToCloud(e, t);
-                        if (!e.isCloudSyncOn()) return gDesigner.executeAction(GSaveAsAction.ID + b, [null, e, t], void 0, true);
-                        if (!(await e.canSaveToCloud())) return this._saveToCloud(e, t);
-                        e.chooseLatestDocument(
-                            e.getScene(),
-                            (n) => {
-                                n !== e.getScene() ? (e.setScene(n), t && t()) : e.storeToCloud(e.getScene(), t);
+                        if (!document.hasCloudReference()) return this._saveToCloud(document, callback);
+                        if (!document.isCloudSyncOn()) return gDesigner.executeAction(GSaveAsAction.ID + defaultFileExtension, [null, document, callback], void 0, true);
+                        if (!(await document.canSaveToCloud())) return this._saveToCloud(document, callback);
+                        document.chooseLatestDocument(
+                            document.getScene(),
+                            (latestScene) => {
+                                latestScene !== document.getScene() ? (document.setScene(latestScene), callback && callback()) : document.storeToCloud(document.getScene(), callback);
                             },
-                            () => this._saveToCloud(e, t),
-                            (e, t) => t.lastModifiedDate().getTime() > e.lastModifiedDate().getTime(),
+                            () => this._saveToCloud(document, callback),
+                            (current, candidate) => candidate.lastModifiedDate().getTime() > current.lastModifiedDate().getTime(),
                             () => {
-                                t && t();
+                                callback && callback();
                             }
                         );
                     }
                 }
             }),
-            (w.prototype._saveDesktop = async function (e, t) {
-                let n = arguments.length > 2 && void 0 !== arguments[2] && arguments[2];
-                if (e.isNew()) {
-                    if (n) return this._saveToCloud(e, t);
-                    new f(
-                        async function (n) {
-                            if (n === f.file()) {
-                                if (await p.prototype._hasUnsupported.call(this, e)) return;
-                                return gDesigner.executeAction(GSaveAsAction.ID + b, [null, e, t], void 0, true);
+            (GSaveAction.prototype._saveDesktop = async function (document, callback) {
+                let forceCloud = arguments.length > 2 && void 0 !== arguments[2] && arguments[2];
+                if (document.isNew()) {
+                    if (forceCloud) return this._saveToCloud(document, callback);
+                    new SaveChooserDialog(
+                        async function (choice) {
+                            if (choice === SaveChooserDialog.file()) {
+                                if (await GGravitCloudAction.prototype._hasUnsupported.call(this, document)) return;
+                                return gDesigner.executeAction(GSaveAsAction.ID + defaultFileExtension, [null, document, callback], void 0, true);
                             }
-                            if (n === f.cloud()) return this._saveToCloud(e, t);
+                            if (choice === SaveChooserDialog.cloud()) return this._saveToCloud(document, callback);
                         }.bind(this),
                         {
-                            closeCallback: (e) => e && t && t({ documentStatus: g.SaveCancelled }),
+                            closeCallback: (cancelled) => cancelled && callback && callback({ documentStatus: GDocumentStatus.SaveCancelled }),
                         }
                     ).open();
-                } else if (e.isCloudFile()) {
-                    if (!(await e.canSaveToCloud())) return this._saveToCloud(e, t);
-                    await this._performSave(e, t);
-                } else if (e.hasCloudReference())
-                    if (e.isCloudSyncOn()) {
-                        if (!(await e.canSaveToCloud())) return this._saveToCloud(e, t);
-                        e.chooseLatestDocument(
-                            e.getScene(),
-                            (n) => {
-                                n !== e.getScene()
-                                    ? (e.setScene(n),
-                                      e.store(e.getStorageItem(), t, null, {
-                                          lastModifiedDate: n.getLastSavedTime(),
+                } else if (document.isCloudFile()) {
+                    if (!(await document.canSaveToCloud())) return this._saveToCloud(document, callback);
+                    await this._performSave(document, callback);
+                } else if (document.hasCloudReference())
+                    if (document.isCloudSyncOn()) {
+                        if (!(await document.canSaveToCloud())) return this._saveToCloud(document, callback);
+                        document.chooseLatestDocument(
+                            document.getScene(),
+                            (latestScene) => {
+                                latestScene !== document.getScene()
+                                    ? (document.setScene(latestScene),
+                                      document.store(document.getStorageItem(), callback, null, {
+                                          lastModifiedDate: latestScene.getLastSavedTime(),
                                       }))
-                                    : e.store(e.getStorageItem(), () => {
-                                          e.storeToCloud(e.getScene(), t);
+                                    : document.store(document.getStorageItem(), () => {
+                                          document.storeToCloud(document.getScene(), callback);
                                       });
                             },
-                            (n) => {
-                                n && 404 === n.status ? e.store(e.getStorageItem(), t) : GSystemDialog.alert(designerConfig.gApi.formatError(n));
+                            (error) => {
+                                error && 404 === error.status ? document.store(document.getStorageItem(), callback) : GSystemDialog.alert(designerConfig.gApi.formatError(error));
                             },
-                            (e, t) => t.lastModifiedDate().getTime() > e.lastModifiedDate().getTime()
+                            (current, candidate) => candidate.lastModifiedDate().getTime() > current.lastModifiedDate().getTime()
                         );
-                    } else e.isExternalFile() ? e.storeToCloud(e.getScene(), t) : e.store(e.getStorageItem(), t);
-                else if (e.isExternalFile()) e.storeToCloud(e.getScene(), t);
+                    } else document.isExternalFile() ? document.storeToCloud(document.getScene(), callback) : document.store(document.getStorageItem(), callback);
+                else if (document.isExternalFile()) document.storeToCloud(document.getScene(), callback);
                 else {
-                    const n = e.getStorageItem();
-                    let o = {};
-                    (n instanceof v.Item && (o = (0, r.updateSaveOptions)(o, e, n)), e.store(n, t, null, o));
+                    const storageItem = document.getStorageItem();
+                    let saveOptions = {};
+                    (storageItem instanceof FileSystemAccessStorage.Item && (saveOptions = (0, SaveOptionsUtils.updateSaveOptions)(saveOptions, document, storageItem)), document.store(storageItem, callback, null, saveOptions));
                 }
             }),
-            (w.prototype._saveToCloud = function (e, t) {
+            (GSaveAction.prototype._saveToCloud = function (document, callback) {
                 return gDesigner.executeAction(
-                    p.ID + ".save-as",
+                    GGravitCloudAction.ID + ".save-as",
                     [
-                        e,
-                        (n) => {
-                            n === g.Loaded
-                                ? gDesigner.removeDocument(e, null, true)
-                                : n === g.Saved
-                                  ? t && t({ documentStatus: g.Saved })
-                                  : n === g.SaveCancelled && t && t({ documentStatus: g.SaveCancelled });
+                        document,
+                        (status) => {
+                            status === GDocumentStatus.Loaded
+                                ? gDesigner.removeDocument(document, null, true)
+                                : status === GDocumentStatus.Saved
+                                  ? callback && callback({ documentStatus: GDocumentStatus.Saved })
+                                  : status === GDocumentStatus.SaveCancelled && callback && callback({ documentStatus: GDocumentStatus.SaveCancelled });
                         },
                     ],
                     void 0,
                     true
                 );
             }),
-            (w.prototype.getTooltipConfig = function (e) {
-                return (e && w.TOOLTIP_CONFIG[e]) || null;
+            (GSaveAction.prototype.getTooltipConfig = function (area) {
+                return (area && GSaveAction.TOOLTIP_CONFIG[area]) || null;
             }),
-            (w.prototype.toString = function () {
+            (GSaveAction.prototype.toString = function () {
                 return "[Object GSaveAction]";
             }),
-            (module.exports = w));
+            (module.exports = GSaveAction));
     };

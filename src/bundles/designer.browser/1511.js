@@ -1,16 +1,16 @@
 module.exports = function (module, exports, require) {
         "use strict";
         var GObject = require(1);
-        function i(e, t) {
+        function GWarnLinkedImageDialog(agreeCallback, rejectCallback) {
             ((this._neverRemind = false),
-                (this._agreeCb = e),
-                (this._rejectCb = t || this.close),
-                gContainer.getProperty("designer.settings.warn-linked-image-dialog.never-remind").then((t) => {
-                    (t = t || false) ? e() : this._init();
+                (this._agreeCb = agreeCallback),
+                (this._rejectCb = rejectCallback || this.close),
+                gContainer.getProperty("designer.settings.warn-linked-image-dialog.never-remind").then((neverRemind) => {
+                    (neverRemind = neverRemind || false) ? agreeCallback() : this._init();
                 }));
         }
-        (GObject.GObject.inherit(i, GObject.GObject),
-            (i.prototype._init = function () {
+        (GObject.GObject.inherit(GWarnLinkedImageDialog, GObject.GObject),
+            (GWarnLinkedImageDialog.prototype._init = function () {
                 ((this._dialog = $("<div></div>")
                     .addClass("container")
                     .append(
@@ -60,7 +60,7 @@ module.exports = function (module, exports, require) {
                         .on("click", this.close.bind(this))
                         .appendTo(this._dialog));
             }),
-            (i.prototype.save = function () {
+            (GWarnLinkedImageDialog.prototype.save = function () {
                 (this._neverRemind &&
                     gContainer &&
                     gContainer.setProperty &&
@@ -68,11 +68,11 @@ module.exports = function (module, exports, require) {
                     this.close(),
                     this._agreeCb());
             }),
-            (i.prototype.open = function () {
+            (GWarnLinkedImageDialog.prototype.open = function () {
                 this._dialog.gDialog("open", true);
             }),
-            (i.prototype.close = function () {
+            (GWarnLinkedImageDialog.prototype.close = function () {
                 this._dialog.gDialog("close");
             }),
-            (module.exports = i));
+            (module.exports = GWarnLinkedImageDialog));
     };

@@ -1,119 +1,119 @@
 module.exports = function (module, exports, require) {
         "use strict";
         (require(96 /* polyfill:JSON */), require(57), require(20 /* polyfill:RegExp */), require(151), require(38));
-        var i = function () {
+        var RetryHandler = function () {
             ((this.interval = 1e3), (this.maxInterval = 6e4));
         };
-        ((i.prototype.retry = function (e) {
-            (setTimeout(e, this.interval), (this.interval = this.nextInterval_()));
+        ((RetryHandler.prototype.retry = function (callback) {
+            (setTimeout(callback, this.interval), (this.interval = this.nextInterval_()));
         }),
-            (i.prototype.reset = function () {
+            (RetryHandler.prototype.reset = function () {
                 this.interval = 1e3;
             }),
-            (i.prototype.nextInterval_ = function () {
-                var e = 2 * this.interval + this.getRandomInt_(0, 1e3);
-                return Math.min(e, this.maxInterval);
+            (RetryHandler.prototype.nextInterval_ = function () {
+                var interval = 2 * this.interval + this.getRandomInt_(0, 1e3);
+                return Math.min(interval, this.maxInterval);
             }),
-            (i.prototype.getRandomInt_ = function (e, t) {
-                return Math.floor(Math.random() * (t - e + 1) + e);
+            (RetryHandler.prototype.getRandomInt_ = function (min, max) {
+                return Math.floor(Math.random() * (max - min + 1) + min);
             }));
-        var a = function (e) {
-            var t = function () {};
+        var MediaUploader = function (options) {
+            var noop = function () {};
             if (
-                ((this.file = e.file),
-                (this.contentType = e.contentType || this.file.type || "application/octet-stream"),
-                (this.metadata = e.metadata || {
+                ((this.file = options.file),
+                (this.contentType = options.contentType || this.file.type || "application/octet-stream"),
+                (this.metadata = options.metadata || {
                     name: this.file.name,
                     mimeType: this.contentType,
                 }),
-                (this.token = e.token),
-                (this.onComplete = e.onComplete || t),
-                (this.onProgress = e.onProgress || t),
-                (this.onError = e.onError || t),
-                (this.offset = e.offset || 0),
-                (this.chunkSize = e.chunkSize || 0),
-                (this.retryHandler = new i()),
-                (this.url = e.url),
+                (this.token = options.token),
+                (this.onComplete = options.onComplete || noop),
+                (this.onProgress = options.onProgress || noop),
+                (this.onError = options.onError || noop),
+                (this.offset = options.offset || 0),
+                (this.chunkSize = options.chunkSize || 0),
+                (this.retryHandler = new RetryHandler()),
+                (this.url = options.url),
                 !this.url)
             ) {
-                var n = e.params || {};
-                ((n.uploadType = "resumable"), (this.url = this.buildUrl_(e.fileId, n, e.baseUrl)));
+                var params = options.params || {};
+                ((params.uploadType = "resumable"), (this.url = this.buildUrl_(options.fileId, params, options.baseUrl)));
             }
-            this.httpMethod = e.fileId ? "PATCH" : "POST";
+            this.httpMethod = options.fileId ? "PATCH" : "POST";
         };
-        ((a.prototype.upload = function () {
-            var e = new XMLHttpRequest();
-            (e.open(this.httpMethod, this.url, true),
-                e.setRequestHeader("Authorization", "Bearer " + this.token),
-                e.setRequestHeader("Content-Type", "application/json"),
-                e.setRequestHeader("X-Upload-Content-Length", this.file.size),
-                e.setRequestHeader("X-Upload-Content-Type", this.contentType),
-                (e.onload = function () {
-                    if (e.status < 400) {
-                        var t = e.getResponseHeader("Location");
-                        ((this.url = t), this.sendFile_());
-                    } else this.onUploadError_(e);
+        ((MediaUploader.prototype.upload = function () {
+            var xhr = new XMLHttpRequest();
+            (xhr.open(this.httpMethod, this.url, true),
+                xhr.setRequestHeader("Authorization", "Bearer " + this.token),
+                xhr.setRequestHeader("Content-Type", "application/json"),
+                xhr.setRequestHeader("X-Upload-Content-Length", this.file.size),
+                xhr.setRequestHeader("X-Upload-Content-Type", this.contentType),
+                (xhr.onload = function () {
+                    if (xhr.status < 400) {
+                        var location = xhr.getResponseHeader("Location");
+                        ((this.url = location), this.sendFile_());
+                    } else this.onUploadError_(xhr);
                 }.bind(this)),
-                (e.onerror = this.onUploadError_.bind(this, e)),
-                e.send(JSON.stringify(this.metadata)));
+                (xhr.onerror = this.onUploadError_.bind(this, xhr)),
+                xhr.send(JSON.stringify(this.metadata)));
         }),
-            (a.prototype.sendFile_ = function () {
-                var e = this.file,
-                    t = this.file.size;
+            (MediaUploader.prototype.sendFile_ = function () {
+                var content = this.file,
+                    end = this.file.size;
                 (this.offset || this.chunkSize) &&
-                    (this.chunkSize && (t = Math.min(this.offset + this.chunkSize, this.file.size)), (e = e.slice(this.offset, t)));
-                var n = new XMLHttpRequest();
-                (n.open("PUT", this.url, true),
-                    n.setRequestHeader("Content-Type", this.contentType),
-                    n.setRequestHeader("Content-Range", "bytes " + this.offset + "-" + (t - 1) + "/" + this.file.size),
-                    n.setRequestHeader("X-Upload-Content-Type", this.file.type),
-                    n.upload && n.upload.addEventListener("progress", this.onProgress),
-                    (n.onload = this.onContentUploadSuccess_.bind(this, n)),
-                    (n.onerror = this.onContentUploadError_.bind(this, n)),
-                    n.send(e));
+                    (this.chunkSize && (end = Math.min(this.offset + this.chunkSize, this.file.size)), (content = content.slice(this.offset, end)));
+                var xhr = new XMLHttpRequest();
+                (xhr.open("PUT", this.url, true),
+                    xhr.setRequestHeader("Content-Type", this.contentType),
+                    xhr.setRequestHeader("Content-Range", "bytes " + this.offset + "-" + (end - 1) + "/" + this.file.size),
+                    xhr.setRequestHeader("X-Upload-Content-Type", this.file.type),
+                    xhr.upload && xhr.upload.addEventListener("progress", this.onProgress),
+                    (xhr.onload = this.onContentUploadSuccess_.bind(this, xhr)),
+                    (xhr.onerror = this.onContentUploadError_.bind(this, xhr)),
+                    xhr.send(content));
             }),
-            (a.prototype.resume_ = function () {
-                var e = new XMLHttpRequest();
-                (e.open("PUT", this.url, true),
-                    e.setRequestHeader("Content-Range", "bytes */" + this.file.size),
-                    e.setRequestHeader("X-Upload-Content-Type", this.file.type),
-                    e.upload && e.upload.addEventListener("progress", this.onProgress),
-                    (e.onload = this.onContentUploadSuccess_.bind(this, e)),
-                    (e.onerror = this.onContentUploadError_.bind(this, e)),
-                    e.send());
+            (MediaUploader.prototype.resume_ = function () {
+                var xhr = new XMLHttpRequest();
+                (xhr.open("PUT", this.url, true),
+                    xhr.setRequestHeader("Content-Range", "bytes */" + this.file.size),
+                    xhr.setRequestHeader("X-Upload-Content-Type", this.file.type),
+                    xhr.upload && xhr.upload.addEventListener("progress", this.onProgress),
+                    (xhr.onload = this.onContentUploadSuccess_.bind(this, xhr)),
+                    (xhr.onerror = this.onContentUploadError_.bind(this, xhr)),
+                    xhr.send());
             }),
-            (a.prototype.extractRange_ = function (e) {
-                var t = e.getResponseHeader("Range");
-                t && (this.offset = parseInt(t.match(/\d+/g).pop(), 10) + 1);
+            (MediaUploader.prototype.extractRange_ = function (xhr) {
+                var range = xhr.getResponseHeader("Range");
+                range && (this.offset = parseInt(range.match(/\d+/g).pop(), 10) + 1);
             }),
-            (a.prototype.onContentUploadSuccess_ = function (t) {
-                200 == t.status || 201 == t.status
-                    ? this.onComplete(t.response)
-                    : 308 == t.status
-                      ? (this.extractRange_(t), this.retryHandler.reset(), this.sendFile_())
+            (MediaUploader.prototype.onContentUploadSuccess_ = function (xhr) {
+                200 == xhr.status || 201 == xhr.status
+                    ? this.onComplete(xhr.response)
+                    : 308 == xhr.status
+                      ? (this.extractRange_(xhr), this.retryHandler.reset(), this.sendFile_())
                       : this.onContentUploadError_(e);
             }),
-            (a.prototype.onContentUploadError_ = function (e) {
-                e.status && e.status < 500 ? this.onError(e.response) : this.retryHandler.retry(this.resume_.bind(this));
+            (MediaUploader.prototype.onContentUploadError_ = function (xhr) {
+                xhr.status && xhr.status < 500 ? this.onError(xhr.response) : this.retryHandler.retry(this.resume_.bind(this));
             }),
-            (a.prototype.onUploadError_ = function (e) {
-                this.onError(e.response);
+            (MediaUploader.prototype.onUploadError_ = function (xhr) {
+                this.onError(xhr.response);
             }),
-            (a.prototype.buildQuery_ = function (e) {
+            (MediaUploader.prototype.buildQuery_ = function (params) {
                 return (
-                    (e = e || {}),
-                    Object.keys(e)
-                        .map(function (t) {
-                            return encodeURIComponent(t) + "=" + encodeURIComponent(e[t]);
+                    (params = params || {}),
+                    Object.keys(params)
+                        .map(function (key) {
+                            return encodeURIComponent(key) + "=" + encodeURIComponent(params[key]);
                         })
                         .join("&")
                 );
             }),
-            (a.prototype.buildUrl_ = function (e, t, n) {
-                var o = n || "https://www.googleapis.com/upload/drive/v3/files/";
-                e && (o += e);
-                var i = this.buildQuery_(t);
-                return (i && (o += "?" + i), o);
+            (MediaUploader.prototype.buildUrl_ = function (fileId, params, baseUrl) {
+                var url = baseUrl || "https://www.googleapis.com/upload/drive/v3/files/";
+                fileId && (url += fileId);
+                var query = this.buildQuery_(params);
+                return (query && (url += "?" + query), url);
             }),
-            (module.exports = a));
+            (module.exports = MediaUploader));
     };

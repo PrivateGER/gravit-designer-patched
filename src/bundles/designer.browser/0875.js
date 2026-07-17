@@ -4,66 +4,66 @@ module.exports = function (module, exports, require) {
         var GObject = require(1),
             GPlatform = require(15),
             GCategory = require(18),
-            r = require(106);
-        function s() {}
-        (GObject.GObject.inherit(s, r),
-            (s.ID = "edit.paste.style"),
-            (s.TITLE = new GObject.GLocaleKey("GPasteStyleAction", "title")),
-            (s.prototype.getId = function () {
-                return s.ID;
+            GElementAction = require(106);
+        function GPasteStyleAction() {}
+        (GObject.GObject.inherit(GPasteStyleAction, GElementAction),
+            (GPasteStyleAction.ID = "edit.paste.style"),
+            (GPasteStyleAction.TITLE = new GObject.GLocaleKey("GPasteStyleAction", "title")),
+            (GPasteStyleAction.prototype.getId = function () {
+                return GPasteStyleAction.ID;
             }),
-            (s.prototype.getTitle = function () {
-                return s.TITLE;
+            (GPasteStyleAction.prototype.getTitle = function () {
+                return GPasteStyleAction.TITLE;
             }),
-            (s.prototype.getCategory = function () {
+            (GPasteStyleAction.prototype.getCategory = function () {
                 return GCategory.CATEGORY_EDIT_PASTE;
             }),
-            (s.prototype.getGroup = function () {
+            (GPasteStyleAction.prototype.getGroup = function () {
                 return "ccp/paste";
             }),
-            (s.prototype.getIcon = function () {
+            (GPasteStyleAction.prototype.getIcon = function () {
                 return gDesigner.isTouchEnabled() ? "gravit-icon-paste-style" : null;
             }),
-            (s.prototype.getShortcut = function () {
+            (GPasteStyleAction.prototype.getShortcut = function () {
                 return [GPlatform.GKey.Constant.F4];
             }),
-            (s.prototype.isEnabled = function () {
-                if (!r.prototype.isEnabled.call(this)) return false;
-                var e = gDesigner.getClipboardMimeTypes();
-                if (e && e.indexOf(GObject.GNode.MIME_TYPE) >= 0) {
-                    var t = gDesigner.getActiveDocument();
-                    if (t) {
-                        var n = t.getEditor().getIndividualSelection();
-                        if (n) for (var i = 0; i < n.length; ++i) if (n[i].hasMixin(GObject.GStylable)) return true;
+            (GPasteStyleAction.prototype.isEnabled = function () {
+                if (!GElementAction.prototype.isEnabled.call(this)) return false;
+                var mimeTypes = gDesigner.getClipboardMimeTypes();
+                if (mimeTypes && mimeTypes.indexOf(GObject.GNode.MIME_TYPE) >= 0) {
+                    var activeDocument = gDesigner.getActiveDocument();
+                    if (activeDocument) {
+                        var individualSelection = activeDocument.getEditor().getIndividualSelection();
+                        if (individualSelection) for (var i = 0; i < individualSelection.length; ++i) if (individualSelection[i].hasMixin(GObject.GStylable)) return true;
                     }
                 }
                 return false;
             }),
-            (s.prototype.execute = function () {
-                var e = GObject.GNode.deserialize(gDesigner.getClipboardContent(GObject.GNode.MIME_TYPE));
-                if ((e = gDesigner.getActiveDocument().filterUnrestrictedCommercialFileElements(e)) && e.length > 0) {
-                    for (var t = null, n = 0; n < e.length; ++n)
-                        if (e[n].hasMixin(GObject.GStylable)) {
-                            t = e[n];
+            (GPasteStyleAction.prototype.execute = function () {
+                var elements = GObject.GNode.deserialize(gDesigner.getClipboardContent(GObject.GNode.MIME_TYPE));
+                if ((elements = gDesigner.getActiveDocument().filterUnrestrictedCommercialFileElements(elements)) && elements.length > 0) {
+                    for (var styleSource = null, n = 0; n < elements.length; ++n)
+                        if (elements[n].hasMixin(GObject.GStylable)) {
+                            styleSource = elements[n];
                             break;
                         }
-                    if (!t) return;
-                    var i = gDesigner.getActiveDocument().getEditor(),
-                        a = i.getIndividualSelection();
-                    (t instanceof GObject.GText && gDesigner.getActiveDocument().getScene().getActivePage().appendChild(t), i.beginTransaction());
+                    if (!styleSource) return;
+                    var editor = gDesigner.getActiveDocument().getEditor(),
+                        selection = editor.getIndividualSelection();
+                    (styleSource instanceof GObject.GText && gDesigner.getActiveDocument().getScene().getActivePage().appendChild(styleSource), editor.beginTransaction());
                     try {
-                        for (n = 0; n < a.length; ++n) {
-                            var r = a[n];
-                            r.hasMixin(GObject.GStylable) && r.assignStyleFrom(t);
+                        for (n = 0; n < selection.length; ++n) {
+                            var r = selection[n];
+                            r.hasMixin(GObject.GStylable) && r.assignStyleFrom(styleSource);
                         }
                     } finally {
-                        (i.commitTransaction(GObject.GLocale.get(this.getTitle())),
-                            t instanceof GObject.GText && gDesigner.getActiveDocument().getScene().getActivePage().removeChild(t));
+                        (editor.commitTransaction(GObject.GLocale.get(this.getTitle())),
+                            styleSource instanceof GObject.GText && gDesigner.getActiveDocument().getScene().getActivePage().removeChild(styleSource));
                     }
                 }
             }),
-            (s.prototype.toString = function () {
+            (GPasteStyleAction.prototype.toString = function () {
                 return "[Object GPasteStyleAction]";
             }),
-            (module.exports = s));
+            (module.exports = GPasteStyleAction));
     };

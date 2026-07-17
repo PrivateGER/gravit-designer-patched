@@ -2,16 +2,16 @@ module.exports = function (module, exports, require) {
         "use strict";
         (require(20 /* polyfill:RegExp */), require(34), require(134 /* polyfill:String */), require(4), require(41), require(13), require(32), require(33));
         var GObject = require(1),
-            i = require(1075),
-            a = require(381);
-        function r(e) {
-            a.call(this, e);
+            notoScriptFonts = require(1075),
+            GFontsProvider = require(381);
+        function DefaultFontsProvider(providerManager) {
+            GFontsProvider.call(this, providerManager);
         }
-        GObject.GObject.inherit(r, a);
-        var s = GObject.GUtil.uuid(),
-            l = {},
-            c = null,
-            d = [
+        GObject.GObject.inherit(DefaultFontsProvider, GFontsProvider);
+        var providerId = GObject.GUtil.uuid(),
+            pendingFontLoads = {},
+            loadedFontFamilies = null,
+            fontFamilies = [
                 {
                     family: "Open Sans",
                     fonts: [
@@ -70,7 +70,7 @@ module.exports = function (module, exports, require) {
                     scripts: ["LATIN"],
                 },
             ];
-        (d.push({
+        (fontFamilies.push({
             family: "Noto Sans CJK SC",
             fonts: [
                 {
@@ -87,7 +87,7 @@ module.exports = function (module, exports, require) {
             preview: "assets/font/chinese-simplified/NotoSans.svg",
             scripts: ["HAN"],
         }),
-            d.push({
+            fontFamilies.push({
                 family: "Noto Sans CJK TC",
                 fonts: [
                     {
@@ -104,90 +104,90 @@ module.exports = function (module, exports, require) {
                 preview: "assets/font/chinese-traditional/NotoSans.svg",
                 scripts: ["HAN"],
             }),
-            (d = d.concat(i)),
-            GObject.GObject.inherit(r, a),
-            (r.prototype.getDefaultFamilyForString = function (e) {
-                var t = GObject.GOpenTypeFont.getScriptForString(e);
-                if ("CYRILLIC" === t || "GREEK" === t) return "Noto Sans";
-                var n = d.find((e) => e.scripts && e.scripts.indexOf(t) >= 0);
-                return (n && n.family) || null;
+            (fontFamilies = fontFamilies.concat(notoScriptFonts)),
+            GObject.GObject.inherit(DefaultFontsProvider, GFontsProvider),
+            (DefaultFontsProvider.prototype.getDefaultFamilyForString = function (text) {
+                var script = GObject.GOpenTypeFont.getScriptForString(text);
+                if ("CYRILLIC" === script || "GREEK" === script) return "Noto Sans";
+                var matchedFamily = fontFamilies.find((family) => family.scripts && family.scripts.indexOf(script) >= 0);
+                return (matchedFamily && matchedFamily.family) || null;
             }),
-            (r.prototype.addPreviews = function (e) {
-                for (var t = new DOMParser(), n = 0; n < e.length; n++)
-                    e[n].cachedPreview ||
-                        (e[n].addPreviewCallback = function (e) {
-                            var n = new XMLHttpRequest();
-                            (n.open("GET", this.preview),
-                                (n.onload = function () {
-                                    var n;
+            (DefaultFontsProvider.prototype.addPreviews = function (fontEntries) {
+                for (var domParser = new DOMParser(), n = 0; n < fontEntries.length; n++)
+                    fontEntries[n].cachedPreview ||
+                        (fontEntries[n].addPreviewCallback = function (onPreviewReady) {
+                            var request = new XMLHttpRequest();
+                            (request.open("GET", this.preview),
+                                (request.onload = function () {
+                                    var node;
                                     if (this.status >= 200 && this.status < 300)
                                         try {
-                                            (n = t.parseFromString(this.response, "image/svg+xml").firstChild) &&
-                                                n.getAttribute("xmlns") &&
-                                                (n.setAttribute("height", "20px"), e(n));
+                                            (node = domParser.parseFromString(this.response, "image/svg+xml").firstChild) &&
+                                                node.getAttribute("xmlns") &&
+                                                (node.setAttribute("height", "20px"), onPreviewReady(node));
                                         } catch (e) {
                                             "undefined" != typeof gdb_loaddesign && console.warn("Couldn't parse default preview");
                                         }
                                 }),
-                                n.send());
+                                request.send());
                         });
             }),
-            (r.prototype.init = function () {
-                c || (c = d);
+            (DefaultFontsProvider.prototype.init = function () {
+                loadedFontFamilies || (loadedFontFamilies = fontFamilies);
             }),
-            (r.prototype.load = function (e, t, n, o) {
+            (DefaultFontsProvider.prototype.load = function (familyName, offset, limit, deferred) {
                 (this.init(),
-                    o.done(
-                        c
-                            .filter(function (t) {
-                                return e.indexOf("%") >= 0
-                                    ? t.family.toLowerCase().startsWith(e.replace(/%/g, ""))
-                                    : t.family.toLowerCase() == e.toLowerCase();
+                    deferred.done(
+                        loadedFontFamilies
+                            .filter(function (familyEntry) {
+                                return familyName.indexOf("%") >= 0
+                                    ? familyEntry.family.toLowerCase().startsWith(familyName.replace(/%/g, ""))
+                                    : familyEntry.family.toLowerCase() == familyName.toLowerCase();
                             })
-                            .slice(t, t + n),
+                            .slice(offset, offset + limit),
                         true,
                         null
                     ));
             }),
-            (r.prototype.getTotalFonts = function (e) {
-                return (this.init(), e ? c.filter(this._searchFilter(e)).length : c.length);
+            (DefaultFontsProvider.prototype.getTotalFonts = function (filterText) {
+                return (this.init(), filterText ? loadedFontFamilies.filter(this._searchFilter(filterText)).length : loadedFontFamilies.length);
             }),
-            (r.prototype.hasFont = function (e) {
-                var t = false;
-                if (d)
-                    for (var n = 0; n < d.length; ++n)
-                        if (d[n].family === e) {
-                            t = true;
+            (DefaultFontsProvider.prototype.hasFont = function (familyName) {
+                var found = false;
+                if (fontFamilies)
+                    for (var n = 0; n < fontFamilies.length; ++n)
+                        if (fontFamilies[n].family === familyName) {
+                            found = true;
                             break;
                         }
-                return t;
+                return found;
             }),
-            (r.prototype.resolveFont = function (e, t, n, i) {
+            (DefaultFontsProvider.prototype.resolveFont = function (family, style, weight, deferred) {
                 this.init();
-                for (var r = 0; r < c.length; r++) {
-                    var s = c[r];
-                    if (s.family === e)
+                for (var r = 0; r < loadedFontFamilies.length; r++) {
+                    var s = loadedFontFamilies[r];
+                    if (s.family === family)
                         for (var d = s.fonts, u = 0; u < d.length; u++) {
                             var p = d[u];
-                            if (p.weight === (n || 400) && p.style === (t || GObject.GFont.Style.Normal)) {
-                                if (l[p.url]) l[p.url].push(i);
+                            if (p.weight === (weight || 400) && p.style === (style || GObject.GFont.Style.Normal)) {
+                                if (pendingFontLoads[p.url]) pendingFontLoads[p.url].push(deferred);
                                 else {
                                     var g = new XMLHttpRequest();
                                     ((g.responseType = "arraybuffer"),
                                         g.open("GET", p.url),
-                                        (l[p.url] = []),
-                                        l[p.url].push(i),
+                                        (pendingFontLoads[p.url] = []),
+                                        pendingFontLoads[p.url].push(deferred),
                                         (g.onload = function () {
                                             if (this.status >= 200 && this.status < 300) {
-                                                var e = l[p.url];
-                                                (delete l[p.url],
-                                                    e.forEach((e) => {
-                                                        e.done(this.response);
+                                                var callbacks = pendingFontLoads[p.url];
+                                                (delete pendingFontLoads[p.url],
+                                                    callbacks.forEach((callback) => {
+                                                        callback.done(this.response);
                                                     }));
                                             }
                                         }),
                                         (g.onerror = () => {
-                                            (delete l[p.url], i.fail(a.Errors.ConnectionError));
+                                            (delete pendingFontLoads[p.url], deferred.fail(GFontsProvider.Errors.ConnectionError));
                                         }),
                                         g.send());
                                 }
@@ -195,10 +195,10 @@ module.exports = function (module, exports, require) {
                             }
                         }
                 }
-                i.fail();
+                deferred.fail();
             }),
-            (r.prototype.getProviderId = function () {
-                return s;
+            (DefaultFontsProvider.prototype.getProviderId = function () {
+                return providerId;
             }),
-            (module.exports = r));
+            (module.exports = DefaultFontsProvider));
     };

@@ -3,76 +3,76 @@ module.exports = function (module, exports, require) {
         (require(19), require(3), require(4), require(32), require(33), require(26));
         var GObject = require(1),
             GPlatform = require(15),
-            a = (require(53), require(18 /* GCategory */)),
-            r = require(106);
-        function s() {}
-        (GObject.GObject.inherit(s, r),
-            (s.ID = "edit.paste.inside"),
-            (s.TITLE = new GObject.GLocaleKey("GPasteInsideAction", "title")),
-            (s.prototype.getId = function () {
-                return s.ID;
+            GCategory = (require(53), require(18 /* GCategory */)),
+            GElementAction = require(106);
+        function GPasteInsideAction() {}
+        (GObject.GObject.inherit(GPasteInsideAction, GElementAction),
+            (GPasteInsideAction.ID = "edit.paste.inside"),
+            (GPasteInsideAction.TITLE = new GObject.GLocaleKey("GPasteInsideAction", "title")),
+            (GPasteInsideAction.prototype.getId = function () {
+                return GPasteInsideAction.ID;
             }),
-            (s.prototype.getTitle = function () {
-                return s.TITLE;
+            (GPasteInsideAction.prototype.getTitle = function () {
+                return GPasteInsideAction.TITLE;
             }),
-            (s.prototype.getCategory = function () {
-                return a.CATEGORY_EDIT_PASTE;
+            (GPasteInsideAction.prototype.getCategory = function () {
+                return GCategory.CATEGORY_EDIT_PASTE;
             }),
-            (s.prototype.getGroup = function () {
+            (GPasteInsideAction.prototype.getGroup = function () {
                 return "ccp/paste";
             }),
-            (s.prototype.getIcon = function () {
+            (GPasteInsideAction.prototype.getIcon = function () {
                 return gDesigner.isTouchEnabled() ? "gravit-icon-paste-inside" : null;
             }),
-            (s.prototype.getShortcut = function () {
+            (GPasteInsideAction.prototype.getShortcut = function () {
                 return [GPlatform.GKey.Constant.OPTION, GPlatform.GKey.Constant.SHIFT, GPlatform.GKey.Constant.META, "V"];
             }),
-            (s.prototype.isEnabled = function () {
-                if (!r.prototype.isEnabled.call(this)) return false;
-                var e = gDesigner.getActiveDocument();
-                if (e) {
-                    var t = e.getEditor().getSelection();
-                    if (t) {
+            (GPasteInsideAction.prototype.isEnabled = function () {
+                if (!GElementAction.prototype.isEnabled.call(this)) return false;
+                var activeDocument = gDesigner.getActiveDocument();
+                if (activeDocument) {
+                    var selection = activeDocument.getEditor().getSelection();
+                    if (selection) {
                         if (document.queryCommandSupported("paste")) return true;
-                        var n = gDesigner.getClipboardMimeTypes();
-                        if (n && n.indexOf(GObject.GNode.MIME_TYPE) >= 0)
-                            for (var i = 0; i < t.length; ++i) if (t[i].hasMixin(GObject.GNode.Container)) return true;
+                        var mimeTypes = gDesigner.getClipboardMimeTypes();
+                        if (mimeTypes && mimeTypes.indexOf(GObject.GNode.MIME_TYPE) >= 0)
+                            for (var i = 0; i < selection.length; ++i) if (selection[i].hasMixin(GObject.GNode.Container)) return true;
                     }
                 }
                 return false;
             }),
-            (s.prototype.execute = function () {
+            (GPasteInsideAction.prototype.execute = function () {
                 (gDesigner.getPaste().assignCallback(this._paste.bind(this)),
                     (!gDesigner.isTouchDevice() && document.execCommand("paste")) ||
                         (gDesigner.getPaste().assignCallback(null),
                         this._paste(GObject.GNode.deserialize(gDesigner.getClipboardContent(GObject.GNode.MIME_TYPE)))));
             }),
-            (s.prototype._paste = function (e, t) {
-                if (e && e.length > 0) {
-                    for (var n = [], i = 0; i < e.length; ++i) e[i] instanceof GObject.GElement && n.push(e[i]);
-                    if ((n = gDesigner.getActiveDocument().filterUnrestrictedCommercialFileElements(n)).length > 0) {
-                        var a = gDesigner.getActiveDocument().getEditor(),
-                            r = [...a.getSelection()];
-                        (n.forEach((e) => {
-                            e instanceof GObject.GText &&
-                                !e.getProperty("content") &&
-                                (a.insertElements([e], false, true, true), e.getParent().removeChild(e));
+            (GPasteInsideAction.prototype._paste = function (elements, isTextPaste) {
+                if (elements && elements.length > 0) {
+                    for (var filteredElements = [], i = 0; i < elements.length; ++i) elements[i] instanceof GObject.GElement && filteredElements.push(elements[i]);
+                    if ((filteredElements = gDesigner.getActiveDocument().filterUnrestrictedCommercialFileElements(filteredElements)).length > 0) {
+                        var editor = gDesigner.getActiveDocument().getEditor(),
+                            selectedElements = [...editor.getSelection()];
+                        (filteredElements.forEach((element) => {
+                            element instanceof GObject.GText &&
+                                !element.getProperty("content") &&
+                                (editor.insertElements([element], false, true, true), element.getParent().removeChild(element));
                         }),
-                            a.beginTransaction());
+                            editor.beginTransaction());
                         try {
-                            for (i = 0; i < r.length; ++i) {
-                                var s = r[i];
+                            for (i = 0; i < selectedElements.length; ++i) {
+                                var s = selectedElements[i];
                                 if (s.hasMixin(GObject.GNode.Container) && !s.isLocked()) {
-                                    for (var l = [], c = 0; c < n.length; ++c) n[c].validateInsertion(s) && l.push(n[c].clone());
-                                    a.insertElements(l, !t, true, false, true, s);
+                                    for (var l = [], c = 0; c < filteredElements.length; ++c) filteredElements[c].validateInsertion(s) && l.push(filteredElements[c].clone());
+                                    editor.insertElements(l, !isTextPaste, true, false, true, s);
                                     var d = s instanceof GObject.GElement ? s.getGeometryBBox() : null;
                                     if (d) {
                                         var u = d.getX(),
                                             p = d.getY(),
                                             g = null;
-                                        l.forEach((e) => {
-                                            var t = e.getGeometryBBox();
-                                            t && (g = g ? g.united(t) : t);
+                                        l.forEach((clonedElement) => {
+                                            var elementBBox = clonedElement.getGeometryBBox();
+                                            elementBBox && (g = g ? g.united(elementBBox) : elementBBox);
                                         });
                                         var h = g ? g.getX() : null,
                                             f = g ? g.getY() : null,
@@ -92,13 +92,13 @@ module.exports = function (module, exports, require) {
                                 }
                             }
                         } finally {
-                            a.commitTransaction(GObject.GLocale.get(this.getTitle()));
+                            editor.commitTransaction(GObject.GLocale.get(this.getTitle()));
                         }
                     }
                 }
             }),
-            (s.prototype.toString = function () {
+            (GPasteInsideAction.prototype.toString = function () {
                 return "[Object GPasteInsideAction]";
             }),
-            (module.exports = s));
+            (module.exports = GPasteInsideAction));
     };

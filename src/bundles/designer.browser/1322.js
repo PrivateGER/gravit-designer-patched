@@ -25,7 +25,7 @@ module.exports = function (module, exports, require) {
                 LEGACY_SHARE_DIALOG,
                 ENABLE_REQUEST_ACCESS,
             } = require(10 /* designerConfig */),
-            GShareRole = require(433),
+            GShareRoleFactory = require(433),
             Collaborator = require(1324),
             GUser = require(177),
             ShareState = require(1565),
@@ -104,7 +104,7 @@ module.exports = function (module, exports, require) {
             (GShareManager.prototype.getRole = function (document) {
                 document = document || gDesigner.getActiveDocument();
                 const { role } = this._getState(document);
-                return role || GShareRole.ROLES.NO_ACCESS_ROLE;
+                return role || GShareRoleFactory.ROLES.NO_ACCESS_ROLE;
             }),
             (GShareManager.prototype._collaborationEvent = async function (event) {
                 const { sender, type } = event;
@@ -204,9 +204,9 @@ module.exports = function (module, exports, require) {
                         collaborators.map((record) => {
                             const role = ((record) => {
                                 const privateShare = file.getPrivateShare(record.access_id);
-                                if (privateShare) return GShareRole.makeFromShare(privateShare);
+                                if (privateShare) return GShareRoleFactory.makeFromShare(privateShare);
                                 const publicShare = file.getPublicShare();
-                                return publicShare ? GShareRole.makeFromShare(publicShare) : GShareRole.makeFromShareRole(ShareRoles.NoAccess);
+                                return publicShare ? GShareRoleFactory.makeFromShare(publicShare) : GShareRoleFactory.makeFromShareRole(ShareRoles.NoAccess);
                             })(record);
                             return new Collaborator(Object.assign(record, { role: role }));
                         })
@@ -228,7 +228,7 @@ module.exports = function (module, exports, require) {
             }),
             (GShareManager.prototype._getInvitedCollaboratorsAsUsers = function (file) {
                 return file.getInvitedShareList().map((share) => {
-                    const role = GShareRole.makeFromShare(share),
+                    const role = GShareRoleFactory.makeFromShare(share),
                         user = new GUser({ id: share.email });
                     return (user.setRole(role), user);
                 });
@@ -242,9 +242,9 @@ module.exports = function (module, exports, require) {
                             const user = new GUser(record),
                                 role = ((user) => {
                                     const privateShare = file.getPrivateShare(user.getUID());
-                                    if (privateShare) return GShareRole.makeFromShare(privateShare);
+                                    if (privateShare) return GShareRoleFactory.makeFromShare(privateShare);
                                     const publicShare = file.getPublicShare();
-                                    return publicShare ? GShareRole.makeFromShare(publicShare) : GShareRole.makeFromShareRole(ShareRoles.NoAccess);
+                                    return publicShare ? GShareRoleFactory.makeFromShare(publicShare) : GShareRoleFactory.makeFromShareRole(ShareRoles.NoAccess);
                                 })(user);
                             return (user.setRole(role), user);
                         })
@@ -270,9 +270,9 @@ module.exports = function (module, exports, require) {
             }),
             (GShareManager.prototype.getRoleNameByUserId = async function (userId) {
                 const document = gDesigner.getActiveDocument();
-                if (!document.isCloudFile() && !document.isExternalFile()) return GShareRole.ROLES.OWNER_ROLE.getName();
+                if (!document.isCloudFile() && !document.isExternalFile()) return GShareRoleFactory.ROLES.OWNER_ROLE.getName();
                 const collaborator = await this.getCollaboratorById(userId);
-                return ((collaborator && collaborator.getRole()) || GShareRole.ROLES.NO_ACCESS_ROLE).getName();
+                return ((collaborator && collaborator.getRole()) || GShareRoleFactory.ROLES.NO_ACCESS_ROLE).getName();
             }),
             (GShareManager.prototype.getCollaboratorById = async function (userId) {
                 let found = null;
@@ -309,7 +309,7 @@ module.exports = function (module, exports, require) {
                         owner: true,
                         share: false,
                         sharing: false,
-                        role: GShareRole.ROLES.OWNER_ROLE,
+                        role: GShareRoleFactory.ROLES.OWNER_ROLE,
                         isPrivate: true,
                     })
                 );
@@ -335,7 +335,7 @@ module.exports = function (module, exports, require) {
                     const publicShare = file.getPublicShare();
                     if (publicShare) {
                         const { copy, inspect, comment, edit } = publicShare;
-                        ((role = GShareRole.makeFromShare(publicShare)),
+                        ((role = GShareRoleFactory.makeFromShare(publicShare)),
                             Object.assign(state, {
                                 owner: false,
                                 edit: edit,
@@ -345,7 +345,7 @@ module.exports = function (module, exports, require) {
                             }));
                     }
                 }
-                state.role = role || GShareRole.ROLES.NO_ACCESS_ROLE;
+                state.role = role || GShareRoleFactory.ROLES.NO_ACCESS_ROLE;
                 const realtimeCollaborators = await this.getRealtimeCollaborators(file);
                 Object.assign(state, { realtimeCollaborators: realtimeCollaborators });
             }),
@@ -388,9 +388,9 @@ module.exports = function (module, exports, require) {
                     });
                     if (privateShare) return privateShare.getRole().level;
                     const publicShare = file.getPublicShare();
-                    return publicShare ? publicShare.getRole().level : new GShareRole.makeFromShareRole(ShareRoles.NoAccess);
+                    return publicShare ? publicShare.getRole().level : new GShareRoleFactory.makeFromShareRole(ShareRoles.NoAccess);
                 }
-                return new GShareRole.makeFromShareRole(ShareRoles.NoAccess).level;
+                return new GShareRoleFactory.makeFromShareRole(ShareRoles.NoAccess).level;
             }),
             (GShareManager.prototype._requestAccessIfAbsent = async function (document) {
                 return !document.isShareable() || !!(await this._canAccess(document)) || (this._openRequestAccessDialog(document), false);
@@ -533,7 +533,7 @@ module.exports = function (module, exports, require) {
                                 let { email: email } = permission;
                                 if (invitedShare.email === email) return ((matched = true), matched);
                             }),
-                                matched || GShareRole.makeFromShare(invitedShare).is(ShareRoles.NoAccess) || toRevoke.push({ email: invitedShare.email }));
+                                matched || GShareRoleFactory.makeFromShare(invitedShare).is(ShareRoles.NoAccess) || toRevoke.push({ email: invitedShare.email }));
                         }),
                         toAdd.length &&
                             results.concat(

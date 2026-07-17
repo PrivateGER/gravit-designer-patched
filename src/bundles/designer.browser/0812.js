@@ -3,31 +3,31 @@ module.exports = function (module, exports, require) {
         var _interopRequireDefault = require(16),
             GObject = require(1),
             GPlatform = require(15),
-            r = _interopRequireDefault(require(18 /* GCategory */)),
-            s = _interopRequireDefault(require(31)),
-            l = _interopRequireDefault(require(1281));
-        class c extends l.default {
-            static getActionSubId(e) {
-                return "".concat(c.ID, ".").concat(e);
+            GCategory = _interopRequireDefault(require(18 /* GCategory */)),
+            GAction = _interopRequireDefault(require(31 /* GAction */)),
+            GMainAction = _interopRequireDefault(require(1281 /* GMainAction */));
+        class GMergeMainAction extends GMainAction.default {
+            static getActionSubId(type) {
+                return "".concat(GMergeMainAction.ID, ".").concat(type);
             }
-            static getValidItems(e) {
-                let t = [];
-                if (e instanceof GObject.GGroup || e instanceof GObject.GCompoundShape)
-                    for (let n = e.getFirstChild(); null !== n; n = n.getNext()) {
-                        const e = c.getValidItems(n);
-                        t = t.concat(e);
+            static getValidItems(element) {
+                let items = [];
+                if (element instanceof GObject.GGroup || element instanceof GObject.GCompoundShape)
+                    for (let child = element.getFirstChild(); null !== child; child = child.getNext()) {
+                        const childItems = GMergeMainAction.getValidItems(child);
+                        items = items.concat(childItems);
                     }
-                else e.hasMixin(GObject.GVertexSource) && e.validateInsertion(new GObject.GCompoundShape()) && t.push(e);
-                return t;
+                else element.hasMixin(GObject.GVertexSource) && element.validateInsertion(new GObject.GCompoundShape()) && items.push(element);
+                return items;
             }
             getId() {
-                return c.ID;
+                return GMergeMainAction.ID;
             }
             getTitle() {
-                return c.TITLE;
+                return GMergeMainAction.TITLE;
             }
             getCategory() {
-                return r.default.CATEGORY_MODIFY;
+                return GCategory.default.CATEGORY_MODIFY;
             }
             getGroup() {
                 return "structure-group";
@@ -42,31 +42,31 @@ module.exports = function (module, exports, require) {
                 return super.getIcon.call(this);
             }
             isEnabled() {
-                const e = gDesigner.getActiveDocument(),
-                    t = e && e.getEditor(),
-                    n = t && t.getIndividualSelection();
-                if (!n || !n.length) return false;
-                let o = [];
-                for (let e = 0; e < n.length; ++e) {
-                    const t = n[e];
-                    if (((o = o.concat(c.getValidItems(t))), o.length > 1)) return true;
+                const activeDocument = gDesigner.getActiveDocument(),
+                    editor = activeDocument && activeDocument.getEditor(),
+                    selection = editor && editor.getIndividualSelection();
+                if (!selection || !selection.length) return false;
+                let validItems = [];
+                for (let e = 0; e < selection.length; ++e) {
+                    const item = selection[e];
+                    if (((validItems = validItems.concat(GMergeMainAction.getValidItems(item))), validItems.length > 1)) return true;
                 }
-                if (1 === o.length) {
-                    const e = o[0];
-                    return e instanceof GObject.GCompoundShape || e.getParent() instanceof GObject.GCompoundShape;
+                if (1 === validItems.length) {
+                    const singleItem = validItems[0];
+                    return singleItem instanceof GObject.GCompoundShape || singleItem.getParent() instanceof GObject.GCompoundShape;
                 }
                 return false;
             }
-            getShortcutHint(e) {
-                return s.default.prototype.getShortcutHint.call(this, e);
+            getShortcutHint(shortcutKey) {
+                return GAction.default.prototype.getShortcutHint.call(this, shortcutKey);
             }
             execute() {
-                const e = c.getActionSubId(this.Type.Union);
-                gDesigner.executeAction(e);
+                const subActionId = GMergeMainAction.getActionSubId(this.Type.Union);
+                gDesigner.executeAction(subActionId);
             }
             toString() {
                 return "[Object GMergeMainAction]";
             }
         }
-        ((c.ID = "modify.merge"), (c.TITLE = new GObject.GLocaleKey("GMergeMainAction", "title")), (module.exports = c));
+        ((GMergeMainAction.ID = "modify.merge"), (GMergeMainAction.TITLE = new GObject.GLocaleKey("GMergeMainAction", "title")), (module.exports = GMergeMainAction));
     };

@@ -3,15 +3,15 @@ module.exports = function (module, exports, require) {
         require(3);
         var GObject = require(1);
         const GCategory = require(18),
-            a = require(31);
+            GAction = require(31);
         var r = require(219),
-            s = require(85);
+            GContainer = require(85);
         const { IS_TRUNK, IS_LOCALHOST, IS_BETA } = require(231 /* IS_TRUNK */);
         function u(e) {
             let t = arguments.length > 1 && void 0 !== arguments[1] && arguments[1];
             ((this._serverName = e), (this._isDefault = !!t));
         }
-        (GObject.GObject.inherit(u, a),
+        (GObject.GObject.inherit(u, GAction),
             (u.ID = "help.switchwebcdr"),
             (u.TITLE = new GObject.GLocaleKey("GSwitchWebcdrAction", "title")),
             (u.prototype.getId = function () {
@@ -43,7 +43,7 @@ module.exports = function (module, exports, require) {
                 (gDesigner.setSetting("webcdr_choice", this._serverName), this._reloadApp());
             }),
             (u.prototype._reloadApp = function () {
-                gContainer.getRuntime() === s.Runtime.Browser || gContainer.getRuntime() === s.Runtime.PWA
+                gContainer.getRuntime() === GContainer.Runtime.Browser || gContainer.getRuntime() === GContainer.Runtime.PWA
                     ? location.reload()
                     : new r(GObject.GLocale.get(new GObject.GLocaleKey("GNewDocumentDialog", "text.restart-app"))).open();
             }),

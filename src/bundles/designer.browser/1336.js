@@ -3,10 +3,10 @@ module.exports = function (module, exports, require) {
         require(3);
         var GObject = require(1);
         const GCategory = require(18),
-            a = require(31),
-            r = require(1589);
+            GAction = require(31),
+            GQuickHelpScreen = require(1589);
         function s() {}
-        (GObject.GObject.inherit(s, a),
+        (GObject.GObject.inherit(s, GAction),
             (s.ID = "help.open-quick-help"),
             (s.TITLE = new GObject.GLocaleKey("GOpenQuickHelpScreenAction", "title")),
             (s.prototype.getId = function () {
@@ -28,7 +28,7 @@ module.exports = function (module, exports, require) {
                 return gDesigner.isTouchEnabled();
             }),
             (s.prototype.execute = function () {
-                r.open();
+                GQuickHelpScreen.open();
             }),
             (s.prototype.toString = function () {
                 return "[Object GOpenQuickHelpScreenAction]";

@@ -6,42 +6,42 @@ module.exports = function (module, exports, require) {
             GCategory = require(18),
             r = require(106),
             GClipAction = require(809);
-        function l() {}
-        (GObject.GObject.inherit(l, r),
-            (l.ID = "modify.mask-with-shape"),
-            (l.TITLE = new GObject.GLocaleKey("GMaskWithShapeAction", "title")),
-            (l.prototype.getId = function () {
-                return l.ID;
+        function GMaskWithShapeAction() {}
+        (GObject.GObject.inherit(GMaskWithShapeAction, r),
+            (GMaskWithShapeAction.ID = "modify.mask-with-shape"),
+            (GMaskWithShapeAction.TITLE = new GObject.GLocaleKey("GMaskWithShapeAction", "title")),
+            (GMaskWithShapeAction.prototype.getId = function () {
+                return GMaskWithShapeAction.ID;
             }),
-            (l.prototype.getTitle = function () {
-                return l.TITLE;
+            (GMaskWithShapeAction.prototype.getTitle = function () {
+                return GMaskWithShapeAction.TITLE;
             }),
-            (l.prototype.getCategory = function () {
+            (GMaskWithShapeAction.prototype.getCategory = function () {
                 return GCategory.CATEGORY_MODIFY;
             }),
-            (l.prototype.getGroup = function () {
+            (GMaskWithShapeAction.prototype.getGroup = function () {
                 return "structure-group";
             }),
-            (l.prototype.getShortcut = function () {
+            (GMaskWithShapeAction.prototype.getShortcut = function () {
                 return [GPlatform.GKey.Constant.META, GPlatform.GKey.Constant.SHIFT, "M"];
             }),
-            (l.prototype.getIcon = function () {
+            (GMaskWithShapeAction.prototype.getIcon = function () {
                 return gDesigner.isTouchEnabled() ? "gravit-icon-mask-with-shape" : "";
             }),
-            (l.prototype.isEnabled = function () {
+            (GMaskWithShapeAction.prototype.isEnabled = function () {
                 return GClipAction.prototype.isEnabled.call(this);
             }),
-            (l.prototype.execute = function () {
-                var e = gDesigner.getActiveDocument().getEditor();
-                e.beginTransaction();
+            (GMaskWithShapeAction.prototype.execute = function () {
+                var editor = gDesigner.getActiveDocument().getEditor();
+                editor.beginTransaction();
                 try {
-                    if ((GClipAction.prototype.execute.call(this, true, true), e.getSelection().length > 0)) {
-                        var t = e.getSelection()[0];
-                        t.setProperty("name", GObject.GLocale.get(new GObject.GLocaleKey("GMaskWithShapeAction", "text.mask")));
-                        var n = t.getPaintLayers();
-                        if (n) {
+                    if ((GClipAction.prototype.execute.call(this, true, true), editor.getSelection().length > 0)) {
+                        var selectedElement = editor.getSelection()[0];
+                        selectedElement.setProperty("name", GObject.GLocale.get(new GObject.GLocaleKey("GMaskWithShapeAction", "text.mask")));
+                        var paintLayers = selectedElement.getPaintLayers();
+                        if (paintLayers) {
                             for (
-                                var i = (function (e) {
+                                var grayscaleGradient = (function (e) {
                                         e: for (var t = e.getFirstChild(); null !== t; t = t.getNext())
                                             if (
                                                 t instanceof GObject.GStylable.FillPaintLayer &&
@@ -59,31 +59,31 @@ module.exports = function (module, exports, require) {
                                                 if (n) break e;
                                             }
                                         return n;
-                                    })(n),
-                                    a = [],
-                                    r = n.getFirstChild();
-                                null !== r;
-                                r = r.getNext()
+                                    })(paintLayers),
+                                    existingFillLayers = [],
+                                    paintLayer = paintLayers.getFirstChild();
+                                null !== paintLayer;
+                                paintLayer = paintLayer.getNext()
                             )
-                                r instanceof GObject.GStylable.FillPaintLayer && a.push(r);
-                            for (var l = 0; l < a.length; ++l) n.removeChild(a[l]);
-                            if ((n.insertChild(new GObject.GStylable.FillPaintLayer(GObject.GRGBColor.WHITE)), i)) {
-                                i = i.clone();
-                                for (l = 0; l < i.getStops().length; ++l) {
-                                    var c = i.getStops()[l];
+                                paintLayer instanceof GObject.GStylable.FillPaintLayer && existingFillLayers.push(paintLayer);
+                            for (var l = 0; l < existingFillLayers.length; ++l) paintLayers.removeChild(existingFillLayers[l]);
+                            if ((paintLayers.insertChild(new GObject.GStylable.FillPaintLayer(GObject.GRGBColor.WHITE)), grayscaleGradient)) {
+                                grayscaleGradient = grayscaleGradient.clone();
+                                for (l = 0; l < grayscaleGradient.getStops().length; ++l) {
+                                    var c = grayscaleGradient.getStops()[l];
                                     "#FFFFFF" === c.color.toScreenCSS() && (c.opacity = 0);
                                 }
-                                var d = new GObject.GOverlayEffect();
-                                (t.getEffects().appendChild(d), d.setProperties(["alm", "opc", "pat"], [true, 1, i]));
+                                var overlayEffect = new GObject.GOverlayEffect();
+                                (selectedElement.getEffects().appendChild(overlayEffect), overlayEffect.setProperties(["alm", "opc", "pat"], [true, 1, grayscaleGradient]));
                             }
                         }
                     }
                 } finally {
-                    e.commitTransaction(GObject.GLocale.get(this.getTitle()));
+                    editor.commitTransaction(GObject.GLocale.get(this.getTitle()));
                 }
             }),
-            (l.prototype.toString = function () {
+            (GMaskWithShapeAction.prototype.toString = function () {
                 return "[Object GMaskWithShapeAction]";
             }),
-            (module.exports = l));
+            (module.exports = GMaskWithShapeAction));
     };

@@ -2,10 +2,10 @@ module.exports = function (module, exports, require) {
         "use strict";
         require(3);
         var GObject = require(1),
-            i = require(31),
+            GAction = require(31),
             GCategory = require(18);
         function r() {}
-        (GObject.GObject.inherit(r, i),
+        (GObject.GObject.inherit(r, GAction),
             (r.ID = "open-welcome-screen"),
             (r.TITLE = new GObject.GLocaleKey("GOpenWelcomeScreenAction", "title")),
             (r.prototype.getId = function () {

@@ -2,20 +2,20 @@ module.exports = function (module, exports, require) {
         "use strict";
         (require(19), require(4), require(13), require(26));
         var GObject = require(1),
-            i = null;
-        function a(e) {
-            for (var t = 0; t < i.length; ++t) if (i[t].type === e) return i[t].icon;
+            cornerTypeConfigs = null;
+        function getIconForCornerType(cornerType) {
+            for (var t = 0; t < cornerTypeConfigs.length; ++t) if (cornerTypeConfigs[t].type === cornerType) return cornerTypeConfigs[t].icon;
             return null;
         }
-        function r(e) {
-            for (var t = 0; t < i.length; ++t) $('button[data-corner-type="' + i[t].type + '"]').toggleClass("g-active", i[t].type === e);
+        function updateActiveButtons(cornerType) {
+            for (var t = 0; t < cornerTypeConfigs.length; ++t) $('button[data-corner-type="' + cornerTypeConfigs[t].type + '"]').toggleClass("g-active", cornerTypeConfigs[t].type === cornerType);
         }
-        var s = {
-            init: function (e) {
+        var methods = {
+            init: function (options) {
                 return (
-                    (e = $.extend({ rotate: 0 }, e)),
-                    i ||
-                        (i = [
+                    (options = $.extend({ rotate: 0 }, options)),
+                    cornerTypeConfigs ||
+                        (cornerTypeConfigs = [
                             {
                                 type: GObject.GPathBase.CornerType.Rounded,
                                 title: GObject.GLocale.get(new GObject.GLocaleKey("GPathBase", "corner.rounded")),
@@ -43,88 +43,88 @@ module.exports = function (module, exports, require) {
                             },
                         ]),
                     this.each(function () {
-                        var t = this,
-                            n = $(this).data("gcornertype", {
+                        var element = this,
+                            jqElement = $(this).data("gcornertype", {
                                 cornerType: null,
-                                notOverlay: e.notOverlay,
-                                rotate: e.rotate,
+                                notOverlay: options.notOverlay,
+                                rotate: options.rotate,
                             }),
-                            a = function () {
-                                for (var a = [], r = 100 / i.length, l = 0; l < i.length; ++l)
-                                    a.push({
-                                        width: Math.round(r) + "%",
+                            openPicker = function () {
+                                for (var columns = [], percentWidth = 100 / cornerTypeConfigs.length, l = 0; l < cornerTypeConfigs.length; ++l)
+                                    columns.push({
+                                        width: Math.round(percentWidth) + "%",
                                         content: $("<button></button>")
                                             .addClass("g-flat")
-                                            .toggleClass("g-active", i[l].type === n.data("gcornertype").cornerType)
-                                            .attr("data-corner-type", i[l].type)
-                                            .attr("data-title", i[l].title)
+                                            .toggleClass("g-active", cornerTypeConfigs[l].type === jqElement.data("gcornertype").cornerType)
+                                            .attr("data-corner-type", cornerTypeConfigs[l].type)
+                                            .attr("data-title", cornerTypeConfigs[l].title)
                                             .append(
                                                 $("<span></span>")
-                                                    .addClass(i[l].icon)
-                                                    .css("transform", "rotate(" + e.rotate + "deg)")
+                                                    .addClass(cornerTypeConfigs[l].icon)
+                                                    .css("transform", "rotate(" + options.rotate + "deg)")
                                             )
                                             .on("click", function () {
-                                                var i = $(this).attr("data-corner-type");
-                                                (s.value.call(t, i), n.trigger("cornertypechange", i));
-                                                var a = "unkn",
-                                                    r = Object.keys(GObject.GPathBase.CornerType);
-                                                for (var l of r)
-                                                    if (i === GObject.GPathBase.CornerType[l]) {
-                                                        a = l;
+                                                var selectedType = $(this).attr("data-corner-type");
+                                                (methods.value.call(element, selectedType), jqElement.trigger("cornertypechange", selectedType));
+                                                var typeName = "unkn",
+                                                    typeKeys = Object.keys(GObject.GPathBase.CornerType);
+                                                for (var l of typeKeys)
+                                                    if (selectedType === GObject.GPathBase.CornerType[l]) {
+                                                        typeName = l;
                                                         break;
                                                     }
-                                                (gDesigner.stats("cornertypes_click_change", a), e.notOverlay || c.gOverlay("close"));
+                                                (gDesigner.stats("cornertypes_click_change", typeName), options.notOverlay || pickerElement.gOverlay("close"));
                                             }),
                                     });
-                                var c = $("<div></div>")
-                                    .css("width", e.notOverlay ? "100%" : "200px")
-                                    .gPropertyRow({ columns: a });
-                                e.notOverlay
-                                    ? n.append(c)
-                                    : c
+                                var pickerElement = $("<div></div>")
+                                    .css("width", options.notOverlay ? "100%" : "200px")
+                                    .gPropertyRow({ columns: columns });
+                                options.notOverlay
+                                    ? jqElement.append(pickerElement)
+                                    : pickerElement
                                           .on("open", function () {
-                                              n.trigger("open");
+                                              jqElement.trigger("open");
                                           })
                                           .on("close", function () {
-                                              n.trigger("close");
+                                              jqElement.trigger("close");
                                           })
                                           .gOverlay({
                                               releaseOnClose: true,
                                               clazz: "corner-picker-overlay",
                                           })
-                                          .gOverlay("open", t);
+                                          .gOverlay("open", element);
                             };
-                        e.notOverlay
-                            ? a()
-                            : n.append("<span></span>").on("click", function () {
-                                  (gDesigner.stats("cornertypes_click_open"), a());
+                        options.notOverlay
+                            ? openPicker()
+                            : jqElement.append("<span></span>").on("click", function () {
+                                  (gDesigner.stats("cornertypes_click_open"), openPicker());
                               });
                     })
                 );
             },
-            value: function (e) {
-                var t = $(this),
-                    n = t.data("gcornertype");
+            value: function (cornerType) {
+                var element = $(this),
+                    pickerData = element.data("gcornertype");
                 return arguments.length
-                    ? ((n.cornerType = e),
-                      n.notOverlay
-                          ? (t.find("." + a(n.cornerType)), r(n.cornerType))
-                          : t
+                    ? ((pickerData.cornerType = cornerType),
+                      pickerData.notOverlay
+                          ? (element.find("." + getIconForCornerType(pickerData.cornerType)), updateActiveButtons(pickerData.cornerType))
+                          : element
                                 .find("span")
-                                .attr("class", a(n.cornerType))
-                                .css("transform", "rotate(" + n.rotate + "deg)"),
+                                .attr("class", getIconForCornerType(pickerData.cornerType))
+                                .css("transform", "rotate(" + pickerData.rotate + "deg)"),
                       this)
-                    : n.cornerType;
+                    : pickerData.cornerType;
             },
-            update: function (e) {
-                r(e);
+            update: function (cornerType) {
+                updateActiveButtons(cornerType);
             },
         };
-        $.fn.gCornerTypePicker = function (e) {
-            return s[e]
-                ? s[e].apply(this, Array.prototype.slice.call(arguments, 1))
-                : "object" != typeof e && e
-                  ? void $.error("Method " + e + " does not exist on jQuery.myPlugin")
-                  : s.init.apply(this, arguments);
+        $.fn.gCornerTypePicker = function (method) {
+            return methods[method]
+                ? methods[method].apply(this, Array.prototype.slice.call(arguments, 1))
+                : "object" != typeof method && method
+                  ? void $.error("Method " + method + " does not exist on jQuery.myPlugin")
+                  : methods.init.apply(this, arguments);
         };
     };

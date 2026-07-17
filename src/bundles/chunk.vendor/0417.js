@@ -23,7 +23,7 @@ module.exports = function (module, exports, require) {
                 GFile = require(574),
                 providerIds = require(577),
                 errorCodes = require(952);
-            require(824);
+            require(824 /* lib:url-polyfill */);
             const {
                     getUserName,
                     isSharePointFileId,

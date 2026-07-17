@@ -5,7 +5,7 @@ module.exports = function (module, exports, require) {
             GObject = require(1),
             SidebarsIds = require(198),
             s = _interopRequireDefault(require(18 /* GCategory */)),
-            l = _interopRequireDefault(require(31));
+            l = _interopRequireDefault(require(31 /* GAction */));
         class c extends l.default {
             constructor() {
                 let e = arguments.length > 0 && void 0 !== arguments[0] && arguments[0];

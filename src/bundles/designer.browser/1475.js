@@ -1,16 +1,16 @@
 module.exports = function (module, exports, require) {
         "use strict";
         require(8 /* Symbol */);
-        var o = require(797),
+        var exportModule = require(797),
             GObject = require(1);
         require(257);
-        function a(e, t, n, o, a, r) {
-            ((this._currentDocument = e),
-                (this._newDocument = t),
-                (this._localName = n),
-                (this._cloudName = o),
+        function a(currentDocument, newDocument, localName, cloudName, a, onCancel) {
+            ((this._currentDocument = currentDocument),
+                (this._newDocument = newDocument),
+                (this._localName = localName),
+                (this._cloudName = cloudName),
                 (this._callback = a),
-                (this._onCancel = r),
+                (this._onCancel = onCancel),
                 (this._dialog = $("<div></div>")),
                 $("<div></div>")
                     .addClass("g-btn-close")
@@ -18,26 +18,26 @@ module.exports = function (module, exports, require) {
                     .append($("<span></span>").addClass("gravit-icon-close"))
                     .on("click", this.close.bind(this))
                     .appendTo(this._dialog));
-            var s = $("<div></div>").addClass("header").appendTo(this._dialog);
+            var header = $("<div></div>").addClass("header").appendTo(this._dialog);
             ($("<div></div>")
                 .addClass("title")
                 .append($("<span></span>").text(GObject.GLocale.get(new GObject.GLocaleKey("GDocumentChooser", "text.sync.title"))))
-                .appendTo(s),
+                .appendTo(header),
                 $("<div></div>")
                     .addClass("subtitle")
                     .append($("<span></span>").text(GObject.GLocale.get(new GObject.GLocaleKey("GDocumentChooser", "text.sync.subtitle"))))
-                    .appendTo(s),
+                    .appendTo(header),
                 (this._container = $("<div></div>").addClass("container").appendTo(this._dialog)),
                 (this._footer = $("<div></div>")
                     .addClass("footer")
                     .css("display", this._onCancel ? "" : "none")
                     .appendTo(this._dialog)));
-            let l = $("<div></div>").addClass("buttons").appendTo(this._footer);
+            let buttonsContainer = $("<div></div>").addClass("buttons").appendTo(this._footer);
             $("<button></button>")
                 .addClass("g-button")
                 .text(GObject.GLocale.get(new GObject.GLocaleKey("GLocale", "cancel")))
                 .on("click", this.close.bind(this))
-                .appendTo(l);
+                .appendTo(buttonsContainer);
             (this._dialog.gDialog({
                 releaseOnClose: true,
                 className: "g-document-chooser",
@@ -66,52 +66,52 @@ module.exports = function (module, exports, require) {
                         this._currentDocument.lastModifiedDate() > this._newDocument.lastModifiedDate()
                     ));
             }),
-            (a.prototype._loadPreview = function (e, t) {
-                return new Promise(function (n) {
-                    if ("offline" !== t) {
-                        var o = [],
-                            a = function (e) {
+            (a.prototype._loadPreview = function (document, mode) {
+                return new Promise(function (resolve) {
+                    if ("offline" !== mode) {
+                        var pendingImages = [],
+                            onImageStatusChange = function (event) {
                                 if (
-                                    e.image.getStatus() === GObject.GImage.ImageStatus.Loaded ||
-                                    e.image.getStatus() === GObject.GImage.ImageStatus.Error
+                                    event.image.getStatus() === GObject.GImage.ImageStatus.Loaded ||
+                                    event.image.getStatus() === GObject.GImage.ImageStatus.Error
                                 ) {
-                                    e.image.removeEventListener(GObject.GImage.StatusEvent, this);
-                                    var t = o.indexOf(e.image);
-                                    (-1 !== t && o.splice(t, 1), o.length || n());
+                                    event.image.removeEventListener(GObject.GImage.StatusEvent, this);
+                                    var index = pendingImages.indexOf(event.image);
+                                    (-1 !== index && pendingImages.splice(index, 1), pendingImages.length || resolve());
                                 }
                             };
-                        (e.acceptChildren((e) => {
-                            e instanceof GObject.GImage &&
-                                ((e.getStatus() === GObject.GImage.ImageStatus.Error && e.getStatus() === GObject.GImage.ImageStatus.Loaded) ||
-                                    (o.push(e), e.addEventListener(GObject.GImage.StatusEvent, a)));
+                        (document.acceptChildren((child) => {
+                            child instanceof GObject.GImage &&
+                                ((child.getStatus() === GObject.GImage.ImageStatus.Error && child.getStatus() === GObject.GImage.ImageStatus.Loaded) ||
+                                    (pendingImages.push(child), child.addEventListener(GObject.GImage.StatusEvent, onImageStatusChange)));
                         }),
-                            o.length || n());
-                    } else n();
+                            pendingImages.length || resolve());
+                    } else resolve();
                 });
             }),
-            (a.prototype._createPreview = function (e, t, n) {
-                let a = arguments.length > 3 && void 0 !== arguments[3] && arguments[3];
-                var r = $("<div />").addClass("image"),
-                    s = $("<div></div>")
+            (a.prototype._createPreview = function (document, mode, label) {
+                let isNewer = arguments.length > 3 && void 0 !== arguments[3] && arguments[3];
+                var imageContainer = $("<div />").addClass("image"),
+                    previewElement = $("<div></div>")
                         .addClass("preview")
                         .on("click", () => {
-                            (gDesigner.stats("documentchooser_click_preview", t), this.close(), this._callback(e));
+                            (gDesigner.stats("documentchooser_click_preview", mode), this.close(), this._callback(document));
                         })
                         .appendTo(this._container),
-                    l = $("<div></div>")
+                    previewImageElement = $("<div></div>")
                         .addClass("preview-image loading")
                         .css("background", GObject.GPattern.asCSSBackground(null))
-                        .append(r)
-                        .appendTo(s);
-                this._loadPreview(e, t).then(() => {
-                    var t = o.GBitmapExport.export(e);
-                    (l.removeClass("loading"),
-                        r.css("background-image", "url(".concat(t.toImageDataUrl(GObject.GBitmap.ImageType.JPEG, 1), ")")));
+                        .append(imageContainer)
+                        .appendTo(previewElement);
+                this._loadPreview(document, mode).then(() => {
+                    var exportedBitmap = exportModule.GBitmapExport.export(document);
+                    (previewImageElement.removeClass("loading"),
+                        imageContainer.css("background-image", "url(".concat(exportedBitmap.toImageDataUrl(GObject.GBitmap.ImageType.JPEG, 1), ")")));
                 });
-                var c = function (e) {
-                    return 0 === e.getTime()
+                var formatDate = function (date) {
+                    return 0 === date.getTime()
                         ? GObject.GLocale.get(new GObject.GLocaleKey("GDocumentChooser", "text.unavailable"))
-                        : GObject.GLocale.toLocaleDate(e, {
+                        : GObject.GLocale.toLocaleDate(date, {
                               year: "numeric",
                               month: "numeric",
                               day: "numeric",
@@ -119,17 +119,17 @@ module.exports = function (module, exports, require) {
                               minute: "numeric",
                           });
                 };
-                s.append(
+                previewElement.append(
                     $("<div></div>")
                         .addClass("title")
-                        .append($("<span></span>").text(n + " " + GObject.GLocale.get(new GObject.GLocaleKey("GDocumentChooser", "text." + t))))
+                        .append($("<span></span>").text(label + " " + GObject.GLocale.get(new GObject.GLocaleKey("GDocumentChooser", "text." + mode))))
                 ).append(
                     $("<div></div>")
                         .addClass("subtitle")
                         .append(
                             $("<span></span>").text(
-                                c(e.lastModifiedDate()) +
-                                    (a ? " " + GObject.GLocale.get(new GObject.GLocaleKey("GDocumentChooser", "text.newer-file")) : "")
+                                formatDate(document.lastModifiedDate()) +
+                                    (isNewer ? " " + GObject.GLocale.get(new GObject.GLocaleKey("GDocumentChooser", "text.newer-file")) : "")
                             )
                         )
                 );

@@ -2,63 +2,63 @@ module.exports = function (module, exports, require) {
         "use strict";
         require(3);
         var GObject = require(1),
-            i = require(53),
+            editorModule = require(53),
             GCategory = require(18),
-            r = (require(31), require(106));
-        function s() {}
-        (GObject.GObject.inherit(s, r),
-            (s.ID = "modify.cancel-crop"),
-            (s.TITLE = new GObject.GLocaleKey("GCancelCropAction", "title")),
-            (s.prototype.getId = function () {
-                return s.ID;
+            r = (require(31 /* GAction */), require(106));
+        function GCancelCropAction() {}
+        (GObject.GObject.inherit(GCancelCropAction, r),
+            (GCancelCropAction.ID = "modify.cancel-crop"),
+            (GCancelCropAction.TITLE = new GObject.GLocaleKey("GCancelCropAction", "title")),
+            (GCancelCropAction.prototype.getId = function () {
+                return GCancelCropAction.ID;
             }),
-            (s.prototype.getTitle = function () {
-                return s.TITLE;
+            (GCancelCropAction.prototype.getTitle = function () {
+                return GCancelCropAction.TITLE;
             }),
-            (s.prototype.getIcon = function () {
+            (GCancelCropAction.prototype.getIcon = function () {
                 return null;
             }),
-            (s.prototype.getCategory = function () {
+            (GCancelCropAction.prototype.getCategory = function () {
                 return GCategory.CATEGORY_MODIFY;
             }),
-            (s.prototype.getGroup = function () {
+            (GCancelCropAction.prototype.getGroup = function () {
                 return "structure-group";
             }),
-            (s.prototype.isEnabled = function () {
+            (GCancelCropAction.prototype.isEnabled = function () {
                 if (!r.prototype.isEnabled.call(this)) return false;
-                var e = gDesigner.getActiveDocument();
-                if (e) {
-                    var t = e.getEditor(),
-                        n = t.getIndividualSelection();
-                    if (n && n.length && n[0] instanceof GObject.GImage && t.hasSelectionDetail()) return n[0].isReady();
+                var activeDocument = gDesigner.getActiveDocument();
+                if (activeDocument) {
+                    var editor = activeDocument.getEditor(),
+                        individualSelection = editor.getIndividualSelection();
+                    if (individualSelection && individualSelection.length && individualSelection[0] instanceof GObject.GImage && editor.hasSelectionDetail()) return individualSelection[0].isReady();
                 }
                 return false;
             }),
-            (s.prototype.execute = function (e, t) {
+            (GCancelCropAction.prototype.execute = function (e, t) {
                 if (!r.prototype.isEnabled.call(this)) return false;
-                var n = gDesigner.getActiveDocument();
-                if (n) {
-                    var a = n.getEditor().getIndividualSelection(),
-                        l = a && a.length ? a[0] : null;
-                    l &&
-                        l instanceof GObject.GImage &&
-                        !GObject.GTransform.equals(l.getTransform(), l.getImageTransform()) &&
-                        i.GEditor.tryRunTransaction(
-                            l,
+                var activeDocument = gDesigner.getActiveDocument();
+                if (activeDocument) {
+                    var individualSelection = activeDocument.getEditor().getIndividualSelection(),
+                        image = individualSelection && individualSelection.length ? individualSelection[0] : null;
+                    image &&
+                        image instanceof GObject.GImage &&
+                        !GObject.GTransform.equals(image.getTransform(), image.getImageTransform()) &&
+                        editorModule.GEditor.tryRunTransaction(
+                            image,
                             function () {
-                                var e = l.getImageTransform();
-                                l.setProperties(["trf", "ut", "tl_sx"], [e, true, 0]);
+                                var imageTransform = image.getImageTransform();
+                                image.setProperties(["trf", "ut", "tl_sx"], [imageTransform, true, 0]);
                             }.bind(this),
-                            GObject.GLocale.get(s.TITLE)
+                            GObject.GLocale.get(GCancelCropAction.TITLE)
                         );
                 }
-                var c = gDesigner.getToolManager();
-                c.getActiveTool() instanceof i.GSubSelectTool
-                    ? (c.activateTool(i.GPointerTool, null, true), c.getActiveTool().setEditMode(i.GSelectTool.EditMode.Select))
-                    : c.getActiveTool() instanceof i.GPointerTool && c.getActiveTool().setEditMode(i.GSelectTool.EditMode.Select);
+                var toolManager = gDesigner.getToolManager();
+                toolManager.getActiveTool() instanceof editorModule.GSubSelectTool
+                    ? (toolManager.activateTool(editorModule.GPointerTool, null, true), toolManager.getActiveTool().setEditMode(editorModule.GSelectTool.EditMode.Select))
+                    : toolManager.getActiveTool() instanceof editorModule.GPointerTool && toolManager.getActiveTool().setEditMode(editorModule.GSelectTool.EditMode.Select);
             }),
-            (s.prototype.toString = function () {
+            (GCancelCropAction.prototype.toString = function () {
                 return "[Object GCancelCropAction]";
             }),
-            (module.exports = s));
+            (module.exports = GCancelCropAction));
     };

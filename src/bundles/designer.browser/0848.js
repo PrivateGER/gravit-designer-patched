@@ -5,9 +5,9 @@ module.exports = function (module, exports, require) {
         (require(19), require(96 /* polyfill:JSON */), require(30 /* polyfill:Object */), require(8 /* Symbol */), require(20 /* polyfill:RegExp */), require(3), require(34), require(4), require(41), require(38), require(97), require(26), require(125), require(126 /* polyfill:URL */), require(114));
         var GObject = require(1),
             Utils = require(40),
-            r = require(593),
-            s = _interopRequireDefault(require(787)),
-            l = (function (e, t) {
+            cloudUtils = require(593),
+            GoogleToCloudRoleMap = _interopRequireDefault(require(787)),
+            CloudToGoogleRoleMap = (function (e, t) {
                 if ("function" == typeof WeakMap)
                     var n = new WeakMap(),
                         o = new WeakMap();
@@ -30,346 +30,346 @@ module.exports = function (module, exports, require) {
                     return r;
                 })(e, t);
             })(require(789)),
-            c = _interopRequireDefault(require(594));
-        const d = require(1108),
-            u = require(595),
+            GError = _interopRequireDefault(require(594));
+        const MediaUploader = require(1108),
+            TokenIssuer = require(595),
             { HTTP_STATUS_CODES } = require(10 /* designerConfig */);
-        function g(e) {
-            this.setTokenIssuer(e);
+        function GoogleDriveClient(tokenIssuer) {
+            this.setTokenIssuer(tokenIssuer);
         }
-        ((g.TRIAL_UNTIL_FAIL = 3),
-            (g.isUsageLimitError = function (e) {
-                return !(!e || !e.error) && Number(e.error.code) === HTTP_STATUS_CODES.FORBIDDEN && e.error.errors.some((e) => "usageLimits" === e.domain);
+        ((GoogleDriveClient.TRIAL_UNTIL_FAIL = 3),
+            (GoogleDriveClient.isUsageLimitError = function (errorBody) {
+                return !(!errorBody || !errorBody.error) && Number(errorBody.error.code) === HTTP_STATUS_CODES.FORBIDDEN && errorBody.error.errors.some((error) => "usageLimits" === error.domain);
             }),
-            (g.ExceptionCode = { LoginAborted: 1 }));
-        class h extends c.default {
-            constructor(e, t) {
-                (super(e), (this.code = t), (this.__proto__ = h.prototype), (this.name = "GoogleDriveException"));
+            (GoogleDriveClient.ExceptionCode = { LoginAborted: 1 }));
+        class GoogleDriveException extends GError.default {
+            constructor(message, code) {
+                (super(message), (this.code = code), (this.__proto__ = GoogleDriveException.prototype), (this.name = "GoogleDriveException"));
             }
             toString() {
                 return "[Object GoogleDriveException]";
             }
         }
-        ((g.GoogleDriveException = h),
-            (g.prototype.setTokenIssuer = function (e) {
-                this._tokenIssuer = e;
+        ((GoogleDriveClient.GoogleDriveException = GoogleDriveException),
+            (GoogleDriveClient.prototype.setTokenIssuer = function (tokenIssuer) {
+                this._tokenIssuer = tokenIssuer;
             }),
-            (g.prototype.getTokenIssuerSettings = function () {
+            (GoogleDriveClient.prototype.getTokenIssuerSettings = function () {
                 return this._tokenIssuer ? this._tokenIssuer.getSettings() : null;
             }),
-            (g.prototype.getSettings = function () {
+            (GoogleDriveClient.prototype.getSettings = function () {
                 return this.getTokenIssuerSettings();
             }),
-            (g.prototype.getAccessToken = async function () {
+            (GoogleDriveClient.prototype.getAccessToken = async function () {
                 return (this._tokenIssuer && (this._accessToken = await this._tokenIssuer.get()), this._accessToken);
             }),
-            (g.prototype.upload = function (e, t, n) {
-                let o = arguments.length > 3 && void 0 !== arguments[3] ? arguments[3] : g.DefaultUploadType,
-                    i = arguments.length > 4 ? arguments[4] : void 0;
-                switch (o) {
-                    case g.UploadType.Simple:
-                        return this._simpleUpload(e, t, n);
-                    case g.UploadType.Resumable:
-                        return this._resumableUpload(e, t, n, i);
+            (GoogleDriveClient.prototype.upload = function (fileId, file, metadata) {
+                let uploadType = arguments.length > 3 && void 0 !== arguments[3] ? arguments[3] : GoogleDriveClient.DefaultUploadType,
+                    onProgress = arguments.length > 4 ? arguments[4] : void 0;
+                switch (uploadType) {
+                    case GoogleDriveClient.UploadType.Simple:
+                        return this._simpleUpload(fileId, file, metadata);
+                    case GoogleDriveClient.UploadType.Resumable:
+                        return this._resumableUpload(fileId, file, metadata, onProgress);
                 }
             }),
-            (g.prototype.isCorporate = function () {
+            (GoogleDriveClient.prototype.isCorporate = function () {
                 if (!this.getTokenIssuerSettings()) throw "No Token Issuer for Google";
                 return this.getTokenIssuerSettings().corporate;
             }),
-            (g.prototype.getCorporateProviderName = function () {
+            (GoogleDriveClient.prototype.getCorporateProviderName = function () {
                 return "google";
             }),
-            (g.prototype.getFilePermissions = async function (e) {
-                let t = arguments.length > 1 && void 0 !== arguments[1] && arguments[1];
+            (GoogleDriveClient.prototype.getFilePermissions = async function (fileId) {
+                let raw = arguments.length > 1 && void 0 !== arguments[1] && arguments[1];
                 if (!this.getTokenIssuerSettings() || !this.getTokenIssuerSettings().corporate)
                     return Promise.reject(GObject.GLocale.get(new GObject.GLocaleKey("GGoogleDrive", "error.only-for-corporate")));
-                if (!e) return Promise.reject(GObject.GLocale.get(new GObject.GLocaleKey("GGoogleDrive", "error.no-file-found")));
-                let n = [];
-                const o = await this.getAccessToken(),
-                    a = { fields: "*", supportsAllDrives: true, pageSize: 50 };
-                return new Promise((i, r) => {
-                    !(function l(c) {
-                        const d = new URL("https://www.googleapis.com/drive/v3/files/".concat(e, "/permissions")),
-                            u = Object.assign({}, a);
-                        c && (u.pageToken = c);
-                        for (var p in u) d.searchParams.append(p, u[p]);
-                        return fetch(d.toString(), {
+                if (!fileId) return Promise.reject(GObject.GLocale.get(new GObject.GLocaleKey("GGoogleDrive", "error.no-file-found")));
+                let collectedPermissions = [];
+                const accessToken = await this.getAccessToken(),
+                    queryParams = { fields: "*", supportsAllDrives: true, pageSize: 50 };
+                return new Promise((resolve, reject) => {
+                    !(function fetchPage(pageToken) {
+                        const url = new URL("https://www.googleapis.com/drive/v3/files/".concat(fileId, "/permissions")),
+                            params = Object.assign({}, queryParams);
+                        pageToken && (params.pageToken = pageToken);
+                        for (var p in params) url.searchParams.append(p, params[p]);
+                        return fetch(url.toString(), {
                             method: "GET",
-                            headers: new Headers({ Authorization: "Bearer ".concat(o) }),
+                            headers: new Headers({ Authorization: "Bearer ".concat(accessToken) }),
                         })
-                            .then((e) => e.json())
-                            .then((e) => {
-                                const { permissions, nextPageToken } = e;
-                                (permissions.length && (n = n.concat(permissions)),
+                            .then((response) => response.json())
+                            .then((data) => {
+                                const { permissions, nextPageToken } = data;
+                                (permissions.length && (collectedPermissions = collectedPermissions.concat(permissions)),
                                     nextPageToken
                                         ? setTimeout(function () {
-                                              l(nextPageToken);
+                                              fetchPage(nextPageToken);
                                           })
-                                        : i(
-                                              t
-                                                  ? n
-                                                  : n.map((e) => {
-                                                        let { emailAddress, role } = e;
+                                        : resolve(
+                                              raw
+                                                  ? collectedPermissions
+                                                  : collectedPermissions.map((permission) => {
+                                                        let { emailAddress, role } = permission;
                                                         return {
                                                             email: emailAddress,
-                                                            role: s.default[role],
+                                                            role: GoogleToCloudRoleMap.default[role],
                                                             externalRole: role,
                                                         };
                                                     })
                                           ));
                             })
-                            .catch((e) => r(e));
+                            .catch((error) => reject(error));
                     })();
                 });
             }),
-            (g.prototype.createOrUpdateUserShare = async function (e, t) {
-                if (!e) return Promise.reject(GObject.GLocale.get(new GObject.GLocaleKey("GGoogleDrive", "error.no-file-found")));
+            (GoogleDriveClient.prototype.createOrUpdateUserShare = async function (fileId, shareOptions) {
+                if (!fileId) return Promise.reject(GObject.GLocale.get(new GObject.GLocaleKey("GGoogleDrive", "error.no-file-found")));
                 if (!this.getTokenIssuerSettings() || !this.getTokenIssuerSettings().corporate)
                     return Promise.reject(GObject.GLocale.get(new GObject.GLocaleKey("GGoogleDrive", "error.only-for-corporate")));
-                const { role: n, emailAddress: o } = t;
-                if (!n || !o) return Promise.reject(GObject.GLocale.get(new GObject.GLocaleKey("GGoogleDrive", "error.not-enough-parameters")));
-                const a = await this.getShareIdForEmail(e, o).catch(() => []),
-                    r = { type: "user", emailAddress: o, role: l.default[n.id] };
-                if (a && a.length > 0) {
-                    const t = await this.removeShare(e, a[0]);
-                    if (t.error) {
+                const { role: role, emailAddress: email } = shareOptions;
+                if (!role || !email) return Promise.reject(GObject.GLocale.get(new GObject.GLocaleKey("GGoogleDrive", "error.not-enough-parameters")));
+                const existingShares = await this.getShareIdForEmail(fileId, email).catch(() => []),
+                    shareRequest = { type: "user", emailAddress: email, role: CloudToGoogleRoleMap.default[role.id] };
+                if (existingShares && existingShares.length > 0) {
+                    const removeResult = await this.removeShare(fileId, existingShares[0]);
+                    if (removeResult.error) {
                         const {
                             error: {
                                 errors: [{ message }],
                             },
-                        } = t;
+                        } = removeResult;
                         return Promise.reject(message);
                     }
-                    if (r.role === l.NoAccessId) return t;
+                    if (shareRequest.role === CloudToGoogleRoleMap.NoAccessId) return removeResult;
                 }
-                return this._createShare(e, r).then((e) => {
-                    if (e.error) {
+                return this._createShare(fileId, shareRequest).then((result) => {
+                    if (result.error) {
                         const {
                             error: {
-                                errors: [{ message: t }],
+                                errors: [{ message: message }],
                             },
-                        } = e;
-                        return Promise.reject(t);
+                        } = result;
+                        return Promise.reject(message);
                     }
-                    return e;
+                    return result;
                 });
             }),
-            (g.prototype.createDomainShare = function (e, t) {
-                if (!e) return Promise.reject(GObject.GLocale.get(new GObject.GLocaleKey("GGoogleDrive", "error.no-file-found")));
+            (GoogleDriveClient.prototype.createDomainShare = function (fileId, shareOptions) {
+                if (!fileId) return Promise.reject(GObject.GLocale.get(new GObject.GLocaleKey("GGoogleDrive", "error.no-file-found")));
                 if (!this.getTokenIssuerSettings() || !this.getTokenIssuerSettings().corporate)
                     return Promise.reject(GObject.GLocale.get(new GObject.GLocaleKey("GGoogleDrive", "error.only-for-corporate")));
-                const { role: n, domain } = t;
-                if (!n || !domain) return Promise.reject(GObject.GLocale.get(new GObject.GLocaleKey("GGoogleDrive", "error.not-enough-parameters")));
-                const a = {
+                const { role: role, domain } = shareOptions;
+                if (!role || !domain) return Promise.reject(GObject.GLocale.get(new GObject.GLocaleKey("GGoogleDrive", "error.not-enough-parameters")));
+                const shareRequest = {
                     type: "domain",
                     domain: domain,
-                    role: l.default[n.id],
+                    role: CloudToGoogleRoleMap.default[role.id],
                     allowFileDiscovery: true,
                 };
-                return this._createShare(e, a);
+                return this._createShare(fileId, shareRequest);
             }),
-            (g.prototype._createShare = async function (e, t) {
+            (GoogleDriveClient.prototype._createShare = async function (fileId, shareBody) {
                 if (!this.getTokenIssuerSettings() || !this.getTokenIssuerSettings().corporate)
                     return Promise.reject(GObject.GLocale.get(new GObject.GLocaleKey("GGoogleDrive", "error.only-for-corporate")));
-                const n = new URL("https://www.googleapis.com/drive/v3/files/".concat(e, "/permissions")),
-                    o = await this.getAccessToken(),
-                    a = { fields: "*", supportsAllDrives: true, sendNotificationEmail: false };
-                for (var r in a) n.searchParams.append(r, a[r]);
-                return fetch(n.toString(), {
+                const url = new URL("https://www.googleapis.com/drive/v3/files/".concat(fileId, "/permissions")),
+                    accessToken = await this.getAccessToken(),
+                    queryParams = { fields: "*", supportsAllDrives: true, sendNotificationEmail: false };
+                for (var r in queryParams) url.searchParams.append(r, queryParams[r]);
+                return fetch(url.toString(), {
                     method: "POST",
                     headers: new Headers({
-                        Authorization: "Bearer ".concat(o),
+                        Authorization: "Bearer ".concat(accessToken),
                         "Content-Type": "application/json",
                     }),
-                    body: JSON.stringify(t),
-                }).then((e) => e.json());
+                    body: JSON.stringify(shareBody),
+                }).then((response) => response.json());
             }),
-            (g.prototype.getShareIdForEmail = async function (e, t) {
+            (GoogleDriveClient.prototype.getShareIdForEmail = async function (fileId, email) {
                 return this.getTokenIssuerSettings() && this.getTokenIssuerSettings().corporate
-                    ? (await this.getFilePermissions(e, true)).filter((e) => {
-                          let { emailAddress: n } = e;
-                          return n === t;
+                    ? (await this.getFilePermissions(fileId, true)).filter((permission) => {
+                          let { emailAddress: permissionEmail } = permission;
+                          return permissionEmail === email;
                       })
                     : Promise.reject(GObject.GLocale.get(new GObject.GLocaleKey("GGoogleDrive", "error.only-for-corporate")));
             }),
-            (g.prototype.removeShare = async function (e, t) {
-                let { id } = t;
+            (GoogleDriveClient.prototype.removeShare = async function (fileId, share) {
+                let { id } = share;
                 if (!this.getTokenIssuerSettings() || !this.getTokenIssuerSettings().corporate)
                     return Promise.reject(GObject.GLocale.get(new GObject.GLocaleKey("GGoogleDrive", "error.only-for-corporate")));
-                const o = new URL("https://www.googleapis.com/drive/v3/files/".concat(e, "/permissions/").concat(id)),
-                    a = await this.getAccessToken(),
-                    r = { fields: "*", supportsAllDrives: true };
-                for (var s in r) o.searchParams.append(s, r[s]);
-                return fetch(o.toString(), {
+                const url = new URL("https://www.googleapis.com/drive/v3/files/".concat(fileId, "/permissions/").concat(id)),
+                    accessToken = await this.getAccessToken(),
+                    queryParams = { fields: "*", supportsAllDrives: true };
+                for (var s in queryParams) url.searchParams.append(s, queryParams[s]);
+                return fetch(url.toString(), {
                     method: "DELETE",
-                    headers: new Headers({ Authorization: "Bearer ".concat(a) }),
-                }).then((e) => (204 !== e.status ? e.json() : e));
+                    headers: new Headers({ Authorization: "Bearer ".concat(accessToken) }),
+                }).then((response) => (204 !== response.status ? response.json() : response));
             }),
-            (g.prototype._simpleUpload = async function (e, t, n) {
-                const o = await this.getAccessToken();
-                return new Promise((i, a) => {
-                    var r = new FormData();
-                    (r.append("metadata", new Blob([JSON.stringify(n)], { type: "application/json" })), r.append("file", t));
-                    var s = new URL("https://www.googleapis.com/upload/drive/v3/files/".concat(e || "")),
-                        l = { uploadType: "multipart", fields: "*" };
-                    for (var c in (n.hasOwnProperty("driveId") && (l.supportsAllDrives = true), l)) s.searchParams.append(c, l[c]);
-                    fetch(s.toString(), {
-                        method: e ? "PATCH" : "POST",
-                        headers: new Headers({ Authorization: "Bearer ".concat(o) }),
-                        body: r,
+            (GoogleDriveClient.prototype._simpleUpload = async function (fileId, file, metadata) {
+                const accessToken = await this.getAccessToken();
+                return new Promise((resolve, reject) => {
+                    var formData = new FormData();
+                    (formData.append("metadata", new Blob([JSON.stringify(metadata)], { type: "application/json" })), formData.append("file", file));
+                    var url = new URL("https://www.googleapis.com/upload/drive/v3/files/".concat(fileId || "")),
+                        params = { uploadType: "multipart", fields: "*" };
+                    for (var c in (metadata.hasOwnProperty("driveId") && (params.supportsAllDrives = true), params)) url.searchParams.append(c, params[c]);
+                    fetch(url.toString(), {
+                        method: fileId ? "PATCH" : "POST",
+                        headers: new Headers({ Authorization: "Bearer ".concat(accessToken) }),
+                        body: formData,
                     })
-                        .then((e) => e.json())
-                        .then((e) => {
-                            i(e);
+                        .then((response) => response.json())
+                        .then((data) => {
+                            resolve(data);
                         })
-                        .catch((e) => {
-                            (console.error(e), a(e));
+                        .catch((error) => {
+                            (console.error(error), reject(error));
                         });
                 });
             }),
-            (g.prototype._resumableUpload = async function (e, t, n, o) {
-                const i = await this.getAccessToken();
-                return new Promise((a, r) => {
-                    var s = n.mimeType || "application/octet-stream";
-                    const l = { fields: "*" };
-                    (n.hasOwnProperty("driveId") && (l.supportsAllDrives = true),
-                        new d({
-                            file: t,
-                            fileId: e,
-                            token: i,
-                            contentType: s,
-                            metadata: n,
-                            params: l,
-                            onComplete: function (e) {
-                                var t;
+            (GoogleDriveClient.prototype._resumableUpload = async function (fileId, file, metadata, onProgress) {
+                const accessToken = await this.getAccessToken();
+                return new Promise((resolve, reject) => {
+                    var contentType = metadata.mimeType || "application/octet-stream";
+                    const params = { fields: "*" };
+                    (metadata.hasOwnProperty("driveId") && (params.supportsAllDrives = true),
+                        new MediaUploader({
+                            file: file,
+                            fileId: fileId,
+                            token: accessToken,
+                            contentType: contentType,
+                            metadata: metadata,
+                            params: params,
+                            onComplete: function (response) {
+                                var parsedResponse;
                                 try {
-                                    t = "string" == typeof e ? JSON.parse(e) : e;
+                                    parsedResponse = "string" == typeof response ? JSON.parse(response) : response;
                                 } catch (n) {
-                                    t = e;
+                                    parsedResponse = response;
                                 }
-                                a(t);
+                                resolve(parsedResponse);
                             },
-                            onError: function (e) {
-                                r(e);
+                            onError: function (error) {
+                                reject(error);
                             },
-                            onProgress: function (e) {
-                                o && o(e.loaded / e.total);
+                            onProgress: function (progressEvent) {
+                                onProgress && onProgress(progressEvent.loaded / progressEvent.total);
                             },
                         }).upload());
                 });
             }),
-            (g.prototype._request = async function (e, t, n, o) {
+            (GoogleDriveClient.prototype._request = async function (url, options, signal, o) {
                 o = "number" == typeof o ? o : 0;
-                const i = await this.getAccessToken(),
-                    r = { Authorization: "Bearer ".concat(i) },
-                    s = t.headers ? Object.assign(r, t.headers) : r;
+                const accessToken = await this.getAccessToken(),
+                    headers = { Authorization: "Bearer ".concat(accessToken) },
+                    mergedHeaders = options.headers ? Object.assign(headers, options.headers) : headers;
                 return (
-                    delete t.headers,
-                    fetch(e, Object.assign({ headers: new Headers(s), signal: n }, t)).then(async (i) => {
-                        if (!i.ok) {
-                            var r = await i.json();
-                            return i.status === HTTP_STATUS_CODES.UNAUTHORIZED && (await gContainer.getGoogleAPI().signIn(), 0 === o)
-                                ? this._request(e, t, n, ++o)
-                                : i.status === HTTP_STATUS_CODES.FORBIDDEN && g.isUsageLimitError(r) && o < g.TRIAL_UNTIL_FAIL
-                                  ? (await (0, Utils.sleep)(1e3 * Math.pow(1 + o, 2)), this._request(e, t, n, ++o))
-                                  : Promise.reject(r);
+                    delete options.headers,
+                    fetch(url, Object.assign({ headers: new Headers(mergedHeaders), signal: signal }, options)).then(async (response) => {
+                        if (!response.ok) {
+                            var errorBody = await response.json();
+                            return response.status === HTTP_STATUS_CODES.UNAUTHORIZED && (await gContainer.getGoogleAPI().signIn(), 0 === o)
+                                ? this._request(url, options, signal, ++o)
+                                : response.status === HTTP_STATUS_CODES.FORBIDDEN && GoogleDriveClient.isUsageLimitError(errorBody) && o < GoogleDriveClient.TRIAL_UNTIL_FAIL
+                                  ? (await (0, Utils.sleep)(1e3 * Math.pow(1 + o, 2)), this._request(url, options, signal, ++o))
+                                  : Promise.reject(errorBody);
                         }
-                        return i;
+                        return response;
                     })
                 );
             }),
-            (g.prototype._requestWithProgress = async function (e, t, n, o, i) {
+            (GoogleDriveClient.prototype._requestWithProgress = async function (url, options, signal, onProgress, i) {
                 i = "number" == typeof i ? i : 0;
-                const s = await this.getAccessToken(),
-                    l = { Authorization: "Bearer ".concat(s) },
-                    c = t.headers ? Object.assign(l, t.headers) : l;
-                delete t.headers;
-                const d = await fetch(e, Object.assign({ headers: new Headers(c), signal: n }, t));
-                if (!d.ok) {
-                    var u = await d.json();
-                    return d.status === HTTP_STATUS_CODES.UNAUTHORIZED && (await gContainer.getGoogleAPI().signIn(), 0 === i)
-                        ? this._requestWithProgress(e, t, n, o, ++i)
-                        : d.status === HTTP_STATUS_CODES.FORBIDDEN && g.isUsageLimitError(u) && i < g.TRIAL_UNTIL_FAIL
-                          ? (await (0, Utils.sleep)(1e3 * Math.pow(1 + i, 2)), this._requestWithProgress(e, t, n, o, ++i))
-                          : Promise.reject(u);
+                const accessToken = await this.getAccessToken(),
+                    headers = { Authorization: "Bearer ".concat(accessToken) },
+                    mergedHeaders = options.headers ? Object.assign(headers, options.headers) : headers;
+                delete options.headers;
+                const response = await fetch(url, Object.assign({ headers: new Headers(mergedHeaders), signal: signal }, options));
+                if (!response.ok) {
+                    var errorBody = await response.json();
+                    return response.status === HTTP_STATUS_CODES.UNAUTHORIZED && (await gContainer.getGoogleAPI().signIn(), 0 === i)
+                        ? this._requestWithProgress(url, options, signal, onProgress, ++i)
+                        : response.status === HTTP_STATUS_CODES.FORBIDDEN && GoogleDriveClient.isUsageLimitError(errorBody) && i < GoogleDriveClient.TRIAL_UNTIL_FAIL
+                          ? (await (0, Utils.sleep)(1e3 * Math.pow(1 + i, 2)), this._requestWithProgress(url, options, signal, onProgress, ++i))
+                          : Promise.reject(errorBody);
                 }
-                return (0, r.readResponseWithProgress)(d, o, true);
+                return (0, cloudUtils.readResponseWithProgress)(response, onProgress, true);
             }),
-            (g.prototype.getFile = function (e, t, n, o) {
-                var i = new URL("https://www.googleapis.com/drive/v3/files/".concat(e, "?alt=media"));
-                for (var a in t) i.searchParams.append(a, t[a]);
-                return this._requestWithProgress(i.toString(), { method: "GET" }, n, o).then((e) => e.blob());
+            (GoogleDriveClient.prototype.getFile = function (fileId, queryParams, signal, onProgress) {
+                var url = new URL("https://www.googleapis.com/drive/v3/files/".concat(fileId, "?alt=media"));
+                for (var a in queryParams) url.searchParams.append(a, queryParams[a]);
+                return this._requestWithProgress(url.toString(), { method: "GET" }, signal, onProgress).then((response) => response.blob());
             }),
-            (g.prototype.getFileDetails = function (e) {
-                let t = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
-                var n = new URL("https://www.googleapis.com/drive/v3/files/".concat(e, "?fields=*"));
-                for (var o in t) n.searchParams.append(o, t[o]);
-                return this._request(n.toString(), { method: "GET" }).then((e) =>
-                    e.ok ? e.json() : e.json().then((e) => Promise.reject(e))
+            (GoogleDriveClient.prototype.getFileDetails = function (fileId) {
+                let queryParams = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
+                var url = new URL("https://www.googleapis.com/drive/v3/files/".concat(fileId, "?fields=*"));
+                for (var o in queryParams) url.searchParams.append(o, queryParams[o]);
+                return this._request(url.toString(), { method: "GET" }).then((response) =>
+                    response.ok ? response.json() : response.json().then((errorBody) => Promise.reject(errorBody))
                 );
             }),
-            (g.prototype.fileExists = function (e) {
-                let t = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
-                return this.getFileDetails(e, t)
+            (GoogleDriveClient.prototype.fileExists = function (fileId) {
+                let queryParams = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
+                return this.getFileDetails(fileId, queryParams)
                     .then(() => true)
-                    .catch((e) => {
-                        if (e.error) {
-                            if (e.error.code === HTTP_STATUS_CODES.NOT_FOUND) return false;
-                            const t = new Error(e.error.message);
-                            throw ((t.code = e.error.code), t);
+                    .catch((error) => {
+                        if (error.error) {
+                            if (error.error.code === HTTP_STATUS_CODES.NOT_FOUND) return false;
+                            const wrappedError = new Error(error.error.message);
+                            throw ((wrappedError.code = error.error.code), wrappedError);
                         }
                         throw new Error();
                     });
             }),
-            (g.prototype.updateFileDetails = function (e) {
-                let t = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {},
-                    n = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {};
-                if (Object.keys(t).length < 1) return Promise.resolve();
-                var o = new URL("https://www.googleapis.com/drive/v3/files/".concat(e));
-                for (var i in n) o.searchParams.append(i, n[i]);
-                return this._request(o.toString(), {
+            (GoogleDriveClient.prototype.updateFileDetails = function (fileId) {
+                let updates = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {},
+                    queryParams = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {};
+                if (Object.keys(updates).length < 1) return Promise.resolve();
+                var url = new URL("https://www.googleapis.com/drive/v3/files/".concat(fileId));
+                for (var i in queryParams) url.searchParams.append(i, queryParams[i]);
+                return this._request(url.toString(), {
                     method: "PATCH",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(t),
+                    body: JSON.stringify(updates),
                 });
             }),
-            (g.prototype.searchFiles = function (e) {
-                var t = new URL("https://www.googleapis.com/drive/v3/files");
-                for (var n in e) t.searchParams.append(n, e[n]);
-                return this._request(t.toString(), { method: "GET" }).then((e) => e.json());
+            (GoogleDriveClient.prototype.searchFiles = function (queryParams) {
+                var url = new URL("https://www.googleapis.com/drive/v3/files");
+                for (var n in queryParams) url.searchParams.append(n, queryParams[n]);
+                return this._request(url.toString(), { method: "GET" }).then((response) => response.json());
             }),
-            (g.prototype.searchTeamDrives = function (e) {
-                var t = new URL("https://www.googleapis.com/drive/v3/drives");
-                for (var n in e) t.searchParams.append(n, e[n]);
-                return this._request(t.toString(), { method: "GET" }).then((e) => e.json());
+            (GoogleDriveClient.prototype.searchTeamDrives = function (queryParams) {
+                var url = new URL("https://www.googleapis.com/drive/v3/drives");
+                for (var n in queryParams) url.searchParams.append(n, queryParams[n]);
+                return this._request(url.toString(), { method: "GET" }).then((response) => response.json());
             }),
-            (g.prototype.getAccountByEmail = function (e) {
-                if (!e || e.indexOf("@") <= 0)
-                    return Promise.reject(GObject.GLocale.get(new GObject.GLocaleKey("GShareDialog", "text.invalid-email")).replace("%email", e));
-                var t = new URL("https://www.googleapis.com/admin/directory/v1/users/".concat(e, "?viewType=domain_public"));
-                return this._request(t.toString(), { method: "GET" }).then((e) => e.json());
+            (GoogleDriveClient.prototype.getAccountByEmail = function (email) {
+                if (!email || email.indexOf("@") <= 0)
+                    return Promise.reject(GObject.GLocale.get(new GObject.GLocaleKey("GShareDialog", "text.invalid-email")).replace("%email", email));
+                var url = new URL("https://www.googleapis.com/admin/directory/v1/users/".concat(email, "?viewType=domain_public"));
+                return this._request(url.toString(), { method: "GET" }).then((response) => response.json());
             }),
-            (g.prototype.supportsEmailDomainCheck = async function () {
-                const e = await this.getTokenInfo().catch(() => null);
-                if (!e) return false;
-                const { scope } = e;
-                return Array.isArray(scope) ? scope.some((e) => n(e)) : n(scope);
-                function n(e) {
-                    return e.indexOf("admin.directory.user") >= 0;
+            (GoogleDriveClient.prototype.supportsEmailDomainCheck = async function () {
+                const tokenInfo = await this.getTokenInfo().catch(() => null);
+                if (!tokenInfo) return false;
+                const { scope } = tokenInfo;
+                return Array.isArray(scope) ? scope.some((scopeEntry) => hasAdminDirectoryScope(scopeEntry)) : hasAdminDirectoryScope(scope);
+                function hasAdminDirectoryScope(scopeValue) {
+                    return scopeValue.indexOf("admin.directory.user") >= 0;
                 }
             }),
-            (g.prototype.getTokenInfo = async function () {
-                var e = new URL("https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=".concat(await this.getAccessToken()));
-                return this._request(e.toString(), { method: "GET" }).then((e) => e.json());
+            (GoogleDriveClient.prototype.getTokenInfo = async function () {
+                var url = new URL("https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=".concat(await this.getAccessToken()));
+                return this._request(url.toString(), { method: "GET" }).then((response) => response.json());
             }),
-            (g.MimeType = { Folder: "application/vnd.google-apps.folder" }),
-            (g.Kind = { TeamDrive: "drive#teamDrive", Drive: "drive#drive" }),
-            (g.UploadType = { Simple: "simple", Resumable: "resumeable" }),
-            (g.DefaultUploadType = g.UploadType.Resumable),
-            (g.CloudToGoogleRoleMap = l.default),
-            (g.GoogleToCloudRoleMap = s.default),
-            (g.SearchEngine = {
+            (GoogleDriveClient.MimeType = { Folder: "application/vnd.google-apps.folder" }),
+            (GoogleDriveClient.Kind = { TeamDrive: "drive#teamDrive", Drive: "drive#drive" }),
+            (GoogleDriveClient.UploadType = { Simple: "simple", Resumable: "resumeable" }),
+            (GoogleDriveClient.DefaultUploadType = GoogleDriveClient.UploadType.Resumable),
+            (GoogleDriveClient.CloudToGoogleRoleMap = CloudToGoogleRoleMap.default),
+            (GoogleDriveClient.GoogleToCloudRoleMap = GoogleToCloudRoleMap.default),
+            (GoogleDriveClient.SearchEngine = {
                 Sorts: { Ascending: "", Descending: "desc" },
                 OrderBy: {
                     CreatedTime: "createdTime",
@@ -378,15 +378,15 @@ module.exports = function (module, exports, require) {
                     ViewedByMeTime: "viewedByMeTime",
                 },
             }),
-            (g.build = function (e) {
-                if (!e) {
+            (GoogleDriveClient.build = function (tokenConfig) {
+                if (!tokenConfig) {
                     if (!gContainer.getGoogleAPI().isLoaded()) throw Error("Google Drive Client not loaded!");
-                    e = gContainer.getGoogleAPI().getTokenConfiguration({
+                    tokenConfig = gContainer.getGoogleAPI().getTokenConfiguration({
                         corporate: false,
                         accountId: this._accountId,
                     });
                 }
-                return new g(new u(e));
+                return new GoogleDriveClient(new TokenIssuer(tokenConfig));
             }),
-            (module.exports = g));
+            (module.exports = GoogleDriveClient));
     };

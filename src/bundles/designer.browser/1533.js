@@ -2,7 +2,7 @@ module.exports = function (module, exports, require) {
         "use strict";
         (require(8 /* Symbol */), require(4), require(13));
         var GObject = require(1);
-        const i = require(156),
+        const CloudFile = require(156),
             { FILE_FORMATS } = require(10 /* designerConfig */),
             r = FILE_FORMATS.find((e) => e.default),
             { COMMAND_SAVE } = require(591 /* COMMAND_SAVE */),
@@ -13,7 +13,7 @@ module.exports = function (module, exports, require) {
             }
             async updateFileSceneAndMetadata(e, t, n, o) {
                 const a = await this._requestWorkerToSave(e, t, n, o);
-                return i.from(a);
+                return CloudFile.from(a);
             }
             _requestWorkerToSave(e, t, n, i) {
                 return new Promise((a, l) => {

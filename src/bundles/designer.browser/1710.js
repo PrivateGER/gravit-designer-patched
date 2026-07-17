@@ -4,57 +4,57 @@ module.exports = function (module, exports, require) {
             require(3),
             require(4),
             require(1352),
-            (module.exports = (e) => {
-                ((e._DragAndDropHelper = function (e) {
-                    this._vtree = e;
+            (module.exports = (namespace) => {
+                ((namespace._DragAndDropHelper = function (vtree) {
+                    this._vtree = vtree;
                 }),
-                    (e._DragAndDropHelper.prototype._droppableNodeUpper = null),
-                    (e._DragAndDropHelper.prototype._droppableNodeLower = null),
-                    (e._DragAndDropHelper.prototype._droppableNodeInside = null),
-                    (e._DragAndDropHelper.prototype.setDroppableNodeInside = function (e) {
-                        ((e && e === this._droppableNodeInside) ||
+                    (namespace._DragAndDropHelper.prototype._droppableNodeUpper = null),
+                    (namespace._DragAndDropHelper.prototype._droppableNodeLower = null),
+                    (namespace._DragAndDropHelper.prototype._droppableNodeInside = null),
+                    (namespace._DragAndDropHelper.prototype.setDroppableNodeInside = function (node) {
+                        ((node && node === this._droppableNodeInside) ||
                             (this._droppableNodeInside && this._droppableNodeInside.row.classList.remove(this._vtree._insertIntoStyle)),
-                            (this._droppableNodeInside = e),
-                            e && this._droppableNodeInside.row.classList.add(this._vtree._insertIntoStyle));
+                            (this._droppableNodeInside = node),
+                            node && this._droppableNodeInside.row.classList.add(this._vtree._insertIntoStyle));
                     }),
-                    (e._DragAndDropHelper.prototype.setDroppableNodeLower = function (e) {
-                        ((this._droppableNodeLower = e), (this._droppableNodeUpper = null));
-                        const t = this._vtree._dragNode;
+                    (namespace._DragAndDropHelper.prototype.setDroppableNodeLower = function (node) {
+                        ((this._droppableNodeLower = node), (this._droppableNodeUpper = null));
+                        const dragNode = this._vtree._dragNode;
                         (this._vtree.beginUpdate(),
-                            this._vtree.removeNode(t),
-                            this._vtree.insertNodeAfter(e, t),
+                            this._vtree.removeNode(dragNode),
+                            this._vtree.insertNodeAfter(node, dragNode),
                             this._vtree.endUpdate(true));
                     }),
-                    (e._DragAndDropHelper.prototype.setDroppableNodeUpper = function (e) {
-                        ((this._droppableNodeUpper = e), (this._droppableNodeLower = null));
-                        const t = this._vtree._dragNode;
+                    (namespace._DragAndDropHelper.prototype.setDroppableNodeUpper = function (node) {
+                        ((this._droppableNodeUpper = node), (this._droppableNodeLower = null));
+                        const dragNode = this._vtree._dragNode;
                         (this._vtree.beginUpdate(),
-                            this._vtree.removeNode(t),
-                            this._vtree.insertNodeBefore(e, t),
+                            this._vtree.removeNode(dragNode),
+                            this._vtree.insertNodeBefore(node, dragNode),
                             this._vtree.endUpdate(true));
                     }),
-                    (e._DragAndDropHelper.prototype.drop = function () {
-                        const e = this._vtree._dragNode,
-                            t = this._vtree._root;
+                    (namespace._DragAndDropHelper.prototype.drop = function () {
+                        const dragNode = this._vtree._dragNode,
+                            root = this._vtree._root;
                         if (this._droppableNodeInside) {
-                            const t = this._droppableNodeInside;
+                            const parentNode = this._droppableNodeInside;
                             (this._vtree.beginUpdate(),
-                                this._vtree.removeNode(e),
-                                this._vtree.appendNode(t, e),
+                                this._vtree.removeNode(dragNode),
+                                this._vtree.appendNode(parentNode, dragNode),
                                 this._vtree.endUpdate(true),
-                                this._vtree._dropCallback && this._vtree._dropCallback(t, null, null, [e]));
+                                this._vtree._dropCallback && this._vtree._dropCallback(parentNode, null, null, [dragNode]));
                         } else if (this._droppableNodeUpper) {
-                            const n = this._droppableNodeUpper;
+                            const upperNode = this._droppableNodeUpper;
                             this._vtree._dropCallback &&
-                                (n !== t
-                                    ? this._vtree._dropCallback(n.parent, e.next, e.previous, [e])
-                                    : this._vtree._dropCallback(t, null, null, [e]));
+                                (upperNode !== root
+                                    ? this._vtree._dropCallback(upperNode.parent, dragNode.next, dragNode.previous, [dragNode])
+                                    : this._vtree._dropCallback(root, null, null, [dragNode]));
                         } else if (this._droppableNodeLower) {
-                            const t = this._droppableNodeLower;
-                            this._vtree._dropCallback && this._vtree._dropCallback(t.parent, e.next, e.previous, [e]);
+                            const lowerNode = this._droppableNodeLower;
+                            this._vtree._dropCallback && this._vtree._dropCallback(lowerNode.parent, dragNode.next, dragNode.previous, [dragNode]);
                         }
                     }),
-                    (e._DragAndDropHelper.prototype.toString = function () {
+                    (namespace._DragAndDropHelper.prototype.toString = function () {
                         return "[Object GVirtualTree._DragAndDropHelper]";
                     }));
             }));

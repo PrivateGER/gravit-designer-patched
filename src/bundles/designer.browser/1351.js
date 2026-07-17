@@ -1,37 +1,37 @@
 module.exports = function (module, exports, require) {
         "use strict";
         (Object.defineProperty(exports, "__esModule", { value: true }),
-            (exports.buildLayerItemContainer = function (e, t, n, a) {
-                var r = $(e);
-                (r.attr("draggable", false),
-                    r.gPro({
-                        pro: t instanceof GObject.GElement && !!t.getProperty("_pro", true),
+            (exports.buildLayerItemContainer = function (element, node, hasSelection, isExpanded) {
+                var container = $(element);
+                (container.attr("draggable", false),
+                    container.gPro({
+                        pro: node instanceof GObject.GElement && !!node.getProperty("_pro", true),
                     }));
-                var s = $("<span></span>").addClass("layer-title-group").toggleClass("g-selected", t.hasFlag(GObject.GNode.Flag.Selected));
-                (s.appendTo(r),
-                    r
-                        .on("mouseenter", function (e) {
-                            t.hasFlag(GObject.GElement.Flag.Hidden) || t.setFlag(GObject.GNode.Flag.Highlighted);
+                var titleGroup = $("<span></span>").addClass("layer-title-group").toggleClass("g-selected", node.hasFlag(GObject.GNode.Flag.Selected));
+                (titleGroup.appendTo(container),
+                    container
+                        .on("mouseenter", function (event) {
+                            node.hasFlag(GObject.GElement.Flag.Hidden) || node.setFlag(GObject.GNode.Flag.Highlighted);
                         })
-                        .on("mouseleave", function (e) {
-                            t.hasFlag(GObject.GElement.Flag.Hidden) || t.removeFlag(GObject.GNode.Flag.Highlighted);
+                        .on("mouseleave", function (event) {
+                            node.hasFlag(GObject.GElement.Flag.Hidden) || node.removeFlag(GObject.GNode.Flag.Highlighted);
                         }));
-                var l = t.getProperty("name");
-                l = l || t.getNodeNameTranslated();
-                var c = $("<span></span>").html(l);
-                c.addClass("layer-title").appendTo(s);
-                var d = function (e) {
-                    return e instanceof GObject.GSymbol && !!e.getMasterSymbol();
+                var nodeName = node.getProperty("name");
+                nodeName = nodeName || node.getNodeNameTranslated();
+                var titleSpan = $("<span></span>").html(nodeName);
+                titleSpan.addClass("layer-title").appendTo(titleGroup);
+                var isSymbolInstance = function (candidate) {
+                    return candidate instanceof GObject.GSymbol && !!candidate.getMasterSymbol();
                 };
-                (d(t) || t.findParent(d)) && r.addClass("g-symbol-row");
-                r.toggleClass("g-active", t.hasFlag(GObject.GNode.Flag.Active))
-                    .toggleClass("g-has-selection", n)
-                    .toggleClass("g-selected", t.hasFlag(GObject.GNode.Flag.Selected));
-                var u,
-                    { icon, overlayIcon } = i(t, a);
+                (isSymbolInstance(node) || node.findParent(isSymbolInstance)) && container.addClass("g-symbol-row");
+                container.toggleClass("g-active", node.hasFlag(GObject.GNode.Flag.Active))
+                    .toggleClass("g-has-selection", hasSelection)
+                    .toggleClass("g-selected", node.hasFlag(GObject.GNode.Flag.Selected));
+                var iconContainer,
+                    { icon, overlayIcon } = getIconByLayerType(node, isExpanded);
                 icon &&
                     ("<svg" === icon.substr(0, 4)
-                        ? (u = $("<span></span>")
+                        ? (iconContainer = $("<span></span>")
                               .addClass("layer-icon")
                               .append(
                                   $(icon).addClass("layer-icon").attr({ width: "16px", height: "16px" }).css({
@@ -40,91 +40,91 @@ module.exports = function (module, exports, require) {
                                       opacity: "initial",
                                   })
                               )
-                              .insertBefore(c))
+                              .insertBefore(titleSpan))
                         : (gDesigner.isTouchEnabled() && (icon += "-small"),
-                          (u = $("<span></span>")
+                          (iconContainer = $("<span></span>")
                               .addClass("layer-icon " + icon)
                               .css({ opacity: "initial" })
-                              .insertBefore(c))));
-                overlayIcon && u && overlayIcon.appendTo(u);
-                return { container: r, title: c, titleGroup: s };
+                              .insertBefore(titleSpan))));
+                overlayIcon && iconContainer && overlayIcon.appendTo(iconContainer);
+                return { container: container, title: titleSpan, titleGroup: titleGroup };
             }),
-            (exports.getIconByLayerType = i),
-            (exports.getLayerOrItemStatus = function (e) {
-                var t = false,
-                    n = null,
-                    i = false,
-                    a = e;
-                for (; (a = a.getParent()) && !(a instanceof GObject.GScene); ) {
-                    (a instanceof GObject.GBlock &&
-                        ((t = false === a.getProperty("vis") || t),
-                        (s = a.getProperty("lkt")) && (n ? s === GObject.GBlock.LockType.Full && (n = s) : (n = s))),
-                        a instanceof GObject.GLayer && (i = true === a.getProperty("otl") || i));
+            (exports.getIconByLayerType = getIconByLayerType),
+            (exports.getLayerOrItemStatus = function (node) {
+                var parentHidden = false,
+                    parentLockType = null,
+                    parentOutlined = false,
+                    ancestor = node;
+                for (; (ancestor = ancestor.getParent()) && !(ancestor instanceof GObject.GScene); ) {
+                    (ancestor instanceof GObject.GBlock &&
+                        ((parentHidden = false === ancestor.getProperty("vis") || parentHidden),
+                        (lockType = ancestor.getProperty("lkt")) && (parentLockType ? lockType === GObject.GBlock.LockType.Full && (parentLockType = lockType) : (parentLockType = lockType))),
+                        ancestor instanceof GObject.GLayer && (parentOutlined = true === ancestor.getProperty("otl") || parentOutlined));
                 }
-                var r = t || false === e.getProperty("vis"),
-                    s = n || e.getProperty("lkt"),
-                    l = i || (e instanceof GObject.GLayer && e.getProperty("otl")),
-                    c = false;
-                if (e.hasMixin(GObject.GNode.Container))
-                    for (var d = e.getFirstChild(); null !== d && !c; d = d.getNext())
-                        d instanceof GObject.GItem && d.hasFlag(GObject.GNode.Flag.Selected) && (c = true);
+                var isHidden = parentHidden || false === node.getProperty("vis"),
+                    lockType = parentLockType || node.getProperty("lkt"),
+                    isOutlined = parentOutlined || (node instanceof GObject.GLayer && node.getProperty("otl")),
+                    hasSelection = false;
+                if (node.hasMixin(GObject.GNode.Container))
+                    for (var child = node.getFirstChild(); null !== child && !hasSelection; child = child.getNext())
+                        child instanceof GObject.GItem && child.hasFlag(GObject.GNode.Flag.Selected) && (hasSelection = true);
                 return {
-                    parentHidden: t,
-                    parentLockType: n,
-                    parentOutlined: i,
-                    isHidden: r,
-                    lockType: s,
-                    isOutlined: l,
-                    hasSelection: c,
+                    parentHidden: parentHidden,
+                    parentLockType: parentLockType,
+                    parentOutlined: parentOutlined,
+                    isHidden: isHidden,
+                    lockType: lockType,
+                    isOutlined: isOutlined,
+                    hasSelection: hasSelection,
                 };
             }));
         var GObject = require(1);
-        function i(e, t) {
-            var n = null,
-                i = null;
+        function getIconByLayerType(node, isExpanded) {
+            var iconName = null,
+                overlayIcon = null;
             if (
-                (e instanceof GObject.GLayer
-                    ? (n = t ? "gravit-icon-folderopen" : "gravit-icon-folderclose")
-                    : e instanceof GObject.GSlice
-                      ? (n = "gravit-icon-slice")
-                      : e instanceof GObject.GGroup
-                        ? (n = "gravit-icon-group")
-                        : e instanceof GObject.GShape
-                          ? e instanceof GObject.GPathsGraph
-                              ? (n = "gravit-icon-pathgraph3")
-                              : e instanceof GObject.GSimpleShape
-                                ? (n = e.getIcon())
-                                : e instanceof GObject.GText
-                                  ? ((n = "gravit-icon-textbox"), e.isFakeText() && (i = $("<div></div>").addClass("layer-icon-overlay")))
-                                  : e instanceof GObject.GImage
-                                    ? (n = "gravit-icon-picture")
-                                    : e instanceof GObject.GEllipse
-                                      ? (n = "gravit-icon-ellipse")
-                                      : e instanceof GObject.GRectangle
-                                        ? (n = "gravit-icon-rectangle")
-                                        : e instanceof GObject.GPath || e instanceof GObject.GCompoundPath
-                                          ? (n = "gravit-icon-pen")
-                                          : e instanceof GObject.GPolygon
-                                            ? (n = "gravit-icon-polygon")
-                                            : e instanceof GObject.GCompoundShape && (n = "gravit-icon-merge-union")
-                          : e instanceof GObject.GSymbol &&
-                            ((n = "gravit-icon-symbol"),
-                            e.isMaster() ? (n += "master") : e.getMasterSymbol() ? (n += "instance") : (n += "detached")),
-                e instanceof GObject.GShape && e.getParent() instanceof GObject.GCompoundShape && e.getPrevious())
+                (node instanceof GObject.GLayer
+                    ? (iconName = isExpanded ? "gravit-icon-folderopen" : "gravit-icon-folderclose")
+                    : node instanceof GObject.GSlice
+                      ? (iconName = "gravit-icon-slice")
+                      : node instanceof GObject.GGroup
+                        ? (iconName = "gravit-icon-group")
+                        : node instanceof GObject.GShape
+                          ? node instanceof GObject.GPathsGraph
+                              ? (iconName = "gravit-icon-pathgraph3")
+                              : node instanceof GObject.GSimpleShape
+                                ? (iconName = node.getIcon())
+                                : node instanceof GObject.GText
+                                  ? ((iconName = "gravit-icon-textbox"), node.isFakeText() && (overlayIcon = $("<div></div>").addClass("layer-icon-overlay")))
+                                  : node instanceof GObject.GImage
+                                    ? (iconName = "gravit-icon-picture")
+                                    : node instanceof GObject.GEllipse
+                                      ? (iconName = "gravit-icon-ellipse")
+                                      : node instanceof GObject.GRectangle
+                                        ? (iconName = "gravit-icon-rectangle")
+                                        : node instanceof GObject.GPath || node instanceof GObject.GCompoundPath
+                                          ? (iconName = "gravit-icon-pen")
+                                          : node instanceof GObject.GPolygon
+                                            ? (iconName = "gravit-icon-polygon")
+                                            : node instanceof GObject.GCompoundShape && (iconName = "gravit-icon-merge-union")
+                          : node instanceof GObject.GSymbol &&
+                            ((iconName = "gravit-icon-symbol"),
+                            node.isMaster() ? (iconName += "master") : node.getMasterSymbol() ? (iconName += "instance") : (iconName += "detached")),
+                node instanceof GObject.GShape && node.getParent() instanceof GObject.GCompoundShape && node.getPrevious())
             )
-                switch (e.getProperty("bool")) {
+                switch (node.getProperty("bool")) {
                     case GObject.GVertexPolyBoolean.OR:
-                        n = "gravit-icon-merge-union";
+                        iconName = "gravit-icon-merge-union";
                         break;
                     case GObject.GVertexPolyBoolean.AND:
-                        n = "gravit-icon-merge-intersect";
+                        iconName = "gravit-icon-merge-intersect";
                         break;
                     case GObject.GVertexPolyBoolean.SUB:
-                        n = "gravit-icon-merge-subtract";
+                        iconName = "gravit-icon-merge-subtract";
                         break;
                     case GObject.GVertexPolyBoolean.XOR:
-                        n = "gravit-icon-merge-difference";
+                        iconName = "gravit-icon-merge-difference";
                 }
-            return { icon: n, overlayIcon: i };
+            return { icon: iconName, overlayIcon: overlayIcon };
         }
     };

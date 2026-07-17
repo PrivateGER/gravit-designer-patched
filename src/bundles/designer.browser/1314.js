@@ -5,115 +5,115 @@ module.exports = function (module, exports, require) {
             GPlatform = require(15),
             Utils = require(40),
             GCategory = require(18),
-            s = require(106);
+            GElementAction = require(106);
         require(811 /* GGroupAction */);
-        function l() {}
-        (GObject.GObject.inherit(l, s),
-            (l.USE_DPI = true),
-            (l.ID = "modify.path2bmp"),
-            (l.TITLE = new GObject.GLocaleKey("GConvertToImageAction", "title")),
-            (l.prototype.getId = function () {
-                return l.ID;
+        function GConvertToImageAction() {}
+        (GObject.GObject.inherit(GConvertToImageAction, GElementAction),
+            (GConvertToImageAction.USE_DPI = true),
+            (GConvertToImageAction.ID = "modify.path2bmp"),
+            (GConvertToImageAction.TITLE = new GObject.GLocaleKey("GConvertToImageAction", "title")),
+            (GConvertToImageAction.prototype.getId = function () {
+                return GConvertToImageAction.ID;
             }),
-            (l.prototype.getTitle = function () {
-                return l.TITLE;
+            (GConvertToImageAction.prototype.getTitle = function () {
+                return GConvertToImageAction.TITLE;
             }),
-            (l.prototype.getIcon = function () {
+            (GConvertToImageAction.prototype.getIcon = function () {
                 return gDesigner.isTouchEnabled() ? "gravit-icon-flatten" : "";
             }),
-            (l.prototype.getCategory = function () {
+            (GConvertToImageAction.prototype.getCategory = function () {
                 return GCategory.CATEGORY_MODIFY;
             }),
-            (l.prototype.getGroup = function () {
+            (GConvertToImageAction.prototype.getGroup = function () {
                 return "structure-bitmap";
             }),
-            (l.prototype.getShortcut = function () {
+            (GConvertToImageAction.prototype.getShortcut = function () {
                 return [GPlatform.GKey.Constant.F7];
             }),
-            (l.prototype.isEnabled = function () {
-                if (!s.prototype.isEnabled.call(this)) return false;
-                var e = gDesigner.getActiveDocument() ? gDesigner.getActiveDocument().getEditor().getSelection() : null;
-                if (e)
-                    for (var t = 0; t < e.length; ++t)
-                        if (e[t] instanceof GObject.GElement && e[t].getPaintBBox() && !e[t].getPaintBBox().isEmpty()) return true;
+            (GConvertToImageAction.prototype.isEnabled = function () {
+                if (!GElementAction.prototype.isEnabled.call(this)) return false;
+                var selection = gDesigner.getActiveDocument() ? gDesigner.getActiveDocument().getEditor().getSelection() : null;
+                if (selection)
+                    for (var t = 0; t < selection.length; ++t)
+                        if (selection[t] instanceof GObject.GElement && selection[t].getPaintBBox() && !selection[t].getPaintBBox().isEmpty()) return true;
                 return false;
             }),
-            (l.prototype.execute = function () {
-                var e = gDesigner.getActiveDocument(),
-                    t = e ? e.getEditor() : null,
-                    n = t ? GObject.GNode.order(t.getIndividualSelection().slice()) : null,
-                    i = [];
-                if (n)
-                    for (var a = 0; a < n.length; ++a)
-                        n[a] instanceof GObject.GElement && n[a].getPaintBBox() && !n[a].getPaintBBox().isEmpty() && i.push(n[a]);
-                if (i.length) {
-                    (t.beginTransaction(), t.clearSelection());
+            (GConvertToImageAction.prototype.execute = function () {
+                var document = gDesigner.getActiveDocument(),
+                    editor = document ? document.getEditor() : null,
+                    selection = editor ? GObject.GNode.order(editor.getIndividualSelection().slice()) : null,
+                    elements = [];
+                if (selection)
+                    for (var a = 0; a < selection.length; ++a)
+                        selection[a] instanceof GObject.GElement && selection[a].getPaintBBox() && !selection[a].getPaintBBox().isEmpty() && elements.push(selection[a]);
+                if (elements.length) {
+                    (editor.beginTransaction(), editor.clearSelection());
                     try {
-                        var r = this._groupStuff(i);
-                        if (r) {
-                            var s = r.getParent(),
-                                l = r.getNext(),
-                                c = this._convertToImage(r);
-                            c && (s.insertChild(c, l), s.removeChild(r), t.updateSelection(false, [c]));
+                        var group = this._groupStuff(elements);
+                        if (group) {
+                            var parent = group.getParent(),
+                                next = group.getNext(),
+                                image = this._convertToImage(group);
+                            image && (parent.insertChild(image, next), parent.removeChild(group), editor.updateSelection(false, [image]));
                         }
                     } finally {
-                        t.commitTransaction(GObject.GLocale.get(this.getTitle()));
+                        editor.commitTransaction(GObject.GLocale.get(this.getTitle()));
                     }
                 }
             }),
-            (l.prototype._groupStuff = function (e) {
-                if (e && 1 === e.length) return e[0];
+            (GConvertToImageAction.prototype._groupStuff = function (elements) {
+                if (elements && 1 === elements.length) return elements[0];
                 for (
-                    var t = gDesigner.getActiveDocument(), n = t ? t.getEditor() : null, i = new GObject.GGroup(), r = [], s = 0;
-                    s < e.length;
+                    var document = gDesigner.getActiveDocument(), editor = document ? document.getEditor() : null, group = new GObject.GGroup(), validElements = [], s = 0;
+                    s < elements.length;
                     ++s
                 ) {
-                    (g = e[s]).validateInsertion(i) && r.push(g);
+                    (element = elements[s]).validateInsertion(group) && validElements.push(element);
                 }
-                if (r.length > 0) {
-                    var l,
-                        c = r[r.length - 1],
-                        d = c.getParent(),
-                        u = c.getNext();
-                    if (!d.isLocked() && i.validateInsertion(d)) {
-                        d.insertChild(i, u);
-                        var p = gDesigner.getActiveDocument().getScene();
+                if (validElements.length > 0) {
+                    var parentsSet,
+                        lastElement = validElements[validElements.length - 1],
+                        parent = lastElement.getParent(),
+                        next = lastElement.getNext();
+                    if (!parent.isLocked() && group.validateInsertion(parent)) {
+                        parent.insertChild(group, next);
+                        var scene = gDesigner.getActiveDocument().getScene();
                         try {
-                            l = new Set();
-                            for (s = 0; s < r.length; ++s) l.add(r[s].getParent());
-                            (0, Utils.blockChanges)(n, l, p, i);
-                            for (s = 0; s < r.length; ++s) {
-                                var g;
-                                ((g = r[s]).getParent().removeChild(g), i.appendChild(g));
+                            parentsSet = new Set();
+                            for (s = 0; s < validElements.length; ++s) parentsSet.add(validElements[s].getParent());
+                            (0, Utils.blockChanges)(editor, parentsSet, scene, group);
+                            for (s = 0; s < validElements.length; ++s) {
+                                var element;
+                                ((element = validElements[s]).getParent().removeChild(element), group.appendChild(element));
                             }
                         } finally {
-                            (0, Utils.releaseChanges)(n, l, p, i);
+                            (0, Utils.releaseChanges)(editor, parentsSet, scene, group);
                         }
                     }
                 }
-                return i;
+                return group;
             }),
-            (l.prototype._convertToImage = function (e) {
-                var t, n;
-                (e instanceof GObject.GImage || (t = GObject.GPaintCanvas.getScreenDPI() * GObject.GLength.DPI),
-                    e instanceof GObject.GElement && (n = e.getScene()),
-                    e instanceof GObject.GImage || (t = Math.max(t || GObject.GLength.DPI, (n && n.getProperty("dpi")) || GObject.GLength.DPI)));
-                var i = e.toBitmap(null, null, null, null, null, t),
-                    a = new GObject.GImage(),
-                    r = 1;
-                e instanceof GObject.GImage || (r /= t / GObject.GLength.DPI);
-                var s = e.getPaintBBox().getSide(GObject.GRect.Side.TOP_LEFT),
-                    l = new GObject.GTransform().scaled(r, r).translated(s.getX(), s.getY());
+            (GConvertToImageAction.prototype._convertToImage = function (element) {
+                var dpi, scene;
+                (element instanceof GObject.GImage || (dpi = GObject.GPaintCanvas.getScreenDPI() * GObject.GLength.DPI),
+                    element instanceof GObject.GElement && (scene = element.getScene()),
+                    element instanceof GObject.GImage || (dpi = Math.max(dpi || GObject.GLength.DPI, (scene && scene.getProperty("dpi")) || GObject.GLength.DPI)));
+                var bitmap = element.toBitmap(null, null, null, null, null, dpi),
+                    image = new GObject.GImage(),
+                    scale = 1;
+                element instanceof GObject.GImage || (scale /= dpi / GObject.GLength.DPI);
+                var topLeft = element.getPaintBBox().getSide(GObject.GRect.Side.TOP_LEFT),
+                    transform = new GObject.GTransform().scaled(scale, scale).translated(topLeft.getX(), topLeft.getY());
                 return (
-                    a.setProperties(
+                    image.setProperties(
                         ["iw", "ih", "url", "trf", "itrf"],
-                        [i.getWidth(), i.getHeight(), i.toImageDataUrl(GObject.GBitmap.ImageType.PNG), l, l]
+                        [bitmap.getWidth(), bitmap.getHeight(), bitmap.toImageDataUrl(GObject.GBitmap.ImageType.PNG), transform, transform]
                     ),
-                    a
+                    image
                 );
             }),
-            (l.prototype.toString = function () {
+            (GConvertToImageAction.prototype.toString = function () {
                 return "[Object GConvertToImageAction]";
             }),
-            (module.exports = l));
+            (module.exports = GConvertToImageAction));
     };

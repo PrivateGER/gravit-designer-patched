@@ -19,513 +19,513 @@ module.exports = function (module, exports, require) {
                 require(125),
                 require(126 /* polyfill:URL */),
                 require(114));
-            const n = require(170),
-                r = require(325),
-                o = require(171),
-                a = require(375),
-                s = (require(373), require(354)),
-                l = require(582),
+            const i18n = require(170),
+                LocKey = require(325),
+                $ = require(171),
+                trackEvent = require(375),
+                campaignUtils = (require(373), require(354)),
+                Runtimes = require(582),
                 { PasswordLength } = require(581),
-                A = require(978),
+                Recaptcha = require(978),
                 { Events } = (require(584), require(431)),
                 { learnmore } = require(253),
                 GCloudUiOfflineDialog = require(980),
                 { PRIVACY_URL, SUPPORT_URL, IMPORT_EXPORT_DOCUMENTATION, VECTOR_PRODUCT_PAGE, CORELDRAW_PAGE } = require(374 /* SUPPORT_URL */),
                 { getSupportUrl, getSubscriptionUrl, getUrlWithQueryParams } = require(254),
-                C = (require(430), /xmas/),
-                w = (e) => {
-                    32 === (e.which || e.keyCode) && (e.preventDefault(), o(e.target).click());
+                xmasCouponRegex = (require(430), /xmas/),
+                handleSpaceKeydown = (event) => {
+                    32 === (event.which || event.keyCode) && (event.preventDefault(), $(event.target).click());
                 },
-                E = (e) => {
+                safeDecodeURIComponent = (value) => {
                     try {
-                        return decodeURIComponent(e);
-                    } catch (e) {
-                        console.warn(e);
+                        return decodeURIComponent(value);
+                    } catch (error) {
+                        console.warn(error);
                     }
-                    return e;
+                    return value;
                 },
-                B =
+                isSafari =
                     (navigator.vendor && /apple/i.test(navigator.vendor)) ||
                     !!window.safari ||
                     (-1 != navigator.userAgent.indexOf("safari") &&
                         !(-1 != navigator.userAgent.indexOf("chrome") && -1 != navigator.userAgent.indexOf("version/")));
-            o(document).on("keydown", (e) => {
-                if (9 === (e.which || e.keyCode)) {
-                    const t = o(":focus"),
-                        i = o(document.body).find("a, button, :input, [tabindex]").filter(":visible:not(:disabled)");
-                    if (B) {
-                        e.preventDefault();
-                        let n = 0;
-                        (i.each(function (e) {
-                            if (o(this).closest(t)[0]) return ((n = ++e), false);
+            $(document).on("keydown", (event) => {
+                if (9 === (event.which || event.keyCode)) {
+                    const focusedElement = $(":focus"),
+                        focusableElements = $(document.body).find("a, button, :input, [tabindex]").filter(":visible:not(:disabled)");
+                    if (isSafari) {
+                        event.preventDefault();
+                        let focusedIndex = 0;
+                        (focusableElements.each(function (e) {
+                            if ($(this).closest(focusedElement)[0]) return ((focusedIndex = ++e), false);
                         }),
-                            n >= i.length && (n = 0),
-                            i.eq(n).focus());
-                    } else (t[0] && !i.last().closest(t)[0]) || (e.preventDefault(), i.first().focus());
+                            focusedIndex >= focusableElements.length && (focusedIndex = 0),
+                            focusableElements.eq(focusedIndex).focus());
+                    } else (focusedElement[0] && !focusableElements.last().closest(focusedElement)[0]) || (event.preventDefault(), focusableElements.first().focus());
                 }
             });
-            const x = () => {
-                let e = o("<div></div>").addClass("input-field"),
-                    t = o("<input>").attr("type", "password").attr("required", true).attr("data-property", "password").appendTo(e);
+            const buildPasswordField = () => {
+                let field = $("<div></div>").addClass("input-field"),
+                    passwordInput = $("<input>").attr("type", "password").attr("required", true).attr("data-property", "password").appendTo(field);
                 return (
-                    o("<span></span>")
+                    $("<span></span>")
                         .addClass("g-cloud-icon-hide")
-                        .on("click", (e) => {
-                            o(e.target).closest("span").toggleClass("g-cloud-icon-display g-cloud-icon-hide").hasClass("g-cloud-icon-hide")
-                                ? t.attr("type", "password")
-                                : t.attr("type", "text");
+                        .on("click", (event) => {
+                            $(event.target).closest("span").toggleClass("g-cloud-icon-display g-cloud-icon-hide").hasClass("g-cloud-icon-hide")
+                                ? passwordInput.attr("type", "password")
+                                : passwordInput.attr("type", "text");
                         })
-                        .appendTo(e),
-                    e
+                        .appendTo(field),
+                    field
                 );
             };
 
-            function P(e) {
-                let { impl, gApi, anonymous, version, runtime, options: A = {}, flow, query: p = {} } = e;
+            function GCloudUiLoginDialog(config) {
+                let { impl, gApi, anonymous, version, runtime, options: configOptions = {}, flow, query: query = {} } = config;
                 ((this._impl = impl),
                     (this._gApi = gApi),
                     (this._anonymous = !!anonymous),
                     (this._version = version),
                     (this._runtimeCode = runtime),
-                    (this._options = A),
+                    (this._options = configOptions),
                     (this._closeable = true),
                     (this._flow = flow),
-                    (this._query = p),
-                    n.setLanguage(this._impl.getLanguage()),
+                    (this._query = query),
+                    i18n.setLanguage(this._impl.getLanguage()),
                     this._gApi.setLanguage(this._impl.getLanguage()));
-                let u,
-                    d,
-                    g = false,
-                    f = true,
-                    m = new URL(window.location.href);
-                if (m.searchParams) {
-                    ((u = m.searchParams.get("webUrl")), (d = m.searchParams.get("appUrl")));
-                    let e = m.searchParams.get("newuser"),
-                        t = m.searchParams.get("closeable");
-                    ((g = e && "false" != e), (f = !t || "false" != t));
+                let webUrl,
+                    appUrl,
+                    isNewUser = false,
+                    isCloseable = true,
+                    currentUrl = new URL(window.location.href);
+                if (currentUrl.searchParams) {
+                    ((webUrl = currentUrl.searchParams.get("webUrl")), (appUrl = currentUrl.searchParams.get("appUrl")));
+                    let newUserParam = currentUrl.searchParams.get("newuser"),
+                        closeableParam = currentUrl.searchParams.get("closeable");
+                    ((isNewUser = newUserParam && "false" != newUserParam), (isCloseable = !closeableParam || "false" != closeableParam));
                 } else {
-                    for (var y, v = /[?&]([^=#]+)=([^&#]*)/g, C = {}; (y = v.exec(window.location.href)); ) C[y[1]] = y[2];
-                    ((u = C.webUrl), (d = C.appUrl), (g = C.newUser && "false" != C.newUser), (f = !C.closeable || "false" != C.closeable));
+                    for (var match, queryRegex = /[?&]([^=#]+)=([^&#]*)/g, queryParams = {}; (match = queryRegex.exec(window.location.href)); ) queryParams[match[1]] = match[2];
+                    ((webUrl = queryParams.webUrl), (appUrl = queryParams.appUrl), (isNewUser = queryParams.newUser && "false" != queryParams.newUser), (isCloseable = !queryParams.closeable || "false" != queryParams.closeable));
                 }
-                if (u)
+                if (webUrl)
                     try {
-                        u = window.atob(u);
+                        webUrl = window.atob(webUrl);
                     } catch (e) {
-                        u = "";
+                        webUrl = "";
                     }
-                if (d)
+                if (appUrl)
                     try {
-                        d = window.atob(d);
+                        appUrl = window.atob(appUrl);
                     } catch (e) {
-                        d = "";
+                        appUrl = "";
                     }
-                ((this._webUrl = u),
-                    (this._appUrl = d),
-                    (this._newUser = g),
-                    (this._closeable = f),
-                    (this._dialog = o("<div/>").addClass("g-dialog-content")),
-                    (this._modal = o("<div/>").addClass("g-dialog-modal hide")),
-                    (this._overlay = o("<div/>").addClass("g-dialog-overlay hide")),
-                    (this._closeButton = o("<div></div>")
+                ((this._webUrl = webUrl),
+                    (this._appUrl = appUrl),
+                    (this._newUser = isNewUser),
+                    (this._closeable = isCloseable),
+                    (this._dialog = $("<div/>").addClass("g-dialog-content")),
+                    (this._modal = $("<div/>").addClass("g-dialog-modal hide")),
+                    (this._overlay = $("<div/>").addClass("g-dialog-overlay hide")),
+                    (this._closeButton = $("<div></div>")
                         .css("display", "none")
                         .addClass("g-cloud-ui-btn-close")
-                        .append(o("<span></span>").addClass("g-cloud-icon-close"))
+                        .append($("<span></span>").addClass("g-cloud-icon-close"))
                         .on("click", this.close.bind(this))
                         .appendTo(this._dialog)));
-                let w = o("<header></header>").appendTo(this._dialog);
-                ((this._title = o("<span></span>")
+                let headerElement = $("<header></header>").appendTo(this._dialog);
+                ((this._title = $("<span></span>")
                     .addClass("title")
-                    .append(o("<label></label>").text(n.get(new r("GLoginDialog", "text.title-discontinued"))))
-                    .appendTo(w)),
-                    (this._container = o("<div></div>").addClass("container").appendTo(this._dialog)),
-                    (this._helpTip = o("<div></div>")
+                    .append($("<label></label>").text(i18n.get(new LocKey("GLoginDialog", "text.title-discontinued"))))
+                    .appendTo(headerElement)),
+                    (this._container = $("<div></div>").addClass("container").appendTo(this._dialog)),
+                    (this._helpTip = $("<div></div>")
                         .addClass("help-tip")
                         .append(
-                            o("<span></span>").html(
-                                n
-                                    .get(new r("GLoginDialog", "text.tooltip-trouble-login"))
+                            $("<span></span>").html(
+                                i18n
+                                    .get(new LocKey("GLoginDialog", "text.tooltip-trouble-login"))
                                     .replace("%support-link", '<span class="support-link">'.concat(getSupportUrl(), "</span>"))
                             )
                         )),
                     this._helpTip.find(".support-link").on(
                         "click",
                         function () {
-                            let e = this._getStatMappedForm();
-                            (a("login-signup_".concat(e, "_support"), null, false),
+                            let formName = this._getStatMappedForm();
+                            (trackEvent("login-signup_".concat(formName, "_support"), null, false),
                                 this._impl.openExternalLink({
                                     dialog: this,
                                     link: getUrlWithQueryParams(getSupportUrl(), this._getUTMCampaignParams()),
                                 }));
                         }.bind(this)
                     ),
-                    this._dialog.on("click", (e) => {
-                        var t = o(e.target);
-                        t.hasClass("g-cloud-icon-question") ||
-                            t.hasClass("help-tip") ||
-                            t.parent().hasClass("help-tip") ||
+                    this._dialog.on("click", (event) => {
+                        var target = $(event.target);
+                        target.hasClass("g-cloud-icon-question") ||
+                            target.hasClass("help-tip") ||
+                            target.parent().hasClass("help-tip") ||
                             !this._helpTip.hasClass("visible") ||
                             this._helpTip.removeClass("visible");
                     }));
             }
-            ((P.Forms = {
+            ((GCloudUiLoginDialog.Forms = {
                 SignIn: "sign-in",
                 SignUp: "sign-up",
                 ResetPassword: "reset-password",
                 Thanks: "thanks",
             }),
-                (P.prototype._getOptions = function () {
-                    let e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
-                    return Object.assign({}, e, this._options);
+                (GCloudUiLoginDialog.prototype._getOptions = function () {
+                    let defaults = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
+                    return Object.assign({}, defaults, this._options);
                 }),
-                (P.prototype._runtimeCode = null),
-                (P.prototype._query = null),
-                (P.prototype._flow = null),
-                (P.prototype._anonymous = false),
-                (P.prototype._formContent = null),
-                (P.prototype._title = null),
-                (P.prototype._dialog = null),
-                (P.prototype._callback = null),
-                (P.prototype._coupon = null),
-                (P.prototype._activePanel = P.Forms.SignIn),
-                (P.prototype._shouldBypassEmailVerification = function () {
-                    const e = this._query && this._query.bypassEmailVerification;
-                    return !!this._anonymous && "string" == typeof e && "false" !== e;
+                (GCloudUiLoginDialog.prototype._runtimeCode = null),
+                (GCloudUiLoginDialog.prototype._query = null),
+                (GCloudUiLoginDialog.prototype._flow = null),
+                (GCloudUiLoginDialog.prototype._anonymous = false),
+                (GCloudUiLoginDialog.prototype._formContent = null),
+                (GCloudUiLoginDialog.prototype._title = null),
+                (GCloudUiLoginDialog.prototype._dialog = null),
+                (GCloudUiLoginDialog.prototype._callback = null),
+                (GCloudUiLoginDialog.prototype._coupon = null),
+                (GCloudUiLoginDialog.prototype._activePanel = GCloudUiLoginDialog.Forms.SignIn),
+                (GCloudUiLoginDialog.prototype._shouldBypassEmailVerification = function () {
+                    const bypassEmailVerification = this._query && this._query.bypassEmailVerification;
+                    return !!this._anonymous && "string" == typeof bypassEmailVerification && "false" !== bypassEmailVerification;
                 }),
-                (P.prototype._isNewPurchaseFlow = function () {
+                (GCloudUiLoginDialog.prototype._isNewPurchaseFlow = function () {
                     return !!this._flow && ("purchase_flow_new" === this._flow || "purchase" === this._flow);
                 }),
-                (P.prototype.open = function (e) {
-                    const t = (document.cookie || "").match(/_gcoupon=[^;]+/);
-                    ((this._coupon = t ? t[0].slice("_gcoupon=".length) : null),
+                (GCloudUiLoginDialog.prototype.open = function (targetElement) {
+                    const couponMatch = (document.cookie || "").match(/_gcoupon=[^;]+/);
+                    ((this._coupon = couponMatch ? couponMatch[0].slice("_gcoupon=".length) : null),
                         this._coupon &&
-                            C.test(this._coupon) &&
+                            xmasCouponRegex.test(this._coupon) &&
                             this._title
                                 .empty()
-                                .append(o("<label></label>").text(n.get(new r("GLoginDialog", "text.title-xmas-title"))))
-                                .append(o("<br>"))
-                                .append(o("<label></label>").text(n.get(new r("GLoginDialog", "text.title-xmas-subtitle")))),
+                                .append($("<label></label>").text(i18n.get(new LocKey("GLoginDialog", "text.title-xmas-title"))))
+                                .append($("<br>"))
+                                .append($("<label></label>").text(i18n.get(new LocKey("GLoginDialog", "text.title-xmas-subtitle")))),
                         this._buildForm().appendTo(this._container),
                         this._isNewPurchaseFlow() || this._buildProInfo().appendTo(this._container),
-                        o("<span></span>").addClass("version").html(this._getFormattedVersion()).appendTo(this._dialog),
-                        o("<footer></footer>").appendTo(this._dialog),
-                        a("login-signup_login_open", null, true),
-                        this._activatePanel(P.Forms.SignIn),
+                        $("<span></span>").addClass("version").html(this._getFormattedVersion()).appendTo(this._dialog),
+                        $("<footer></footer>").appendTo(this._dialog),
+                        trackEvent("login-signup_login_open", null, true),
+                        this._activatePanel(GCloudUiLoginDialog.Forms.SignIn),
                         this._anonymous && this._closeable && this._closeButton.css("display", ""),
-                        e
+                        targetElement
                             .addClass("g-cloud-ui g-cloud-ui-embedded g-cloud-ui-login")
                             .toggleClass("g-anonymous", this._anonymous)
                             .toggleClass("g-new-purchase-flow", this._isNewPurchaseFlow())
                             .append(
-                                o("<div></div>")
+                                $("<div></div>")
                                     .addClass("background")
-                                    .append(o("<div></div>").addClass("left"))
-                                    .append(o("<div></div>").addClass("right"))
+                                    .append($("<div></div>").addClass("left"))
+                                    .append($("<div></div>").addClass("right"))
                             )
-                            .append(o("<div></div>").addClass("g-cloud-ui-login-dialog").append(this._dialog))
+                            .append($("<div></div>").addClass("g-cloud-ui-login-dialog").append(this._dialog))
                             .append(this._modal)
                             .append(this._overlay),
-                        learnmore || e.addClass("g-cloud-ui-no-learn-more"),
+                        learnmore || targetElement.addClass("g-cloud-ui-no-learn-more"),
                         this.focus());
                 }),
-                (P.prototype._getFormattedVersion = function () {
-                    const e = this._getRuntime(),
-                        t = e ? " ".concat(e.abbr) : "";
-                    return n.get(new r("GLoginDialog", "text.version")).replace("%version", this._version) + t;
+                (GCloudUiLoginDialog.prototype._getFormattedVersion = function () {
+                    const runtimeInfo = this._getRuntime(),
+                        runtimeAbbr = runtimeInfo ? " ".concat(runtimeInfo.abbr) : "";
+                    return i18n.get(new LocKey("GLoginDialog", "text.version")).replace("%version", this._version) + runtimeAbbr;
                 }),
-                (P.prototype._getRuntime = function () {
+                (GCloudUiLoginDialog.prototype._getRuntime = function () {
                     if (this._runtimeCode) {
-                        return Object.values(l).find((e) => e.code === this._runtimeCode);
+                        return Object.values(Runtimes).find((item) => item.code === this._runtimeCode);
                     }
                     return null;
                 }),
-                (P.prototype.close = function () {
+                (GCloudUiLoginDialog.prototype.close = function () {
                     (this._toggleLoading(true),
                         this._impl.close({
                             dialog: this,
                         }));
                 }),
-                (P.prototype.openPurchaseFlow = function () {
-                    let e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
+                (GCloudUiLoginDialog.prototype.openPurchaseFlow = function () {
+                    let options = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
                     (this._toggleLoading(true),
                         this._impl.openPurchaseFlow({
                             dialog: this,
-                            options: this._getOptions(e),
+                            options: this._getOptions(options),
                         }));
                 }),
-                (P.prototype._buildForm = function () {
-                    let e = o("<div></div>").addClass("content");
+                (GCloudUiLoginDialog.prototype._buildForm = function () {
+                    let content = $("<div></div>").addClass("content");
                     return (
-                        o("<div></div>")
+                        $("<div></div>")
                             .addClass("column-layout sparse header")
-                            .append(o("<span></span>").addClass("title text-left").attr("id", "form-title"))
+                            .append($("<span></span>").addClass("title text-left").attr("id", "form-title"))
                             .append(
-                                o("<span></span>")
+                                $("<span></span>")
                                     .append(
-                                        o("<span></span>")
+                                        $("<span></span>")
                                             .addClass("g-cloud-icon-question")
                                             .on(
                                                 "click",
                                                 function () {
-                                                    let e = this._getStatMappedForm();
-                                                    (a("login-signup_".concat(e, "_help"), null, true), this._helpTip.toggleClass("visible"));
+                                                    let formName = this._getStatMappedForm();
+                                                    (trackEvent("login-signup_".concat(formName, "_help"), null, true), this._helpTip.toggleClass("visible"));
                                                 }.bind(this)
                                             )
                                     )
                                     .append(this._helpTip)
                             )
-                            .appendTo(e),
-                        o("<div></div>").addClass("message").append(o("<span></span>")).appendTo(e),
-                        this._buildSignin().appendTo(e),
-                        this._buildSignup().appendTo(e),
-                        this._buildResetPassword().appendTo(e),
-                        (this._formContent = e),
-                        o("<div></div>").addClass("form-panel").append(e)
+                            .appendTo(content),
+                        $("<div></div>").addClass("message").append($("<span></span>")).appendTo(content),
+                        this._buildSignin().appendTo(content),
+                        this._buildSignup().appendTo(content),
+                        this._buildResetPassword().appendTo(content),
+                        (this._formContent = content),
+                        $("<div></div>").addClass("form-panel").append(content)
                     );
                 }),
-                (P.prototype._onResetPasswordSubmit = async function (e, t) {
+                (GCloudUiLoginDialog.prototype._onResetPasswordSubmit = async function (emailForm, recaptchaToken) {
                     try {
-                        const i = await this._gApi.resetPassword({
-                            email: e.find('input[data-property="email"]').val(),
+                        const response = await this._gApi.resetPassword({
+                            email: emailForm.find('input[data-property="email"]').val(),
                             appUrl: this._appUrl,
                             webUrl: this._webUrl,
-                            recaptcha: t,
+                            recaptcha: recaptchaToken,
                         });
-                        this._showMessage(i && i.message, "info");
-                    } catch (e) {
-                        this._handleError(e);
+                        this._showMessage(response && response.message, "info");
+                    } catch (error) {
+                        this._handleError(error);
                     }
-                    A.isAvailable() && grecaptcha.reset(this._resetPasswordRecaptchaWidget);
+                    Recaptcha.isAvailable() && grecaptcha.reset(this._resetPasswordRecaptchaWidget);
                 }),
-                (P.prototype._buildResetPassword = function () {
-                    let e = o("<div></div>")
+                (GCloudUiLoginDialog.prototype._buildResetPassword = function () {
+                    let panel = $("<div></div>")
                             .addClass("panel")
                             .attr("id", "reset-password")
-                            .attr("data-title", n.get(new r("GLoginDialog", "text.forgot-password"))),
-                        t = o("<form></form>").appendTo(e);
-                    if (A.isAvailable()) {
-                        const e = o("<div></div>").addClass("g-recaptcha").appendTo(t);
-                        this._gApi.recaptchaKey().then((i) => {
-                            this._resetPasswordRecaptchaWidget = grecaptcha.render(e[0], {
-                                sitekey: i,
-                                callback: (e) => this._onResetPasswordSubmit(t, e),
+                            .attr("data-title", i18n.get(new LocKey("GLoginDialog", "text.forgot-password"))),
+                        form = $("<form></form>").appendTo(panel);
+                    if (Recaptcha.isAvailable()) {
+                        const recaptchaContainer = $("<div></div>").addClass("g-recaptcha").appendTo(form);
+                        this._gApi.recaptchaKey().then((siteKey) => {
+                            this._resetPasswordRecaptchaWidget = grecaptcha.render(recaptchaContainer[0], {
+                                sitekey: siteKey,
+                                callback: (token) => this._onResetPasswordSubmit(form, token),
                                 size: "invisible",
                             });
                         });
                     }
                     return (
-                        t.on(
+                        form.on(
                             "submit",
-                            (e) => (
-                                a("login-signup_forgot-password_send-request", null, true),
+                            (event) => (
+                                trackEvent("login-signup_forgot-password_send-request", null, true),
                                 this._showMessage(),
-                                e.preventDefault(),
-                                A.isAvailable()
+                                event.preventDefault(),
+                                Recaptcha.isAvailable()
                                     ? navigator.onLine
                                         ? grecaptcha.execute(this._resetPasswordRecaptchaWidget)
                                         : GCloudUiOfflineDialog.openRetryConnection(null, () => {
                                               grecaptcha.execute(this._resetPasswordRecaptchaWidget);
                                           })
-                                    : this._onResetPasswordSubmit(t),
+                                    : this._onResetPasswordSubmit(form),
                                 false
                             )
                         ),
-                        o("<label></label>")
-                            .text(n.get(new r("GLoginDialog", "text.sign-up-email")))
-                            .appendTo(t),
-                        o("<input>")
+                        $("<label></label>")
+                            .text(i18n.get(new LocKey("GLoginDialog", "text.sign-up-email")))
+                            .appendTo(form),
+                        $("<input>")
                             .attr("type", "email")
                             .attr("data-property", "email")
                             .attr("autofocus", true)
                             .attr("required", true)
-                            .appendTo(t),
-                        o("<button></button>")
+                            .appendTo(form),
+                        $("<button></button>")
                             .attr("type", "submit")
                             .addClass("fit")
-                            .append(o("<span></span>").text(n.get(new r("GLoginDialog", "text.reset-password-send"))))
-                            .appendTo(t),
-                        o("<div></div>").addClass("spacer").appendTo(e),
-                        o("<footer></footer>")
+                            .append($("<span></span>").text(i18n.get(new LocKey("GLoginDialog", "text.reset-password-send"))))
+                            .appendTo(form),
+                        $("<div></div>").addClass("spacer").appendTo(panel),
+                        $("<footer></footer>")
                             .append(
-                                o("<span></span>")
+                                $("<span></span>")
                                     .addClass("link")
                                     .attr("tabindex", 0)
-                                    .text(n.get(new r("GLoginDialog", "text.sign-up-go-back")))
-                                    .keydown(w)
+                                    .text(i18n.get(new LocKey("GLoginDialog", "text.sign-up-go-back")))
+                                    .keydown(handleSpaceKeydown)
                                     .on("click", () => {
-                                        (a("login-signup_forgot-password_back-to-login", null, true), this._activatePanel(P.Forms.SignIn));
+                                        (trackEvent("login-signup_forgot-password_back-to-login", null, true), this._activatePanel(GCloudUiLoginDialog.Forms.SignIn));
                                     })
                             )
-                            .appendTo(e),
-                        e
+                            .appendTo(panel),
+                        panel
                     );
                 }),
-                (P.prototype._buildSignup = function () {
-                    let e = o("<div></div>")
+                (GCloudUiLoginDialog.prototype._buildSignup = function () {
+                    let panel = $("<div></div>")
                         .addClass("panel")
                         .attr("id", "sign-up")
                         .attr(
                             "data-title",
-                            n.get(new r("GLoginDialog", "text.title-create-account")).replace("%days", window.__TRIAL_DAYS__ || 15)
+                            i18n.get(new LocKey("GLoginDialog", "text.title-create-account")).replace("%days", window.__TRIAL_DAYS__ || 15)
                         );
-                    o("<div></div>")
+                    $("<div></div>")
                         .addClass("column-layout normal subheader")
-                        .append(o("<span></span>").text(n.get(new r("GLoginDialog", "text.sign-up-already"))))
+                        .append($("<span></span>").text(i18n.get(new LocKey("GLoginDialog", "text.sign-up-already"))))
                         .append(
-                            o("<span></span>")
+                            $("<span></span>")
                                 .addClass("link")
                                 .attr("tabindex", 0)
-                                .text(n.get(new r("GLoginDialog", "text.sign-up-go-back")))
-                                .keydown(w)
+                                .text(i18n.get(new LocKey("GLoginDialog", "text.sign-up-go-back")))
+                                .keydown(handleSpaceKeydown)
                                 .on("click enter", () => {
-                                    (a("login-signup_create-account_back-to-login", null, true), this._activatePanel(P.Forms.SignIn));
+                                    (trackEvent("login-signup_create-account_back-to-login", null, true), this._activatePanel(GCloudUiLoginDialog.Forms.SignIn));
                                 })
                         )
-                        .appendTo(e);
-                    let t = o("<form></form>").appendTo(e);
-                    const i = A.isAvailable(),
-                        s = (e) => {
-                            const n = t.find('input[data-property="email"]').val(),
-                                r = t.find('input[data-property="password"]').val(),
-                                o = e,
-                                a = t.find('input[data-property="newsletter"]').is(":checked"),
-                                s = t.find('input[data-property="firstname"]').val().trim(),
-                                l = t.find('input[data-property="lastname"]').val().trim(),
-                                h = this._appUrl,
-                                A = this._webUrl,
-                                c = this._flow;
+                        .appendTo(panel);
+                    let form = $("<form></form>").appendTo(panel);
+                    const recaptchaAvailable = Recaptcha.isAvailable(),
+                        handleSignupSubmit = (recaptchaToken) => {
+                            const email = form.find('input[data-property="email"]').val(),
+                                password = form.find('input[data-property="password"]').val(),
+                                recaptcha = recaptchaToken,
+                                newsletterChecked = form.find('input[data-property="newsletter"]').is(":checked"),
+                                firstName = form.find('input[data-property="firstname"]').val().trim(),
+                                lastName = form.find('input[data-property="lastname"]').val().trim(),
+                                appUrl = this._appUrl,
+                                webUrl = this._webUrl,
+                                flow = this._flow;
                             (this._toggleLoading(true),
                                 this._gApi
                                     .signup({
-                                        email: n,
-                                        password: r,
+                                        email: email,
+                                        password: password,
                                         app: "designer",
-                                        recaptcha: o,
-                                        newsletter: a,
-                                        name: s,
-                                        last_name: l,
-                                        appUrl: h,
-                                        webUrl: A,
-                                        flow: c,
+                                        recaptcha: recaptcha,
+                                        newsletter: newsletterChecked,
+                                        name: firstName,
+                                        last_name: lastName,
+                                        appUrl: appUrl,
+                                        webUrl: webUrl,
+                                        flow: flow,
                                     })
-                                    .then((e) =>
+                                    .then((response) =>
                                         this._postLogin(
-                                            Object.assign(e, {
+                                            Object.assign(response, {
                                                 new: true,
                                             })
                                         )
                                     )
-                                    .catch((e) => {
-                                        (this._toggleLoading(false), this._handleError(e), i && grecaptcha.reset(this._recaptchaWidget));
+                                    .catch((error) => {
+                                        (this._toggleLoading(false), this._handleError(error), recaptchaAvailable && grecaptcha.reset(this._recaptchaWidget));
                                     }));
                         };
-                    t.on(
+                    form.on(
                         "submit",
-                        (e) => (
-                            a("login-signup_create-account_create-account", null, true),
+                        (event) => (
+                            trackEvent("login-signup_create-account_create-account", null, true),
                             this._showMessage(),
-                            e.preventDefault(),
-                            i
+                            event.preventDefault(),
+                            recaptchaAvailable
                                 ? navigator.onLine
                                     ? grecaptcha.execute(this._recaptchaWidget)
                                     : GCloudUiOfflineDialog.openRetryConnection(null, () => {
                                           grecaptcha.execute(this._recaptchaWidget);
                                       })
-                                : s(),
+                                : handleSignupSubmit(),
                             false
                         )
                     );
-                    const { firstName: l = "", lastName: c = "", email: p = "" } = this._query || {};
+                    const { firstName: prefillFirstName = "", lastName: prefillLastName = "", email: prefillEmail = "" } = this._query || {};
                     if (
-                        (o("<label></label>")
-                            .text(n.get(new r("GLoginDialog", "text.sign-up-email")))
-                            .appendTo(t),
-                        o("<input>")
+                        ($("<label></label>")
+                            .text(i18n.get(new LocKey("GLoginDialog", "text.sign-up-email")))
+                            .appendTo(form),
+                        $("<input>")
                             .attr("type", "email")
                             .attr("data-property", "email")
                             .attr("autofocus", true)
                             .attr("required", true)
-                            .val(E(p))
-                            .appendTo(t),
-                        o("<div></div>")
+                            .val(safeDecodeURIComponent(prefillEmail))
+                            .appendTo(form),
+                        $("<div></div>")
                             .addClass("column-layout text-left top normal")
                             .append(
-                                o("<div></div>")
+                                $("<div></div>")
                                     .addClass("row-layout")
-                                    .append(o("<label></label>").text(n.get(new r("GLoginDialog", "text.first-name"))))
+                                    .append($("<label></label>").text(i18n.get(new LocKey("GLoginDialog", "text.first-name"))))
                                     .append(
-                                        o("<input>").attr("type", "text").attr("data-property", "firstname").attr("required", true).val(E(l))
+                                        $("<input>").attr("type", "text").attr("data-property", "firstname").attr("required", true).val(safeDecodeURIComponent(prefillFirstName))
                                     )
                             )
                             .append(
-                                o("<div></div>")
+                                $("<div></div>")
                                     .addClass("row-layout")
-                                    .append(o("<label></label>").text(n.get(new r("GLoginDialog", "text.last-name"))))
+                                    .append($("<label></label>").text(i18n.get(new LocKey("GLoginDialog", "text.last-name"))))
                                     .append(
-                                        o("<input>").attr("type", "text").attr("data-property", "lastname").attr("required", true).val(E(c))
+                                        $("<input>").attr("type", "text").attr("data-property", "lastname").attr("required", true).val(safeDecodeURIComponent(prefillLastName))
                                     )
                             )
-                            .appendTo(t),
-                        o("<label></label>")
+                            .appendTo(form),
+                        $("<label></label>")
                             .addClass("column-layout sparse")
-                            .append(o("<span></span>").text(n.get(new r("GLoginDialog", "text.sign-up-password"))))
+                            .append($("<span></span>").text(i18n.get(new LocKey("GLoginDialog", "text.sign-up-password"))))
                             .append(
-                                o("<span></span>").text(
-                                    n
-                                        .get(new r("GLoginDialog", "text.sign-up-password-min-max"))
+                                $("<span></span>").text(
+                                    i18n
+                                        .get(new LocKey("GLoginDialog", "text.sign-up-password-min-max"))
                                         .replace("%min-number", PasswordLength.Minimum)
                                         .replace("%max-number", PasswordLength.Maximum)
                                 )
                             )
-                            .appendTo(t),
-                        x().appendTo(t),
-                        o("<label></label>")
+                            .appendTo(form),
+                        buildPasswordField().appendTo(form),
+                        $("<label></label>")
                             .addClass("column-layout normal")
                             .append(
-                                o("<input>")
+                                $("<input>")
                                     .attr("type", "checkbox")
-                                    .on("change", (e) => {
-                                        let i = o(e.target).is(":checked");
-                                        (a("login-signup_create-account_i-agree", i, true),
-                                            t.find('button[type="submit"]').prop("disabled", !i).toggleClass("g-disabled", !i));
+                                    .on("change", (event) => {
+                                        let isChecked = $(event.target).is(":checked");
+                                        (trackEvent("login-signup_create-account_i-agree", isChecked, true),
+                                            form.find('button[type="submit"]').prop("disabled", !isChecked).toggleClass("g-disabled", !isChecked));
                                     })
                             )
                             .append(
-                                o("<span></span>")
+                                $("<span></span>")
                                     .append(
-                                        o("<span></span>").html(
-                                            n
-                                                .get(new r("GLoginDialog", "text.agreement"))
+                                        $("<span></span>").html(
+                                            i18n
+                                                .get(new LocKey("GLoginDialog", "text.agreement"))
                                                 .replace(
                                                     "%terms-of-use",
-                                                    o("<span/>")
+                                                    $("<span/>")
                                                         .addClass("link")
                                                         .addClass("terms-of-use")
                                                         .attr("tabindex", 0)
-                                                        .text(n.get(new r("GLoginDialog", "text.terms-use")))
+                                                        .text(i18n.get(new LocKey("GLoginDialog", "text.terms-use")))
                                                         .prop("outerHTML")
                                                 )
                                                 .replace(
                                                     "%end-user-license-agreement",
-                                                    o("<span/>")
+                                                    $("<span/>")
                                                         .addClass("link")
                                                         .addClass("end-user-license-agreement")
                                                         .attr("tabindex", 0)
-                                                        .text(n.get(new r("GLoginDialog", "text.eula")))
+                                                        .text(i18n.get(new LocKey("GLoginDialog", "text.eula")))
                                                         .prop("outerHTML")
                                                 ) + " "
                                         )
                                     )
-                                    .append(o("<span></span>").text(n.get(new r("GLoginDialog", "text.privacy-statement"))))
+                                    .append($("<span></span>").text(i18n.get(new LocKey("GLoginDialog", "text.privacy-statement"))))
                                     .append(
-                                        o("<span></span>")
+                                        $("<span></span>")
                                             .addClass("link")
                                             .attr("tabindex", 0)
-                                            .text(n.get(new r("GLoginDialog", "text.privacy-statement-link")))
-                                            .keydown(w)
+                                            .text(i18n.get(new LocKey("GLoginDialog", "text.privacy-statement-link")))
+                                            .keydown(handleSpaceKeydown)
                                             .on(
                                                 "click",
                                                 () => (
-                                                    a("login-signup_create-account_privacy-policy", null, true),
+                                                    trackEvent("login-signup_create-account_privacy-policy", null, true),
                                                     this._impl.openExternalLink({
                                                         dialog: this,
                                                         link: getUrlWithQueryParams(PRIVACY_URL, this._getUTMCampaignParams()),
@@ -535,14 +535,14 @@ module.exports = function (module, exports, require) {
                                             )
                                     )
                             )
-                            .appendTo(t),
-                        t
+                            .appendTo(form),
+                        form
                             .find(".terms-of-use")
-                            .keydown(w)
+                            .keydown(handleSpaceKeydown)
                             .on(
                                 "click",
                                 () => (
-                                    a("login-signup_create-account_terms-of-use", null, true),
+                                    trackEvent("login-signup_create-account_terms-of-use", null, true),
                                     this._impl.openExternalLink({
                                         dialog: this,
                                         link: getUrlWithQueryParams("https://www.corel.com/terms/", this._getUTMCampaignParams()),
@@ -550,13 +550,13 @@ module.exports = function (module, exports, require) {
                                     false
                                 )
                             ),
-                        t
+                        form
                             .find(".end-user-license-agreement")
-                            .keydown(w)
+                            .keydown(handleSpaceKeydown)
                             .on(
                                 "click",
                                 () => (
-                                    a("login-signup_create-account_eula", null, true),
+                                    trackEvent("login-signup_create-account_eula", null, true),
                                     this._impl.openExternalLink({
                                         dialog: this,
                                         link: getUrlWithQueryParams("https://www.corel.com/eula", this._getUTMCampaignParams()),
@@ -564,365 +564,365 @@ module.exports = function (module, exports, require) {
                                     false
                                 )
                             ),
-                        o("<label></label>")
+                        $("<label></label>")
                             .addClass("normal")
-                            .append(o("<span></span>").text(n.get(new r("GLoginDialog", "text.info-privacy-statement"))))
-                            .appendTo(t),
-                        o("<label></label>")
+                            .append($("<span></span>").text(i18n.get(new LocKey("GLoginDialog", "text.info-privacy-statement"))))
+                            .appendTo(form),
+                        $("<label></label>")
                             .addClass("column-layout normal")
-                            .append(o("<input>").attr("type", "checkbox").attr("data-property", "newsletter").prop("checked", false))
-                            .on("change", (e) => {
-                                a("login-signup_create-account_subscribe", o(e.target).is(":checked"), true);
+                            .append($("<input>").attr("type", "checkbox").attr("data-property", "newsletter").prop("checked", false))
+                            .on("change", (event) => {
+                                trackEvent("login-signup_create-account_subscribe", $(event.target).is(":checked"), true);
                             })
-                            .append(o("<span></span>").text(n.get(new r("GLoginDialog", "text.newsletter"))))
-                            .appendTo(t),
-                        i)
+                            .append($("<span></span>").text(i18n.get(new LocKey("GLoginDialog", "text.newsletter"))))
+                            .appendTo(form),
+                        recaptchaAvailable)
                     ) {
-                        let e = o("<div></div>").addClass("g-recaptcha").appendTo(t);
-                        this._gApi.recaptchaKey().then((t) => {
-                            this._recaptchaWidget = grecaptcha.render(e[0], {
-                                sitekey: t,
-                                callback: s,
+                        let recaptchaContainer = $("<div></div>").addClass("g-recaptcha").appendTo(form);
+                        this._gApi.recaptchaKey().then((siteKey) => {
+                            this._recaptchaWidget = grecaptcha.render(recaptchaContainer[0], {
+                                sitekey: siteKey,
+                                callback: handleSignupSubmit,
                                 size: "invisible",
                             });
                         });
                     }
-                    (o("<button></button>")
+                    ($("<button></button>")
                         .attr("type", "submit")
                         .addClass("fit")
                         .append(
-                            o("<span></span>").text(
+                            $("<span></span>").text(
                                 this._isNewPurchaseFlow()
-                                    ? ((e) => {
-                                          if (!e) return n.get(new r("GLoginDialog", "text.continue"));
+                                    ? ((destination) => {
+                                          if (!destination) return i18n.get(new LocKey("GLoginDialog", "text.continue"));
                                           return (
-                                              n.get(new r("GLoginDialog", "text.continue-to-".concat(e))) ||
-                                              n.get(new r("GLoginDialog", "text.continue"))
+                                              i18n.get(new LocKey("GLoginDialog", "text.continue-to-".concat(destination))) ||
+                                              i18n.get(new LocKey("GLoginDialog", "text.continue"))
                                           ).replace("%days", window.__TRIAL_DAYS__ || 15);
                                       })(this._query && this._query.to)
-                                    : n.get(new r("GLoginDialog", "text.sign-up-now"))
+                                    : i18n.get(new LocKey("GLoginDialog", "text.sign-up-now"))
                             )
                         )
                         .addClass("g-disabled")
                         .prop("disabled", true)
-                        .appendTo(t),
-                        o("<div></div>")
+                        .appendTo(form),
+                        $("<div></div>")
                             .addClass("column-layout separator")
-                            .append(o("<hr>"))
+                            .append($("<hr>"))
                             .append(
-                                o("<span></span>")
-                                    .text(n.get(new r("GLoginDialog", "text.or")))
+                                $("<span></span>")
+                                    .text(i18n.get(new LocKey("GLoginDialog", "text.or")))
                                     .addClass("or-element")
                             )
-                            .append(o("<hr>"))
-                            .appendTo(e),
-                        o("<div></div>")
+                            .append($("<hr>"))
+                            .appendTo(panel),
+                        $("<div></div>")
                             .addClass("column-layout oauth-buttons")
-                            .append(this._createFacebookButton(new r("GLoginDialog", "text.sign-facebook")))
-                            .append(this._createGoogleButton(new r("GLoginDialog", "text.sign-google")))
-                            .appendTo(e),
-                        o("<div></div>").addClass("spacer").appendTo(e));
-                    let g = o("<footer></footer>").appendTo(e);
+                            .append(this._createFacebookButton(new LocKey("GLoginDialog", "text.sign-facebook")))
+                            .append(this._createGoogleButton(new LocKey("GLoginDialog", "text.sign-google")))
+                            .appendTo(panel),
+                        $("<div></div>").addClass("spacer").appendTo(panel));
+                    let footerElement = $("<footer></footer>").appendTo(panel);
                     return (
-                        o("<span></span>")
+                        $("<span></span>")
                             .addClass("info")
-                            .html(n.getValue("GLoginDialog", "text.create-account-info").replace("%privacy-link", PRIVACY_URL))
-                            .appendTo(g)
+                            .html(i18n.getValue("GLoginDialog", "text.create-account-info").replace("%privacy-link", PRIVACY_URL))
+                            .appendTo(footerElement)
                             .find("a")
-                            .on("click", (e) => {
-                                (e.preventDefault(), e.stopImmediatePropagation());
-                                const t = o(e.target).closest("a").attr("href"),
-                                    i = t.includes("terms") ? "terms-of-use" : "privacy-policy";
+                            .on("click", (event) => {
+                                (event.preventDefault(), event.stopImmediatePropagation());
+                                const href = $(event.target).closest("a").attr("href"),
+                                    linkType = href.includes("terms") ? "terms-of-use" : "privacy-policy";
                                 return (
-                                    a("login-signup_create-account_".concat(i), null, true),
+                                    trackEvent("login-signup_create-account_".concat(linkType), null, true),
                                     this._impl.openExternalLink({
                                         dialog: this,
-                                        link: getUrlWithQueryParams(t, this._getUTMCampaignParams()),
+                                        link: getUrlWithQueryParams(href, this._getUTMCampaignParams()),
                                     }),
                                     false
                                 );
                             }),
-                        e
+                        panel
                     );
                 }),
-                (P.prototype._createGoogleButton = function (e) {
-                    return o("<button></button>")
+                (GCloudUiLoginDialog.prototype._createGoogleButton = function (labelKey) {
+                    return $("<button></button>")
                         .addClass("sign-google oauth column-layout")
-                        .append(o("<span></span>").addClass("icon").addClass("g-cloud-icon-google"))
-                        .append(o("<span></span>").addClass("txt").text(n.get(e)))
+                        .append($("<span></span>").addClass("icon").addClass("g-cloud-icon-google"))
+                        .append($("<span></span>").addClass("txt").text(i18n.get(labelKey)))
                         .on("click", () => {
-                            let e = this._getStatMappedForm();
-                            (a("login-signup_".concat(e, "_login-google"), null, true), this._oauth("google"));
+                            let formName = this._getStatMappedForm();
+                            (trackEvent("login-signup_".concat(formName, "_login-google"), null, true), this._oauth("google"));
                         });
                 }),
-                (P.prototype._createFacebookButton = function (e) {
-                    return o("<button></button>")
+                (GCloudUiLoginDialog.prototype._createFacebookButton = function (labelKey) {
+                    return $("<button></button>")
                         .addClass("sign-facebook oauth column-layout")
-                        .append(o("<span></span>").addClass("icon").addClass("g-cloud-icon-facebook"))
-                        .append(o("<span></span>").addClass("txt").text(n.get(e)))
+                        .append($("<span></span>").addClass("icon").addClass("g-cloud-icon-facebook"))
+                        .append($("<span></span>").addClass("txt").text(i18n.get(labelKey)))
                         .on("click", () => {
-                            let e = this._getStatMappedForm();
-                            (a("login-signup_".concat(e, "_login-facebook"), null, true), this._oauth("facebook"));
+                            let formName = this._getStatMappedForm();
+                            (trackEvent("login-signup_".concat(formName, "_login-facebook"), null, true), this._oauth("facebook"));
                         });
                 }),
-                (P.prototype._buildThanks = function (e) {
-                    const t = o("#thanks");
-                    if (t.length) return t;
+                (GCloudUiLoginDialog.prototype._buildThanks = function (userData) {
+                    const existingThanksPanel = $("#thanks");
+                    if (existingThanksPanel.length) return existingThanksPanel;
                     this._closeButton.css("display", "none");
-                    let i = o("<div></div>").addClass("panel").attr("id", "thanks");
-                    o("<header></header>")
-                        .append(o("<span></span>").html(n.get(new r("GLoginDialog", "text.account-created"))))
-                        .appendTo(i);
-                    let s = o("<main></main>").appendTo(i);
+                    let thanksPanel = $("<div></div>").addClass("panel").attr("id", "thanks");
+                    $("<header></header>")
+                        .append($("<span></span>").html(i18n.get(new LocKey("GLoginDialog", "text.account-created"))))
+                        .appendTo(thanksPanel);
+                    let mainElement = $("<main></main>").appendTo(thanksPanel);
                     return (
                         this._title
                             .empty()
-                            .append(o("<label></label>").text(n.get(new r("GLoginDialog", "text.title-title-account-created")))),
-                        e.trial_created ||
-                            (a("login-signup_account-created_trial-activated", null, true),
+                            .append($("<label></label>").text(i18n.get(new LocKey("GLoginDialog", "text.title-title-account-created")))),
+                        userData.trial_created ||
+                            (trackEvent("login-signup_account-created_trial-activated", null, true),
                             this._gApi.license
                                 .activateTrial()
                                 .then(() => {
-                                    (e.email_verified || this._shouldBypassEmailVerification()) && this.close();
+                                    (userData.email_verified || this._shouldBypassEmailVerification()) && this.close();
                                 })
-                                .catch((e) => this._handleError(e))),
-                        e.email_verified ||
-                            (o("<span></span>")
+                                .catch((error) => this._handleError(error))),
+                        userData.email_verified ||
+                            ($("<span></span>")
                                 .addClass("title")
-                                .html(n.get(new r("GLoginDialog", "text.confirmation-account-created")).replace("%email", e.email))
-                                .appendTo(s),
-                            o("<span></span>")
+                                .html(i18n.get(new LocKey("GLoginDialog", "text.confirmation-account-created")).replace("%email", userData.email))
+                                .appendTo(mainElement),
+                            $("<span></span>")
                                 .addClass("subtitle")
                                 .html(
-                                    n
-                                        .get(new r("GLoginDialog", "text.confirmation-account-created-subtitle"))
+                                    i18n
+                                        .get(new LocKey("GLoginDialog", "text.confirmation-account-created-subtitle"))
                                         .replace("%days", window.__TRIAL_DAYS__ || 15)
                                 )
-                                .appendTo(s)),
-                        e.email_verified ||
-                            o("<footer></footer>")
+                                .appendTo(mainElement)),
+                        userData.email_verified ||
+                            $("<footer></footer>")
                                 .append(
-                                    o("<span></span>")
+                                    $("<span></span>")
                                         .addClass("font-11-px")
-                                        .text(n.get(new r("GLoginDialog", "text.email-not-received-part-1")))
+                                        .text(i18n.get(new LocKey("GLoginDialog", "text.email-not-received-part-1")))
                                 )
                                 .append(
-                                    o("<span></span>")
+                                    $("<span></span>")
                                         .addClass("link")
                                         .attr("tabindex", 0)
-                                        .text(n.get(new r("GLoginDialog", "text.email-not-received-part-2")))
-                                        .keydown(w)
+                                        .text(i18n.get(new LocKey("GLoginDialog", "text.email-not-received-part-2")))
+                                        .keydown(handleSpaceKeydown)
                                         .on("click", async () => {
-                                            (a("login-signup_account-created_send-activation-email", null, true),
-                                                i.css("min-height", ""),
+                                            (trackEvent("login-signup_account-created_send-activation-email", null, true),
+                                                thanksPanel.css("min-height", ""),
                                                 this._showMessage(),
                                                 this._toggleLoading(true));
                                             try {
-                                                const t = this._webUrl,
-                                                    n = this._appUrl;
+                                                const webUrl = this._webUrl,
+                                                    appUrl = this._appUrl;
                                                 this._gApi
                                                     .resendEmailConfirmation({
-                                                        email: e.email,
+                                                        email: userData.email,
                                                         force: true,
-                                                        webUrl: t,
-                                                        appUrl: n,
+                                                        webUrl: webUrl,
+                                                        appUrl: appUrl,
                                                     })
-                                                    .then((e) => {
-                                                        (this._showMessage(e && e.message, "info"), i.css("min-height", "446px"));
+                                                    .then((response) => {
+                                                        (this._showMessage(response && response.message, "info"), thanksPanel.css("min-height", "446px"));
                                                     })
-                                                    .catch((e) => this._handleError(e));
+                                                    .catch((error) => this._handleError(error));
                                             } finally {
                                                 this._toggleLoading(false);
                                             }
                                         })
                                 )
-                                .appendTo(i),
-                        i
+                                .appendTo(thanksPanel),
+                        thanksPanel
                     );
                 }),
-                (P.prototype._buildSignin = function () {
-                    let e = o("<div></div>")
+                (GCloudUiLoginDialog.prototype._buildSignin = function () {
+                    let panel = $("<div></div>")
                             .addClass("panel")
                             .attr("id", "sign-in")
-                            .attr("data-title", n.get(new r("GLoginDialog", "text.sign-in-title"))),
-                        t = o("<form></form>").appendTo(e);
-                    (o("<div></div>")
-                        .html("<p>⚠︎ ".concat(n.get(new r("GLoginDialog", "text.title-discontinued-notice")), "</p>"))
+                            .attr("data-title", i18n.get(new LocKey("GLoginDialog", "text.sign-in-title"))),
+                        form = $("<form></form>").appendTo(panel);
+                    ($("<div></div>")
+                        .html("<p>⚠︎ ".concat(i18n.get(new LocKey("GLoginDialog", "text.title-discontinued-notice")), "</p>"))
                         .css("color", "#e3006e")
-                        .appendTo(t),
-                        t.on("submit", (e) => {
-                            (a("login-signup_login_login", null, true), this._showMessage(), e.preventDefault());
-                            const t = o(e.target),
-                                i = t.find('input[data-property="login"]').val(),
-                                n = t.find('input[data-property="password"]').val(),
-                                r = this._flow;
+                        .appendTo(form),
+                        form.on("submit", (event) => {
+                            (trackEvent("login-signup_login_login", null, true), this._showMessage(), event.preventDefault());
+                            const target = $(event.target),
+                                login = target.find('input[data-property="login"]').val(),
+                                password = target.find('input[data-property="password"]').val(),
+                                flow = this._flow;
                             return (
                                 this._toggleLoading(true),
                                 this._gApi
                                     .signin({
-                                        login: i,
-                                        password: n,
+                                        login: login,
+                                        password: password,
                                         app: "designer",
-                                        flow: r,
+                                        flow: flow,
                                     })
-                                    .then((e) => this._postLogin(e))
-                                    .catch((e) => this._handleError(e)),
+                                    .then((response) => this._postLogin(response))
+                                    .catch((error) => this._handleError(error)),
                                 false
                             );
                         }),
-                        o("<label></label>")
-                            .text(n.get(new r("GLoginDialog", "text.sign-in-login")))
-                            .appendTo(t),
-                        o("<input>").attr("type", "text").attr("data-property", "login").attr("required", true).appendTo(t),
-                        o("<label></label>")
-                            .text(n.get(new r("GLoginDialog", "text.sign-in-password")))
-                            .appendTo(t),
-                        x(new r("GLoginDialog", "text.placeholder-sign-in-password")).appendTo(t),
-                        o("<div></div>")
+                        $("<label></label>")
+                            .text(i18n.get(new LocKey("GLoginDialog", "text.sign-in-login")))
+                            .appendTo(form),
+                        $("<input>").attr("type", "text").attr("data-property", "login").attr("required", true).appendTo(form),
+                        $("<label></label>")
+                            .text(i18n.get(new LocKey("GLoginDialog", "text.sign-in-password")))
+                            .appendTo(form),
+                        buildPasswordField(new LocKey("GLoginDialog", "text.placeholder-sign-in-password")).appendTo(form),
+                        $("<div></div>")
                             .addClass("column-layout login")
                             .append(
-                                o("<button></button>")
+                                $("<button></button>")
                                     .attr("type", "submit")
-                                    .append(o("<span></span>").text(n.get(new r("GLoginDialog", "text.sign-in-button"))))
+                                    .append($("<span></span>").text(i18n.get(new LocKey("GLoginDialog", "text.sign-in-button"))))
                             )
-                            .appendTo(t),
-                        o("<div></div>")
+                            .appendTo(form),
+                        $("<div></div>")
                             .addClass("link text-left")
                             .attr("tabindex", 0)
-                            .text(n.get(new r("GLoginDialog", "text.forgot-password")))
-                            .keydown(w)
+                            .text(i18n.get(new LocKey("GLoginDialog", "text.forgot-password")))
+                            .keydown(handleSpaceKeydown)
                             .on("click", () => {
-                                (a("login-signup_login_forgot-password", null, true), this._activatePanel(P.Forms.ResetPassword));
+                                (trackEvent("login-signup_login_forgot-password", null, true), this._activatePanel(GCloudUiLoginDialog.Forms.ResetPassword));
                             })
-                            .appendTo(t),
-                        o("<div></div>")
+                            .appendTo(form),
+                        $("<div></div>")
                             .addClass("column-layout separator")
-                            .append(o("<hr>"))
+                            .append($("<hr>"))
                             .append(
-                                o("<span></span>")
-                                    .text(n.get(new r("GLoginDialog", "text.or")))
+                                $("<span></span>")
+                                    .text(i18n.get(new LocKey("GLoginDialog", "text.or")))
                                     .addClass("or-element")
                             )
-                            .append(o("<hr>"))
-                            .appendTo(e),
-                        o("<div></div>")
+                            .append($("<hr>"))
+                            .appendTo(panel),
+                        $("<div></div>")
                             .addClass("column-layout oauth-buttons")
-                            .append(this._createGoogleButton(new r("GLoginDialog", "text.sign-google")))
-                            .appendTo(e),
-                        o("<div></div>").addClass("spacer").appendTo(e));
-                    let i = o("<footer></footer>").appendTo(e);
-                    i.append(o("<br />"));
+                            .append(this._createGoogleButton(new LocKey("GLoginDialog", "text.sign-google")))
+                            .appendTo(panel),
+                        $("<div></div>").addClass("spacer").appendTo(panel));
+                    let footerElement = $("<footer></footer>").appendTo(panel);
+                    footerElement.append($("<br />"));
                     return (
-                        o("<span></span>")
+                        $("<span></span>")
                             .addClass("info")
-                            .html(n.getValue("GLoginDialog", "text.create-account-info").replace("%privacy-link", PRIVACY_URL))
-                            .appendTo(i)
+                            .html(i18n.getValue("GLoginDialog", "text.create-account-info").replace("%privacy-link", PRIVACY_URL))
+                            .appendTo(footerElement)
                             .find("a")
-                            .on("click", (e) => {
-                                (e.preventDefault(), e.stopImmediatePropagation());
-                                const t = o(e.target).closest("a").attr("href"),
-                                    i = t.includes("terms") ? "terms-of-use" : "privacy-policy";
+                            .on("click", (event) => {
+                                (event.preventDefault(), event.stopImmediatePropagation());
+                                const href = $(event.target).closest("a").attr("href"),
+                                    linkType = href.includes("terms") ? "terms-of-use" : "privacy-policy";
                                 return (
-                                    a("login-signup_login_".concat(i), null, true),
+                                    trackEvent("login-signup_login_".concat(linkType), null, true),
                                     this._impl.openExternalLink({
                                         dialog: this,
-                                        link: getUrlWithQueryParams(t, this._getUTMCampaignParams()),
+                                        link: getUrlWithQueryParams(href, this._getUTMCampaignParams()),
                                     }),
                                     false
                                 );
                             }),
-                        e
+                        panel
                     );
                 }),
-                (P.prototype._buildProInfo = function () {
-                    const e = [
+                (GCloudUiLoginDialog.prototype._buildProInfo = function () {
+                    const proInfoItems = [
                             {
-                                title: n.get(new r("GLoginDialog", "text.title-discontinued-eol-date")),
-                                content: n
-                                    .get(new r("GLoginDialog", "text.title-discontinued-eol-date-details"))
+                                title: i18n.get(new LocKey("GLoginDialog", "text.title-discontinued-eol-date")),
+                                content: i18n
+                                    .get(new LocKey("GLoginDialog", "text.title-discontinued-eol-date-details"))
                                     .replace("%support-link", SUPPORT_URL),
                             },
                             {
-                                title: n.get(new r("GLoginDialog", "text.title-discontinued-avoid-losing-work")),
-                                content: n.get(new r("GLoginDialog", "text.title-discontinued-avoid-losing-work-details")),
+                                title: i18n.get(new LocKey("GLoginDialog", "text.title-discontinued-avoid-losing-work")),
+                                content: i18n.get(new LocKey("GLoginDialog", "text.title-discontinued-avoid-losing-work-details")),
                                 action: {
-                                    text: n.get(new r("GLoginDialog", "text.title-discontinued-export-your-files")),
+                                    text: i18n.get(new LocKey("GLoginDialog", "text.title-discontinued-export-your-files")),
                                     link: IMPORT_EXPORT_DOCUMENTATION,
                                 },
                             },
                             {
-                                title: n.get(new r("GLoginDialog", "text.title-discontinued-sign-up-closed")),
-                                content: n
-                                    .get(new r("GLoginDialog", "text.title-discontinued-sign-up-closed-details"))
+                                title: i18n.get(new LocKey("GLoginDialog", "text.title-discontinued-sign-up-closed")),
+                                content: i18n
+                                    .get(new LocKey("GLoginDialog", "text.title-discontinued-sign-up-closed-details"))
                                     .replace("%product-link", CORELDRAW_PAGE),
                                 action: {
-                                    text: n.get(new r("GLoginDialog", "text.title-discontinued-sign-up-closed-learn-more")),
+                                    text: i18n.get(new LocKey("GLoginDialog", "text.title-discontinued-sign-up-closed-learn-more")),
                                     link: VECTOR_PRODUCT_PAGE,
                                 },
                             },
                         ],
-                        t = [
-                            n.get(new r("GLoginDialog", "text.xmas-topic-1")),
-                            n.get(new r("GLoginDialog", "text.xmas-topic-2")),
-                            n.get(new r("GLoginDialog", "text.xmas-topic-3")),
+                        xmasTopics = [
+                            i18n.get(new LocKey("GLoginDialog", "text.xmas-topic-1")),
+                            i18n.get(new LocKey("GLoginDialog", "text.xmas-topic-2")),
+                            i18n.get(new LocKey("GLoginDialog", "text.xmas-topic-3")),
                         ],
-                        i = this._coupon && C.test(this._coupon),
-                        a = o("<header></header>"),
-                        s = o("<main></main>");
-                    if (i) {
-                        (a.html(n.get(new r("GLoginDialog", "text.xmas-header"))),
-                            s.append(o("<header></header>").text(n.get(new r("GLoginDialog", "text.xmas-header-2")))),
-                            s.append(
-                                t.map((e, t) =>
-                                    o("<div></div>")
+                        isXmasCoupon = this._coupon && xmasCouponRegex.test(this._coupon),
+                        headerElement = $("<header></header>"),
+                        mainElement = $("<main></main>");
+                    if (isXmasCoupon) {
+                        (headerElement.html(i18n.get(new LocKey("GLoginDialog", "text.xmas-header"))),
+                            mainElement.append($("<header></header>").text(i18n.get(new LocKey("GLoginDialog", "text.xmas-header-2")))),
+                            mainElement.append(
+                                xmasTopics.map((topic, index) =>
+                                    $("<div></div>")
                                         .append(
-                                            o("<div></div>")
+                                            $("<div></div>")
                                                 .addClass("number")
-                                                .text(t + 1)
+                                                .text(index + 1)
                                         )
-                                        .append(o("<span></span>").addClass("content").text(e))
+                                        .append($("<span></span>").addClass("content").text(topic))
                                 )
                             ));
-                        let e = o("<footer></footer>");
-                        (s.append(e),
+                        let footerElement = $("<footer></footer>");
+                        (mainElement.append(footerElement),
                             this._gApi
                                 .getPrice({
                                     coupon: this._coupon,
                                 })
-                                .then((t) => {
-                                    let { price, listPrice, locale, currency } = t,
-                                        l = "";
-                                    price && listPrice && (l = 5 * parseInt(Math.floor((100 * (1 - price / listPrice)) / 5)) + "%");
-                                    const h = {
+                                .then((priceInfo) => {
+                                    let { price, listPrice, locale, currency } = priceInfo,
+                                        discountPercent = "";
+                                    price && listPrice && (discountPercent = 5 * parseInt(Math.floor((100 * (1 - price / listPrice)) / 5)) + "%");
+                                    const currencyFormatOptions = {
                                         style: "currency",
                                         currency: currency,
                                     };
                                     price &&
                                         Math.round(price) === price &&
-                                        Object.assign(h, {
+                                        Object.assign(currencyFormatOptions, {
                                             minimumFractionDigits: 0,
                                             maximumFractionDigits: 0,
                                         });
-                                    const A = price ? price.toLocaleString(locale || n.getLocaleLanguageTag(navigator.language), h) : "";
-                                    A &&
-                                        l &&
-                                        e.html(
-                                            n.get(new r("GLoginDialog", "text.xmas-discount")).replace("%discount", l).replace("%price", A)
+                                    const formattedPrice = price ? price.toLocaleString(locale || i18n.getLocaleLanguageTag(navigator.language), currencyFormatOptions) : "";
+                                    formattedPrice &&
+                                        discountPercent &&
+                                        footerElement.html(
+                                            i18n.get(new LocKey("GLoginDialog", "text.xmas-discount")).replace("%discount", discountPercent).replace("%price", formattedPrice)
                                         );
                                 }));
                     } else
-                        (a.html(n.get(new r("GLoginDialog", "text.title-discontinued-thanks"))),
-                            s.append(
-                                e.map((e) => {
-                                    let { title, content, action } = e;
-                                    const r = o("<div></div>")
+                        (headerElement.html(i18n.get(new LocKey("GLoginDialog", "text.title-discontinued-thanks"))),
+                            mainElement.append(
+                                proInfoItems.map((item) => {
+                                    let { title, content, action } = item;
+                                    const topicElement = $("<div></div>")
                                         .addClass("topic")
-                                        .append(o("<div></div>").text(title).css("font-size", "12pt").css("font-weight", "bold"))
-                                        .append(o("<div></div>").html(content).css("font-size", "12pt"));
+                                        .append($("<div></div>").text(title).css("font-size", "12pt").css("font-weight", "bold"))
+                                        .append($("<div></div>").html(content).css("font-size", "12pt"));
                                     return (
                                         action &&
-                                            r.append(
-                                                o("<button></button>")
+                                            topicElement.append(
+                                                $("<button></button>")
                                                     .addClass("buynow round-corner")
                                                     .text(action.text)
                                                     .on("click", () => {
@@ -935,53 +935,53 @@ module.exports = function (module, exports, require) {
                                                     .css("text-transform", "none")
                                                     .css("margin-top", "6px")
                                             ),
-                                        r
+                                        topicElement
                                     );
                                 })
                             ));
-                    return o("<div></div>")
-                        .addClass("pro-panel" + (i ? " xmas" : ""))
-                        .append(a)
-                        .append(s);
+                    return $("<div></div>")
+                        .addClass("pro-panel" + (isXmasCoupon ? " xmas" : ""))
+                        .append(headerElement)
+                        .append(mainElement);
                 }),
-                (P.prototype._activatePanel = function (e) {
-                    ((this._activePanel = e), this._showMessage(), this._dialog.find(".panel.g-active").removeClass("g-active"));
-                    let t = this._dialog
-                        .find(".panel#" + e)
+                (GCloudUiLoginDialog.prototype._activatePanel = function (panelId) {
+                    ((this._activePanel = panelId), this._showMessage(), this._dialog.find(".panel.g-active").removeClass("g-active"));
+                    let panelTitle = this._dialog
+                        .find(".panel#" + panelId)
                         .addClass("g-active")
                         .attr("data-title");
                     (this._dialog
                         .find("#form-title")
-                        .text(t || "")
+                        .text(panelTitle || "")
                         .parent()
-                        .css("display", t ? "" : "none"),
+                        .css("display", panelTitle ? "" : "none"),
                         this.focus());
                 }),
-                (P.prototype.focus = function () {
-                    o(document.body).find("a, button, :input, [tabindex]").filter(":visible:not(:disabled)").first().focus();
+                (GCloudUiLoginDialog.prototype.focus = function () {
+                    $(document.body).find("a, button, :input, [tabindex]").filter(":visible:not(:disabled)").first().focus();
                 }),
-                (P.prototype._oauth = function (e) {
+                (GCloudUiLoginDialog.prototype._oauth = function (provider) {
                     this._impl.openOAuth({
                         dialog: this,
-                        provider: e,
+                        provider: provider,
                     });
                 }),
-                (P.prototype._postLogin = async function (e) {
+                (GCloudUiLoginDialog.prototype._postLogin = async function (userData) {
                     try {
                         await this._gApi.license.get();
-                        (e.new &&
+                        (userData.new &&
                             void 0 !== window.dataLayer &&
                             (dataLayer.push({
-                                userId: e.id,
+                                userId: userData.id,
                             }),
                             dataLayer.push({
-                                userEmail: e.email,
+                                userEmail: userData.email,
                             }),
                             dataLayer.push({
-                                userName: e.name || "",
+                                userName: userData.name || "",
                             }),
                             dataLayer.push({
-                                userLogin: e.login,
+                                userLogin: userData.login,
                             }),
                             dataLayer.push({
                                 event: "USER_SIGN_UP_EVENT",
@@ -990,17 +990,17 @@ module.exports = function (module, exports, require) {
                         const { flags: { welcomeMessage } = {} } = await this._gApi.getUserSettings().catch(() => Object.create({}));
                         if (
                             !welcomeMessage &&
-                            e.new &&
+                            userData.new &&
                             (await this._gApi.updateUserSettings({
                                 flags: {
                                     welcomeMessage: true,
                                 },
                             }),
-                            !(this._isNewPurchaseFlow() || (e.trial_created && e.email_verified)))
+                            !(this._isNewPurchaseFlow() || (userData.trial_created && userData.email_verified)))
                         )
                             return (
-                                this._buildThanks(e).insertBefore(this._dialog.find(".message")),
-                                void this._activatePanel(P.Forms.Thanks)
+                                this._buildThanks(userData).insertBefore(this._dialog.find(".message")),
+                                void this._activatePanel(GCloudUiLoginDialog.Forms.Thanks)
                             );
                         if (this._isNewPurchaseFlow())
                             return void this.openPurchaseFlow({
@@ -1011,109 +1011,109 @@ module.exports = function (module, exports, require) {
                         this._toggleLoading(false);
                     }
                 }),
-                (P.prototype._toggleLoading = function (e) {
-                    (this._formContent.toggleClass("g-cloud-ui-loading", e),
-                        this._welcomeback && this._welcomeback.toggleClass("g-cloud-ui-loading", e));
+                (GCloudUiLoginDialog.prototype._toggleLoading = function (isLoading) {
+                    (this._formContent.toggleClass("g-cloud-ui-loading", isLoading),
+                        this._welcomeback && this._welcomeback.toggleClass("g-cloud-ui-loading", isLoading));
                 }),
-                (P.prototype._handleError = async function (e) {
-                    if ((this._toggleLoading(false), navigator.onLine)) this._showMessage(this._gApi.formatError(e));
+                (GCloudUiLoginDialog.prototype._handleError = async function (error) {
+                    if ((this._toggleLoading(false), navigator.onLine)) this._showMessage(this._gApi.formatError(error));
                     else {
-                        let e = await this._gApi.getUser().catch(() => null);
-                        GCloudUiOfflineDialog.openRetryConnection(e);
+                        let user = await this._gApi.getUser().catch(() => null);
+                        GCloudUiOfflineDialog.openRetryConnection(user);
                     }
                 }),
-                (P.prototype._showMessage = function (e) {
-                    let t = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : "error",
-                        i = this._dialog.find(".message").removeClass("error info show");
-                    e && i.addClass("show").addClass(t).find("span").html(e);
+                (GCloudUiLoginDialog.prototype._showMessage = function (message) {
+                    let type = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : "error",
+                        messageElement = this._dialog.find(".message").removeClass("error info show");
+                    message && messageElement.addClass("show").addClass(type).find("span").html(message);
                 }),
-                (P.prototype._showVerifyEmailAlert = function (e) {
-                    let t = o("<div/>").addClass("left"),
-                        i = o("<div/>").addClass("right"),
-                        s = o("<span/>").addClass("icon g-cloud-icon-ok");
-                    (t.append(s),
-                        i
+                (GCloudUiLoginDialog.prototype._showVerifyEmailAlert = function (userData) {
+                    let leftElement = $("<div/>").addClass("left"),
+                        rightElement = $("<div/>").addClass("right"),
+                        okIcon = $("<span/>").addClass("icon g-cloud-icon-ok");
+                    (leftElement.append(okIcon),
+                        rightElement
                             .append(
-                                o("<p/>")
+                                $("<p/>")
                                     .addClass("account-created")
-                                    .append(o("<b/>").text(n.get(new r("GLoginDialog", "text.account-created"))))
+                                    .append($("<b/>").text(i18n.get(new LocKey("GLoginDialog", "text.account-created"))))
                             )
                             .append(
-                                o("<div/>")
+                                $("<div/>")
                                     .addClass("confirmation-account-created")
-                                    .html(n.get(new r("GLoginDialog", "text.confirmation-account-created")).replace("%email", e.email))
+                                    .html(i18n.get(new LocKey("GLoginDialog", "text.confirmation-account-created")).replace("%email", userData.email))
                             )
                             .append(
-                                o("<div/>")
+                                $("<div/>")
                                     .addClass("confirmation-account-created-subtitle")
                                     .text(
-                                        n
-                                            .get(new r("GLoginDialog", "text.confirmation-account-created-subtitle"))
+                                        i18n
+                                            .get(new LocKey("GLoginDialog", "text.confirmation-account-created-subtitle"))
                                             .replace("%days", window.__TRIAL_DAYS__ || 15)
                                     )
                             )
                             .append(
-                                o("<div/>")
+                                $("<div/>")
                                     .addClass("email-not-received")
-                                    .text(n.get(new r("GLoginDialog", "text.email-not-received-part-1")) + " ")
+                                    .text(i18n.get(new LocKey("GLoginDialog", "text.email-not-received-part-1")) + " ")
                                     .append(
-                                        o("<span/>")
+                                        $("<span/>")
                                             .addClass("link")
-                                            .text(n.get(new r("GLoginDialog", "text.email-not-received-part-2")))
+                                            .text(i18n.get(new LocKey("GLoginDialog", "text.email-not-received-part-2")))
                                             .on("click", async () => {
-                                                (a("login-signup_account-created_send-activation-email", null, true),
+                                                (trackEvent("login-signup_account-created_send-activation-email", null, true),
                                                     this._showMessage(),
                                                     this._toggleLoading(true));
                                                 try {
-                                                    const t = this._webUrl,
-                                                        i = this._appUrl;
+                                                    const webUrl = this._webUrl,
+                                                        appUrl = this._appUrl;
                                                     this._gApi
                                                         .resendEmailConfirmation({
-                                                            email: e.email,
+                                                            email: userData.email,
                                                             force: true,
-                                                            webUrl: t,
-                                                            appUrl: i,
+                                                            webUrl: webUrl,
+                                                            appUrl: appUrl,
                                                         })
-                                                        .then((e) => this._showMessage(e && e.message, "info"))
-                                                        .catch((e) => this._handleError(e));
+                                                        .then((response) => this._showMessage(response && response.message, "info"))
+                                                        .catch((error) => this._handleError(error));
                                                 } finally {
                                                     this._toggleLoading(false);
                                                 }
                                             })
                                     )
                             ),
-                        this._modal.append(t).append(i),
+                        this._modal.append(leftElement).append(rightElement),
                         this._modal.removeClass("hide"),
                         this._overlay.removeClass("hide"));
                 }),
-                (P.prototype._getStatMappedForm = function () {
-                    let e = null;
+                (GCloudUiLoginDialog.prototype._getStatMappedForm = function () {
+                    let formName = null;
                     switch (this._activePanel) {
-                        case P.Forms.SignIn:
-                            e = "login";
+                        case GCloudUiLoginDialog.Forms.SignIn:
+                            formName = "login";
                             break;
-                        case P.Forms.SignUp:
-                            e = "create-account";
+                        case GCloudUiLoginDialog.Forms.SignUp:
+                            formName = "create-account";
                             break;
-                        case P.Forms.ResetPassword:
-                            e = "forgot-password";
+                        case GCloudUiLoginDialog.Forms.ResetPassword:
+                            formName = "forgot-password";
                             break;
-                        case P.Forms.Thanks:
-                            e = "account-created";
+                        case GCloudUiLoginDialog.Forms.Thanks:
+                            formName = "account-created";
                             break;
                         default:
-                            e = "login";
+                            formName = "login";
                     }
-                    return e;
+                    return formName;
                 }),
-                (P.prototype._getUTMCampaignParams = function () {
-                    return this._getOptions(s.buildStoreCampaignParams(s.StoreCampaign.WelcomeScreen));
+                (GCloudUiLoginDialog.prototype._getUTMCampaignParams = function () {
+                    return this._getOptions(campaignUtils.buildStoreCampaignParams(campaignUtils.StoreCampaign.WelcomeScreen));
                 }),
-                (P.prototype.getHTMLElement = function () {
+                (GCloudUiLoginDialog.prototype.getHTMLElement = function () {
                     return this._dialog;
                 }),
-                (P.__i18n__ = "GLoginDialog"),
-                (P.Impl = class {
+                (GCloudUiLoginDialog.__i18n__ = "GLoginDialog"),
+                (GCloudUiLoginDialog.Impl = class {
                     openOAuth() {
                         throw new Error("Not implemented");
                     }
@@ -1130,5 +1130,5 @@ module.exports = function (module, exports, require) {
                         throw new Error("Not implemented");
                     }
                 }),
-                (module.exports = P));
+                (module.exports = GCloudUiLoginDialog));
         };

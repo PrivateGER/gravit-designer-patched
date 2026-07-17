@@ -1,72 +1,72 @@
 module.exports = function (module, exports, require) {
-            var n = require(907),
+            var GPaintConfiguration = require(907),
                 IsFiniteNonNegativeNumber = require(0),
-                o = require(47);
+                GLocaleKey = require(47);
 
-            function a() {}
-            (IsFiniteNonNegativeNumber.inherit(a, n),
-                (a.PaintMode = {
+            function GScenePaintConfiguration() {}
+            (IsFiniteNonNegativeNumber.inherit(GScenePaintConfiguration, GPaintConfiguration),
+                (GScenePaintConfiguration.PaintMode = {
                     Full: "F",
                     Fast: "S",
                     Outline: "L",
                     Output: "O",
                 }),
-                (a.PaintModeName = {
-                    F: new o("GScenePaintConfiguration", "paint.full"),
-                    S: new o("GScenePaintConfiguration", "paint.fast"),
-                    L: new o("GScenePaintConfiguration", "paint.outline"),
-                    O: new o("GScenePaintConfiguration", "paint.output"),
+                (GScenePaintConfiguration.PaintModeName = {
+                    F: new GLocaleKey("GScenePaintConfiguration", "paint.full"),
+                    S: new GLocaleKey("GScenePaintConfiguration", "paint.fast"),
+                    L: new GLocaleKey("GScenePaintConfiguration", "paint.outline"),
+                    O: new GLocaleKey("GScenePaintConfiguration", "paint.output"),
                 }),
-                (a.prototype.watermark = null),
-                (a.prototype.paintMode = a.PaintMode.Full),
-                (a.prototype.pixelMode = false),
-                (a.prototype.clipToPage = false),
-                (a.prototype.guides = true),
-                (a.prototype.slices = true),
-                (a.prototype.annotations = true),
-                (a.prototype.elementAnnotations = false),
-                (a.prototype.showResolvedAnnotations = false),
-                (a.prototype.clipArea = null),
-                (a.prototype.ignoreEffects = false),
-                (a.prototype.noWebGL = false),
-                (a.prototype.forceEffectsWhenZoomed = false),
-                (a.prototype.enableFxCache = true),
-                (a.prototype.clipDirty = true),
-                (a.prototype.defaultEffectDetailLevel = null),
-                (a.prototype.sceneBackground = true),
-                (a.prototype.multiPageView = false),
-                (a.prototype.ignoreRulerOffsets = false),
-                (a.prototype.rulerLeftFill = false),
-                (a.prototype.thumbnails = true),
-                (a.prototype.thumbnailSize = 85),
-                (a.prototype.pageThumbnails = false),
-                (a.prototype.pageThumbnailSize = 85),
-                (a.prototype.paintSharp = true),
-                (a.prototype.isOutline = function (e) {
-                    return this.paintMode === a.PaintMode.Outline || !(!e || !e.isOutline());
+                (GScenePaintConfiguration.prototype.watermark = null),
+                (GScenePaintConfiguration.prototype.paintMode = GScenePaintConfiguration.PaintMode.Full),
+                (GScenePaintConfiguration.prototype.pixelMode = false),
+                (GScenePaintConfiguration.prototype.clipToPage = false),
+                (GScenePaintConfiguration.prototype.guides = true),
+                (GScenePaintConfiguration.prototype.slices = true),
+                (GScenePaintConfiguration.prototype.annotations = true),
+                (GScenePaintConfiguration.prototype.elementAnnotations = false),
+                (GScenePaintConfiguration.prototype.showResolvedAnnotations = false),
+                (GScenePaintConfiguration.prototype.clipArea = null),
+                (GScenePaintConfiguration.prototype.ignoreEffects = false),
+                (GScenePaintConfiguration.prototype.noWebGL = false),
+                (GScenePaintConfiguration.prototype.forceEffectsWhenZoomed = false),
+                (GScenePaintConfiguration.prototype.enableFxCache = true),
+                (GScenePaintConfiguration.prototype.clipDirty = true),
+                (GScenePaintConfiguration.prototype.defaultEffectDetailLevel = null),
+                (GScenePaintConfiguration.prototype.sceneBackground = true),
+                (GScenePaintConfiguration.prototype.multiPageView = false),
+                (GScenePaintConfiguration.prototype.ignoreRulerOffsets = false),
+                (GScenePaintConfiguration.prototype.rulerLeftFill = false),
+                (GScenePaintConfiguration.prototype.thumbnails = true),
+                (GScenePaintConfiguration.prototype.thumbnailSize = 85),
+                (GScenePaintConfiguration.prototype.pageThumbnails = false),
+                (GScenePaintConfiguration.prototype.pageThumbnailSize = 85),
+                (GScenePaintConfiguration.prototype.paintSharp = true),
+                (GScenePaintConfiguration.prototype.isOutline = function (element) {
+                    return this.paintMode === GScenePaintConfiguration.PaintMode.Outline || !(!element || !element.isOutline());
                 }),
-                (a.prototype.isAnnotationsVisible = function (e) {
+                (GScenePaintConfiguration.prototype.isAnnotationsVisible = function (element) {
                     return !!this.annotations;
                 }),
-                (a.prototype.isGuidesVisible = function (e) {
+                (GScenePaintConfiguration.prototype.isGuidesVisible = function (element) {
                     return !(!this.guides || !this.isAnnotationsVisible());
                 }),
-                (a.prototype.isSlicesVisible = function (e) {
+                (GScenePaintConfiguration.prototype.isSlicesVisible = function (element) {
                     return !(!this.slices || !this.isAnnotationsVisible());
                 }),
-                (a.prototype.isElementAnnotationsVisible = function (e) {
+                (GScenePaintConfiguration.prototype.isElementAnnotationsVisible = function (element) {
                     if (!this.elementAnnotations || !this.isAnnotationsVisible()) return false;
-                    if (e) {
-                        if (e.getProperty("rmd")) return false;
-                        if (!this.showResolvedAnnotations && e.getProperty("rsv")) return false;
+                    if (element) {
+                        if (element.getProperty("rmd")) return false;
+                        if (!this.showResolvedAnnotations && element.getProperty("rsv")) return false;
                     }
                     return true;
                 }),
-                (a.prototype.isClipToPage = function (e) {
-                    return this.clipToPage || this.paintMode === a.PaintMode.Output;
+                (GScenePaintConfiguration.prototype.isClipToPage = function (element) {
+                    return this.clipToPage || this.paintMode === GScenePaintConfiguration.PaintMode.Output;
                 }),
-                (a.prototype.toString = function () {
+                (GScenePaintConfiguration.prototype.toString = function () {
                     return "[Object GScenePaintConfiguration]";
                 }),
-                (module.exports = a));
+                (module.exports = GScenePaintConfiguration));
         };

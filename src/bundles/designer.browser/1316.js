@@ -5,68 +5,68 @@ module.exports = function (module, exports, require) {
             GPlatform = require(15),
             Utils = require(40),
             GCategory = require(18),
-            s = require(106);
-        function l() {}
-        (GObject.GObject.inherit(l, s),
-            (l.ID = "modify.createnestedcompound"),
-            (l.TITLE = new GObject.GLocaleKey("GCreateNestedCompoundAction", "title")),
-            (l.prototype.getId = function () {
-                return l.ID;
+            GElementAction = require(106);
+        function GCreateNestedCompoundAction() {}
+        (GObject.GObject.inherit(GCreateNestedCompoundAction, GElementAction),
+            (GCreateNestedCompoundAction.ID = "modify.createnestedcompound"),
+            (GCreateNestedCompoundAction.TITLE = new GObject.GLocaleKey("GCreateNestedCompoundAction", "title")),
+            (GCreateNestedCompoundAction.prototype.getId = function () {
+                return GCreateNestedCompoundAction.ID;
             }),
-            (l.prototype.getTitle = function () {
-                return l.TITLE;
+            (GCreateNestedCompoundAction.prototype.getTitle = function () {
+                return GCreateNestedCompoundAction.TITLE;
             }),
-            (l.prototype.getCategory = function () {
+            (GCreateNestedCompoundAction.prototype.getCategory = function () {
                 return GCategory.CATEGORY_MODIFY;
             }),
-            (l.prototype.getGroup = function () {
+            (GCreateNestedCompoundAction.prototype.getGroup = function () {
                 return "structure-boolean";
             }),
-            (l.prototype.getShortcut = function () {
+            (GCreateNestedCompoundAction.prototype.getShortcut = function () {
                 return [GPlatform.GKey.Constant.META, GPlatform.GKey.Constant.ALT_LEFT, "M"];
             }),
-            (l.prototype.getIcon = function () {
+            (GCreateNestedCompoundAction.prototype.getIcon = function () {
                 return gDesigner.isTouchEnabled() ? "gravit-icon-nested-compound" : "";
             }),
-            (l.prototype.isEnabled = function () {
-                if (!s.prototype.isEnabled.call(this)) return false;
-                var e = gDesigner.getActiveDocument();
-                if (e) {
-                    var t = e.getEditor().getSelection(),
+            (GCreateNestedCompoundAction.prototype.isEnabled = function () {
+                if (!GElementAction.prototype.isEnabled.call(this)) return false;
+                var document = gDesigner.getActiveDocument();
+                if (document) {
+                    var selection = document.getEditor().getSelection(),
                         n = 0;
-                    if (t && t.length)
-                        for (var i = 0; i < t.length; ++i) {
-                            if ((t[i] instanceof GObject.GCompoundShape && n++, n >= 2)) return true;
+                    if (selection && selection.length)
+                        for (var i = 0; i < selection.length; ++i) {
+                            if ((selection[i] instanceof GObject.GCompoundShape && n++, n >= 2)) return true;
                         }
                 }
                 return false;
             }),
-            (l.prototype.execute = function () {
-                var e = gDesigner.getActiveDocument().getEditor(),
-                    t = GObject.GNode.order(e.getIndividualSelection().slice());
-                e.beginTransaction();
+            (GCreateNestedCompoundAction.prototype.execute = function () {
+                var editor = gDesigner.getActiveDocument().getEditor(),
+                    orderedSelection = GObject.GNode.order(editor.getIndividualSelection().slice());
+                editor.beginTransaction();
                 try {
-                    for (var n, i = [], r = new Set(), s = 0; s < t.length; ++s) {
-                        (l = t[s]) instanceof GObject.GCompoundShape && (n ? (i.push(l), r.add(l.getParent())) : (n = l));
+                    for (var targetCompound, extraCompounds = [], affectedParents = new Set(), s = 0; s < orderedSelection.length; ++s) {
+                        (shape = orderedSelection[s]) instanceof GObject.GCompoundShape && (targetCompound ? (extraCompounds.push(shape), affectedParents.add(shape.getParent())) : (targetCompound = shape));
                     }
-                    if (i.length > 0) {
+                    if (extraCompounds.length > 0) {
                         try {
-                            (0, Utils.blockChanges)(e, r, null, n);
-                            for (s = 0; s < i.length; ++s) {
-                                var l;
-                                ((l = i[s]).getParent().removeChild(l), n.appendChild(l));
+                            (0, Utils.blockChanges)(editor, affectedParents, null, targetCompound);
+                            for (s = 0; s < extraCompounds.length; ++s) {
+                                var shape;
+                                ((shape = extraCompounds[s]).getParent().removeChild(shape), targetCompound.appendChild(shape));
                             }
                         } finally {
-                            (0, Utils.releaseChanges)(e, r, null, n);
+                            (0, Utils.releaseChanges)(editor, affectedParents, null, targetCompound);
                         }
-                        e.updateSelection(false, [n]);
+                        editor.updateSelection(false, [targetCompound]);
                     }
                 } finally {
-                    e.commitTransaction("Create nested compound");
+                    editor.commitTransaction("Create nested compound");
                 }
             }),
-            (l.prototype.toString = function () {
+            (GCreateNestedCompoundAction.prototype.toString = function () {
                 return "[Object GCreateNestedCompoundAction]";
             }),
-            (module.exports = l));
+            (module.exports = GCreateNestedCompoundAction));
     };

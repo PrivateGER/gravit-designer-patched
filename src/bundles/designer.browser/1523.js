@@ -2,49 +2,49 @@ module.exports = function (module, exports, require) {
         "use strict";
         (require(3), require(4), require(13));
         var GObject = require(1),
-            i = require(53),
-            a = require(67),
-            r = require(238),
-            s = require(444),
-            l = require(123),
-            c = require(1253),
+            GEditor = require(53),
+            GRichTooltipConfig = require(67),
+            GMenu = require(238),
+            GPosition = require(444),
+            GProperties = require(123),
+            GExporter = require(1253),
             GLoginPanel = require(446),
-            u = require(442);
-        const p = require(135);
-        function g() {}
-        (GObject.GObject.inherit(g, l),
-            (g.prototype._panel = null),
-            (g.prototype._toolbar = null),
-            (g.prototype._exportButton = null),
-            (g.prototype._createSliceButton = null),
-            (g.prototype._document = null),
-            (g.prototype._elements = null),
-            (g.prototype._sizeMenu = null),
-            (g.prototype.isSticky = function () {
+            GSceneProperties = require(442);
+        const GSettingChangedEvent = require(135);
+        function GExportProperties() {}
+        (GObject.GObject.inherit(GExportProperties, GProperties),
+            (GExportProperties.prototype._panel = null),
+            (GExportProperties.prototype._toolbar = null),
+            (GExportProperties.prototype._exportButton = null),
+            (GExportProperties.prototype._createSliceButton = null),
+            (GExportProperties.prototype._document = null),
+            (GExportProperties.prototype._elements = null),
+            (GExportProperties.prototype._sizeMenu = null),
+            (GExportProperties.prototype.isSticky = function () {
                 return true;
             }),
-            (g.prototype.init = function (e, t) {
-                ((this._panel = e),
-                    (this._toolbar = t),
-                    t.addClass("list-toolbar"),
+            (GExportProperties.prototype.init = function (panel, toolbar) {
+                ((this._panel = panel),
+                    (this._toolbar = toolbar),
+                    toolbar.addClass("list-toolbar"),
                     $("<label></label>")
                         .addClass("panel-title")
                         .text(GObject.GLocale.get(new GObject.GLocaleKey("GExportProperties", "text.make-exportable")))
-                        .appendTo(t),
+                        .appendTo(toolbar),
                     (this._exportButton = $("<button></button>")
                         .addClass("btn-export")
                         .attr("id", "btn-export")
                         .attr("data-title", GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.export")) + "...")
                         .append($("<span></span>").addClass("gravit-icon-export"))
                         .on("click", this._export.bind(this))
-                        .appendTo(t)),
+                        .appendTo(toolbar)),
                     (this._createSliceButton = $("<button></button>")
                         .attr("data-title", GObject.GLocale.get(new GObject.GLocaleKey("GExportProperties", "action.create-slice")))
                         .append($("<span></span>").addClass("gravit-icon-slice"))
                         .on("click", this._createSlice.bind(this))
-                        .appendTo(t)
+                        .appendTo(toolbar)
                         .gRichTooltip(
-                            a.GRichTooltipConfig.from({
+                            GRichTooltipConfig.GRichTooltipConfig.from({
                                 title: GObject.GLocale.get(new GObject.GLocaleKey("GExportProperties", "text.create-slice-tooltip-title")),
                                 description: GObject.GLocale.get(new GObject.GLocaleKey("GExportProperties", "text.create-slice-tooltip-description")),
                                 learnMore: "/docs/import-export/export/#slices",
@@ -54,16 +54,16 @@ module.exports = function (module, exports, require) {
                         .attr("data-title", GObject.GLocale.get(new GObject.GLocaleKey("GExportProperties", "action.add")))
                         .append($("<span></span>").addClass("gravit-icon-plus"))
                         .on("click", this._addExport.bind(this))
-                        .appendTo(t)
+                        .appendTo(toolbar)
                         .gRichTooltip(
-                            a.GRichTooltipConfig.from({
+                            GRichTooltipConfig.GRichTooltipConfig.from({
                                 title: GObject.GLocale.get(new GObject.GLocaleKey("GExportProperties", "text.add-export-tooltip-title")),
                                 description: GObject.GLocale.get(new GObject.GLocaleKey("GExportProperties", "text.add-export-tooltip-description")),
                                 learnMore:
                                     "/docs/import-export/export/#mass-exporting-assets-and-slices",
                             })
                         ),
-                    (this._sizeMenu = new r()),
+                    (this._sizeMenu = new GMenu()),
                     this._sizeMenu.createAddItem("1x"),
                     this._sizeMenu.createAddItem("2x"),
                     this._sizeMenu.createAddItem("0.5x"),
@@ -72,9 +72,9 @@ module.exports = function (module, exports, require) {
                     this._sizeMenu.createAddItem("512h"),
                     this._sizeMenu.createAddItem("128x128"),
                     this._sizeMenu.createAddItem("300dpi"),
-                    gDesigner.addEventListener(p, this._settingChanged, this));
+                    gDesigner.addEventListener(GSettingChangedEvent, this._settingChanged, this));
             }),
-            (g.prototype.update = function (e) {
+            (GExportProperties.prototype.update = function (document) {
                 if (
                     (this._document &&
                         (this._document
@@ -82,50 +82,50 @@ module.exports = function (module, exports, require) {
                             .removeEventListener(GObject.GNode.AfterPropertiesChangeEvent, this._afterPropertiesChange, this),
                         (this._document = null)),
                     (this._elements = null),
-                    e)
+                    document)
                 ) {
-                    this._document = e;
-                    var t = this._getElements();
+                    this._document = document;
+                    var elements = this._getElements();
                     this._elements = [];
-                    for (var n = false, i = 0; i < t.length; ++i)
-                        (t[i] instanceof GObject.GBlock && this._elements.push(t[i]), t[i] instanceof GObject.GSlice || (n = true));
+                    for (var hasNonSliceElement = false, i = 0; i < elements.length; ++i)
+                        (elements[i] instanceof GObject.GBlock && this._elements.push(elements[i]), elements[i] instanceof GObject.GSlice || (hasNonSliceElement = true));
                     if (this._elements && this._elements.length)
                         return (
-                            (this._document = e),
+                            (this._document = document),
                             this._document
                                 .getScene()
                                 .addEventListener(GObject.GNode.AfterPropertiesChangeEvent, this._afterPropertiesChange, this),
-                            this._createSliceButton.css("display", n ? "" : "none"),
+                            this._createSliceButton.css("display", hasNonSliceElement ? "" : "none"),
                             this._updateProperties(),
                             true
                         );
                 }
                 return false;
             }),
-            (g.prototype._getElements = function () {
-                var e = this._document.getEditor();
+            (GExportProperties.prototype._getElements = function () {
+                var editor = this._document.getEditor();
                 if (
                     this._document &&
-                    e &&
-                    ((this._elements = e.getSelection()),
-                    this._elements && this._elements.length && (this._elements = e.filterIndividualElements(this._elements)),
+                    editor &&
+                    ((this._elements = editor.getSelection()),
+                    this._elements && this._elements.length && (this._elements = editor.filterIndividualElements(this._elements)),
                     !this._elements || 0 === this._elements.length)
                 ) {
-                    var t = gDesigner.getToolManager().getActiveTool(),
-                        n = null;
-                    t instanceof i.GItemTool && (n = t.getDefaultStyle())
-                        ? (this._elements = [n])
+                    var activeTool = gDesigner.getToolManager().getActiveTool(),
+                        defaultStyle = null;
+                    activeTool instanceof GEditor.GItemTool && (defaultStyle = activeTool.getDefaultStyle())
+                        ? (this._elements = [defaultStyle])
                         : (this._elements = [this._document.getScene().getActivePage()]);
                 }
                 return this._elements;
             }),
-            (g.prototype._export = function () {
+            (GExportProperties.prototype._export = function () {
                 new GLoginPanel(
                     () => {
                         gDesigner.stats("exportproperties_click_export");
-                        var e = c.generateExportables(this._elements);
-                        c.export(
-                            e,
+                        var exportables = GExporter.generateExportables(this._elements);
+                        GExporter.export(
+                            exportables,
                             this._document.getStorage() || gDesigner.getDefaultStorage(),
                             this._document.getTitle(),
                             null,
@@ -138,37 +138,37 @@ module.exports = function (module, exports, require) {
                     }
                 );
             }),
-            (g.prototype._createSlice = function () {
+            (GExportProperties.prototype._createSlice = function () {
                 gDesigner.stats("exportproperties_click_createslice");
-                var e = this._document.getEditor();
-                e.beginTransaction();
+                var editor = this._document.getEditor();
+                editor.beginTransaction();
                 try {
-                    for (var t = [], n = 0; n < this._elements.length; ++n) {
+                    for (var newSlices = [], n = 0; n < this._elements.length; ++n) {
                         var i = this._elements[n];
                         if (!(i instanceof GObject.GSlice)) {
-                            var a = (i.getProperty(u.EXPORT_PROPERTY_NAME, true, []) || []).slice(),
+                            var a = (i.getProperty(GSceneProperties.EXPORT_PROPERTY_NAME, true, []) || []).slice(),
                                 r = i.getPaintBBox();
-                            i.setProperty(u.EXPORT_PROPERTY_NAME, void 0, true);
+                            i.setProperty(GSceneProperties.EXPORT_PROPERTY_NAME, void 0, true);
                             var s = new GObject.GSlice();
                             (s.setProperties(["x", "y", "w", "h"], [r.getX(), r.getY(), r.getWidth(), r.getHeight()]),
-                                s.setProperty(u.EXPORT_PROPERTY_NAME, a, true),
-                                t.push(s));
+                                s.setProperty(GSceneProperties.EXPORT_PROPERTY_NAME, a, true),
+                                newSlices.push(s));
                         }
                     }
-                    e.insertElements(t, true, true, false);
+                    editor.insertElements(newSlices, true, true, false);
                 } finally {
-                    e.commitTransaction(GObject.GLocale.get(new GObject.GLocaleKey("GExportProperties", "action.create-slices")));
+                    editor.commitTransaction(GObject.GLocale.get(new GObject.GLocaleKey("GExportProperties", "action.create-slices")));
                 }
             }),
-            (g.prototype._addExport = function () {
+            (GExportProperties.prototype._addExport = function () {
                 gDesigner.stats("exportproperties_click_add-item-to-export");
-                var e = this._document.getEditor();
-                e.beginTransaction();
+                var editor = this._document.getEditor();
+                editor.beginTransaction();
                 try {
                     for (var t = 0; t < this._elements.length; ++t) {
                         for (
                             var n = this._elements[t],
-                                i = (n.getProperty(u.EXPORT_PROPERTY_NAME, true, []) || []).slice(),
+                                i = (n.getProperty(GSceneProperties.EXPORT_PROPERTY_NAME, true, []) || []).slice(),
                                 a = { sz: "", sf: "", fm: "png" },
                                 r = [
                                     { sz: "1x", sf: "@1x" },
@@ -191,82 +191,82 @@ module.exports = function (module, exports, require) {
                                 break;
                             }
                         }
-                        (i.push(a), n.setProperty(u.EXPORT_PROPERTY_NAME, i, true));
+                        (i.push(a), n.setProperty(GSceneProperties.EXPORT_PROPERTY_NAME, i, true));
                     }
                 } finally {
-                    e.commitTransaction(GObject.GLocale.get(new GObject.GLocaleKey("GExportProperties", "action.add")));
+                    editor.commitTransaction(GObject.GLocale.get(new GObject.GLocaleKey("GExportProperties", "action.add")));
                 }
             }),
-            (g.prototype._settingChanged = function (e) {
-                "touch" === e.key && this._updateProperties();
+            (GExportProperties.prototype._settingChanged = function (event) {
+                "touch" === event.key && this._updateProperties();
             }),
-            (g.prototype._updateExport = function (e, t, n) {
-                var i = this._document.getEditor();
-                i.beginTransaction();
+            (GExportProperties.prototype._updateExport = function (index, key, value) {
+                var editor = this._document.getEditor();
+                editor.beginTransaction();
                 try {
                     for (var a = 0; a < this._elements.length; ++a) {
                         var r = this._elements[a],
-                            s = r.getProperty(u.EXPORT_PROPERTY_NAME, true);
+                            s = r.getProperty(GSceneProperties.EXPORT_PROPERTY_NAME, true);
                         !s ||
-                            e >= s.length ||
-                            (((s = s.slice())[e] = $.extend({}, s[e])), (s[e][t] = n), r.setProperty(u.EXPORT_PROPERTY_NAME, s, true));
+                            index >= s.length ||
+                            (((s = s.slice())[index] = $.extend({}, s[index])), (s[index][key] = value), r.setProperty(GSceneProperties.EXPORT_PROPERTY_NAME, s, true));
                     }
                 } finally {
-                    i.commitTransaction(GObject.GLocale.get(new GObject.GLocaleKey("GExportProperties", "action.update-setting")));
+                    editor.commitTransaction(GObject.GLocale.get(new GObject.GLocaleKey("GExportProperties", "action.update-setting")));
                 }
             }),
-            (g.prototype._removeExport = function (e) {
-                var t = this._document.getEditor();
-                t.beginTransaction();
+            (GExportProperties.prototype._removeExport = function (index) {
+                var editor = this._document.getEditor();
+                editor.beginTransaction();
                 try {
                     for (var n = 0; n < this._elements.length; ++n) {
                         var i = this._elements[n],
-                            a = i.getProperty(u.EXPORT_PROPERTY_NAME, true);
-                        !a || e >= a.length || ((a = a.slice()).splice(e, 1), i.setProperty(u.EXPORT_PROPERTY_NAME, a, true));
+                            a = i.getProperty(GSceneProperties.EXPORT_PROPERTY_NAME, true);
+                        !a || index >= a.length || ((a = a.slice()).splice(index, 1), i.setProperty(GSceneProperties.EXPORT_PROPERTY_NAME, a, true));
                     }
                 } finally {
-                    t.commitTransaction(GObject.GLocale.get(new GObject.GLocaleKey("GExportProperties", "action.remove")));
+                    editor.commitTransaction(GObject.GLocale.get(new GObject.GLocaleKey("GExportProperties", "action.remove")));
                 }
             }),
-            (g.prototype._afterPropertiesChange = function (e) {
-                !e.temporary &&
+            (GExportProperties.prototype._afterPropertiesChange = function (event) {
+                !event.temporary &&
                     this._elements.length &&
-                    this._elements[0] === e.node &&
-                    e.properties.indexOf(u.EXPORT_PROPERTY_NAME) >= 0 &&
+                    this._elements[0] === event.node &&
+                    event.properties.indexOf(GSceneProperties.EXPORT_PROPERTY_NAME) >= 0 &&
                     this._updateProperties();
             }),
-            (g.prototype._updateProperties = function () {
-                var e = [],
-                    t = gDesigner.isTouchEnabled(),
-                    n = t ? "40%" : "30%",
-                    i = t ? "25%" : "35%",
-                    a = t ? "25%" : "30%",
-                    r = t ? "12%" : "5%";
+            (GExportProperties.prototype._updateProperties = function () {
+                var rows = [],
+                    touchEnabled = gDesigner.isTouchEnabled(),
+                    sizeColumnWidth = touchEnabled ? "40%" : "30%",
+                    suffixColumnWidth = touchEnabled ? "25%" : "35%",
+                    formatColumnWidth = touchEnabled ? "25%" : "30%",
+                    removeColumnWidth = touchEnabled ? "12%" : "5%";
                 if (this._elements)
                     for (let t = 0; t < this._elements.length; ++t) {
-                        var l = this._elements[t].getProperty(u.EXPORT_PROPERTY_NAME, true, []) || [];
-                        if (l) for (var c = 0; c < l.length; ++c) c < e.length ? (e[c].diff = true) : e.push($.extend({}, l[c]));
+                        var l = this._elements[t].getProperty(GSceneProperties.EXPORT_PROPERTY_NAME, true, []) || [];
+                        if (l) for (var c = 0; c < l.length; ++c) c < rows.length ? (rows[c].diff = true) : rows.push($.extend({}, l[c]));
                     }
-                (this._panel.empty().css("margin", e.length ? "" : "0"),
+                (this._panel.empty().css("margin", rows.length ? "" : "0"),
                     this._toolbar
-                        .toggleClass("empty-list", 0 === e.length)
+                        .toggleClass("empty-list", 0 === rows.length)
                         .find("label:first-child")
                         .text(
-                            0 === e.length
+                            0 === rows.length
                                 ? GObject.GLocale.get(new GObject.GLocaleKey("GExportProperties", "text.make-exportable"))
                                 : GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.export"))
                         ),
-                    this._exportButton.css("display", e.length ? "" : "none"));
-                for (let l = 0; l < e.length; ++l) {
-                    var d = l + 1 === e.length,
-                        p = e[l];
+                    this._exportButton.css("display", rows.length ? "" : "none"));
+                for (let l = 0; l < rows.length; ++l) {
+                    var d = l + 1 === rows.length,
+                        p = rows[l];
                     $("<div></div>")
                         .data("index", l)
                         .gPropertyRow({
                             clazz: "export-properties-row",
                             columns: [
                                 {
-                                    width: n,
+                                    width: sizeColumnWidth,
                                     label: d ? GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.size")) : null,
                                     content: $("<div></div>")
                                         .append(
@@ -277,13 +277,13 @@ module.exports = function (module, exports, require) {
                                                 .val(p.sz)
                                                 .on(
                                                     "change",
-                                                    function (e) {
+                                                    function (event) {
                                                         gDesigner.stats("exportproperties_change_size-dropdown");
-                                                        var t = $(e.target);
+                                                        var target = $(event.target);
                                                         this._updateExport(
-                                                            $(e.target).closest(".g-property-row").data("index"),
+                                                            $(event.target).closest(".g-property-row").data("index"),
                                                             "sz",
-                                                            t.val()
+                                                            target.val()
                                                         );
                                                     }.bind(this)
                                                 )
@@ -295,17 +295,17 @@ module.exports = function (module, exports, require) {
                                                 .append($('<span class="gravit-icon-down"></span>').css("font-size", "12px"))
                                                 .on(
                                                     "click",
-                                                    function (e) {
+                                                    function (event) {
                                                         (gDesigner.stats("exportproperties_click_change-size"),
                                                             this._sizeMenu.open(
-                                                                e.target,
-                                                                s.Position.Left_Top,
-                                                                s.Position.Right_Bottom,
-                                                                function (t) {
-                                                                    $(e.target)
+                                                                event.target,
+                                                                GPosition.Position.Left_Top,
+                                                                GPosition.Position.Right_Bottom,
+                                                                function (selectedItem) {
+                                                                    $(event.target)
                                                                         .closest("div")
                                                                         .find("input")
-                                                                        .val(t.getCaption())
+                                                                        .val(selectedItem.getCaption())
                                                                         .trigger("change")
                                                                         .focus()
                                                                         .select();
@@ -316,7 +316,7 @@ module.exports = function (module, exports, require) {
                                         ),
                                 },
                                 {
-                                    width: i,
+                                    width: suffixColumnWidth,
                                     label: d ? GObject.GLocale.get(new GObject.GLocaleKey("GExportProperties", "text.suffix")) : null,
                                     content: $("<input/>")
                                         .attr("type", "text")
@@ -329,15 +329,15 @@ module.exports = function (module, exports, require) {
                                         )
                                         .on(
                                             "change",
-                                            function (e) {
+                                            function (event) {
                                                 gDesigner.stats("exportproperties_toggle_multiple");
-                                                var t = $(e.target);
-                                                this._updateExport($(e.target).closest(".g-property-row").data("index"), "sf", t.val());
+                                                var target = $(event.target);
+                                                this._updateExport($(event.target).closest(".g-property-row").data("index"), "sf", target.val());
                                             }.bind(this)
                                         ),
                                 },
                                 {
-                                    width: a,
+                                    width: formatColumnWidth,
                                     label: d ? GObject.GLocale.get(new GObject.GLocaleKey("GExportProperties", "text.format")) : null,
                                     content: $("<select></select>")
                                         .append($("<option></option>").attr("value", "png").text("PNG"))
@@ -347,23 +347,23 @@ module.exports = function (module, exports, require) {
                                         .val(p.fm)
                                         .on(
                                             "change",
-                                            function (e) {
+                                            function (event) {
                                                 gDesigner.stats("exportproperties_format_dropdown");
-                                                var t = $(e.target);
-                                                this._updateExport($(e.target).closest(".g-property-row").data("index"), "fm", t.val());
+                                                var target = $(event.target);
+                                                this._updateExport($(event.target).closest(".g-property-row").data("index"), "fm", target.val());
                                             }.bind(this)
                                         ),
                                 },
                                 {
-                                    width: r,
+                                    width: removeColumnWidth,
                                     content: $("<button></button>")
-                                        .addClass(t ? "g-flat gravit-icon-close" : "g-flat")
-                                        .html(t ? "" : "&#x2715;")
+                                        .addClass(touchEnabled ? "g-flat gravit-icon-close" : "g-flat")
+                                        .html(touchEnabled ? "" : "&#x2715;")
                                         .on(
                                             "click",
-                                            function (e) {
+                                            function (event) {
                                                 (gDesigner.stats("exportproperties_click_removeitem"),
-                                                    this._removeExport($(e.target).closest(".g-property-row").data("index")));
+                                                    this._removeExport($(event.target).closest(".g-property-row").data("index")));
                                             }.bind(this)
                                         ),
                                 },
@@ -372,8 +372,8 @@ module.exports = function (module, exports, require) {
                         .appendTo(this._panel);
                 }
             }),
-            (g.prototype.toString = function () {
+            (GExportProperties.prototype.toString = function () {
                 return "[Object GExportProperties]";
             }),
-            (module.exports = g));
+            (module.exports = GExportProperties));
     };

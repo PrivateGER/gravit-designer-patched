@@ -3,9 +3,9 @@ module.exports = function (module, exports, require) {
         require(3);
         var GObject = require(1),
             i = (require(15 /* GPlatform */), require(18 /* GCategory */)),
-            a = require(31);
+            GAction = require(31);
         function r() {}
-        (GObject.GObject.inherit(r, a),
+        (GObject.GObject.inherit(r, GAction),
             (r.ID = "view.canvas.show-symbol-labels"),
             (r.TITLE = new GObject.GLocaleKey("GShowSymbolLabelsAction", "title")),
             (r.prototype.getId = function () {

@@ -3,301 +3,301 @@ module.exports = function (module, exports, require) {
         (require(328 /* polyfill:Array */), require(20 /* polyfill:RegExp */), require(34), require(38));
         var GObject = require(1),
             GMissingFontsDialog = require(841),
-            a = require(217),
-            r = require(86);
-        const s = require(381),
+            GDocumentStatusEvent = require(217),
+            DocumentStatus = require(86);
+        const GFontsProvider = require(381),
             GOfflineDialog = require(256),
-            c = require(291);
-        var d = [],
-            u = function () {};
-        function p() {
-            if (p._instance) throw new Error("FontsProviderManager can be instantiated only once.");
-            p._instance = this;
+            GNetworkAvailabilityChangedEvent = require(291);
+        var providers = [],
+            noop = function () {};
+        function FontsProviderManager() {
+            if (FontsProviderManager._instance) throw new Error("FontsProviderManager can be instantiated only once.");
+            FontsProviderManager._instance = this;
         }
-        function g(e) {
-            var t = gDesigner.getActiveDocument(),
-                n = function (o) {
-                    var s = p.getInstance();
-                    if (o)
-                        switch (o.status) {
-                            case r.Saved:
-                            case r.SyncFailed:
-                            case r.Ready:
-                            case r.SaveFailed:
-                                (s.removeEventListener(a, n), delete s._listenerFor[t.sessionId]);
+        function handleMissingFont(fontRequest) {
+            var activeDocument = gDesigner.getActiveDocument(),
+                statusListener = function (statusEvent) {
+                    var manager = FontsProviderManager.getInstance();
+                    if (statusEvent)
+                        switch (statusEvent.status) {
+                            case DocumentStatus.Saved:
+                            case DocumentStatus.SyncFailed:
+                            case DocumentStatus.Ready:
+                            case DocumentStatus.SaveFailed:
+                                (manager.removeEventListener(GDocumentStatusEvent, statusListener), delete manager._listenerFor[activeDocument.sessionId]);
                                 break;
-                            case r.LoadFailed:
-                                (s.removeEventListener(a, n), delete s._listenerFor[t.sessionId]);
+                            case DocumentStatus.LoadFailed:
+                                (manager.removeEventListener(GDocumentStatusEvent, statusListener), delete manager._listenerFor[activeDocument.sessionId]);
                             default:
                                 return;
                         }
-                    if (!((t.getScene().getProperty("cst") || []).indexOf(e.family) >= 0)) {
-                        var l = [e.family],
-                            c = d
-                                .filter(function (e) {
-                                    return !e.isInitialized() && e.hasEnabler();
+                    if (!((activeDocument.getScene().getProperty("cst") || []).indexOf(fontRequest.family) >= 0)) {
+                        var missingFamilies = [fontRequest.family],
+                            enablers = providers
+                                .filter(function (provider) {
+                                    return !provider.isInitialized() && provider.hasEnabler();
                                 })
-                                .map(function (e) {
-                                    return e.getEnabler();
+                                .map(function (provider) {
+                                    return provider.getEnabler();
                                 });
-                        (!(function (e, t) {
-                            var n = p.getInstance();
-                            n._missingFontsActions || (n._missingFontsActions = {});
-                            n._missingFontsActions[t.sessionId] || (n._missingFontsActions[t.sessionId] = {});
-                            for (var o = n._missingFontsActions[t.sessionId], i = e.length - 1; i >= 0; i--) {
-                                var a = e[i];
-                                o.hasOwnProperty(a) ? e.splice(i, 1) : (o[a] = null);
+                        (!(function (families, targetDocument) {
+                            var manager = FontsProviderManager.getInstance();
+                            manager._missingFontsActions || (manager._missingFontsActions = {});
+                            manager._missingFontsActions[targetDocument.sessionId] || (manager._missingFontsActions[targetDocument.sessionId] = {});
+                            for (var actions = manager._missingFontsActions[targetDocument.sessionId], i = families.length - 1; i >= 0; i--) {
+                                var a = families[i];
+                                actions.hasOwnProperty(a) ? families.splice(i, 1) : (actions[a] = null);
                             }
-                        })(l, t),
-                            l.length &&
-                                (s._missingFontsDialog
-                                    ? (s._missingFontsDialog.setProviderEnablers(c), s._missingFontsDialog.setMissingFonts(l))
-                                    : l.length &&
-                                      (s._missingFontsDialog = new GMissingFontsDialog(t, l, c, (e) => {
-                                          ((s._missingFontsDialog = null), (s.keepFontsMessage = null));
-                                          var n = s._missingFontsActions[t.sessionId];
-                                          for (var o in e) n[o] = e[o];
+                        })(missingFamilies, activeDocument),
+                            missingFamilies.length &&
+                                (manager._missingFontsDialog
+                                    ? (manager._missingFontsDialog.setProviderEnablers(enablers), manager._missingFontsDialog.setMissingFonts(missingFamilies))
+                                    : missingFamilies.length &&
+                                      (manager._missingFontsDialog = new GMissingFontsDialog(activeDocument, missingFamilies, enablers, (resolvedActions) => {
+                                          ((manager._missingFontsDialog = null), (manager.keepFontsMessage = null));
+                                          var actions = manager._missingFontsActions[activeDocument.sessionId];
+                                          for (var o in resolvedActions) actions[o] = resolvedActions[o];
                                       })),
-                                e.tryToResolveMissingFont &&
-                                    s._showMissingFontsDialog &&
-                                    !s._missingFontsDialog.opened &&
-                                    s._missingFontsDialog.open(s.keepFontsMessage),
-                                (s._firstCallback = u)));
+                                fontRequest.tryToResolveMissingFont &&
+                                    manager._showMissingFontsDialog &&
+                                    !manager._missingFontsDialog.opened &&
+                                    manager._missingFontsDialog.open(manager.keepFontsMessage),
+                                (manager._firstCallback = noop)));
                     }
                 };
-            if (t && t.getStatus() === r.Ready) n();
+            if (activeDocument && activeDocument.getStatus() === DocumentStatus.Ready) statusListener();
             else {
-                var o = p.getInstance();
-                t && !o._listenerFor[t.sessionId] && ((o._listenerFor[t.sessionId] = n), o.addEventListener(a, n));
+                var fontsManager = FontsProviderManager.getInstance();
+                activeDocument && !fontsManager._listenerFor[activeDocument.sessionId] && ((fontsManager._listenerFor[activeDocument.sessionId] = statusListener), fontsManager.addEventListener(GDocumentStatusEvent, statusListener));
             }
         }
-        (GObject.GObject.inherit(p, GObject.GEventTarget),
-            (p.ResetEvent = function (e) {
-                this.manager = e;
+        (GObject.GObject.inherit(FontsProviderManager, GObject.GEventTarget),
+            (FontsProviderManager.ResetEvent = function (manager) {
+                this.manager = manager;
             }),
-            GObject.GObject.inherit(p.ResetEvent, GObject.GEvent),
-            (p.MissingFontEvent = function (e, t, n) {
-                ((this.manager = e), (this.evt = t), (this.provider = n));
+            GObject.GObject.inherit(FontsProviderManager.ResetEvent, GObject.GEvent),
+            (FontsProviderManager.MissingFontEvent = function (manager, fontRequest, provider) {
+                ((this.manager = manager), (this.evt = fontRequest), (this.provider = provider));
             }),
-            GObject.GObject.inherit(p.MissingFontEvent, GObject.GEvent),
-            (p.prototype.manager = null),
-            (p.prototype._resetProviders = null),
-            (p.prototype.init = function () {
-                gDesigner.addEventListener(c, this._networkAvailabilityChangedEvent, this);
+            GObject.GObject.inherit(FontsProviderManager.MissingFontEvent, GObject.GEvent),
+            (FontsProviderManager.prototype.manager = null),
+            (FontsProviderManager.prototype._resetProviders = null),
+            (FontsProviderManager.prototype.init = function () {
+                gDesigner.addEventListener(GNetworkAvailabilityChangedEvent, this._networkAvailabilityChangedEvent, this);
             }),
-            (p.prototype._networkAvailabilityChangedEvent = function (e) {
-                if (this._resetProviders && this._resetProviders.length && e.connected)
+            (FontsProviderManager.prototype._networkAvailabilityChangedEvent = function (event) {
+                if (this._resetProviders && this._resetProviders.length && event.connected)
                     for (; this._resetProviders.length; ) this.reset(this._resetProviders.shift(), true);
             }),
-            (p.registerProvider = function (e) {
-                var t = new e(p._instance);
-                d.indexOf(t) < 0 && d.push(t);
+            (FontsProviderManager.registerProvider = function (ProviderClass) {
+                var provider = new ProviderClass(FontsProviderManager._instance);
+                providers.indexOf(provider) < 0 && providers.push(provider);
             }),
-            (p.unregisterProvider = function (e) {
-                for (var t = 0; t < d.length; t++) d[t] instanceof e && d.splice(t--, 1);
+            (FontsProviderManager.unregisterProvider = function (ProviderClass) {
+                for (var t = 0; t < providers.length; t++) providers[t] instanceof ProviderClass && providers.splice(t--, 1);
             }),
-            (p.getInstance = function () {
-                return p._instance || new p();
+            (FontsProviderManager.getInstance = function () {
+                return FontsProviderManager._instance || new FontsProviderManager();
             }),
-            p.getInstance(),
-            (p.getProvider = function (e) {
-                return v[e] || null;
+            FontsProviderManager.getInstance(),
+            (FontsProviderManager.getProvider = function (family) {
+                return familyProviderMap[family] || null;
             }),
-            (p.getProviders = function () {
-                return d.slice();
+            (FontsProviderManager.getProviders = function () {
+                return providers.slice();
             }),
-            (p.getProviderInstance = function (e) {
-                if (p._instance) for (var t = 0; t < d.length; t++) if (d[t] instanceof e) return d[t];
+            (FontsProviderManager.getProviderInstance = function (ProviderClass) {
+                if (FontsProviderManager._instance) for (var t = 0; t < providers.length; t++) if (providers[t] instanceof ProviderClass) return providers[t];
                 return null;
             }),
-            (p.disableProviders = function (e) {
-                if (p._instance) {
-                    for (var t = 0; t < e.length; t++)
-                        for (var n = e[t], o = 0; o < d.length; o++) d[o] instanceof n ? d[o].setEnabled(false) : d[o].setEnabled(true);
-                    p._instance.reset(null, false, true);
+            (FontsProviderManager.disableProviders = function (providerClasses) {
+                if (FontsProviderManager._instance) {
+                    for (var t = 0; t < providerClasses.length; t++)
+                        for (var n = providerClasses[t], o = 0; o < providers.length; o++) providers[o] instanceof n ? providers[o].setEnabled(false) : providers[o].setEnabled(true);
+                    FontsProviderManager._instance.reset(null, false, true);
                 }
             }),
-            (p.enableProviders = function (e, t) {
-                if (p._instance) {
-                    for (var n = 0; n < e.length; n++)
-                        for (var o = e[n], i = 0; i < d.length; i++) d[i] instanceof o ? d[i].setEnabled(true) : t || d[i].setEnabled(false);
-                    t || p._instance.reset(null, false, true);
+            (FontsProviderManager.enableProviders = function (providerClasses, keepOthers) {
+                if (FontsProviderManager._instance) {
+                    for (var n = 0; n < providerClasses.length; n++)
+                        for (var o = providerClasses[n], i = 0; i < providers.length; i++) providers[i] instanceof o ? providers[i].setEnabled(true) : keepOthers || providers[i].setEnabled(false);
+                    keepOthers || FontsProviderManager._instance.reset(null, false, true);
                 }
             }),
-            (p.resolveQueryFontFamily = function (e) {
-                var t = p.getInstance(),
-                    n = () => {
-                        var n = t.searchFamilyInCache(e.family);
-                        e.callback(n && n.fonts && n.fonts.length ? n.fonts : []);
+            (FontsProviderManager.resolveQueryFontFamily = function (queryRequest) {
+                var manager = FontsProviderManager.getInstance(),
+                    resolve = () => {
+                        var cachedResult = manager.searchFamilyInCache(queryRequest.family);
+                        queryRequest.callback(cachedResult && cachedResult.fonts && cachedResult.fonts.length ? cachedResult.fonts : []);
                     };
-                t.isCacheEmpty() ? t.query(n, "%", true) : n();
+                manager.isCacheEmpty() ? manager.query(resolve, "%", true) : resolve();
             }),
-            (p._triggerMissingFont = function (e, t) {
-                var n = p.getInstance();
-                n.hasEventListeners(p.MissingFontEvent) && n.trigger(new p.MissingFontEvent(n, e, t));
+            (FontsProviderManager._triggerMissingFont = function (fontRequest, provider) {
+                var manager = FontsProviderManager.getInstance();
+                manager.hasEventListeners(FontsProviderManager.MissingFontEvent) && manager.trigger(new FontsProviderManager.MissingFontEvent(manager, fontRequest, provider));
             }),
-            (p.resolveFont = function (e, t) {
-                var n;
-                e && void 0 === t
-                    ? (n = p.getProvider(e.family))
-                        ? n.resolveFont(e.family, e.style, e.weight, {
-                              done: function (t) {
-                                  var n;
-                                  (e.sender instanceof GObject.GFontManager && (n = e.sender._getFont(e.family, e.style, e.weight)),
-                                      (n && n.isResolved()) || (n = GObject.GOpenTypeFont.create(e.family, e.style, e.weight, t)),
-                                      n && e.resolved(n));
+            (FontsProviderManager.resolveFont = function (fontRequest, providerIndex) {
+                var provider;
+                fontRequest && void 0 === providerIndex
+                    ? (provider = FontsProviderManager.getProvider(fontRequest.family))
+                        ? provider.resolveFont(fontRequest.family, fontRequest.style, fontRequest.weight, {
+                              done: function (font) {
+                                  var resolvedFont;
+                                  (fontRequest.sender instanceof GObject.GFontManager && (resolvedFont = fontRequest.sender._getFont(fontRequest.family, fontRequest.style, fontRequest.weight)),
+                                      (resolvedFont && resolvedFont.isResolved()) || (resolvedFont = GObject.GOpenTypeFont.create(fontRequest.family, fontRequest.style, fontRequest.weight, font)),
+                                      resolvedFont && fontRequest.resolved(resolvedFont));
                               },
-                              fail: function (t) {
-                                  t && t === s.Errors.ConnectionError
-                                      ? gDesigner.isOffline() && GOfflineDialog.openUnavailableFeature(() => p.resolveFont(e))
-                                      : (e.failed(), p._triggerMissingFont(e, n), g(e));
+                              fail: function (error) {
+                                  error && error === GFontsProvider.Errors.ConnectionError
+                                      ? gDesigner.isOffline() && GOfflineDialog.openUnavailableFeature(() => FontsProviderManager.resolveFont(fontRequest))
+                                      : (fontRequest.failed(), FontsProviderManager._triggerMissingFont(fontRequest, provider), handleMissingFont(fontRequest));
                               },
                           })
-                        : p.resolveFont(e, 0)
-                    : "number" == typeof t &&
-                      ((n = d[t])
-                          ? n.resolveFont(e.family, e.style, e.weight, {
-                                done: function (n) {
-                                    var i;
-                                    (e.sender instanceof GObject.GFontManager && (i = e.sender._getFont(e.family, e.style, e.weight)),
-                                        (i && i.isResolved()) || (i = GObject.GOpenTypeFont.create(e.family, e.style, e.weight, n)),
-                                        i ? e.resolved(i) : p.resolveFont(e, t + 1));
+                        : FontsProviderManager.resolveFont(fontRequest, 0)
+                    : "number" == typeof providerIndex &&
+                      ((provider = providers[providerIndex])
+                          ? provider.resolveFont(fontRequest.family, fontRequest.style, fontRequest.weight, {
+                                done: function (font) {
+                                    var resolvedFont;
+                                    (fontRequest.sender instanceof GObject.GFontManager && (resolvedFont = fontRequest.sender._getFont(fontRequest.family, fontRequest.style, fontRequest.weight)),
+                                        (resolvedFont && resolvedFont.isResolved()) || (resolvedFont = GObject.GOpenTypeFont.create(fontRequest.family, fontRequest.style, fontRequest.weight, font)),
+                                        resolvedFont ? fontRequest.resolved(resolvedFont) : FontsProviderManager.resolveFont(fontRequest, providerIndex + 1));
                                 },
                                 fail: function () {
-                                    p.resolveFont(e, t + 1);
+                                    FontsProviderManager.resolveFont(fontRequest, providerIndex + 1);
                                 },
                             })
-                          : d && t === d.length
-                            ? (e.failed(), p._triggerMissingFont(e, n), g(e))
-                            : p.resolveFont(e, t + 1));
+                          : providers && providerIndex === providers.length
+                            ? (fontRequest.failed(), FontsProviderManager._triggerMissingFont(fontRequest, provider), handleMissingFont(fontRequest))
+                            : FontsProviderManager.resolveFont(fontRequest, providerIndex + 1));
             }),
-            (p.prototype._lock = null),
-            (p.prototype._loaded = 0),
-            (p.prototype._lastLoaded = 0),
-            (p.prototype._loadedPreviews = 0),
-            (p.prototype._lastLoadedPreviews = 0),
-            (p.prototype._loading = false),
-            (p.prototype._timeStamp = 0),
-            (p.prototype._firstCallback = null),
-            (p.prototype._missingFontsDialog = null),
-            (p.prototype._missingFontsActions = null),
-            (p.prototype._showMissingFontsDialog = true),
-            (p.prototype._listenerFor = {}),
-            (p.prototype.getMissingFontsDialog = function () {
+            (FontsProviderManager.prototype._lock = null),
+            (FontsProviderManager.prototype._loaded = 0),
+            (FontsProviderManager.prototype._lastLoaded = 0),
+            (FontsProviderManager.prototype._loadedPreviews = 0),
+            (FontsProviderManager.prototype._lastLoadedPreviews = 0),
+            (FontsProviderManager.prototype._loading = false),
+            (FontsProviderManager.prototype._timeStamp = 0),
+            (FontsProviderManager.prototype._firstCallback = null),
+            (FontsProviderManager.prototype._missingFontsDialog = null),
+            (FontsProviderManager.prototype._missingFontsActions = null),
+            (FontsProviderManager.prototype._showMissingFontsDialog = true),
+            (FontsProviderManager.prototype._listenerFor = {}),
+            (FontsProviderManager.prototype.getMissingFontsDialog = function () {
                 return this._missingFontsDialog;
             }),
-            (p.prototype.keepFontsMessage = null));
-        var h = {},
-            f = [],
-            m = {},
-            y = [],
-            v = {};
-        ((p.prototype.isLoading = function () {
+            (FontsProviderManager.prototype.keepFontsMessage = null));
+        var queryCache = {},
+            queryCacheOrder = [],
+            fullQueryCache = {},
+            fullQueryCacheOrder = [],
+            familyProviderMap = {};
+        ((FontsProviderManager.prototype.isLoading = function () {
             return this._loading;
         }),
-            (p.prototype.releaseDocumentListener = function (e) {
-                this._listenerFor[e.sessionId] && this.removeEventListener(a, this._listenerFor[e.sessionId]);
+            (FontsProviderManager.prototype.releaseDocumentListener = function (document) {
+                this._listenerFor[document.sessionId] && this.removeEventListener(GDocumentStatusEvent, this._listenerFor[document.sessionId]);
             }),
-            (p.prototype.setShowMissingFontsDialog = function (e) {
-                this._showMissingFontsDialog = e;
+            (FontsProviderManager.prototype.setShowMissingFontsDialog = function (show) {
+                this._showMissingFontsDialog = show;
             }),
-            (p.prototype.resetMissingFontsDialog = function () {
+            (FontsProviderManager.prototype.resetMissingFontsDialog = function () {
                 this._missingFontsDialog = null;
             }),
-            (p.prototype._providerProbe = function (e, t, n, o, i, a, r, l, c, u) {
-                for (var p, g, _, b = this, w = l ? 20 : 9999; d[e] && !c && !d[e].isEnabled(); ) e++;
+            (FontsProviderManager.prototype._providerProbe = function (e, callback, query, timeStamp, faces, total, freshQuery, previewsOnly, includeDisabled, force) {
+                for (var loadedCount, lastLoadedCount, provider, self = this, batchSize = previewsOnly ? 20 : 9999; providers[e] && !includeDisabled && !providers[e].isEnabled(); ) e++;
                 if (
-                    (l ? ((p = this._loadedPreviews), (g = this._lastLoadedPreviews)) : ((p = this._loaded), (g = this._lastLoaded)),
-                    e >= d.length)
+                    (previewsOnly ? ((loadedCount = this._loadedPreviews), (lastLoadedCount = this._lastLoadedPreviews)) : ((loadedCount = this._loaded), (lastLoadedCount = this._lastLoaded)),
+                    e >= providers.length)
                 )
                     return (
                         (this._loading = false),
-                        (this._timeStamp = o),
-                        void (l
+                        (this._timeStamp = timeStamp),
+                        void (previewsOnly
                             ? (this._loadedPreviews = this._lastLoadedPreviews)
                             : ((this._loaded = this._lastLoaded),
-                              r &&
-                                  i.length &&
-                                  ((!c && this.hasDisabled()) ||
-                                      ((m[n] = { faces: i.slice(), total: a }), y.unshift(n) > 30 && delete m[y.pop()]),
-                                  c || ((h[n] = { faces: i, total: a }), f.unshift(n) > 30 && delete h[f.pop()])),
-                              t({ faces: i, total: a }),
-                              c || this._providerProbe(0, t, n, o, [], 0, r, true, c, u)))
+                              freshQuery &&
+                                  faces.length &&
+                                  ((!includeDisabled && this.hasDisabled()) ||
+                                      ((fullQueryCache[query] = { faces: faces.slice(), total: total }), fullQueryCacheOrder.unshift(query) > 30 && delete fullQueryCache[fullQueryCacheOrder.pop()]),
+                                  includeDisabled || ((queryCache[query] = { faces: faces, total: total }), queryCacheOrder.unshift(query) > 30 && delete queryCache[queryCacheOrder.pop()])),
+                              callback({ faces: faces, total: total }),
+                              includeDisabled || this._providerProbe(0, callback, query, timeStamp, [], 0, freshQuery, true, includeDisabled, force)))
                     );
-                var C,
-                    x = p + (p < 9999 ? 9999 : w),
-                    S = 0;
-                if (0 === e && !r) {
-                    var E = 0;
-                    for (e = 0; e < d.length; e++)
-                        if ((c || d[e].isEnabled()) && (E += d[e].getTotalFonts(this.normalizeQuery(n))) > p) {
-                            S = p - E + d[e].getTotalFonts(this.normalizeQuery(n));
+                var count,
+                    target = loadedCount + (loadedCount < 9999 ? 9999 : batchSize),
+                    offset = 0;
+                if (0 === e && !freshQuery) {
+                    var cumulativeTotal = 0;
+                    for (e = 0; e < providers.length; e++)
+                        if ((includeDisabled || providers[e].isEnabled()) && (cumulativeTotal += providers[e].getTotalFonts(this.normalizeQuery(query))) > loadedCount) {
+                            offset = loadedCount - cumulativeTotal + providers[e].getTotalFonts(this.normalizeQuery(query));
                             break;
                         }
                 }
-                ((!n || "%" === n) && g < a) || e >= d.length
-                    ? this._providerProbe(d.length, t, n, o, i, a, r, l, c, u)
-                    : ((C = x - g),
-                      (_ = d[e]).load(
-                          this.normalizeQuery(n),
-                          S,
-                          C,
+                ((!query || "%" === query) && lastLoadedCount < total) || e >= providers.length
+                    ? this._providerProbe(providers.length, callback, query, timeStamp, faces, total, freshQuery, previewsOnly, includeDisabled, force)
+                    : ((count = target - lastLoadedCount),
+                      (provider = providers[e]).load(
+                          this.normalizeQuery(query),
+                          offset,
+                          count,
                           {
-                              done: function (s, u, p) {
-                                  if (o < this._timeStamp) console.log("discarded");
+                              done: function (fonts, u, p) {
+                                  if (timeStamp < this._timeStamp) console.log("discarded");
                                   else {
-                                      (d.indexOf(_) < 0 || (!c && !d[e].isEnabled())) && this._providerProbe(e + 1, t, n, o, i, a, r, l, c);
-                                      for (var g = 0; g < s.length; g++) v.hasOwnProperty(s[g].family) || (v[s[g].family] = _);
-                                      if (!l) {
-                                          var f = h[this.normalizeQuery(n)] || { faces: [] };
-                                          if (i !== f.faces || c) {
-                                              for (g = 0; g < i.length; g++) {
-                                                  if ((y = d.indexOf(v[i[g].family])) > e && d[y].isEnabled()) {
-                                                      Array.prototype.splice.apply(i, [g, 0].concat(s));
+                                      (providers.indexOf(provider) < 0 || (!includeDisabled && !providers[e].isEnabled())) && this._providerProbe(e + 1, callback, query, timeStamp, faces, total, freshQuery, previewsOnly, includeDisabled);
+                                      for (var g = 0; g < fonts.length; g++) familyProviderMap.hasOwnProperty(fonts[g].family) || (familyProviderMap[fonts[g].family] = provider);
+                                      if (!previewsOnly) {
+                                          var cachedEntry = queryCache[this.normalizeQuery(query)] || { faces: [] };
+                                          if (faces !== cachedEntry.faces || includeDisabled) {
+                                              for (g = 0; g < faces.length; g++) {
+                                                  if ((matchIndex = providers.indexOf(familyProviderMap[faces[g].family])) > e && providers[matchIndex].isEnabled()) {
+                                                      Array.prototype.splice.apply(faces, [g, 0].concat(fonts));
                                                       break;
                                                   }
                                               }
-                                              if ((g == i.length && Array.prototype.push.apply(i, s), !c)) {
-                                                  var m = f.faces;
-                                                  for (g = 0; g < m.length; g++) {
-                                                      if ((y = d.indexOf(v[m[g].family])) > e && d[y].isEnabled()) {
-                                                          Array.prototype.splice.apply(m, [g, 0].concat(s));
+                                              if ((g == faces.length && Array.prototype.push.apply(faces, fonts), !includeDisabled)) {
+                                                  var cachedFaces = cachedEntry.faces;
+                                                  for (g = 0; g < cachedFaces.length; g++) {
+                                                      if ((matchIndex = providers.indexOf(familyProviderMap[cachedFaces[g].family])) > e && providers[matchIndex].isEnabled()) {
+                                                          Array.prototype.splice.apply(cachedFaces, [g, 0].concat(fonts));
                                                           break;
                                                       }
                                                   }
-                                                  g == m.length && Array.prototype.push.apply(m, s);
+                                                  g == cachedFaces.length && Array.prototype.push.apply(cachedFaces, fonts);
                                               }
                                           } else {
-                                              for (var g = 0; g < i.length; g++) {
-                                                  var y;
-                                                  if ((y = d.indexOf(v[i[g].family])) > e && d[y].isEnabled()) {
-                                                      Array.prototype.splice.apply(f.faces, [g, 0].concat(s));
+                                              for (var g = 0; g < faces.length; g++) {
+                                                  var matchIndex;
+                                                  if ((matchIndex = providers.indexOf(familyProviderMap[faces[g].family])) > e && providers[matchIndex].isEnabled()) {
+                                                      Array.prototype.splice.apply(cachedEntry.faces, [g, 0].concat(fonts));
                                                       break;
                                                   }
                                               }
-                                              g == i.length && Array.prototype.push.apply(i, s);
+                                              g == faces.length && Array.prototype.push.apply(faces, fonts);
                                           }
                                       }
-                                      (_.addPreviews(s, l),
-                                          (a += _.getTotalFonts(this.normalizeQuery(n))),
-                                          r && 0 === e && (l ? (this._loadedPreviews = 0) : (this._loaded = 0)),
-                                          l ? (this._lastLoadedPreviews += s.length) : (this._lastLoaded += s.length),
-                                          i.sort((e, t) => e.family.localeCompare(t.family)),
-                                          this._providerProbe(e + 1, t, n, o, i, a, r, l, c));
+                                      (provider.addPreviews(fonts, previewsOnly),
+                                          (total += provider.getTotalFonts(this.normalizeQuery(query))),
+                                          freshQuery && 0 === e && (previewsOnly ? (this._loadedPreviews = 0) : (this._loaded = 0)),
+                                          previewsOnly ? (this._lastLoadedPreviews += fonts.length) : (this._lastLoaded += fonts.length),
+                                          faces.sort((fontA, fontB) => fontA.family.localeCompare(fontB.family)),
+                                          this._providerProbe(e + 1, callback, query, timeStamp, faces, total, freshQuery, previewsOnly, includeDisabled));
                                   }
-                              }.bind(b),
-                              fail: function (d) {
-                                  (u ||
-                                      (d &&
-                                          d === s.Errors.ConnectionError &&
-                                          (b._resetProviders || (b._resetProviders = []), b._resetProviders.push(_.constructor))),
-                                      b._providerProbe(e + 1, t, n, o, i, a, r, l, c));
-                              }.bind(b),
+                              }.bind(self),
+                              fail: function (error) {
+                                  (force ||
+                                      (error &&
+                                          error === GFontsProvider.Errors.ConnectionError &&
+                                          (self._resetProviders || (self._resetProviders = []), self._resetProviders.push(provider.constructor))),
+                                      self._providerProbe(e + 1, callback, query, timeStamp, faces, total, freshQuery, previewsOnly, includeDisabled));
+                              }.bind(self),
                           },
-                          u
+                          force
                       ));
             }),
-            (p.prototype.setLock = function () {
+            (FontsProviderManager.prototype.setLock = function () {
                 (this._lock && clearTimeout(this._lock),
                     (this._lock = setTimeout(
                         function () {
@@ -306,11 +306,11 @@ module.exports = function (module, exports, require) {
                         1e4
                     )));
             }),
-            (p.prototype.getLock = function () {
+            (FontsProviderManager.prototype.getLock = function () {
                 return !!this._lock;
             }),
-            (p.prototype.reset = function (e, t, n) {
-                if (e) for (var o = 0; o < d.length; o++) d[o] instanceof e && (t || d[o].isEnabled()) && d[o].resetProvider();
+            (FontsProviderManager.prototype.reset = function (ProviderClass, resetDisabled, keepFullQueryCache) {
+                if (ProviderClass) for (var o = 0; o < providers.length; o++) providers[o] instanceof ProviderClass && (resetDisabled || providers[o].isEnabled()) && providers[o].resetProvider();
                 (this._lock && (clearTimeout(this._lock), (this._lock = null)),
                     (this._loaded = 0),
                     (this._lastLoaded = 0),
@@ -318,91 +318,91 @@ module.exports = function (module, exports, require) {
                     (this._lastLoadedPreviews = 0),
                     (this._loading = false),
                     (this._timeStamp = 0),
-                    (h = {}),
-                    (f = []),
-                    n || ((m = {}), (y = [])),
+                    (queryCache = {}),
+                    (queryCacheOrder = []),
+                    keepFullQueryCache || ((fullQueryCache = {}), (fullQueryCacheOrder = [])),
                     this._firstCallback && this.query(this._firstCallback, "%"),
                     this._missingFontsDialog && (this._missingFontsDialog = null),
-                    this.hasEventListeners(p.ResetEvent) && this.trigger(new p.ResetEvent(this)));
+                    this.hasEventListeners(FontsProviderManager.ResetEvent) && this.trigger(new FontsProviderManager.ResetEvent(this)));
             }),
-            (p.prototype.loadMore = function (e, t) {
+            (FontsProviderManager.prototype.loadMore = function (callback, query) {
                 if (!this._loading) {
-                    if (0 === this._loadedPreviews && 0 === this._lastLoadedPreviews) this._providerProbe(0, e, t, n, [], 0, false, true);
+                    if (0 === this._loadedPreviews && 0 === this._lastLoadedPreviews) this._providerProbe(0, callback, query, timeStamp, [], 0, false, true);
                     else if (this._loadedPreviews >= 9999 && this._lastLoadedPreviews < this._loadedPreviews + 20)
                         if (this._loaded >= 9999 && this._lastLoaded < this._loaded + 9999) {
                             this._loading = true;
-                            var n = new Date().getTime();
-                            this._providerProbe(0, e, t, n, [], 0, false, false);
+                            var timeStamp = new Date().getTime();
+                            this._providerProbe(0, callback, query, timeStamp, [], 0, false, false);
                         } else {
                             this._loading = true;
-                            n = new Date().getTime();
-                            this._providerProbe(0, e, t, n, [], 0, false, true);
+                            timeStamp = new Date().getTime();
+                            this._providerProbe(0, callback, query, timeStamp, [], 0, false, true);
                         }
                     else if (this._loaded >= 9999 && this._lastLoaded < this._loaded + 9999) {
                         this._loading = true;
-                        n = new Date().getTime();
-                        this._providerProbe(0, e, t, n, [], 0, false, false);
+                        timeStamp = new Date().getTime();
+                        this._providerProbe(0, callback, query, timeStamp, [], 0, false, false);
                     }
                     return this._lastLoadedPreviews;
                 }
             }),
-            (p.prototype.query = function (e, t, n) {
-                if ((t && (t = t.toLowerCase()), n && m.hasOwnProperty(t))) e((o = m[t]));
-                else if (!n && h.hasOwnProperty(t)) {
+            (FontsProviderManager.prototype.query = function (callback, query, includeDisabled) {
+                if ((query && (query = query.toLowerCase()), includeDisabled && fullQueryCache.hasOwnProperty(query))) callback((cachedEntry = fullQueryCache[query]));
+                else if (!includeDisabled && queryCache.hasOwnProperty(query)) {
                     ((this._lastLoaded = 0), (this._lastLoadedPreviews = 0));
-                    var o = h[t];
-                    ((this._loaded = o.faces.length), (this._loadedPreviews = o.faces.length), e(o));
+                    var cachedEntry = queryCache[query];
+                    ((this._loaded = cachedEntry.faces.length), (this._loadedPreviews = cachedEntry.faces.length), callback(cachedEntry));
                 } else {
-                    if (t.length > 2) {
-                        var i = t.substr(0, t.length - 2);
-                        for (i = this.normalizeQuery(i); i.length > 1; ) {
-                            if (h.hasOwnProperty(i))
-                                if ((o = h[i]).faces.length < 9999 || o.faces.length == o.total) {
-                                    for (var a = [], r = 0; r < o.faces.length; r++)
-                                        o.faces[r].family.substr(0, t.length - 1).toLowerCase() ==
-                                            t.substr(0, t.length - 1).toLowerCase() && a.push(o.faces[r]);
+                    if (query.length > 2) {
+                        var prefixQuery = query.substr(0, query.length - 2);
+                        for (prefixQuery = this.normalizeQuery(prefixQuery); prefixQuery.length > 1; ) {
+                            if (queryCache.hasOwnProperty(prefixQuery))
+                                if ((cachedEntry = queryCache[prefixQuery]).faces.length < 9999 || cachedEntry.faces.length == cachedEntry.total) {
+                                    for (var a = [], r = 0; r < cachedEntry.faces.length; r++)
+                                        cachedEntry.faces[r].family.substr(0, query.length - 1).toLowerCase() ==
+                                            query.substr(0, query.length - 1).toLowerCase() && a.push(cachedEntry.faces[r]);
                                     return (
                                         (this._lastLoaded = this._lastLoadedPreviews = 0),
                                         (this._loaded = this._loadedPreviews = a.length),
-                                        void e({ faces: a })
+                                        void callback({ faces: a })
                                     );
                                 }
-                            ((i = i.substr(0, i.length - 2)), (i = this.normalizeQuery(i)));
+                            ((prefixQuery = prefixQuery.substr(0, prefixQuery.length - 2)), (prefixQuery = this.normalizeQuery(prefixQuery)));
                         }
                     }
-                    var s = new Date().getTime();
+                    var timeStamp = new Date().getTime();
                     ((this._loading = true),
                         (this._loaded = this._loadedPreviews = 0),
                         (this._lastLoaded = this._lastLoadedPreviews = 0),
-                        this._providerProbe(0, e, t, s, [], 0, true, false, n));
+                        this._providerProbe(0, callback, query, timeStamp, [], 0, true, false, includeDisabled));
                 }
             }),
-            (p.prototype.normalizeQuery = function (e) {
-                return ("%" != e && (e ? (e += "%") : (e = "%"), (e = e.replace(/%+$/, "%"))), e);
+            (FontsProviderManager.prototype.normalizeQuery = function (query) {
+                return ("%" != query && (query ? (query += "%") : (query = "%"), (query = query.replace(/%+$/, "%"))), query);
             }),
-            (p.prototype.isCacheEmpty = function () {
-                return !m || !m.hasOwnProperty("%");
+            (FontsProviderManager.prototype.isCacheEmpty = function () {
+                return !fullQueryCache || !fullQueryCache.hasOwnProperty("%");
             }),
-            (p.prototype.hasDisabled = function () {
-                return d.some((e) => !e.isEnabled());
+            (FontsProviderManager.prototype.hasDisabled = function () {
+                return providers.some((provider) => !provider.isEnabled());
             }),
-            (p.prototype.searchFamilyInCache = function (e) {
-                var t = e.toLowerCase() + ("%" == e ? "" : "%");
+            (FontsProviderManager.prototype.searchFamilyInCache = function (family) {
+                var normalizedFamily = family.toLowerCase() + ("%" == family ? "" : "%");
                 if (this.isCacheEmpty()) return null;
-                for (; t.length > 0; ) {
-                    if (m.hasOwnProperty(t)) {
-                        var n = m[t];
+                for (; normalizedFamily.length > 0; ) {
+                    if (fullQueryCache.hasOwnProperty(normalizedFamily)) {
+                        var n = fullQueryCache[normalizedFamily];
                         if (n.faces)
                             for (var o = 0; o < n.faces.length; o++) {
                                 var i = n.faces[o];
-                                if (i.family === e) return i;
-                                if (i.families && i.families.indexOf(e) >= 0) return i;
+                                if (i.family === family) return i;
+                                if (i.families && i.families.indexOf(family) >= 0) return i;
                             }
                     }
-                    if (1 === t.length) break;
-                    ((t = t.substr(0, t.length - 2)), (t = this.normalizeQuery(t)));
+                    if (1 === normalizedFamily.length) break;
+                    ((normalizedFamily = normalizedFamily.substr(0, normalizedFamily.length - 2)), (normalizedFamily = this.normalizeQuery(normalizedFamily)));
                 }
                 return null;
             }),
-            (module.exports = p));
+            (module.exports = FontsProviderManager));
     };

@@ -4,15 +4,15 @@ module.exports = function (module, exports, require) {
         (require(3), require(4), require(41));
         var GObject = require(1),
             GPlatform = require(15),
-            r = require(67),
-            s = _interopRequireDefault(require(85)),
+            GRichTooltipConfig = require(67),
+            GRuntime = _interopRequireDefault(require(85 /* GContainer */)),
             designerConfig = require(10),
             GCategory = require(18),
             GDocument = require(163),
-            u = require(31);
-        function p() {
-            p.TOOLTIP_CONFIG = {
-                [r.TOOLTIP_AREA.TOOLBAR]: r.GRichTooltipConfig.from({
+            GAction = require(31);
+        function GPlaceImportAction() {
+            GPlaceImportAction.TOOLTIP_CONFIG = {
+                [GRichTooltipConfig.TOOLTIP_AREA.TOOLBAR]: GRichTooltipConfig.GRichTooltipConfig.from({
                     title: GObject.GLocale.get(new GObject.GLocaleKey("GPlaceImportAction", "tooltip-title")),
                     description: GObject.GLocale.get(new GObject.GLocaleKey("GPlaceImportAction", "tooltip-description")),
                     middle: false,
@@ -21,56 +21,56 @@ module.exports = function (module, exports, require) {
                 }),
             };
         }
-        (GObject.GObject.inherit(p, u),
-            (p.ID = "file.place-import"),
-            (p.TITLE = new GObject.GLocaleKey("GPlaceImportAction", "title")),
-            (p.TOOLTIP_CONFIG = null),
-            (p.prototype.getId = function () {
-                return p.ID;
+        (GObject.GObject.inherit(GPlaceImportAction, GAction),
+            (GPlaceImportAction.ID = "file.place-import"),
+            (GPlaceImportAction.TITLE = new GObject.GLocaleKey("GPlaceImportAction", "title")),
+            (GPlaceImportAction.TOOLTIP_CONFIG = null),
+            (GPlaceImportAction.prototype.getId = function () {
+                return GPlaceImportAction.ID;
             }),
-            (p.prototype.getTitle = function () {
-                return p.TITLE;
+            (GPlaceImportAction.prototype.getTitle = function () {
+                return GPlaceImportAction.TITLE;
             }),
-            (p.prototype.getCategory = function () {
+            (GPlaceImportAction.prototype.getCategory = function () {
                 return GCategory.CATEGORY_FILE_IMPORT;
             }),
-            (p.prototype.getGroup = function () {
+            (GPlaceImportAction.prototype.getGroup = function () {
                 return "import/place-import";
             }),
-            (p.prototype.isVisible = function () {
-                return gContainer.getRuntime() !== s.default.Runtime.IPad;
+            (GPlaceImportAction.prototype.isVisible = function () {
+                return gContainer.getRuntime() !== GRuntime.default.Runtime.IPad;
             }),
-            (p.prototype.getIcon = function () {
+            (GPlaceImportAction.prototype.getIcon = function () {
                 return gDesigner.isTouchEnabled() ? "gravit-icon-place-image" : null;
             }),
-            (p.prototype.isEnabled = function (e) {
-                var t = gDesigner.getActiveDocument();
+            (GPlaceImportAction.prototype.isEnabled = function (storage) {
+                var activeDocument = gDesigner.getActiveDocument();
                 return (
-                    !!t &&
-                    (e = e || t.getStorage() || gDesigner.getDefaultStorage()) &&
-                    e.canPromptOpen() &&
+                    !!activeDocument &&
+                    (storage = storage || activeDocument.getStorage() || gDesigner.getDefaultStorage()) &&
+                    storage.canPromptOpen() &&
                     gDesigner.getApplicationManager().isImportResourcesEnabled()
                 );
             }),
-            (p.prototype.getShortcut = function () {
+            (GPlaceImportAction.prototype.getShortcut = function () {
                 return [GPlatform.GKey.Constant.OPTION, "P"];
             }),
-            (p.prototype.execute = function (e, t) {
-                var n = gDesigner.getActiveDocument();
-                if (!n) return false;
-                (e = e || n.getStorage() || gDesigner.getDefaultStorage()).openPrompt(
-                    GDocument.FileTypes.filter((e) => e.import_image),
-                    (e) => {
-                        (gDesigner.stats("import-placeimport_open_localfile", e.getExtension()), n.placeOrImport(e), t && t());
+            (GPlaceImportAction.prototype.execute = function (storage, callback) {
+                var activeDocument = gDesigner.getActiveDocument();
+                if (!activeDocument) return false;
+                (storage = storage || activeDocument.getStorage() || gDesigner.getDefaultStorage()).openPrompt(
+                    GDocument.FileTypes.filter((fileType) => fileType.import_image),
+                    (file) => {
+                        (gDesigner.stats("import-placeimport_open_localfile", file.getExtension()), activeDocument.placeOrImport(file), callback && callback());
                     },
                     false
                 );
             }),
-            (p.prototype.getTooltipConfig = function (e) {
-                return (e && p.TOOLTIP_CONFIG[e]) || null;
+            (GPlaceImportAction.prototype.getTooltipConfig = function (area) {
+                return (area && GPlaceImportAction.TOOLTIP_CONFIG[area]) || null;
             }),
-            (p.prototype.toString = function () {
+            (GPlaceImportAction.prototype.toString = function () {
                 return "[Object GPlaceImportAction]";
             }),
-            (module.exports = p));
+            (module.exports = GPlaceImportAction));
     };

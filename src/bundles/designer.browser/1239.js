@@ -10,7 +10,7 @@ module.exports = function (module, exports, require) {
             require(30 /* polyfill:Object */),
             require(57),
             require(8 /* Symbol */),
-            require(356),
+            require(356 /* polyfill:RegExp */),
             require(20 /* polyfill:RegExp */),
             require(107 /* polyfill:RegExp */),
             require(3),
@@ -26,22 +26,22 @@ module.exports = function (module, exports, require) {
             require(126 /* polyfill:URL */),
             require(114));
         var GObject = require(1),
-            a = _interopRequireDefault(require(1476 /* lib:adal */)),
-            r = require(802),
-            s = _interopRequireDefault(require(119 /* GCommonNames */)),
+            AdalContext = _interopRequireDefault(require(1476 /* lib:adal */)),
+            CloudDrive = require(802),
+            GCloudUtil = _interopRequireDefault(require(119 /* GCommonNames */)),
             designerConfig = require(10),
-            c = require(593),
-            d = _interopRequireDefault(require(594)),
-            u = _interopRequireDefault(require(1477)),
-            p = _interopRequireDefault(require(1242 /* GMSTeamsAuthenticator */)),
+            cloudUtils = require(593),
+            GError = _interopRequireDefault(require(594)),
+            GMicrosoftUser = _interopRequireDefault(require(1477)),
+            TeamsAuthenticator = _interopRequireDefault(require(1242 /* GMSTeamsAuthenticator */)),
             Utils = require(40);
-        const h = require(156);
-        let f = null,
-            m = {};
-        const y = (exports.TEAMS_COMMANDS = p.default.COMMANDS),
-            v = (exports.GSharePointClient = function (e) {
-                let { tenant, domain, clientID, id, authTenant, corporate, token, relativePath } = e;
-                ((this.TOKEN = f || token),
+        const CloudFile = require(156);
+        let cachedToken = null,
+            clientInstances = {};
+        const teamsCommands = (exports.TEAMS_COMMANDS = TeamsAuthenticator.default.COMMANDS),
+            GSharePointClient = (exports.GSharePointClient = function (options) {
+                let { tenant, domain, clientID, id, authTenant, corporate, token, relativePath } = options;
+                ((this.TOKEN = cachedToken || token),
                     (this.BASE_URL = tenant),
                     (this.AUTH_TENANT = authTenant || tenant),
                     (this.DOMAIN = domain),
@@ -49,46 +49,46 @@ module.exports = function (module, exports, require) {
                     (this.SETTINGS_ID = id),
                     (this.CORPORATE = corporate || false),
                     (this.RELATIVE_PATH = relativePath),
-                    (this.HEADERS = v.requestHeaders));
+                    (this.HEADERS = GSharePointClient.requestHeaders));
             });
-        ((v.prototype.setTenantURL = function (e) {
-            this.BASE_URL = e.replace("https://", "");
+        ((GSharePointClient.prototype.setTenantURL = function (url) {
+            this.BASE_URL = url.replace("https://", "");
         }),
-            (v.prototype.setRelativePath = function (e) {
-                this.RELATIVE_PATH = e;
+            (GSharePointClient.prototype.setRelativePath = function (relativePath) {
+                this.RELATIVE_PATH = relativePath;
             }),
-            (v.prototype.relativeUrlContainsSubsiteRelativePath = function (e) {
-                return 0 === e.indexOf(this.RELATIVE_PATH);
+            (GSharePointClient.prototype.relativeUrlContainsSubsiteRelativePath = function (relativeUrl) {
+                return 0 === relativeUrl.indexOf(this.RELATIVE_PATH);
             }),
-            (v.prototype.getSanitizedFolderRelativePath = function (e) {
-                let t = e;
-                return (this.RELATIVE_PATH && (t = (0, Utils.trimStart)(t, this.RELATIVE_PATH)), (0, Utils.trimStart)(t, "/"));
+            (GSharePointClient.prototype.getSanitizedFolderRelativePath = function (relativeUrl) {
+                let path = relativeUrl;
+                return (this.RELATIVE_PATH && (path = (0, Utils.trimStart)(path, this.RELATIVE_PATH)), (0, Utils.trimStart)(path, "/"));
             }),
-            (v.prototype.getSanitizedFileRelativePath = function (e) {
-                return this.RELATIVE_PATH ? "".concat(this.RELATIVE_PATH, "/").concat(e) : e;
+            (GSharePointClient.prototype.getSanitizedFileRelativePath = function (relativeUrl) {
+                return this.RELATIVE_PATH ? "".concat(this.RELATIVE_PATH, "/").concat(relativeUrl) : relativeUrl;
             }),
-            (v.prototype.setToken = function (e) {
-                this.TOKEN = e;
+            (GSharePointClient.prototype.setToken = function (token) {
+                this.TOKEN = token;
             }),
-            (v.CheckOutStatuses = { CheckedOut: 0, Available: 2 }),
-            (v.FILE_STATUS = {
+            (GSharePointClient.CheckOutStatuses = { CheckedOut: 0, Available: 2 }),
+            (GSharePointClient.FILE_STATUS = {
                 LOCKED: 3,
                 LOCKED_BY_ME: 2,
                 AVAILABLE: 1,
                 LOADING: -1,
             }),
-            (v.requestHeaders = {
+            (GSharePointClient.requestHeaders = {
                 Accept: "application/json;odata=nometadata",
                 "Accept-Encoding": "gzip, deflate",
                 "Accept-Language": "en-US,en;q=0.8",
             }),
-            (v.CheckinType = {
+            (GSharePointClient.CheckinType = {
                 MinorCheckIn: 0,
                 MajorCheckIn: 1,
                 OverwriteCheckIn: 2,
             }),
-            (v.SpecialCharList = ["~", '"', "'", "#", "%", "&", "*", ":", "<", ">", "?", "/", "\\", "{", "|", "}"]),
-            (v.InvalidNames = [
+            (GSharePointClient.SpecialCharList = ["~", '"', "'", "#", "%", "&", "*", ":", "<", ">", "?", "/", "\\", "{", "|", "}"]),
+            (GSharePointClient.InvalidNames = [
                 ".lock",
                 "CON",
                 "PRN",
@@ -115,184 +115,184 @@ module.exports = function (module, exports, require) {
                 "LPT9",
                 "desktop.ini",
             ]),
-            (v.InvalidNameBeginnings = ["~$"]),
-            (v.InvalidNameEndings = ["."]),
-            (v.InvalidContainings = ["_vti_"]),
-            (v.InvalidOnlyCharacters = ["."]),
-            (v.convertFileToCloudItem = function (e) {
-                const t = (e) => {
-                    var t = h.from({
-                        id: e.UniqueId,
-                        version: e.UIVersionLabel,
-                        updated: e.TimeLastModified,
-                        created: e.TimeCreated,
-                        checkedOut: e.CheckOutType === v.CheckOutStatuses.CheckedOut,
-                        relativeUrl: e.ServerRelativeUrl,
+            (GSharePointClient.InvalidNameBeginnings = ["~$"]),
+            (GSharePointClient.InvalidNameEndings = ["."]),
+            (GSharePointClient.InvalidContainings = ["_vti_"]),
+            (GSharePointClient.InvalidOnlyCharacters = ["."]),
+            (GSharePointClient.convertFileToCloudItem = function (fileData) {
+                const convertFile = (rawFile) => {
+                    var item = CloudFile.from({
+                        id: rawFile.UniqueId,
+                        version: rawFile.UIVersionLabel,
+                        updated: rawFile.TimeLastModified,
+                        created: rawFile.TimeCreated,
+                        checkedOut: rawFile.CheckOutType === GSharePointClient.CheckOutStatuses.CheckedOut,
+                        relativeUrl: rawFile.ServerRelativeUrl,
                     });
-                    ((t.storage = h.Storage.SharePoint),
-                        t.setItemType(h.Type.File),
-                        (t.type = v.getFileType({ name: e.Name })),
-                        (t.mimeType = e._mimetype || e.mimeType || t.type));
-                    const n = designerConfig.FILE_FORMATS.find((e) => {
-                        let { type } = e;
-                        return type === t.type;
+                    ((item.storage = CloudFile.Storage.SharePoint),
+                        item.setItemType(CloudFile.Type.File),
+                        (item.type = GSharePointClient.getFileType({ name: rawFile.Name })),
+                        (item.mimeType = rawFile._mimetype || rawFile.mimeType || item.type));
+                    const format = designerConfig.FILE_FORMATS.find((entry) => {
+                        let { type } = entry;
+                        return type === item.type;
                     });
                     return (
-                        (t.extension = n && n.ext),
-                        (t.name = e.Name.replace(new RegExp(".(".concat(t.extension, ")$"), "i"), "")),
-                        t.setModificationTime(t.updated),
-                        e.Length && t.setSize(parseInt(e.Length)),
-                        t.checkedOut
-                            ? (t.checkOutStatus = v.FILE_STATUS.LOADING)
-                            : ((t.checkOutStatus = v.FILE_STATUS.AVAILABLE), (t = v.updateFilePermissions(t))),
-                        t
+                        (item.extension = format && format.ext),
+                        (item.name = rawFile.Name.replace(new RegExp(".(".concat(item.extension, ")$"), "i"), "")),
+                        item.setModificationTime(item.updated),
+                        rawFile.Length && item.setSize(parseInt(rawFile.Length)),
+                        item.checkedOut
+                            ? (item.checkOutStatus = GSharePointClient.FILE_STATUS.LOADING)
+                            : ((item.checkOutStatus = GSharePointClient.FILE_STATUS.AVAILABLE), (item = GSharePointClient.updateFilePermissions(item))),
+                        item
                     );
                 };
-                return e instanceof Array ? e.map(t) : t(e);
+                return fileData instanceof Array ? fileData.map(convertFile) : convertFile(fileData);
             }),
-            (v.updateFilePermissions = function (e) {
-                return e instanceof h && e.getType() === h.Type.File
-                    ? ([v.FILE_STATUS.AVAILABLE, v.FILE_STATUS.LOCKED_BY_ME].includes(e.checkOutStatus)
-                          ? e.setPermissions([
-                                h.Permission.Open,
-                                h.Permission.Delete,
-                                h.Permission.Download,
-                                h.Permission.Copy,
-                                h.Permission.CutPaste,
+            (GSharePointClient.updateFilePermissions = function (item) {
+                return item instanceof CloudFile && item.getType() === CloudFile.Type.File
+                    ? ([GSharePointClient.FILE_STATUS.AVAILABLE, GSharePointClient.FILE_STATUS.LOCKED_BY_ME].includes(item.checkOutStatus)
+                          ? item.setPermissions([
+                                CloudFile.Permission.Open,
+                                CloudFile.Permission.Delete,
+                                CloudFile.Permission.Download,
+                                CloudFile.Permission.Copy,
+                                CloudFile.Permission.CutPaste,
                             ])
-                          : e.revokePermissions(),
-                      e)
-                    : e;
+                          : item.revokePermissions(),
+                      item)
+                    : item;
             }),
-            (v.hasSpecialChar = function (e) {
-                return new RegExp("[".concat(v.SpecialCharList.join("|"), "]")).test(e);
+            (GSharePointClient.hasSpecialChar = function (name) {
+                return new RegExp("[".concat(GSharePointClient.SpecialCharList.join("|"), "]")).test(name);
             }),
-            (v.isNameValid = function (e) {
-                if (!e || !e.trim()) return false;
-                if (v.hasSpecialChar(e)) return false;
-                if (v.InvalidNames.indexOf(e) >= 0) return false;
-                for (let t = 0, n = v.InvalidNameBeginnings.length; t < n; t++) {
-                    let n = v.InvalidNameBeginnings[t];
-                    if (e.startsWith(n)) return false;
+            (GSharePointClient.isNameValid = function (name) {
+                if (!name || !name.trim()) return false;
+                if (GSharePointClient.hasSpecialChar(name)) return false;
+                if (GSharePointClient.InvalidNames.indexOf(name) >= 0) return false;
+                for (let t = 0, n = GSharePointClient.InvalidNameBeginnings.length; t < n; t++) {
+                    let prefix = GSharePointClient.InvalidNameBeginnings[t];
+                    if (name.startsWith(prefix)) return false;
                 }
-                for (let t = 0, n = v.InvalidNameEndings.length; t < n; t++) {
-                    let n = v.InvalidNameEndings[t];
-                    if (e.endsWith(n)) return false;
+                for (let t = 0, n = GSharePointClient.InvalidNameEndings.length; t < n; t++) {
+                    let suffix = GSharePointClient.InvalidNameEndings[t];
+                    if (name.endsWith(suffix)) return false;
                 }
-                for (let t = 0, n = v.InvalidContainings.length; t < n; t++) {
-                    let n = v.InvalidContainings[t];
-                    if (e.indexOf(n) >= 0) return false;
+                for (let t = 0, n = GSharePointClient.InvalidContainings.length; t < n; t++) {
+                    let substring = GSharePointClient.InvalidContainings[t];
+                    if (name.indexOf(substring) >= 0) return false;
                 }
-                for (let t = 0, n = v.InvalidOnlyCharacters.length; t < n; t++) {
-                    const n = v.InvalidOnlyCharacters[t];
-                    if (RegExp("^[".concat(n, "]+$")).test(e)) return false;
+                for (let t = 0, n = GSharePointClient.InvalidOnlyCharacters.length; t < n; t++) {
+                    const onlyChar = GSharePointClient.InvalidOnlyCharacters[t];
+                    if (RegExp("^[".concat(onlyChar, "]+$")).test(name)) return false;
                 }
                 return true;
             }),
-            (v.convertFolderToCloudItem = function (e) {
-                const t = (e) => {
-                    var t = h.from({
-                        id: e.UniqueId ? e.UniqueId : e.id,
-                        name: e.Name ? e.Name : e.name,
-                        relativeUrl: e.ServerRelativeUrl ? e.ServerRelativeUrl : e.relativeUrl,
+            (GSharePointClient.convertFolderToCloudItem = function (folderData) {
+                const convertFolder = (rawFolder) => {
+                    var item = CloudFile.from({
+                        id: rawFolder.UniqueId ? rawFolder.UniqueId : rawFolder.id,
+                        name: rawFolder.Name ? rawFolder.Name : rawFolder.name,
+                        relativeUrl: rawFolder.ServerRelativeUrl ? rawFolder.ServerRelativeUrl : rawFolder.relativeUrl,
                         type: "folder",
                     });
                     return (
-                        t.setItemType(h.Type.Folder),
-                        t.setPermission(h.Permission.Open),
-                        t.setPermission(h.Permission.Delete),
-                        t.setPermission(h.Permission.CutPaste),
-                        t
+                        item.setItemType(CloudFile.Type.Folder),
+                        item.setPermission(CloudFile.Permission.Open),
+                        item.setPermission(CloudFile.Permission.Delete),
+                        item.setPermission(CloudFile.Permission.CutPaste),
+                        item
                     );
                 };
-                return e instanceof Array ? e.map(t) : t(e);
+                return folderData instanceof Array ? folderData.map(convertFolder) : convertFolder(folderData);
             }),
-            (v.getFileType = function (e) {
-                return e.name.toLowerCase().endsWith(".cdrapp")
-                    ? designerConfig.FILE_FORMATS.find((e) => {
-                          let { ext } = e;
+            (GSharePointClient.getFileType = function (file) {
+                return file.name.toLowerCase().endsWith(".cdrapp")
+                    ? designerConfig.FILE_FORMATS.find((entry) => {
+                          let { ext } = entry;
                           return "cdrapp" === ext;
                       }).type
-                    : e.name.toLowerCase().endsWith(".cdr")
-                      ? designerConfig.FILE_FORMATS.find((e) => {
-                            let { ext: t } = e;
-                            return "cdr" === t;
+                    : file.name.toLowerCase().endsWith(".cdr")
+                      ? designerConfig.FILE_FORMATS.find((entry) => {
+                            let { ext: ext } = entry;
+                            return "cdr" === ext;
                         }).type
-                      : e.name.toLowerCase().endsWith(".des")
-                        ? designerConfig.FILE_FORMATS.find((e) => {
-                              let { ext: t } = e;
-                              return "des" === t;
+                      : file.name.toLowerCase().endsWith(".des")
+                        ? designerConfig.FILE_FORMATS.find((entry) => {
+                              let { ext: ext } = entry;
+                              return "des" === ext;
                           }).type
                         : void 0;
             }),
-            (v.ACCESS_TOKEN_PROP_NAME = "designer.filespanel.cloud-account.sharepoint.token"),
-            (v.getInstance = function (e) {
+            (GSharePointClient.ACCESS_TOKEN_PROP_NAME = "designer.filespanel.cloud-account.sharepoint.token"),
+            (GSharePointClient.getInstance = function (options) {
                 return (
-                    e.id || (e.id = "".concat(e.accountId, ".").concat(e.tenant)),
-                    (m[e.id] && m[e.id].TOKEN) || (m[e.id] = new v(e)),
-                    v.clearOldAccessTokens(),
-                    m[e.id]
+                    options.id || (options.id = "".concat(options.accountId, ".").concat(options.tenant)),
+                    (clientInstances[options.id] && clientInstances[options.id].TOKEN) || (clientInstances[options.id] = new GSharePointClient(options)),
+                    GSharePointClient.clearOldAccessTokens(),
+                    clientInstances[options.id]
                 );
             }),
-            (v.deleteToken = function (e) {
-                gContainer.removeProperty("".concat(v.ACCESS_TOKEN_PROP_NAME, ".").concat(e));
+            (GSharePointClient.deleteToken = function (id) {
+                gContainer.removeProperty("".concat(GSharePointClient.ACCESS_TOKEN_PROP_NAME, ".").concat(id));
             }),
-            (v.getUserId = function () {
+            (GSharePointClient.getUserId = function () {
                 return gDesigner.getSyncUser().id;
             }),
-            (v.getUserEmail = function () {
+            (GSharePointClient.getUserEmail = function () {
                 return gDesigner.getSyncUser().email;
             }),
-            (v.clearOldAccessTokens = function () {
-                const e = [],
-                    t = gContainer.getStorageLength();
-                for (let n = 0; n < t; n++) {
-                    let t = gContainer.getPropertyKeyByIndex(n);
-                    0 === t.indexOf("".concat(v.ACCESS_TOKEN_PROP_NAME, ".")) && e.push(t);
+            (GSharePointClient.clearOldAccessTokens = function () {
+                const tokenKeys = [],
+                    storageLength = gContainer.getStorageLength();
+                for (let n = 0; n < storageLength; n++) {
+                    let key = gContainer.getPropertyKeyByIndex(n);
+                    0 === key.indexOf("".concat(GSharePointClient.ACCESS_TOKEN_PROP_NAME, ".")) && tokenKeys.push(key);
                 }
-                const n = v.getUserId();
-                for (let t = 0; t < e.length; t++) {
-                    o(e[t]);
+                const userId = GSharePointClient.getUserId();
+                for (let t = 0; t < tokenKeys.length; t++) {
+                    removeIfInvalid(tokenKeys[t]);
                 }
-                function o(e) {
-                    gContainer.getProperty(e).then((t) => {
-                        v.isTokenValid(t, n) || gContainer.removeProperty(e);
+                function removeIfInvalid(key) {
+                    gContainer.getProperty(key).then((token) => {
+                        GSharePointClient.isTokenValid(token, userId) || gContainer.removeProperty(key);
                     });
                 }
             }),
-            (v.isTokenValid = function (e, t) {
-                const n = gContainer.getSharepointAuthenticator();
-                return n ? n.isTokenValid(e) : !(!e || !e.expires || e.expires <= Date.now() / 1e3) && !(!e.id || e.id !== t);
+            (GSharePointClient.isTokenValid = function (token, userId) {
+                const authenticator = gContainer.getSharepointAuthenticator();
+                return authenticator ? authenticator.isTokenValid(token) : !(!token || !token.expires || token.expires <= Date.now() / 1e3) && !(!token.id || token.id !== userId);
             }),
-            (v.getCachedToken = function (e) {
-                return gContainer.getProperty("".concat(v.ACCESS_TOKEN_PROP_NAME, ".").concat(e));
+            (GSharePointClient.getCachedToken = function (id) {
+                return gContainer.getProperty("".concat(GSharePointClient.ACCESS_TOKEN_PROP_NAME, ".").concat(id));
             }),
-            (v.getValidCachedTokenOrNull = async function (e) {
-                const t = await v.getCachedToken(e);
-                return v.isTokenValid(t, v.getUserId()) ? t : null;
+            (GSharePointClient.getValidCachedTokenOrNull = async function (id) {
+                const token = await GSharePointClient.getCachedToken(id);
+                return GSharePointClient.isTokenValid(token, GSharePointClient.getUserId()) ? token : null;
             }),
-            (v.saveTokenToCache = async function (e, t) {
-                gContainer.setProperty("".concat(v.ACCESS_TOKEN_PROP_NAME, ".").concat(e), t);
+            (GSharePointClient.saveTokenToCache = async function (id, token) {
+                gContainer.setProperty("".concat(GSharePointClient.ACCESS_TOKEN_PROP_NAME, ".").concat(id), token);
             }),
-            (v.ExceptionCode = { LoginAborted: 1, FileAlreadyCheckedOut: 423 }));
-        class _ extends d.default {
-            constructor(e, t) {
-                (super(e), (this.code = t), (this.__proto__ = _.prototype), (this.name = "SharepointException"));
+            (GSharePointClient.ExceptionCode = { LoginAborted: 1, FileAlreadyCheckedOut: 423 }));
+        class SharepointException extends GError.default {
+            constructor(message, code) {
+                (super(message), (this.code = code), (this.__proto__ = SharepointException.prototype), (this.name = "SharepointException"));
             }
             toString() {
                 return "[Object SharepointException]";
             }
         }
-        ((v.SharepointException = _),
-            (v._logoutAndClearAdalCache = function (e) {
-                var t = new a.default(e);
-                (t.clearCache(), t.getCachedUser() && t.logOut(), (t._user = null));
-                var n = [];
+        ((GSharePointClient.SharepointException = SharepointException),
+            (GSharePointClient._logoutAndClearAdalCache = function (settings) {
+                var adalContext = new AdalContext.default(settings);
+                (adalContext.clearCache(), adalContext.getCachedUser() && adalContext.logOut(), (adalContext._user = null));
+                var adalKeys = [];
                 for (let e = 0; e < localStorage.length; e++)
-                    "adal." === localStorage.key(e).substring(0, 5) && n.push(localStorage.key(e));
-                for (let e = 0; e < n.length; e++) localStorage.removeItem(n[e]);
+                    "adal." === localStorage.key(e).substring(0, 5) && adalKeys.push(localStorage.key(e));
+                for (let e = 0; e < adalKeys.length; e++) localStorage.removeItem(adalKeys[e]);
             }),
-            (v.prototype.getSettings = function () {
+            (GSharePointClient.prototype.getSettings = function () {
                 return {
                     tenant: this.BASE_URL,
                     domain: this.DOMAIN,
@@ -305,519 +305,519 @@ module.exports = function (module, exports, require) {
                     type: designerConfig.EXTERNAL_APP.SHAREPOINT,
                 };
             }),
-            (v.prototype.getId = function () {
+            (GSharePointClient.prototype.getId = function () {
                 return this.SETTINGS_ID;
             }),
-            (v.prototype.getFile = function (e) {
-                return this.getRawFile(e).then(function (e) {
-                    return s.default.createUint8ArrayFromBlob(e);
+            (GSharePointClient.prototype.getFile = function (item) {
+                return this.getRawFile(item).then(function (blob) {
+                    return GCloudUtil.default.createUint8ArrayFromBlob(blob);
                 });
             }),
-            (v.prototype.queryFiles = function (e) {
-                return this.get(this._createQueryFilesURL(e));
+            (GSharePointClient.prototype.queryFiles = function (options) {
+                return this.get(this._createQueryFilesURL(options));
             }),
-            (v.prototype.fetchFolders = function (e, t, n) {
-                const o = this.getSanitizedFolderRelativePath(e.relativeUrl);
-                var i = "/_api/web/GetFolderByServerRelativeUrl('".concat(encodeURI(o), "')/Folders?$orderby=").concat(encodeURI(t));
+            (GSharePointClient.prototype.fetchFolders = function (folder, orderBy, limit) {
+                const relativeUrl = this.getSanitizedFolderRelativePath(folder.relativeUrl);
+                var url = "/_api/web/GetFolderByServerRelativeUrl('".concat(encodeURI(relativeUrl), "')/Folders?$orderby=").concat(encodeURI(orderBy));
                 return (
-                    n > 0 && (i += "&$top=".concat(n)),
-                    this.get(i).then((t) => {
-                        let { value } = t;
-                        const o = [];
-                        if (!value || !value.length) return o;
-                        for (let t = 0, i = value.length; t < i; t++) {
-                            let i = value[t];
-                            if (!i.Exists) continue;
-                            const a = v.convertFolderToCloudItem(i);
-                            ((a.parent = e), o.push(a));
+                    limit > 0 && (url += "&$top=".concat(limit)),
+                    this.get(url).then((response) => {
+                        let { value } = response;
+                        const items = [];
+                        if (!value || !value.length) return items;
+                        for (let t = 0, length = value.length; t < length; t++) {
+                            let folderData = value[t];
+                            if (!folderData.Exists) continue;
+                            const cloudItem = GSharePointClient.convertFolderToCloudItem(folderData);
+                            ((cloudItem.parent = folder), items.push(cloudItem));
                         }
-                        return o;
+                        return items;
                     })
                 );
             }),
-            (v.prototype.queryFilesByOwner = function (e, t) {
-                const n = (function (e) {
+            (GSharePointClient.prototype.queryFilesByOwner = function (queryOptions, ownerId) {
+                const url = (function (url) {
                     return (
-                        e.searchParams.append("$select", "*"),
-                        e.searchParams.append("$expand", "Author"),
-                        e.searchParams.append("$filter", "Author/Id eq ".concat(t)),
-                        e
+                        url.searchParams.append("$select", "*"),
+                        url.searchParams.append("$expand", "Author"),
+                        url.searchParams.append("$filter", "Author/Id eq ".concat(ownerId)),
+                        url
                     );
-                })(this._createQueryFilesURL(e));
-                return this.get(n);
+                })(this._createQueryFilesURL(queryOptions));
+                return this.get(url);
             }),
-            (v.prototype._createQueryFilesURL = function (e) {
-                const { folderRelativeUrl, orderBy, limit, skip } = e,
-                    a = this.getSanitizedFolderRelativePath(folderRelativeUrl),
-                    r = this.getAPIEndpointURL("/_api/web/GetFolderByServerRelativeUrl('".concat(a, "')/Files"));
-                return (r.searchParams.append("$orderby", orderBy), r.searchParams.append("$top", limit), r.searchParams.append("$skip", skip), r);
+            (GSharePointClient.prototype._createQueryFilesURL = function (options) {
+                const { folderRelativeUrl, orderBy, limit, skip } = options,
+                    relativeUrl = this.getSanitizedFolderRelativePath(folderRelativeUrl),
+                    url = this.getAPIEndpointURL("/_api/web/GetFolderByServerRelativeUrl('".concat(relativeUrl, "')/Files"));
+                return (url.searchParams.append("$orderby", orderBy), url.searchParams.append("$top", limit), url.searchParams.append("$skip", skip), url);
             }),
-            (v.prototype.findFileById = function (e) {
-                let t = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : null;
+            (GSharePointClient.prototype.findFileById = function (id) {
+                let headers = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : null;
                 return this.get(
-                    "/_api/search/query?querytext='" + e + "'&selectproperties='Title,Filename,ParentLink,DefaultEncodingURL'",
-                    { headers: t }
-                ).then((e) => {
-                    if (e) {
+                    "/_api/search/query?querytext='" + id + "'&selectproperties='Title,Filename,ParentLink,DefaultEncodingURL'",
+                    { headers: headers }
+                ).then((response) => {
+                    if (response) {
                         const {
                                 PrimaryQueryResult: {
                                     RelevantResults: {
                                         Table: {
-                                            Rows: [t],
+                                            Rows: [row],
                                         },
                                     },
                                 },
-                            } = e,
-                            n = t.Cells.find((e) => {
-                                let { Key } = e;
+                            } = response,
+                            filename = row.Cells.find((cell) => {
+                                let { Key } = cell;
                                 return "Filename" === Key;
                             }).Value;
                         return {
-                            name: t.Cells.find((e) => {
-                                let { Key: t } = e;
-                                return "Title" === t;
+                            name: row.Cells.find((cell) => {
+                                let { Key: key } = cell;
+                                return "Title" === key;
                             }).Value,
-                            type: v.getFileType({ name: n }),
-                            relativeUrl: t.Cells.find((e) => {
-                                let { Key: t } = e;
-                                return "DefaultEncodingURL" === t;
+                            type: GSharePointClient.getFileType({ name: filename }),
+                            relativeUrl: row.Cells.find((cell) => {
+                                let { Key: key } = cell;
+                                return "DefaultEncodingURL" === key;
                             }).Value.replace("https://".concat(this.BASE_URL), ""),
                         };
                     }
                     return null;
                 });
             }),
-            (v.prototype.getAdditionalItemData = function (e) {
-                let t = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : null;
-                const n = "/_api/web/GetFileByServerRelativeUrl('".concat(
-                    encodeURI("".concat(e.relativeUrl)),
+            (GSharePointClient.prototype.getAdditionalItemData = function (item) {
+                let headers = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : null;
+                const url = "/_api/web/GetFileByServerRelativeUrl('".concat(
+                    encodeURI("".concat(item.relativeUrl)),
                     "')/ListItemAllFields?expand=Properties"
                 );
-                return this.get(n, { headers: t });
+                return this.get(url, { headers: headers });
             }),
-            (v.prototype.checkOutFile = async function (e) {
-                const t = "/_api/web/GetFileByServerRelativeUrl('".concat(e.relativeUrl, "')/CheckOut()");
-                return this.post(t).catch((e) => {
-                    if (e.status === v.ExceptionCode.FileAlreadyCheckedOut)
-                        throw new v.SharepointException(
+            (GSharePointClient.prototype.checkOutFile = async function (item) {
+                const url = "/_api/web/GetFileByServerRelativeUrl('".concat(item.relativeUrl, "')/CheckOut()");
+                return this.post(url).catch((error) => {
+                    if (error.status === GSharePointClient.ExceptionCode.FileAlreadyCheckedOut)
+                        throw new GSharePointClient.SharepointException(
                             GObject.GLocale.get(
                                 new GObject.GLocaleKey("GFilesPanelViewSharepoint", "text.error-file-is-already-checked-out-by-someone-else")
                             ),
-                            v.ExceptionCode.FileAlreadyCheckedOut
+                            GSharePointClient.ExceptionCode.FileAlreadyCheckedOut
                         );
-                    throw e;
+                    throw error;
                 });
             }),
-            (v.prototype.discardCheckOut = function (e) {
-                var t = "/_api/web/GetFileByServerRelativeUrl('".concat(e.relativeUrl, "')/UndoCheckOut()");
-                return this.post(t);
+            (GSharePointClient.prototype.discardCheckOut = function (item) {
+                var url = "/_api/web/GetFileByServerRelativeUrl('".concat(item.relativeUrl, "')/UndoCheckOut()");
+                return this.post(url);
             }),
-            (v.prototype.checkInFile = function (e) {
-                let t = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : "New Comment",
-                    n = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : v.CheckinType.MinorCheckIn;
-                const o = "/_api/web/GetFileByServerRelativeUrl('"
-                    .concat(e.relativeUrl, "')/CheckIn(comment='")
-                    .concat(t, "', checkintype=")
-                    .concat(n, ")");
-                return this.post(o);
+            (GSharePointClient.prototype.checkInFile = function (item) {
+                let comment = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : "New Comment",
+                    checkinType = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : GSharePointClient.CheckinType.MinorCheckIn;
+                const url = "/_api/web/GetFileByServerRelativeUrl('"
+                    .concat(item.relativeUrl, "')/CheckIn(comment='")
+                    .concat(comment, "', checkintype=")
+                    .concat(checkinType, ")");
+                return this.post(url);
             }),
-            (v.prototype.getCheckOutFileInfo = function (e) {
-                const t = "/_api/web/GetFileByServerRelativeUrl('".concat(e.relativeUrl, "')/checkedOutByUser");
-                return this.get(t);
+            (GSharePointClient.prototype.getCheckOutFileInfo = function (item) {
+                const url = "/_api/web/GetFileByServerRelativeUrl('".concat(item.relativeUrl, "')/checkedOutByUser");
+                return this.get(url);
             }),
-            (v.prototype.getCheckOutFileStatus = async function (e) {
-                if (e.hasOwnProperty("checkedOut") && !e.checkedOut) return v.FILE_STATUS.AVAILABLE;
-                const t = await this.getCheckOutFileInfo(e).catch(
-                    (e) => (console.error(">>>error retrieving checkout info: ", e.message), null)
+            (GSharePointClient.prototype.getCheckOutFileStatus = async function (item) {
+                if (item.hasOwnProperty("checkedOut") && !item.checkedOut) return GSharePointClient.FILE_STATUS.AVAILABLE;
+                const checkOutInfo = await this.getCheckOutFileInfo(item).catch(
+                    (error) => (console.error(">>>error retrieving checkout info: ", error.message), null)
                 );
-                if (!t || true === t["odata.null"]) return v.FILE_STATUS.AVAILABLE;
-                const n = await this._getUser();
-                return t.UserId.NameId === n.getNameId() ? v.FILE_STATUS.LOCKED_BY_ME : v.FILE_STATUS.LOCKED;
+                if (!checkOutInfo || true === checkOutInfo["odata.null"]) return GSharePointClient.FILE_STATUS.AVAILABLE;
+                const user = await this._getUser();
+                return checkOutInfo.UserId.NameId === user.getNameId() ? GSharePointClient.FILE_STATUS.LOCKED_BY_ME : GSharePointClient.FILE_STATUS.LOCKED;
             }),
-            (v.prototype._getUser = async function () {
-                return (this._user || (this._user = new u.default(await this.getUser())), this._user);
+            (GSharePointClient.prototype._getUser = async function () {
+                return (this._user || (this._user = new GMicrosoftUser.default(await this.getUser())), this._user);
             }),
-            (v.prototype.getFileCreator = async function (e) {
-                return new u.default(await this._getFileCreator(e));
+            (GSharePointClient.prototype.getFileCreator = async function (item) {
+                return new GMicrosoftUser.default(await this._getFileCreator(item));
             }),
-            (v.prototype.getLibrarySettings = function () {
-                let e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : null;
+            (GSharePointClient.prototype.getLibrarySettings = function () {
+                let headers = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : null;
                 return this.get("/_api/web/lists/getByTitle('Documents')", {
-                    headers: e,
-                }).then((e) => ({
-                    enableVersioning: e.EnableVersioning,
-                    enableMinorVersions: e.EnableMinorVersions,
-                    enableFolderCreation: e.EnableFolderCreation,
-                    forceCheckout: e.ForceCheckout,
+                    headers: headers,
+                }).then((response) => ({
+                    enableVersioning: response.EnableVersioning,
+                    enableMinorVersions: response.EnableMinorVersions,
+                    enableFolderCreation: response.EnableFolderCreation,
+                    forceCheckout: response.ForceCheckout,
                 }));
             }),
-            (v.prototype.getFileDetails = async function (e) {
-                let t = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : null;
+            (GSharePointClient.prototype.getFileDetails = async function (item) {
+                let headers = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : null;
                 try {
-                    return await this._getFileDetailsByRelativeURL(e, t);
-                } catch (n) {
-                    if (e.id) {
-                        const n = await this.findFileById(e.id);
-                        return this._getFileDetailsByRelativeURL(n, t);
+                    return await this._getFileDetailsByRelativeURL(item, headers);
+                } catch (error) {
+                    if (item.id) {
+                        const foundItem = await this.findFileById(item.id);
+                        return this._getFileDetailsByRelativeURL(foundItem, headers);
                     }
-                    throw n;
+                    throw error;
                 }
             }),
-            (v.prototype._getFileDetailsByRelativeURL = function (e) {
-                let t = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : null;
-                const n = "/_api/web/GetFileByServerRelativeUrl('".concat(encodeURI("".concat(e.relativeUrl)), "')");
-                return this.get(n, { headers: t });
+            (GSharePointClient.prototype._getFileDetailsByRelativeURL = function (item) {
+                let headers = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : null;
+                const url = "/_api/web/GetFileByServerRelativeUrl('".concat(encodeURI("".concat(item.relativeUrl)), "')");
+                return this.get(url, { headers: headers });
             }),
-            (v.prototype.getFolderDetails = function (e) {
-                let t = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : null;
-                const n = this.getSanitizedFolderRelativePath(e.relativeUrl),
-                    o = "/_api/web/GetFolderByServerRelativeUrl('".concat(encodeURI(n), "')");
-                return this.get(o, { headers: t });
+            (GSharePointClient.prototype.getFolderDetails = function (item) {
+                let headers = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : null;
+                const relativeUrl = this.getSanitizedFolderRelativePath(item.relativeUrl),
+                    url = "/_api/web/GetFolderByServerRelativeUrl('".concat(encodeURI(relativeUrl), "')");
+                return this.get(url, { headers: headers });
             }),
-            (v.prototype.getParentFolder = function (e) {
-                let t = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : null;
-                const n = this.getSanitizedFolderRelativePath(e.relativeUrl),
-                    o = "/_api/Web/GetFolderByServerRelativePath(decodedurl='".concat(encodeURI(n), "')/ParentFolder");
-                return this.get(o, { headers: t });
+            (GSharePointClient.prototype.getParentFolder = function (item) {
+                let headers = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : null;
+                const relativeUrl = this.getSanitizedFolderRelativePath(item.relativeUrl),
+                    url = "/_api/Web/GetFolderByServerRelativePath(decodedurl='".concat(encodeURI(relativeUrl), "')/ParentFolder");
+                return this.get(url, { headers: headers });
             }),
-            (v.prototype.copyFileTo = function (e, t) {
-                var n = "/_api/web/GetFileByServerRelativeUrl('"
-                    .concat(encodeURI(e.relativeUrl), "')/copyto(strnewurl='")
-                    .concat(encodeURI(t.relativeUrl), "/")
-                    .concat(e.name, ".")
-                    .concat(e.extension, "',boverwrite=false)");
-                return this.post(n, null, { rawResponse: true });
+            (GSharePointClient.prototype.copyFileTo = function (item, destinationFolder) {
+                var url = "/_api/web/GetFileByServerRelativeUrl('"
+                    .concat(encodeURI(item.relativeUrl), "')/copyto(strnewurl='")
+                    .concat(encodeURI(destinationFolder.relativeUrl), "/")
+                    .concat(item.name, ".")
+                    .concat(item.extension, "',boverwrite=false)");
+                return this.post(url, null, { rawResponse: true });
             }),
-            (v.prototype.moveFileTo = function (e, t) {
-                var n = "/_api/web/GetFileByServerRelativeUrl('"
-                    .concat(encodeURI(e.relativeUrl), "')/moveto(newurl='")
-                    .concat(encodeURI(t.relativeUrl), "/")
-                    .concat(e.name, ".")
-                    .concat(e.extension, "',flags=0)");
-                return this.post(n, null, { rawResponse: true });
+            (GSharePointClient.prototype.moveFileTo = function (item, destinationFolder) {
+                var url = "/_api/web/GetFileByServerRelativeUrl('"
+                    .concat(encodeURI(item.relativeUrl), "')/moveto(newurl='")
+                    .concat(encodeURI(destinationFolder.relativeUrl), "/")
+                    .concat(item.name, ".")
+                    .concat(item.extension, "',flags=0)");
+                return this.post(url, null, { rawResponse: true });
             }),
-            (v.prototype.moveFolderTo = function (e, t) {
-                var n = "/_api/web/GetFolderByServerRelativeUrl('"
-                    .concat(encodeURI(e.relativeUrl), "')/moveto(newurl='")
-                    .concat(encodeURI(t.relativeUrl), "/")
-                    .concat(e.name, "')");
-                return this.post(n, null, { rawResponse: true });
+            (GSharePointClient.prototype.moveFolderTo = function (folder, destinationFolder) {
+                var url = "/_api/web/GetFolderByServerRelativeUrl('"
+                    .concat(encodeURI(folder.relativeUrl), "')/moveto(newurl='")
+                    .concat(encodeURI(destinationFolder.relativeUrl), "/")
+                    .concat(folder.name, "')");
+                return this.post(url, null, { rawResponse: true });
             }),
-            (v.prototype.folderExists = function (e, t) {
-                const n = this.getSanitizedFolderRelativePath(t.relativeUrl);
+            (GSharePointClient.prototype.folderExists = function (folderName, parentFolder) {
+                const relativeUrl = this.getSanitizedFolderRelativePath(parentFolder.relativeUrl);
                 return this.get(
                     "/_api/Web/GetFolderByServerRelativePath(decodedurl='".concat(
-                        encodeURI("".concat(n) + "".concat(e ? "/".concat(e) : "")),
+                        encodeURI("".concat(relativeUrl) + "".concat(folderName ? "/".concat(folderName) : "")),
                         "')/Exists/$value"
                     )
-                ).catch((e) => (!e.status || 404 !== e.status) && Promise.reject(e));
+                ).catch((error) => (!error.status || 404 !== error.status) && Promise.reject(error));
             }),
-            (v.prototype.fileExists = function (e, t) {
+            (GSharePointClient.prototype.fileExists = function (fileName, folder) {
                 return this.get(
-                    "/_api/web/GetFileByServerRelativeUrl('".concat(encodeURI("".concat(t.relativeUrl, "/").concat(e)), "')/Exists/$value")
-                ).catch((e) => (!e.status || 404 !== e.status) && Promise.reject(e));
+                    "/_api/web/GetFileByServerRelativeUrl('".concat(encodeURI("".concat(folder.relativeUrl, "/").concat(fileName)), "')/Exists/$value")
+                ).catch((error) => (!error.status || 404 !== error.status) && Promise.reject(error));
             }),
-            (v.prototype.getRawFile = function (e, t) {
-                var n = "/_api/web/GetFileByServerRelativeUrl('".concat(e.relativeUrl, "')/$value");
-                return this.get(n, { rawResponse: true, progress: t }).then((e) => e.blob());
+            (GSharePointClient.prototype.getRawFile = function (item, progress) {
+                var url = "/_api/web/GetFileByServerRelativeUrl('".concat(item.relativeUrl, "')/$value");
+                return this.get(url, { rawResponse: true, progress: progress }).then((response) => response.blob());
             }),
-            (v.prototype.getUser = function () {
+            (GSharePointClient.prototype.getUser = function () {
                 return this.get("/_api/Web/CurrentUser");
             }),
-            (v.prototype._getFileCreator = function (e) {
-                var t = "/_api/web/GetFileByServerRelativeUrl('".concat(e.relativeUrl, "')/Author");
-                return this.get(t);
+            (GSharePointClient.prototype._getFileCreator = function (item) {
+                var url = "/_api/web/GetFileByServerRelativeUrl('".concat(item.relativeUrl, "')/Author");
+                return this.get(url);
             }),
-            (v.prototype.get = function (e) {
-                let t = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : null;
-                return this._query("GET", e, null, t);
+            (GSharePointClient.prototype.get = function (url) {
+                let headers = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : null;
+                return this._query("GET", url, null, headers);
             }),
-            (v.prototype.post = function (e, t) {
-                let n,
-                    o = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : null;
-                return ((n = o && o.blobRequest ? new Blob([t]) : t), this._query("POST", e, n, o));
+            (GSharePointClient.prototype.post = function (url, body) {
+                let requestBody,
+                    options = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : null;
+                return ((requestBody = options && options.blobRequest ? new Blob([body]) : body), this._query("POST", url, requestBody, options));
             }),
-            (v.prototype._query = function (e, t) {
-                let n,
-                    o = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : null,
-                    i = arguments.length > 3 && void 0 !== arguments[3] ? arguments[3] : null;
+            (GSharePointClient.prototype._query = function (method, urlOrPath) {
+                let resolvedUrl,
+                    body = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : null,
+                    options = arguments.length > 3 && void 0 !== arguments[3] ? arguments[3] : null;
                 return (
-                    (n =
-                        (i && i.fullLink) || t instanceof URL
-                            ? t instanceof URL
-                                ? t.toString()
-                                : t
-                            : this.getAPIEndpointURL(t).toString()),
-                    this.query(e, n, o, i)
+                    (resolvedUrl =
+                        (options && options.fullLink) || urlOrPath instanceof URL
+                            ? urlOrPath instanceof URL
+                                ? urlOrPath.toString()
+                                : urlOrPath
+                            : this.getAPIEndpointURL(urlOrPath).toString()),
+                    this.query(method, resolvedUrl, body, options)
                 );
             }),
-            (v.prototype.getAPIEndpointURL = function (e) {
-                return new URL("https://".concat(this.BASE_URL).concat(e));
+            (GSharePointClient.prototype.getAPIEndpointURL = function (path) {
+                return new URL("https://".concat(this.BASE_URL).concat(path));
             }),
-            (v.prototype.hasPermissionToAccessFolder = async function (e) {
+            (GSharePointClient.prototype.hasPermissionToAccessFolder = async function (item) {
                 try {
-                    return !!(await this.getFolderDetails(e));
-                } catch (e) {
+                    return !!(await this.getFolderDetails(item));
+                } catch (error) {
                     return (
-                        (!e || (e.status !== designerConfig.HTTP_STATUS_CODES.FORBIDDEN && e.status !== designerConfig.HTTP_STATUS_CODES.NOT_FOUND)) &&
-                        (console.error("GSharePointClient - failed to check folder permissions", e), false)
+                        (!error || (error.status !== designerConfig.HTTP_STATUS_CODES.FORBIDDEN && error.status !== designerConfig.HTTP_STATUS_CODES.NOT_FOUND)) &&
+                        (console.error("GSharePointClient - failed to check folder permissions", error), false)
                     );
                 }
             }),
-            (v.prototype.getEffectiveBasePermissions = function (e) {
-                return this.query("GET", "".concat(e, "/_api/Web/effectiveBasePermissions"));
+            (GSharePointClient.prototype.getEffectiveBasePermissions = function (relativeUrl) {
+                return this.query("GET", "".concat(relativeUrl, "/_api/Web/effectiveBasePermissions"));
             }),
-            (v.prototype.getFileEffectiveBasePermissions = function (e) {
-                var t = "/_api/web/GetFileByServerRelativeUrl('".concat(e.relativeUrl, "')/ListItemAllFields/effectiveBasePermissions");
-                return this.get(t);
+            (GSharePointClient.prototype.getFileEffectiveBasePermissions = function (item) {
+                var url = "/_api/web/GetFileByServerRelativeUrl('".concat(item.relativeUrl, "')/ListItemAllFields/effectiveBasePermissions");
+                return this.get(url);
             }),
-            (v.prototype.query = function (e, t) {
-                let n = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : null,
-                    o = arguments.length > 3 && void 0 !== arguments[3] ? arguments[3] : null;
-                const i = this;
-                return new Promise((e, t) =>
-                    i.TOKEN && v.isTokenValid(i.TOKEN, v.getUserId())
-                        ? a(e, t)
-                        : i
+            (GSharePointClient.prototype.query = function (method, url) {
+                let body = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : null,
+                    options = arguments.length > 3 && void 0 !== arguments[3] ? arguments[3] : null;
+                const client = this;
+                return new Promise((resolve, reject) =>
+                    client.TOKEN && GSharePointClient.isTokenValid(client.TOKEN, GSharePointClient.getUserId())
+                        ? executeRequest(resolve, reject)
+                        : client
                               .connect()
                               .then(() => {
-                                  a(e, t);
+                                  executeRequest(resolve, reject);
                               })
-                              .catch((e) => {
-                                  t(e);
+                              .catch((error) => {
+                                  reject(error);
                               })
                 );
-                async function a(r, s) {
-                    const l = {
-                        method: e,
+                async function executeRequest(resolve, reject) {
+                    const fetchOptions = {
+                        method: method,
                         cache: "no-cache",
-                        headers: i._prepareRequestHeaders(e, n, o),
-                        body: i._prepareRequestBody(e, n, o),
+                        headers: client._prepareRequestHeaders(method, body, options),
+                        body: client._prepareRequestBody(method, body, options),
                     };
-                    let d;
+                    let response;
                     try {
-                        d = await fetch(t, l);
-                    } catch (e) {
-                        return void s(e);
+                        response = await fetch(url, fetchOptions);
+                    } catch (error) {
+                        return void reject(error);
                     }
-                    if (401 === d.status)
-                        (i.clearUserData(),
-                            i
+                    if (401 === response.status)
+                        (client.clearUserData(),
+                            client
                                 .connect(true)
                                 .then(() => {
-                                    a(r, s);
+                                    executeRequest(resolve, reject);
                                 })
-                                .catch((e) => {
-                                    s(e);
+                                .catch((error) => {
+                                    reject(error);
                                 }));
-                    else if (200 === d.status || 201 === d.status || 202 === d.status || 204 === d.status) {
-                        if (o && o.progress && "function" == typeof o.progress)
-                            return (0, c.readResponseWithProgress)(d, o.progress, false).then((e) => r(e));
-                        if (o && o.rawResponse) return r(d);
-                        let e = {};
-                        if (204 !== d.status)
+                    else if (200 === response.status || 201 === response.status || 202 === response.status || 204 === response.status) {
+                        if (options && options.progress && "function" == typeof options.progress)
+                            return (0, cloudUtils.readResponseWithProgress)(response, options.progress, false).then((data) => resolve(data));
+                        if (options && options.rawResponse) return resolve(response);
+                        let responseBody = {};
+                        if (204 !== response.status)
                             try {
-                                e = await d.json();
-                            } catch (e) {
-                                (console.error("Incorrect response format: ", e.message), s(e));
+                                responseBody = await response.json();
+                            } catch (error) {
+                                (console.error("Incorrect response format: ", error.message), reject(error));
                             }
-                        r(e);
-                    } else s({ status: d.status, statusText: d.statusText });
+                        resolve(responseBody);
+                    } else reject({ status: response.status, statusText: response.statusText });
                 }
             }),
-            (v.prototype._prepareRequestHeaders = function (e, t, n) {
-                if (n && n.noHeaders) return;
-                const o = Object.assign({}, this.HEADERS, {
+            (GSharePointClient.prototype._prepareRequestHeaders = function (method, body, options) {
+                if (options && options.noHeaders) return;
+                const headers = Object.assign({}, this.HEADERS, {
                     Authorization: "Bearer ".concat(this.TOKEN.token),
                 });
-                this._isBodyRequestRequired(e, t) &&
-                    ((o["Content-Type"] = (n && n.headers && n.headers["Content-Type"]) || "application/json;odata=verbose"),
-                    (o["Content-Length"] = JSON.stringify(t).length));
-                return Object.assign(o, (n && n.headers) || {});
+                this._isBodyRequestRequired(method, body) &&
+                    ((headers["Content-Type"] = (options && options.headers && options.headers["Content-Type"]) || "application/json;odata=verbose"),
+                    (headers["Content-Length"] = JSON.stringify(body).length));
+                return Object.assign(headers, (options && options.headers) || {});
             }),
-            (v.prototype._prepareRequestBody = function (e, t, n) {
-                let o;
-                return (this._isBodyRequestRequired(e, t) && (o = n && n.blobRequest ? t : JSON.stringify(t)), o);
+            (GSharePointClient.prototype._prepareRequestBody = function (method, body, options) {
+                let result;
+                return (this._isBodyRequestRequired(method, body) && (result = options && options.blobRequest ? body : JSON.stringify(body)), result);
             }),
-            (v.prototype._isBodyRequestRequired = function (e, t) {
-                return !(!t || !["POST", "PUT", "PATCH"].includes(e));
+            (GSharePointClient.prototype._isBodyRequestRequired = function (method, body) {
+                return !(!body || !["POST", "PUT", "PATCH"].includes(method));
             }),
-            (v.prototype._getSharePointSettings = function () {
+            (GSharePointClient.prototype._getSharePointSettings = function () {
                 return {
                     tenant: this.AUTH_TENANT,
                     clientId: this.CLIENT_ID,
                     domain: this.DOMAIN,
-                    loginHint: v.getUserEmail(),
+                    loginHint: GSharePointClient.getUserEmail(),
                 };
             }),
-            (v.prototype.clearUserData = function () {
-                ((this.TOKEN = null), (this._toClear = true), v._logoutAndClearAdalCache(this._getSharePointSettings()));
+            (GSharePointClient.prototype.clearUserData = function () {
+                ((this.TOKEN = null), (this._toClear = true), GSharePointClient._logoutAndClearAdalCache(this._getSharePointSettings()));
             }),
-            (v.prototype._getCachedToken = function (e) {
+            (GSharePointClient.prototype._getCachedToken = function (isValid) {
                 return (
-                    e || (e = (e) => v.isTokenValid(e, v.getUserId())),
-                    gContainer.getProperty(this._getTokenPropertyName()).then((t) => {
-                        if (t && e(t)) return t;
+                    isValid || (isValid = (token) => GSharePointClient.isTokenValid(token, GSharePointClient.getUserId())),
+                    gContainer.getProperty(this._getTokenPropertyName()).then((cachedToken) => {
+                        if (cachedToken && isValid(cachedToken)) return cachedToken;
                     })
                 );
             }),
-            (v.prototype._setCachedToken = function (e) {
-                (this.setToken(e), gContainer.setProperty(this._getTokenPropertyName(), e));
+            (GSharePointClient.prototype._setCachedToken = function (token) {
+                (this.setToken(token), gContainer.setProperty(this._getTokenPropertyName(), token));
             }),
-            (v.prototype._getTokenPropertyName = function () {
-                return "".concat(v.ACCESS_TOKEN_PROP_NAME, ".").concat(this.SETTINGS_ID);
+            (GSharePointClient.prototype._getTokenPropertyName = function () {
+                return "".concat(GSharePointClient.ACCESS_TOKEN_PROP_NAME, ".").concat(this.SETTINGS_ID);
             }),
-            (v.prototype.connect = async function (e) {
-                let t = !(arguments.length > 1 && void 0 !== arguments[1]) || arguments[1];
-                const n = this,
-                    o = this._getSharePointSettings(),
-                    a = 6e4,
-                    s = 3e3;
-                let c,
-                    d = false;
-                const u = await v.getValidCachedTokenOrNull(n.SETTINGS_ID);
-                if (n._connect) return n._connect;
-                const p = gContainer.getSharepointAuthenticator();
-                return p
-                    ? !e && u
-                        ? void (n.TOKEN = u)
+            (GSharePointClient.prototype.connect = async function (forceRefresh) {
+                let allowSilentRetry = !(arguments.length > 1 && void 0 !== arguments[1]) || arguments[1];
+                const client = this,
+                    sharePointSettings = this._getSharePointSettings(),
+                    requestTimeoutMs = 6e4,
+                    closeDelayMs = 3e3;
+                let timeoutId,
+                    tokenSaved = false;
+                const validCachedToken = await GSharePointClient.getValidCachedTokenOrNull(client.SETTINGS_ID);
+                if (client._connect) return client._connect;
+                const authenticator = gContainer.getSharepointAuthenticator();
+                return authenticator
+                    ? !forceRefresh && validCachedToken
+                        ? void (client.TOKEN = validCachedToken)
                         : (designerConfig.msTeamsMode
-                              ? (n._connect = p.authenticate(n._getTeamsCommand()))
-                              : (n._connect = p.authenticate(o, { clearCache: e })),
-                          n._connect.then(
-                              (e) => (
-                                  (n.TOKEN = f = { id: v.getUserId() }),
-                                  e.expires && e.token
-                                      ? ((n.TOKEN.expires = f.expires = Number(e.expires)), (n.TOKEN.token = f.token = e.token))
-                                      : "string" == typeof e &&
-                                        ((n.TOKEN.expires = f.expires = Math.floor(Date.now() / 1e3) + 3600),
-                                        (n.TOKEN.token = f.token = e)),
-                                  v.saveTokenToCache(n.SETTINGS_ID, n.TOKEN),
-                                  delete n._connect,
-                                  n.TOKEN
+                              ? (client._connect = authenticator.authenticate(client._getTeamsCommand()))
+                              : (client._connect = authenticator.authenticate(sharePointSettings, { clearCache: forceRefresh })),
+                          client._connect.then(
+                              (authResult) => (
+                                  (client.TOKEN = cachedToken = { id: GSharePointClient.getUserId() }),
+                                  authResult.expires && authResult.token
+                                      ? ((client.TOKEN.expires = cachedToken.expires = Number(authResult.expires)), (client.TOKEN.token = cachedToken.token = authResult.token))
+                                      : "string" == typeof authResult &&
+                                        ((client.TOKEN.expires = cachedToken.expires = Math.floor(Date.now() / 1e3) + 3600),
+                                        (client.TOKEN.token = cachedToken.token = authResult)),
+                                  GSharePointClient.saveTokenToCache(client.SETTINGS_ID, client.TOKEN),
+                                  delete client._connect,
+                                  client.TOKEN
                               )
                           ),
-                          n._connect)
-                    : ((n._connect = new Promise((s, l) => {
-                          !(function t(u) {
-                              gContainer.getProperty("".concat(v.ACCESS_TOKEN_PROP_NAME, ".").concat(n.SETTINGS_ID)).then((p) => {
-                                  if (p && !e && v.isTokenValid(p, v.getUserId())) return ((n.TOKEN = p), s(), void (n._connect = null));
-                                  $(window).on("message", b);
-                                  var m = new URL("".concat(window.location.origin, "/sp.html"));
-                                  const y = n._popupToCenter(m.href, "SharePointToken", 680, 460);
-                                  if (!y || y.closed || void 0 === y.closed)
+                          client._connect)
+                    : ((client._connect = new Promise((resolve, reject) => {
+                          !(function attemptLogin(allowSilentRetry) {
+                              gContainer.getProperty("".concat(GSharePointClient.ACCESS_TOKEN_PROP_NAME, ".").concat(client.SETTINGS_ID)).then((storedToken) => {
+                                  if (storedToken && !forceRefresh && GSharePointClient.isTokenValid(storedToken, GSharePointClient.getUserId())) return ((client.TOKEN = storedToken), resolve(), void (client._connect = null));
+                                  $(window).on("message", handleMessage);
+                                  var popupUrl = new URL("".concat(window.location.origin, "/sp.html"));
+                                  const popupWindow = client._popupToCenter(popupUrl.href, "SharePointToken", 680, 460);
+                                  if (!popupWindow || popupWindow.closed || void 0 === popupWindow.closed)
                                       return (
-                                          $(window).off("message", b),
-                                          void l({
-                                              status: r.WINDOW_STATUS_BLOCKED,
+                                          $(window).off("message", handleMessage),
+                                          void reject({
+                                              status: CloudDrive.WINDOW_STATUS_BLOCKED,
                                               message: GObject.GLocale.get(
                                                   new GObject.GLocaleKey("GExternalStorage", "text.error-window-blocked-alternative")
                                               ),
                                           })
                                       );
-                                  ((y.onload = function () {
-                                      (n._toClear &&
-                                          (y.postMessage(
-                                              { cmd: "clearCachedUser", sharepointSettings: o },
+                                  ((popupWindow.onload = function () {
+                                      (client._toClear &&
+                                          (popupWindow.postMessage(
+                                              { cmd: "clearCachedUser", sharepointSettings: sharePointSettings },
                                               "".concat(window.location.protocol, "//").concat(window.location.host, "/sp.html")
                                           ),
-                                          delete n._toClear),
-                                          y.postMessage(
-                                              { cmd: "sharepointSettings", sharepointSettings: o },
+                                          delete client._toClear),
+                                          popupWindow.postMessage(
+                                              { cmd: "sharepointSettings", sharepointSettings: sharePointSettings },
                                               "".concat(window.location.protocol, "//").concat(window.location.host, "/sp.html")
                                           ));
                                   }),
-                                      (y.onclose = function () {
-                                          _ && (clearInterval(_), (_ = null));
+                                      (popupWindow.onclose = function () {
+                                          pollInterval && (clearInterval(pollInterval), (pollInterval = null));
                                       }));
-                                  var _ = setInterval(function () {
-                                      y.closed &&
-                                          !d &&
-                                          (clearInterval(_),
-                                          (_ = null),
+                                  var pollInterval = setInterval(function () {
+                                      popupWindow.closed &&
+                                          !tokenSaved &&
+                                          (clearInterval(pollInterval),
+                                          (pollInterval = null),
                                           gContainer.removeProperty("sp_getToken_data"),
-                                          v._logoutAndClearAdalCache(o),
-                                          c && clearTimeout(c),
-                                          l(new v.SharepointException(null, v.ExceptionCode.LoginAborted)));
+                                          GSharePointClient._logoutAndClearAdalCache(sharePointSettings),
+                                          timeoutId && clearTimeout(timeoutId),
+                                          reject(new GSharePointClient.SharepointException(null, GSharePointClient.ExceptionCode.LoginAborted)));
                                   }, 1e3);
-                                  async function b(e) {
-                                      let i = e.originalEvent.data;
-                                      const { cmd } = i;
+                                  async function handleMessage(event) {
+                                      let data = event.originalEvent.data;
+                                      const { cmd } = data;
                                       if (cmd && "saveToken" === cmd)
-                                          ((n.TOKEN = f =
+                                          ((client.TOKEN = cachedToken =
                                               {
                                                   expires: Math.floor(Date.now() / 1e3) + 3600,
-                                                  token: i.token,
-                                                  id: v.getUserId(),
+                                                  token: data.token,
+                                                  id: GSharePointClient.getUserId(),
                                               }),
-                                              v.saveTokenToCache(n.SETTINGS_ID, n.TOKEN),
-                                              (d = true),
-                                              g(y),
-                                              c && clearTimeout(c),
-                                              $(window).off("message", b),
-                                              (n._connect = null),
-                                              s());
+                                              GSharePointClient.saveTokenToCache(client.SETTINGS_ID, client.TOKEN),
+                                              (tokenSaved = true),
+                                              closePopup(popupWindow),
+                                              timeoutId && clearTimeout(timeoutId),
+                                              $(window).off("message", handleMessage),
+                                              (client._connect = null),
+                                              resolve());
                                       else if (cmd && "saveTokenError" === cmd) {
-                                          const { error } = i;
+                                          const { error } = data;
                                           if ("User login is required" === error) return;
-                                          if ((console.error(">>saveTokenError data", i), c && clearTimeout(c), u))
-                                              return void (c = setTimeout(function () {
-                                                  (h(y), v._logoutAndClearAdalCache(o), t(false));
-                                              }, a));
-                                          (v._logoutAndClearAdalCache(o), h(y), (n._connect = null), l(error));
+                                          if ((console.error(">>saveTokenError data", data), timeoutId && clearTimeout(timeoutId), allowSilentRetry))
+                                              return void (timeoutId = setTimeout(function () {
+                                                  (closePopupAfterDelay(popupWindow), GSharePointClient._logoutAndClearAdalCache(sharePointSettings), attemptLogin(false));
+                                              }, requestTimeoutMs));
+                                          (GSharePointClient._logoutAndClearAdalCache(sharePointSettings), closePopupAfterDelay(popupWindow), (client._connect = null), reject(error));
                                       }
                                   }
-                                  u &&
-                                      (c = setTimeout(function () {
-                                          (g(y), v._logoutAndClearAdalCache(o), t(false));
-                                      }, a));
+                                  allowSilentRetry &&
+                                      (timeoutId = setTimeout(function () {
+                                          (closePopup(popupWindow), GSharePointClient._logoutAndClearAdalCache(sharePointSettings), attemptLogin(false));
+                                      }, requestTimeoutMs));
                               });
-                          })(t);
+                          })(allowSilentRetry);
                       })),
-                      n._connect);
-                function g(e) {
-                    let t = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : 0;
+                      client._connect);
+                function closePopup(win) {
+                    let delay = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : 0;
                     setTimeout(() => {
-                        e.close();
-                    }, t);
+                        win.close();
+                    }, delay);
                 }
-                function h(e) {
-                    g(e, s);
+                function closePopupAfterDelay(win) {
+                    closePopup(win, closeDelayMs);
                 }
             }),
-            (v.prototype.updateFileContent = function (e, t) {
-                return this._putBlob("/_api/web/GetFileByServerRelativeUrl('".concat(e.relativeUrl, "')/$value"), t);
+            (GSharePointClient.prototype.updateFileContent = function (item, content) {
+                return this._putBlob("/_api/web/GetFileByServerRelativeUrl('".concat(item.relativeUrl, "')/$value"), content);
             }),
-            (v.prototype.updateItem = function (e, t) {
-                const n = this.getSanitizedFolderRelativePath(e.relativeUrl);
-                return this.post("/_api/web/GetFolderByServerRelativeUrl('".concat(n, "')/ListItemAllFields"), t, {
+            (GSharePointClient.prototype.updateItem = function (item, data) {
+                const relativeUrl = this.getSanitizedFolderRelativePath(item.relativeUrl);
+                return this.post("/_api/web/GetFolderByServerRelativeUrl('".concat(relativeUrl, "')/ListItemAllFields"), data, {
                     headers: { "X-HTTP-Method": "MERGE" },
                 });
             }),
-            (v.prototype.deleteItem = function (e) {
-                const t = this.getSanitizedFolderRelativePath(e.relativeUrl);
-                return this.post("/_api/web/GetFolderByServerRelativeUrl('".concat(t, "')"), null, {
+            (GSharePointClient.prototype.deleteItem = function (item) {
+                const relativeUrl = this.getSanitizedFolderRelativePath(item.relativeUrl);
+                return this.post("/_api/web/GetFolderByServerRelativeUrl('".concat(relativeUrl, "')"), null, {
                     headers: { "X-HTTP-Method": "DELETE" },
                     rawResponse: true,
-                }).then((e) => {
-                    if (200 !== e.status && 204 !== e.status) throw new Error(e.statusText);
+                }).then((response) => {
+                    if (200 !== response.status && 204 !== response.status) throw new Error(response.statusText);
                 });
             }),
-            (v.prototype._popupToCenter = function (e, t, n, o) {
-                const i = this._getPopupWindowReference(),
-                    a = i.outerHeight / 2 + i.screenY - n / 2,
-                    r = i.outerWidth / 2 + i.screenX - o / 2;
+            (GSharePointClient.prototype._popupToCenter = function (url, name, height, width) {
+                const popup = this._getPopupWindowReference(),
+                    top = popup.outerHeight / 2 + popup.screenY - height / 2,
+                    left = popup.outerWidth / 2 + popup.screenX - width / 2;
                 return window.open(
-                    e,
-                    t,
+                    url,
+                    name,
                     "left="
-                        .concat(r, ",top=")
-                        .concat(a, ",width=")
-                        .concat(o, ",height=")
-                        .concat(n, ",menubar=no,toolbar=no,location=no,resizable=no,scrollbars=no")
+                        .concat(left, ",top=")
+                        .concat(top, ",width=")
+                        .concat(width, ",height=")
+                        .concat(height, ",menubar=no,toolbar=no,location=no,resizable=no,scrollbars=no")
                 );
             }),
-            (v.prototype._getPopupWindowReference = function () {
+            (GSharePointClient.prototype._getPopupWindowReference = function () {
                 try {
                     window.top.outerHeight;
                     return window.top;
@@ -825,41 +825,41 @@ module.exports = function (module, exports, require) {
                     return window;
                 }
             }),
-            (v.prototype.updateFileContentById = function (e, t) {
-                return this._putBlob("/_api/web/GetFileById('".concat(e, "')/$value"), t);
+            (GSharePointClient.prototype.updateFileContentById = function (fileId, content) {
+                return this._putBlob("/_api/web/GetFileById('".concat(fileId, "')/$value"), content);
             }),
-            (v.prototype._putBlob = function (e, t) {
-                return this.post(e, t, {
+            (GSharePointClient.prototype._putBlob = function (url, content) {
+                return this.post(url, content, {
                     headers: { "X-HTTP-Method": "PUT" },
                     blobRequest: true,
                     rawResponse: true,
                 });
             }),
-            (v.prototype._getTeamsCommand = function () {
-                return y.SHAREPOINT_COMMAND;
+            (GSharePointClient.prototype._getTeamsCommand = function () {
+                return teamsCommands.SHAREPOINT_COMMAND;
             }),
-            (v.prototype.createFile = function (e, t) {
-                const n = e.parentUrl || e.parent.relativeUrl,
-                    o = this.getSanitizedFolderRelativePath(n);
-                var i = "/_api/web/GetFolderByServerRelativeUrl('"
-                    .concat(o, "')/Files/add(url='")
-                    .concat(e.getNameWithExtension(), "',overwrite=true)");
-                return this.post(i, t, { blobRequest: true, rawResponse: true });
+            (GSharePointClient.prototype.createFile = function (file, content) {
+                const parentUrl = file.parentUrl || file.parent.relativeUrl,
+                    relativeUrl = this.getSanitizedFolderRelativePath(parentUrl);
+                var url = "/_api/web/GetFolderByServerRelativeUrl('"
+                    .concat(relativeUrl, "')/Files/add(url='")
+                    .concat(file.getNameWithExtension(), "',overwrite=true)");
+                return this.post(url, content, { blobRequest: true, rawResponse: true });
             }),
-            (v.prototype.getAccountByEmail = function (e) {
-                if (!e || e.indexOf("@") <= 0)
-                    return Promise.reject(GObject.GLocale.get(new GObject.GLocaleKey("GShareDialog", "text.invalid-email")).replace("%email", e));
-                var t = "/_api/web/EnsureUser('".concat(e, "')");
-                return this.post(t);
+            (GSharePointClient.prototype.getAccountByEmail = function (email) {
+                if (!email || email.indexOf("@") <= 0)
+                    return Promise.reject(GObject.GLocale.get(new GObject.GLocaleKey("GShareDialog", "text.invalid-email")).replace("%email", email));
+                var url = "/_api/web/EnsureUser('".concat(email, "')");
+                return this.post(url);
             }),
-            (v.prototype.isCorporate = function () {
+            (GSharePointClient.prototype.isCorporate = function () {
                 return this.CORPORATE;
             }),
-            (v.prototype.getCorporateProviderName = function () {
+            (GSharePointClient.prototype.getCorporateProviderName = function () {
                 return "microsoft";
             }),
-            (v.prototype.toString = function () {
+            (GSharePointClient.prototype.toString = function () {
                 return "[Object GSharePointClient]";
             }));
-        exports.default = v;
+        exports.default = GSharePointClient;
     };

@@ -4,96 +4,96 @@ module.exports = function (module, exports, require) {
         require(3);
         var GObject = require(1),
             GPlatform = require(15),
-            r = _interopRequireDefault(require(844));
-        function s() {}
-        (GObject.GObject.inherit(s, GObject.GObject),
-            (s.SHORTCUT_DELAY = 500),
-            (s.getActionShortcutHint = function (e, t) {
-                return e ? GPlatform.GKey.shortcutToString(e, t) : null;
+            Icons = _interopRequireDefault(require(844));
+        function GAction() {}
+        (GObject.GObject.inherit(GAction, GObject.GObject),
+            (GAction.SHORTCUT_DELAY = 500),
+            (GAction.getActionShortcutHint = function (shortcut, options) {
+                return shortcut ? GPlatform.GKey.shortcutToString(shortcut, options) : null;
             }),
-            (s.prototype.getId = function () {
+            (GAction.prototype.getId = function () {
                 throw new Error("Not Supported");
             }),
-            (s.prototype.getTitle = function () {
+            (GAction.prototype.getTitle = function () {
                 throw new Error("Not Supported");
             }),
-            (s.prototype.getFullTitle = function () {
+            (GAction.prototype.getFullTitle = function () {
                 return this.getTitle();
             }),
-            (s.prototype.getInfo = function () {
+            (GAction.prototype.getInfo = function () {
                 return null;
             }),
-            (s.prototype.getIcon = function () {
-                return r.default[this.getId()] || null;
+            (GAction.prototype.getIcon = function () {
+                return Icons.default[this.getId()] || null;
             }),
-            (s.prototype.getCategory = function () {
+            (GAction.prototype.getCategory = function () {
                 return null;
             }),
-            (s.prototype.getGroup = function () {
+            (GAction.prototype.getGroup = function () {
                 return null;
             }),
-            (s.prototype.getGroupIcon = function () {
+            (GAction.prototype.getGroupIcon = function () {
                 return null;
             }),
-            (s.prototype.getShortcut = function () {
+            (GAction.prototype.getShortcut = function () {
                 return null;
             }),
-            (s.prototype.getShortcutHint = function (e) {
-                return s.getActionShortcutHint(this.getShortcut(), e);
+            (GAction.prototype.getShortcutHint = function (options) {
+                return GAction.getActionShortcutHint(this.getShortcut(), options);
             }),
-            (s.prototype.isShortcutGlobal = function () {
+            (GAction.prototype.isShortcutGlobal = function () {
                 return false;
             }),
-            (s.prototype.isRegisterShortcut = function () {
+            (GAction.prototype.isRegisterShortcut = function () {
                 return null;
             }),
-            (s.prototype.getAdditionalShortcuts = function () {
+            (GAction.prototype.getAdditionalShortcuts = function () {
                 return null;
             }),
-            (s.prototype.isEnabled = function () {
+            (GAction.prototype.isEnabled = function () {
                 return true;
             }),
-            (s.prototype.isKeyBoardEventRequiredToExecute = function () {
+            (GAction.prototype.isKeyBoardEventRequiredToExecute = function () {
                 return false;
             }),
-            (s.prototype.isCheckable = function () {
+            (GAction.prototype.isCheckable = function () {
                 return false;
             }),
-            (s.prototype.isChecked = function () {
+            (GAction.prototype.isChecked = function () {
                 return false;
             }),
-            (s.prototype.isAvailable = function (e) {
+            (GAction.prototype.isAvailable = function (context) {
                 return true;
             }),
-            (s.prototype.execute = function () {
+            (GAction.prototype.execute = function () {
                 throw new Error("Not Supported");
             }),
-            (s.prototype.executeFromShortcut = function (e) {
+            (GAction.prototype.executeFromShortcut = function (event) {
                 return this.execute.apply(this, arguments);
             }),
-            (s.prototype.isPro = function () {
+            (GAction.prototype.isPro = function () {
                 return false;
             }),
-            (s.prototype.getTooltipArea = function () {
+            (GAction.prototype.getTooltipArea = function () {
                 return null;
             }),
-            (s.prototype.getTooltipConfig = function (e) {
+            (GAction.prototype.getTooltipConfig = function (area) {
                 return null;
             }),
-            (s.prototype.isVisible = function () {
+            (GAction.prototype.isVisible = function () {
                 return true;
             }),
-            (s.prototype.noHover = function () {
+            (GAction.prototype.noHover = function () {
                 return false;
             }),
-            (s.prototype.getStyleClass = function () {
+            (GAction.prototype.getStyleClass = function () {
                 return null;
             }),
-            (s.prototype.statsValue = function () {
+            (GAction.prototype.statsValue = function () {
                 return null;
             }),
-            (s.prototype.toString = function () {
+            (GAction.prototype.toString = function () {
                 return "[Object GAction]";
             }),
-            (module.exports = s));
+            (module.exports = GAction));
     };

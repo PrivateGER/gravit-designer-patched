@@ -2,10 +2,10 @@ module.exports = function (module, exports, require) {
         "use strict";
         (require(4), require(32), require(33));
         var GObject = require(1);
-        var i = {
-            init: function (e) {
-                e = $.extend({}, e);
-                const t = [
+        var methods = {
+            init: function (settings) {
+                settings = $.extend({}, settings);
+                const blendModeGroups = [
                     {
                         group: null,
                         options: [
@@ -178,14 +178,14 @@ module.exports = function (module, exports, require) {
                     },
                 ];
                 return this.each(function () {
-                    const e = $(this);
-                    for (let n = 0; n < t.length; ++n) {
-                        let o = e;
-                        const { group, options } = t[n];
-                        (group && ((o = $('<optgroup label="' + group + '"></optgroup>')), e.append(o)),
-                            options.forEach((e) => {
-                                let { type, name, isCompatible } = e;
-                                o.append(
+                    const element = $(this);
+                    for (let n = 0; n < blendModeGroups.length; ++n) {
+                        let target = element;
+                        const { group, options } = blendModeGroups[n];
+                        (group && ((target = $('<optgroup label="' + group + '"></optgroup>')), element.append(target)),
+                            options.forEach((option) => {
+                                let { type, name, isCompatible } = option;
+                                target.append(
                                     $("<option></option>")
                                         .attr("value", type)
                                         .text("".concat(name).concat(isCompatible ? "" : " *"))
@@ -195,11 +195,11 @@ module.exports = function (module, exports, require) {
                 });
             },
         };
-        $.fn.gBlendMode = function (e) {
-            return i[e]
-                ? i[e].apply(this, Array.prototype.slice.call(arguments, 1))
-                : "object" != typeof e && e
-                  ? void $.error("Method " + e + " does not exist on jQuery.myPlugin")
-                  : i.init.apply(this, arguments);
+        $.fn.gBlendMode = function (method) {
+            return methods[method]
+                ? methods[method].apply(this, Array.prototype.slice.call(arguments, 1))
+                : "object" != typeof method && method
+                  ? void $.error("Method " + method + " does not exist on jQuery.myPlugin")
+                  : methods.init.apply(this, arguments);
         };
     };

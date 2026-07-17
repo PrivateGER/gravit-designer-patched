@@ -3,60 +3,60 @@ module.exports = function (module, exports, require) {
         var _interopRequireDefault = require(16);
         (require(8 /* Symbol */), require(3), require(4), require(41));
         var GObject = require(1),
-            a = _interopRequireDefault(require(18 /* GCategory */)),
-            r = _interopRequireDefault(require(163 /* GDocument */)),
-            s = _interopRequireDefault(require(85)),
-            l = _interopRequireDefault(require(106));
-        function c(e) {
-            this._source = e;
+            GCategory = _interopRequireDefault(require(18 /* GCategory */)),
+            GDocument = _interopRequireDefault(require(163 /* GDocument */)),
+            GContainer = _interopRequireDefault(require(85 /* GContainer */)),
+            GElementAction = _interopRequireDefault(require(106));
+        function GImportImageFromIOSAction(source) {
+            this._source = source;
         }
-        (GObject.GObject.inherit(c, l.default),
-            (c.getId = function (e) {
-                return "file.import-image-from-ios-".concat(e);
+        (GObject.GObject.inherit(GImportImageFromIOSAction, GElementAction.default),
+            (GImportImageFromIOSAction.getId = function (source) {
+                return "file.import-image-from-ios-".concat(source);
             }),
-            (c.Source = { FILES: "files", PHOTOS: "photos" }),
-            (c.prototype._source = null),
-            (c.prototype.getId = function () {
-                return c.getId(this._source);
+            (GImportImageFromIOSAction.Source = { FILES: "files", PHOTOS: "photos" }),
+            (GImportImageFromIOSAction.prototype._source = null),
+            (GImportImageFromIOSAction.prototype.getId = function () {
+                return GImportImageFromIOSAction.getId(this._source);
             }),
-            (c.prototype.getTitle = function () {
+            (GImportImageFromIOSAction.prototype.getTitle = function () {
                 return new GObject.GLocaleKey("GImportImageFromIOSAction", "text.ios-".concat(this._source));
             }),
-            (c.prototype.getCategory = function () {
-                return a.default.CATEGORY_FILE_IMPORT_IMAGE;
+            (GImportImageFromIOSAction.prototype.getCategory = function () {
+                return GCategory.default.CATEGORY_FILE_IMPORT_IMAGE;
             }),
-            (c.prototype.getGroup = function () {
+            (GImportImageFromIOSAction.prototype.getGroup = function () {
                 return "import/image-type/".concat(this._source);
             }),
-            (c.prototype.isAvailable = function () {
-                return gContainer.getRuntime() === s.default.Runtime.IPad;
+            (GImportImageFromIOSAction.prototype.isAvailable = function () {
+                return gContainer.getRuntime() === GContainer.default.Runtime.IPad;
             }),
-            (c.prototype.isEnabled = function (e) {
-                if (!l.default.prototype.isEnabled.call(this)) return false;
-                const t = gDesigner.getActiveDocument();
+            (GImportImageFromIOSAction.prototype.isEnabled = function (storage) {
+                if (!GElementAction.default.prototype.isEnabled.call(this)) return false;
+                const activeDocument = gDesigner.getActiveDocument();
                 return (
-                    !!t &&
-                    !!(e = e || t.getStorage() || gDesigner.getDefaultStorage()) &&
-                    e.canPromptOpen() &&
+                    !!activeDocument &&
+                    !!(storage = storage || activeDocument.getStorage() || gDesigner.getDefaultStorage()) &&
+                    storage.canPromptOpen() &&
                     gDesigner.getApplicationManager().isImportResourcesEnabled()
                 );
             }),
-            (c.prototype.execute = async function (e, t) {
-                const n = gDesigner.getActiveDocument();
-                if (!n) return false;
-                e = e || n.getStorage() || gDesigner.getDefaultStorage();
-                const o = r.default.FileTypes.filter((e) => e.import_image);
+            (GImportImageFromIOSAction.prototype.execute = async function (storage, callback) {
+                const activeDocument = gDesigner.getActiveDocument();
+                if (!activeDocument) return false;
+                storage = storage || activeDocument.getStorage() || gDesigner.getDefaultStorage();
+                const fileTypes = GDocument.default.FileTypes.filter((fileType) => fileType.import_image);
                 try {
-                    let i;
-                    ((i = this._source === c.Source.FILES ? await e.openFromFiles(o) : await e.openFromPhotos(o)),
-                        n.placeOrImport(i),
-                        t && t());
-                } catch (e) {
-                    console.warn("GImportImageFromIOSAction.prototype.execute", e);
+                    let importedFile;
+                    ((importedFile = this._source === GImportImageFromIOSAction.Source.FILES ? await storage.openFromFiles(fileTypes) : await storage.openFromPhotos(fileTypes)),
+                        activeDocument.placeOrImport(importedFile),
+                        callback && callback());
+                } catch (error) {
+                    console.warn("GImportImageFromIOSAction.prototype.execute", error);
                 }
             }),
-            (c.prototype.toString = function () {
+            (GImportImageFromIOSAction.prototype.toString = function () {
                 return "[Object GImportImageFromIOSAction]";
             }),
-            (module.exports = c));
+            (module.exports = GImportImageFromIOSAction));
     };

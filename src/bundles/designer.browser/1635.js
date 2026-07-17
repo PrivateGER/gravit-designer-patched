@@ -3,9 +3,9 @@ module.exports = function (module, exports, require) {
         require(3);
         var GObject = require(1);
         const GCategory = require(18),
-            a = require(31);
+            GAction = require(31);
         function r() {}
-        (GObject.GObject.inherit(r, a),
+        (GObject.GObject.inherit(r, GAction),
             (r.ID = "account.open"),
             (r.TITLE = new GObject.GLocaleKey("GOpenAccountSettingsAction", "title")),
             (r.prototype.getId = function () {

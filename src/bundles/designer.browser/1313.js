@@ -1,19 +1,19 @@
 module.exports = function (module, exports, require) {
         "use strict";
         (require(58 /* polyfill:Array */), require(19), require(8 /* Symbol */), require(71 /* polyfill:String */), require(4), require(41), require(32), require(38), require(33), require(26));
-        var o = require(53),
+        var GEditor = require(53),
             GObject = require(1),
             GPlatform = require(15),
-            r = require(255),
-            s = require(590),
+            FontsProviderManager = require(255),
+            DefaultFontsProvider = require(590),
             GAnnotationsSidebar = require(567);
-        const c = ["text/xml", "text/plain"],
-            d = ["image/svg+xml", "image/png", "image/jpg", "image/jpeg", "image/gif", "application/pdf"],
-            u = c.concat(d).concat(["text/uri-list"]);
-        function p() {
-            var e = navigator.userAgent.toLowerCase().indexOf("safari") >= 0;
+        const xmlMimeTypes = ["text/xml", "text/plain"],
+            imageMimeTypes = ["image/svg+xml", "image/png", "image/jpg", "image/jpeg", "image/gif", "application/pdf"],
+            allowedMimeTypes = xmlMimeTypes.concat(imageMimeTypes).concat(["text/uri-list"]);
+        function GPaste() {
+            var isSafari = navigator.userAgent.toLowerCase().indexOf("safari") >= 0;
             (window.hasOwnProperty("ClipboardEvent")
-                ? ((navigator.userAgent.toLowerCase().indexOf("firefox") >= 0 || e) &&
+                ? ((navigator.userAgent.toLowerCase().indexOf("firefox") >= 0 || isSafari) &&
                       (this._pasteArea = $("<div></div>")
                           .css({
                               overflow: "hidden",
@@ -44,53 +44,53 @@ module.exports = function (module, exports, require) {
                                 gDesigner.getWindows().getActiveWindow() && gDesigner.getWindows().getActiveWindow().getView().focus()));
                     }));
         }
-        (GObject.GObject.inherit(p, GObject.GObject),
-            (p.URIListHandler = function () {}),
-            (p.URIListHandler.prototype.handle = async function (e, t) {
-                const n = (await e.text())
+        (GObject.GObject.inherit(GPaste, GObject.GObject),
+            (GPaste.URIListHandler = function () {}),
+            (GPaste.URIListHandler.prototype.handle = async function (blob, target) {
+                const blobPromises = (await blob.text())
                     .split("\n")
-                    .filter((e) => !(0 === e.indexOf("#")))
-                    .map((e) => fetch(e).then((e) => (e.ok ? e.blob() : Promise.reject())));
-                (await Promise.all(n)).forEach((e) => {
-                    t[e.type] = e;
+                    .filter((line) => !(0 === line.indexOf("#")))
+                    .map((url) => fetch(url).then((url) => (url.ok ? url.blob() : Promise.reject())));
+                (await Promise.all(blobPromises)).forEach((blob) => {
+                    target[blob.type] = blob;
                 });
             }),
-            (p.TextHandler = function () {}),
-            (p.TextHandler.prototype.handle = async function (e, t) {
-                const n = await e.text();
-                t[e.type] = n;
+            (GPaste.TextHandler = function () {}),
+            (GPaste.TextHandler.prototype.handle = async function (blob, target) {
+                const text = await blob.text();
+                target[blob.type] = text;
             }));
-        const g = {
-            "text/plain": new p.TextHandler(),
-            "text/xml": new p.TextHandler(),
-            "text/uri-list": new p.URIListHandler(),
+        const mimeTypeHandlers = {
+            "text/plain": new GPaste.TextHandler(),
+            "text/xml": new GPaste.TextHandler(),
+            "text/uri-list": new GPaste.URIListHandler(),
         };
-        ((p.prototype._pasteArea = null),
-            (p.prototype._allowFocus = false),
-            (p.prototype._callback = null),
-            (p.prototype.pasteFromClipboard = async function () {
+        ((GPaste.prototype._pasteArea = null),
+            (GPaste.prototype._allowFocus = false),
+            (GPaste.prototype._callback = null),
+            (GPaste.prototype.pasteFromClipboard = async function () {
                 if (!navigator.clipboard) return Promise.reject();
                 if (navigator.permissions) {
-                    const e = await navigator.permissions.query({
+                    const permissionStatus = await navigator.permissions.query({
                         name: "clipboard-read",
                         allowWithoutGesture: true,
                     });
-                    if (!e || "denied" === e.state) return Promise.reject();
+                    if (!permissionStatus || "denied" === permissionStatus.state) return Promise.reject();
                 }
-                const e = await navigator.clipboard.read();
-                if (!e) return Promise.reject();
-                for (const t of e) {
-                    const e = {};
-                    for (const n of t.types) {
-                        if (!u.includes(n)) continue;
-                        const o = await t.getType(n),
-                            i = g[n];
-                        i ? await i.handle(o, e) : (e[n] = o);
+                const clipboardItems = await navigator.clipboard.read();
+                if (!clipboardItems) return Promise.reject();
+                for (const item of clipboardItems) {
+                    const itemData = {};
+                    for (const mimeType of item.types) {
+                        if (!allowedMimeTypes.includes(mimeType)) continue;
+                        const blob = await item.getType(mimeType),
+                            handler = mimeTypeHandlers[mimeType];
+                        handler ? await handler.handle(blob, itemData) : (itemData[mimeType] = blob);
                     }
-                    this.handlePasteData(e);
+                    this.handlePasteData(itemData);
                 }
             }),
-            (p.prototype._documentPasteEvent = function (e) {
+            (GPaste.prototype._documentPasteEvent = function (event) {
                 if (!this._canTrigger()) return false;
                 if (
                     !document.activeElement ||
@@ -98,48 +98,48 @@ module.exports = function (module, exports, require) {
                     (this._pasteArea && document.activeElement === this._pasteArea[0]) ||
                     gDesigner.isGravitIME(document.activeElement)
                 ) {
-                    var t = e.clipboardData;
-                    if (e.clipboardData && e.clipboardData.items && e.clipboardData.items.length) {
-                        for (var n = t.items, o = {}, r = 0; r < n.length; r++) {
+                    var clipboardData = event.clipboardData;
+                    if (event.clipboardData && event.clipboardData.items && event.clipboardData.items.length) {
+                        for (var items = clipboardData.items, pasteData = {}, r = 0; r < items.length; r++) {
                             var s = null;
-                            switch ((d = n[r].type)) {
+                            switch ((type = items[r].type)) {
                                 case "image/png":
                                 case "image/jpeg":
                                 case "image/gif":
                                 case "application/pdf":
-                                    s = n[r].getAsFile();
+                                    s = items[r].getAsFile();
                                     break;
                                 default:
-                                    s = t.getData(d) || null;
+                                    s = clipboardData.getData(type) || null;
                             }
-                            s && (o[d] = s);
+                            s && (pasteData[type] = s);
                         }
-                        (this._handlePasteData(o),
+                        (this._handlePasteData(pasteData),
                             GPlatform.GPlatform.webBrowser === GPlatform.GPlatform.constructor.WebBrowser.Firefox &&
-                                (e.stopPropagation(), e.preventDefault()));
+                                (event.stopPropagation(), event.preventDefault()));
                     } else if (this._pasteArea) {
-                        o = {};
+                        pasteData = {};
                         var l = 0;
-                        if (t.types && t.types.length) {
-                            var c = t.types;
-                            for (r = 0; r < c.length; r++) {
-                                var d;
-                                if ("public.file-url" === (d = c[r]) && t.files && l < t.files.length) {
-                                    var u = t.files[l++];
-                                    u && (o[u.type] = u);
+                        if (clipboardData.types && clipboardData.types.length) {
+                            var types = clipboardData.types;
+                            for (r = 0; r < types.length; r++) {
+                                var type;
+                                if ("public.file-url" === (type = types[r]) && clipboardData.files && l < clipboardData.files.length) {
+                                    var u = clipboardData.files[l++];
+                                    u && (pasteData[u.type] = u);
                                 } else {
-                                    (s = t.getData(d)) && (o[d] = s);
+                                    (s = clipboardData.getData(type)) && (pasteData[type] = s);
                                 }
                             }
                         }
                         setTimeout(
                             function () {
-                                var e = this._pasteArea.children();
-                                if (1 === e.length && e.is("img")) {
-                                    var t = GObject.GUtil.dataUrlToBlob(e[0].src);
-                                    t && (o[t.type] = t);
+                                var children = this._pasteArea.children();
+                                if (1 === children.length && children.is("img")) {
+                                    var blob = GObject.GUtil.dataUrlToBlob(children[0].src);
+                                    blob && (pasteData[blob.type] = blob);
                                 }
-                                (this._handlePasteData(o), this._pasteArea.empty());
+                                (this._handlePasteData(pasteData), this._pasteArea.empty());
                             }.bind(this),
                             1
                         );
@@ -150,67 +150,67 @@ module.exports = function (module, exports, require) {
                         gDesigner.getWindows().getActiveWindow() && gDesigner.getWindows().getActiveWindow().getView().focus());
                 }
             }),
-            (p.prototype._canTrigger = function () {
-                var e = gDesigner.getActiveDocument();
-                const t = e && e.getEditor();
-                if (t && t.isInlineEditing()) {
-                    const e = this._filterForInlineEditing(t.getSelection());
-                    if (e && 1 === e.length && e[0] instanceof GObject.GText) return true;
+            (GPaste.prototype._canTrigger = function () {
+                var activeDocument = gDesigner.getActiveDocument();
+                const editor = activeDocument && activeDocument.getEditor();
+                if (editor && editor.isInlineEditing()) {
+                    const selection = this._filterForInlineEditing(editor.getSelection());
+                    if (selection && 1 === selection.length && selection[0] instanceof GObject.GText) return true;
                 }
-                return !(!e || gDesigner.getRightSidebars().getActiveSidebar() == GAnnotationsSidebar.ID);
+                return !(!activeDocument || gDesigner.getRightSidebars().getActiveSidebar() == GAnnotationsSidebar.ID);
             }),
-            (p.prototype.handlePasteData = function (e) {
-                return this._handlePasteData(e);
+            (GPaste.prototype.handlePasteData = function (pasteData) {
+                return this._handlePasteData(pasteData);
             }),
-            (p.prototype._handlePasteData = function (e) {
+            (GPaste.prototype._handlePasteData = function (pasteData) {
                 if (!this._canTrigger()) return false;
-                for (var t = !this._callback, n = gDesigner.getActiveDocument(), a = n.getEditor(), l = 0; l < c.length; ++l) {
-                    var u = e[c[l]];
+                for (var shouldManageTransaction = !this._callback, activeDocument = gDesigner.getActiveDocument(), editor = activeDocument.getEditor(), l = 0; l < xmlMimeTypes.length; ++l) {
+                    var u = pasteData[xmlMimeTypes[l]];
                     if (u)
                         try {
                             var p = $.parseXML(u);
                             if (p) {
                                 if ("svg" === p.documentElement.nodeName) {
-                                    e["image/svg+xml"] = new Blob([u], { type: "image/svg+xml" });
+                                    pasteData["image/svg+xml"] = new Blob([u], { type: "image/svg+xml" });
                                     break;
                                 }
                                 if ("gravit" === p.documentElement.nodeName && p.documentElement.hasAttribute("mimeType")) {
                                     if (p.documentElement.hasAttribute("restricted")) {
-                                        let e = p.documentElement.getAttribute("restricted");
-                                        if (e && "false" != e && (!n.getStorageItem() || n.getStorageItem().getId() != e)) return;
+                                        let restrictedId = p.documentElement.getAttribute("restricted");
+                                        if (restrictedId && "false" != restrictedId && (!activeDocument.getStorageItem() || activeDocument.getStorageItem().getId() != restrictedId)) return;
                                     }
-                                    e[p.documentElement.getAttribute("mimeType")] = $("<div/>").html(p.documentElement.textContent).text();
+                                    pasteData[p.documentElement.getAttribute("mimeType")] = $("<div/>").html(p.documentElement.textContent).text();
                                 }
                             }
                         } catch (e) {}
-                    if (e[GObject.GNode.MIME_TYPE]) {
-                        var g = GObject.GNode.deserialize(e[GObject.GNode.MIME_TYPE]),
+                    if (pasteData[GObject.GNode.MIME_TYPE]) {
+                        var g = GObject.GNode.deserialize(pasteData[GObject.GNode.MIME_TYPE]),
                             h = g instanceof GObject.GPage,
-                            f = n.filterUnrestrictedCommercialFileElements(h ? g.getChildren() : g);
+                            f = activeDocument.filterUnrestrictedCommercialFileElements(h ? g.getChildren() : g);
                         if ((f && f.length > 0) || h) {
-                            var m = f.filter(function (e) {
-                                    return e instanceof GObject.GElement;
+                            var m = f.filter(function (element) {
+                                    return element instanceof GObject.GElement;
                                 }),
-                                y = f.filter(function (e) {
-                                    return e instanceof GObject.GStyle;
+                                y = f.filter(function (style) {
+                                    return style instanceof GObject.GStyle;
                                 }),
                                 v =
                                     1 === f.length &&
                                     f[0] instanceof GObject.GText &&
-                                    a.hasSelection() &&
-                                    a.getSelection()[0] instanceof GObject.GText &&
-                                    a.isInlineEditing();
+                                    editor.hasSelection() &&
+                                    editor.getSelection()[0] instanceof GObject.GText &&
+                                    editor.isInlineEditing();
                             if (v || (0 == m.length && 1 == f.length && !h)) {
                                 var _ = f[0];
-                                a.beginTransaction();
+                                editor.beginTransaction();
                                 try {
                                     if (v) {
-                                        if (!o.GInlineTextEditor.HANDLECOPYPASTE) {
-                                            var b = a.getSelection()[0];
-                                            o.GElementEditor.getEditor(b).processPaste(_);
+                                        if (!GEditor.GInlineTextEditor.HANDLECOPYPASTE) {
+                                            var b = editor.getSelection()[0];
+                                            GEditor.GElementEditor.getEditor(b).processPaste(_);
                                         }
                                     } else if (_ instanceof GObject.GStylable.FillPaintLayer || _ instanceof GObject.GStylable.BorderPaintLayer) {
-                                        m = a.getSelection();
+                                        m = editor.getSelection();
                                         0 != (m = this._filterForStyleExceptions(m)).length &&
                                             (m.length > 1
                                                 ? m.forEach(function (e) {
@@ -222,7 +222,7 @@ module.exports = function (module, exports, require) {
                                                   })
                                                 : m[0].getPaintLayers().appendChild(_));
                                     } else if (_ instanceof GObject.GStylable.Effect) {
-                                        m = a.getSelection();
+                                        m = editor.getSelection();
                                         0 != (m = this._filterForStyleExceptions(m)).length &&
                                             (m.length > 1
                                                 ? m.forEach(function (e) {
@@ -232,35 +232,35 @@ module.exports = function (module, exports, require) {
                                                 : m[0].getEffects().appendChild(_));
                                     }
                                 } finally {
-                                    a.commitTransaction(GObject.GLocale.get(new GObject.GLocaleKey("GPaste", "action.paste")));
+                                    editor.commitTransaction(GObject.GLocale.get(new GObject.GLocaleKey("GPaste", "action.paste")));
                                 }
                             } else {
-                                var w = n.getScene().getStyles();
+                                var w = activeDocument.getScene().getStyles();
                                 if (m.length > 0 || h) {
-                                    t && a.beginTransaction();
+                                    shouldManageTransaction && editor.beginTransaction();
                                     try {
                                         for (var C = 0; C < y.length; ++C) {
-                                            let e = y[C],
-                                                t = e.getReferenceId(),
-                                                o = null;
+                                            let pastedStyle = y[C],
+                                                referenceId = pastedStyle.getReferenceId(),
+                                                matchedStyle = null;
                                             for (var x = w.getFirstChild(); null !== x; x = x.getNext())
-                                                if (x.arePropertiesEqual(e, ["ps", "defaultStyle"]) && x.equalsStyle(e)) {
-                                                    o = x;
+                                                if (x.arePropertiesEqual(pastedStyle, ["ps", "defaultStyle"]) && x.equalsStyle(pastedStyle)) {
+                                                    matchedStyle = x;
                                                     break;
                                                 }
-                                            o ||
-                                                ((o = new GObject.GStyle()),
-                                                o.setProperties(
+                                            matchedStyle ||
+                                                ((matchedStyle = new GObject.GStyle()),
+                                                matchedStyle.setProperties(
                                                     ["name", "defaultStyle", "ps"],
-                                                    [e.getProperty("name"), false, e.getProperty("ps")]
+                                                    [pastedStyle.getProperty("name"), false, pastedStyle.getProperty("ps")]
                                                 ),
-                                                o.assignStyleFrom(e),
-                                                n.getScene().getStyles().insertChild(o));
+                                                matchedStyle.assignStyleFrom(pastedStyle),
+                                                activeDocument.getScene().getStyles().insertChild(matchedStyle));
                                             for (var S = 0; S < m.length; ++S) {
-                                                let e = m[S];
-                                                e.hasProperty("sref") &&
-                                                    e.getProperty("sref") === t &&
-                                                    e.setProperty("sref", o.getReferenceId());
+                                                let pastedElement = m[S];
+                                                pastedElement.hasProperty("sref") &&
+                                                    pastedElement.getProperty("sref") === referenceId &&
+                                                    pastedElement.setProperty("sref", matchedStyle.getReferenceId());
                                             }
                                         }
                                         if (!this.executeCallback(m)) {
@@ -269,13 +269,13 @@ module.exports = function (module, exports, require) {
                                                 ? (g.clearChildren(),
                                                   g.setProperty("off", null),
                                                   E.appendChild(g),
-                                                  m.length > 0 && a.insertElements(m, true, true, false, true, g),
+                                                  m.length > 0 && editor.insertElements(m, true, true, false, true, g),
                                                   E.setActivePage(g))
-                                                : a.insertElements(m, true, true, true, true),
+                                                : editor.insertElements(m, true, true, true, true),
                                                 E.isFixedSized() || this._centerToView(true));
                                         }
                                     } finally {
-                                        t && a.commitTransaction(GObject.GLocale.get(new GObject.GLocaleKey("GPaste", "action.paste")));
+                                        shouldManageTransaction && editor.commitTransaction(GObject.GLocale.get(new GObject.GLocaleKey("GPaste", "action.paste")));
                                     }
                                 }
                             }
@@ -283,96 +283,96 @@ module.exports = function (module, exports, require) {
                         return;
                     }
                     if (u) {
-                        var A,
-                            T = r.getProviderInstance(s),
+                        var matchedFontFamily,
+                            T = FontsProviderManager.getProviderInstance(DefaultFontsProvider),
                             G =
                                 gDesigner.getWorkspace() &&
                                 gDesigner.getWorkspace().getFontManager() &&
                                 gDesigner.getWorkspace().getFontManager().getDefaultFont() &&
                                 gDesigner.getWorkspace().getFontManager().getDefaultFont().getFamily();
-                        const e = this._filterForInlineEditing(a.getSelection());
-                        if (e && e.length > 0 && e[0] instanceof GObject.GText && a.isInlineEditing()) {
-                            if (!o.GInlineTextEditor.HANDLECOPYPASTE) {
-                                var P = e[0];
-                                return void o.GElementEditor.getEditor(P).processPaste(u);
+                        const selection = this._filterForInlineEditing(editor.getSelection());
+                        if (selection && selection.length > 0 && selection[0] instanceof GObject.GText && editor.isInlineEditing()) {
+                            if (!GEditor.GInlineTextEditor.HANDLECOPYPASTE) {
+                                var P = selection[0];
+                                return void GEditor.GElementEditor.getEditor(P).processPaste(u);
                             }
                         } else {
-                            ((P = new GObject.GText()).setText(u, true, true), t && a.beginTransaction());
+                            ((P = new GObject.GText()).setText(u, true, true), shouldManageTransaction && editor.beginTransaction());
                             try {
                                 if (!this.executeCallback([P], true)) {
-                                    if ((a.insertElements([P], false, true, true), (A = T && T.getDefaultFamilyForString(u)) && A !== G)) {
+                                    if ((editor.insertElements([P], false, true, true), (matchedFontFamily = T && T.getDefaultFamilyForString(u)) && matchedFontFamily !== G)) {
                                         var D = GObject.GOpenTypeFont.getDirectionForString(u);
                                         D !== GObject.GTLDirectionTextTransformer.LTR
-                                            ? P.setProperties(["_tff", "dir", "_we"], [A, D, true])
-                                            : P.setProperties(["_tff", "_we"], [A, true]);
+                                            ? P.setProperties(["_tff", "dir", "_we"], [matchedFontFamily, D, true])
+                                            : P.setProperties(["_tff", "_we"], [matchedFontFamily, true]);
                                     } else P.setProperty("_we", true);
-                                    (o.GElementEditor.getEditor(P).invalidateTextWidth(), this._centerToView());
+                                    (GEditor.GElementEditor.getEditor(P).invalidateTextWidth(), this._centerToView());
                                 }
                             } finally {
-                                return void (t && a.commitTransaction(GObject.GLocale.get(new GObject.GLocaleKey("GPaste", "action.paste"))));
+                                return void (shouldManageTransaction && editor.commitTransaction(GObject.GLocale.get(new GObject.GLocaleKey("GPaste", "action.paste"))));
                             }
                         }
                     }
                 }
-                for (var L = 0; L < d.length; ++L) {
-                    var I = d[L];
-                    if (e[I]) {
-                        t && a.beginTransaction();
+                for (var L = 0; L < imageMimeTypes.length; ++L) {
+                    var I = imageMimeTypes[L];
+                    if (pasteData[I]) {
+                        shouldManageTransaction && editor.beginTransaction();
                         try {
-                            n.placeOrImport(e[I], null, false, true, this.executeCallback.bind(this));
+                            activeDocument.placeOrImport(pasteData[I], null, false, true, this.executeCallback.bind(this));
                         } finally {
-                            t && a.commitTransaction(GObject.GLocale.get(new GObject.GLocaleKey("GPaste", "action.paste-image")));
+                            shouldManageTransaction && editor.commitTransaction(GObject.GLocale.get(new GObject.GLocaleKey("GPaste", "action.paste-image")));
                         }
                         return;
                     }
                 }
             }),
-            (p.prototype._filterForInlineEditing = function (e) {
-                return e ? e.filter((e) => !(e instanceof GObject.GCollaborativeTextAnnotation)) : null;
+            (GPaste.prototype._filterForInlineEditing = function (elements) {
+                return elements ? elements.filter((element) => !(element instanceof GObject.GCollaborativeTextAnnotation)) : null;
             }),
-            (p.prototype._filterForStyleExceptions = function (e) {
-                for (var t = [GObject.GPage, GObject.GGroup, GObject.GSymbol], n = [], o = 0; o < e.length; o++) {
-                    for (var a = e[o], r = true, s = 0; s < t.length; s++) {
-                        if (a instanceof t[s]) {
+            (GPaste.prototype._filterForStyleExceptions = function (elements) {
+                for (var excludedTypes = [GObject.GPage, GObject.GGroup, GObject.GSymbol], result = [], o = 0; o < elements.length; o++) {
+                    for (var a = elements[o], r = true, s = 0; s < excludedTypes.length; s++) {
+                        if (a instanceof excludedTypes[s]) {
                             r = false;
                             break;
                         }
                     }
-                    r && n.push(a);
+                    r && result.push(a);
                 }
-                return n;
+                return result;
             }),
-            (p.prototype._centerToView = function (e) {
-                var t,
-                    n,
-                    a = gDesigner.getActiveDocument().getEditor(),
-                    r = gDesigner.getActiveDocument().getScene(),
-                    s = gDesigner.getWindows().getActiveWindow(),
-                    l = r.getActivePage();
-                if (((n = r.isFixedSized() ? l.getGeometryBBox() : r.getPaintBBox()), s)) {
-                    var c = s.getView(),
-                        d = c.getViewTransform(l),
-                        u = GObject.GPaintCanvas.getScreenDPI(),
-                        p = c.getViewBox().scaled(u, u);
-                    ((t = d.mapRect(p)), r.isFixedSized() && (t = t.intersected(n)), t.isEmpty() && (t = n));
-                } else t = n;
-                (a.arrangeAlign(o.GEditor.ArrangeAlignType.AlignCenter, null, true, t, true, e),
-                    a.arrangeAlign(o.GEditor.ArrangeAlignType.AlignMiddle, null, true, t, true, e));
+            (GPaste.prototype._centerToView = function (animate) {
+                var rect,
+                    targetBBox,
+                    editor = gDesigner.getActiveDocument().getEditor(),
+                    scene = gDesigner.getActiveDocument().getScene(),
+                    activeWindow = gDesigner.getWindows().getActiveWindow(),
+                    activePage = scene.getActivePage();
+                if (((targetBBox = scene.isFixedSized() ? activePage.getGeometryBBox() : scene.getPaintBBox()), activeWindow)) {
+                    var view = activeWindow.getView(),
+                        viewTransform = view.getViewTransform(activePage),
+                        screenDPI = GObject.GPaintCanvas.getScreenDPI(),
+                        viewBox = view.getViewBox().scaled(screenDPI, screenDPI);
+                    ((rect = viewTransform.mapRect(viewBox)), scene.isFixedSized() && (rect = rect.intersected(targetBBox)), rect.isEmpty() && (rect = targetBBox));
+                } else rect = targetBBox;
+                (editor.arrangeAlign(GEditor.GEditor.ArrangeAlignType.AlignCenter, null, true, rect, true, animate),
+                    editor.arrangeAlign(GEditor.GEditor.ArrangeAlignType.AlignMiddle, null, true, rect, true, animate));
             }),
-            (p.prototype.getArea = function () {
+            (GPaste.prototype.getArea = function () {
                 return this._pasteArea;
             }),
-            (p.prototype.setAllowFocus = function (e) {
-                this._allowFocus = e;
+            (GPaste.prototype.setAllowFocus = function (allowFocus) {
+                this._allowFocus = allowFocus;
             }),
-            (p.prototype.getAllowFocus = function () {
+            (GPaste.prototype.getAllowFocus = function () {
                 return this._allowFocus;
             }),
-            (p.prototype.assignCallback = function (e) {
-                this._callback = e;
+            (GPaste.prototype.assignCallback = function (callback) {
+                this._callback = callback;
             }),
-            (p.prototype.executeCallback = function (e, t) {
-                return !!this._callback && (this._callback(e, t), (this._callback = null), true);
+            (GPaste.prototype.executeCallback = function (elements, flag) {
+                return !!this._callback && (this._callback(elements, flag), (this._callback = null), true);
             }),
-            (module.exports = p));
+            (module.exports = GPaste));
     };

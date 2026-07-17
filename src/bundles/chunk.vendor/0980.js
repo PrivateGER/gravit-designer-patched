@@ -1,69 +1,69 @@
 module.exports = function (module, exports, require) {
             "use strict";
             (require(8 /* Symbol */), require(20 /* polyfill:RegExp */), require(3), require(34), require(38));
-            const n = require(171),
-                r = require(170),
-                o = require(325),
+            const $ = require(171),
+                GLocale = require(170),
+                GLocaleKey = require(325),
                 { SUPPORT_URL } = require(374 /* SUPPORT_URL */);
 
-            function s(e, t, i) {
-                ((this._dialog = n("<div></div>").addClass("g-dialog-content")),
-                    (this._htmlElement = n("<div></div>")
+            function GOfflineDialog(title, subtitle, buttons) {
+                ((this._dialog = $("<div></div>").addClass("g-dialog-content")),
+                    (this._htmlElement = $("<div></div>")
                         .addClass("g-cloud-ui-dialog-container g-dialog-container")
-                        .append(n("<div></div>").addClass("g-cloud-ui-offline-dialog g-dialog").append(this._dialog))),
-                    n("<div></div>").addClass("logo").appendTo(this._dialog),
-                    n("<div></div>")
+                        .append($("<div></div>").addClass("g-cloud-ui-offline-dialog g-dialog").append(this._dialog))),
+                    $("<div></div>").addClass("logo").appendTo(this._dialog),
+                    $("<div></div>")
                         .addClass("content")
-                        .append(n("<span></span>").addClass("title").html(e))
-                        .append(n("<span></span>").addClass("subtitle").html(t))
+                        .append($("<span></span>").addClass("title").html(title))
+                        .append($("<span></span>").addClass("subtitle").html(subtitle))
                         .append(
-                            n("<div></div>")
+                            $("<div></div>")
                                 .addClass("buttons")
                                 .append(
-                                    i.map((e) => {
-                                        let { label, onclick, highlighted } = e;
-                                        return n("<button></button>")
-                                            .append(n("<span></span>").text(label))
+                                    buttons.map((button) => {
+                                        let { label, onclick, highlighted } = button;
+                                        return $("<button></button>")
+                                            .append($("<span></span>").text(label))
                                             .addClass("g-cloud-ui-btn-pro " + (highlighted ? "highlighted" : ""))
                                             .on("click", () => onclick(this));
                                     })
                                 )
                         )
                         .append(
-                            n("<span></span>")
+                            $("<span></span>")
                                 .addClass("footer")
-                                .html(r.getValue("GOfflineDialog", "text.have-questions").replace("%link", SUPPORT_URL))
+                                .html(GLocale.getValue("GOfflineDialog", "text.have-questions").replace("%link", SUPPORT_URL))
                         )
                         .appendTo(this._dialog));
             }
-            ((s.openRetryConnection = async function (e, t) {
-                new s(r.get(new o("GOfflineDialog", "text.retry-connection")).replace("%name", e ? e.name || e.email : "there"), "", [
+            ((GOfflineDialog.openRetryConnection = async function (user, callback) {
+                new GOfflineDialog(GLocale.get(new GLocaleKey("GOfflineDialog", "text.retry-connection")).replace("%name", user ? user.name || user.email : "there"), "", [
                     {
-                        label: r.get(new o("GOfflineDialog", "text.retry")),
+                        label: GLocale.get(new GLocaleKey("GOfflineDialog", "text.retry")),
                         highlighted: true,
-                        onclick: async (e) => {
-                            var i;
-                            (e._dialog.addClass("g-cloud-ui-loading"),
-                                await ((i = 500), new Promise((e) => setTimeout(e, i))),
-                                e._dialog.removeClass("g-cloud-ui-loading"),
-                                navigator.onLine && (t && t(), e.close()));
+                        onclick: async (dialogInstance) => {
+                            var delay;
+                            (dialogInstance._dialog.addClass("g-cloud-ui-loading"),
+                                await ((delay = 500), new Promise((resolve) => setTimeout(resolve, delay))),
+                                dialogInstance._dialog.removeClass("g-cloud-ui-loading"),
+                                navigator.onLine && (callback && callback(), dialogInstance.close()));
                         },
                     },
                     {
-                        label: r.get(new o("GOfflineDialog", "text.cancel")),
-                        onclick: (e) => e.close(),
+                        label: GLocale.get(new GLocaleKey("GOfflineDialog", "text.cancel")),
+                        onclick: (dialogInstance) => dialogInstance.close(),
                     },
                 ]).open();
             }),
-                (s.prototype._dialog = null),
-                (s.prototype.open = function () {
-                    this._htmlElement.appendTo(n("body"));
+                (GOfflineDialog.prototype._dialog = null),
+                (GOfflineDialog.prototype.open = function () {
+                    this._htmlElement.appendTo($("body"));
                 }),
-                (s.prototype.close = function () {
+                (GOfflineDialog.prototype.close = function () {
                     this._htmlElement.remove();
                 }),
-                (s.prototype.toString = function () {
+                (GOfflineDialog.prototype.toString = function () {
                     return "[Object GOfflineDialog]";
                 }),
-                (module.exports = s));
+                (module.exports = GOfflineDialog));
         };

@@ -1,87 +1,87 @@
 module.exports = function (module, exports, require) {
         "use strict";
         (require(4), require(13), require(32), require(33));
-        var o = require(395);
-        ((o.prototype._rightSidebarDefaultWidthForTouch = 300),
-            (o.prototype._updateTouchToolbar = function (e) {
-                const t = ["fill", "border", "effect"];
+        var GSidebars = require(395);
+        ((GSidebars.prototype._rightSidebarDefaultWidthForTouch = 300),
+            (GSidebars.prototype._updateTouchToolbar = function (options) {
+                const expandingToolIds = ["fill", "border", "effect"];
                 if (!gDesigner.isTouchEnabled()) return;
                 this._touchToolbar || (this._touchToolbar = $("<div/>").addClass("g-touch-toolbar").prependTo(this._htmlElement));
-                let n = null;
+                let activeTool = null;
                 (this._touchToolbar.empty(),
                     this.removeClassName("align-active"),
-                    this._sidebars.forEach((o) => {
-                        let { sidebar, container } = o;
-                        const r = sidebar.getTouchTools(e);
+                    this._sidebars.forEach((sidebarEntry) => {
+                        let { sidebar, container } = sidebarEntry;
+                        const touchTools = sidebar.getTouchTools(options);
                         sidebar &&
                             sidebar.isVisible() &&
-                            r &&
-                            r.forEach((e) => {
-                                e.sidebar = sidebar.getId();
-                                const o = !!this._activeTouchTool && e.id == this._activeTouchTool.id;
-                                o && (n = e);
-                                let r = e.panel;
+                            touchTools &&
+                            touchTools.forEach((tool) => {
+                                tool.sidebar = sidebar.getId();
+                                const isActive = !!this._activeTouchTool && tool.id == this._activeTouchTool.id;
+                                isActive && (activeTool = tool);
+                                let panels = tool.panel;
                                 if (
-                                    (Array.isArray(e.panel) || (r = [e.panel]),
-                                    "dimension.align" === e.id && o && this.addClassName("align-active"),
-                                    r.forEach((t) => {
-                                        let n;
-                                        ((n = "string" == typeof t ? container.find(t) : $(t)),
-                                            n.attr("g-touch-tool", e.id).toggleClass("g-active", o).addClass("g-touch-toolbar-panel"));
+                                    (Array.isArray(tool.panel) || (panels = [tool.panel]),
+                                    "dimension.align" === tool.id && isActive && this.addClassName("align-active"),
+                                    panels.forEach((panelSelector) => {
+                                        let panelElement;
+                                        ((panelElement = "string" == typeof panelSelector ? container.find(panelSelector) : $(panelSelector)),
+                                            panelElement.attr("g-touch-tool", tool.id).toggleClass("g-active", isActive).addClass("g-touch-toolbar-panel"));
                                     }),
-                                    e.toolbar)
+                                    tool.toolbar)
                                 ) {
-                                    let t = e.toolbar;
-                                    (Array.isArray(e.toolbar) || (t = [e.toolbar]),
-                                        t.forEach((t) => {
-                                            let n;
-                                            ((n = "string" == typeof t ? container.find(t) : $(t)),
-                                                n.attr("g-touch-tool", e.id).toggleClass("g-active", o).addClass("g-touch-toolbar-label"));
+                                    let toolbarSelectors = tool.toolbar;
+                                    (Array.isArray(tool.toolbar) || (toolbarSelectors = [tool.toolbar]),
+                                        toolbarSelectors.forEach((toolbarSelector) => {
+                                            let toolbarElement;
+                                            ((toolbarElement = "string" == typeof toolbarSelector ? container.find(toolbarSelector) : $(toolbarSelector)),
+                                                toolbarElement.attr("g-touch-tool", tool.id).toggleClass("g-active", isActive).addClass("g-touch-toolbar-label"));
                                         }));
                                 }
-                                var s = $("<button/>")
+                                var button = $("<button/>")
                                     .addClass("g-touch-toolbar-button")
-                                    .attr("g-touch-tool", e.id)
-                                    .attr("id", e.id)
-                                    .toggleClass("g-active", o)
-                                    .append($("<span/>").addClass(e.icon || ""))
+                                    .attr("g-touch-tool", tool.id)
+                                    .attr("id", tool.id)
+                                    .toggleClass("g-active", isActive)
+                                    .append($("<span/>").addClass(tool.icon || ""))
                                     .on("click", () => {
                                         (this.removeClassName("align-active"),
-                                            "dimension.align" == e.id
+                                            "dimension.align" == tool.id
                                                 ? ($(".scrolling-panels").addClass("hide"), this.addClassName("align-active"))
                                                 : $(".scrolling-panels").removeClass("hide"),
-                                            -1 != t.indexOf(e.id)
+                                            -1 != expandingToolIds.indexOf(tool.id)
                                                 ? $(".sidebar-inspector").addClass("expand")
                                                 : $(".sidebar-inspector").removeClass("expand"),
-                                            this._activeTouchTool && this._activeTouchTool.id == e.id
+                                            this._activeTouchTool && this._activeTouchTool.id == tool.id
                                                 ? this._isActiveSidebarDeactivatable() &&
                                                   (this.setActiveTouchTool(null),
                                                   this._htmlElement.css("width", sidebar.getDefaultWidth() + "px"))
                                                 : this._tryActivateSidebar(sidebar) &&
-                                                  (this.setActiveTouchTool(e),
-                                                  e.panelWidth
-                                                      ? this._htmlElement.css("width", e.panelWidth)
+                                                  (this.setActiveTouchTool(tool),
+                                                  tool.panelWidth
+                                                      ? this._htmlElement.css("width", tool.panelWidth)
                                                       : this._htmlElement.css("width", sidebar.getDefaultWidth() + "px"),
-                                                  ".appearance-toolbar" !== e.toolbar
+                                                  ".appearance-toolbar" !== tool.toolbar
                                                       ? this._htmlElement.find(".appearance-properties-panel").addClass("display-none")
                                                       : this._htmlElement
                                                             .find(".appearance-properties-panel")
                                                             .removeClass("display-none")));
                                     })
                                     .appendTo(this._touchToolbar);
-                                if (-1 != t.indexOf(e.id)) {
-                                    var l = $(".".concat(e.id, "-block")).length;
-                                    s.append($("<div/>").addClass("count").append($("<div/>").addClass("scale").text(l)));
+                                if (-1 != expandingToolIds.indexOf(tool.id)) {
+                                    var count = $(".".concat(tool.id, "-block")).length;
+                                    button.append($("<div/>").addClass("count").append($("<div/>").addClass("scale").text(count)));
                                 }
                             });
                     }),
-                    this.setActiveTouchTool(n),
-                    n || this._setDefaultRightSidebarWidthForTouch());
+                    this.setActiveTouchTool(activeTool),
+                    activeTool || this._setDefaultRightSidebarWidthForTouch());
             }),
-            (o.prototype.updateTouchToolbar = function () {
+            (GSidebars.prototype.updateTouchToolbar = function () {
                 this._updateTouchToolbar();
             }),
-            (o.prototype._setDefaultRightSidebarWidthForTouch = function () {
+            (GSidebars.prototype._setDefaultRightSidebarWidthForTouch = function () {
                 this._htmlElement.css("width", this._rightSidebarDefaultWidthForTouch + "px");
             }));
     };

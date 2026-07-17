@@ -1,7 +1,7 @@
 module.exports = function (module, exports, require) {
         "use strict";
         (require(19), require(557), require(26), Object.defineProperty(exports, "__esModule", { value: true }), (exports.default = void 0), require(8 /* Symbol */));
-        var o = (function (e, t) {
+        var microsoftTeams = (function (e, t) {
             if ("function" == typeof WeakMap)
                 var n = new WeakMap(),
                     o = new WeakMap();
@@ -23,12 +23,12 @@ module.exports = function (module, exports, require) {
                             : (r[t] = e[t]));
                 return r;
             })(e, t);
-        })(require(1480));
+        })(require(1480 /* lib:microsoft-teams-js */));
         const designerConfig = require(10);
-        let a = false,
-            r = false,
-            s = null;
-        const l = {
+        let isExecutingOnMSTeamsCached = false,
+            channelOrChatPromise = false,
+            teamsContext = null;
+        const msTeamsService = {
             TeamsMode: {
                 DESKTOP: { label: "Desktop", code: "desktop" },
                 WEB: { label: "Web", code: "web" },
@@ -37,47 +37,47 @@ module.exports = function (module, exports, require) {
                 OTHER: { label: "Other" },
             },
             isExecutingOnMSTeams: async () => {
-                const e = await l.getTeamsContext().catch(() => false);
-                return !!e && !!e.tid;
+                const context = await msTeamsService.getTeamsContext().catch(() => false);
+                return !!context && !!context.tid;
             },
             getTeamsEnv: async function () {
-                switch ((s || (await l.initTeams()), s.hostClientType)) {
-                    case l.TeamsMode.DESKTOP.code:
-                        return l.TeamsMode.DESKTOP.label;
-                    case l.TeamsMode.WEB.code:
-                        return l.TeamsMode.WEB.label;
+                switch ((teamsContext || (await msTeamsService.initTeams()), teamsContext.hostClientType)) {
+                    case msTeamsService.TeamsMode.DESKTOP.code:
+                        return msTeamsService.TeamsMode.DESKTOP.label;
+                    case msTeamsService.TeamsMode.WEB.code:
+                        return msTeamsService.TeamsMode.WEB.label;
                     default:
-                        return l.TeamsMode.OTHER.label;
+                        return msTeamsService.TeamsMode.OTHER.label;
                 }
             },
             isExecutingOnChannelOrChat: async () =>
-                !!(await l.isExecutingOnMSTeams()) && (!!(await l.isPrivateChat()) || !!(await l.isTeamsChannel())),
-            isExecutingOnChannelOrChatSingletonPromise: () => r,
+                !!(await msTeamsService.isExecutingOnMSTeams()) && (!!(await msTeamsService.isPrivateChat()) || !!(await msTeamsService.isTeamsChannel())),
+            isExecutingOnChannelOrChatSingletonPromise: () => channelOrChatPromise,
             initTeams: () => {
-                if (s) return Promise.resolve();
-                const e = designerConfig.msTeamsMode ? 15e3 : 0;
-                return new Promise((t, n) => {
-                    const i = setTimeout(() => {
-                        n();
-                    }, e);
-                    o.initialize(() => {
-                        o.getContext((e) => {
-                            ((s = e), clearTimeout(i), t());
+                if (teamsContext) return Promise.resolve();
+                const timeoutMs = designerConfig.msTeamsMode ? 15e3 : 0;
+                return new Promise((resolve, reject) => {
+                    const timeoutId = setTimeout(() => {
+                        reject();
+                    }, timeoutMs);
+                    microsoftTeams.initialize(() => {
+                        microsoftTeams.getContext((context) => {
+                            ((teamsContext = context), clearTimeout(timeoutId), resolve());
                         });
                     });
                 });
             },
-            getTeamsContext: async () => (s || (await l.initTeams()), s),
-            getTeamsLocale: async () => (s || (await l.initTeams()), s.locale),
-            isPrivateChat: async () => !!(await l.getTeamsContext()).chatId,
-            isTeamsChannel: async () => !!(await l.getTeamsContext()).channelId,
-            sendSettings: async (e) => (s || (await l.initTeams()), o.authentication.notifySuccess(e)),
-            getAuthenticator: async () => (s || (await l.initTeams()), o.authentication),
-            isExecutingOnMSTeamsSync: () => a,
+            getTeamsContext: async () => (teamsContext || (await msTeamsService.initTeams()), teamsContext),
+            getTeamsLocale: async () => (teamsContext || (await msTeamsService.initTeams()), teamsContext.locale),
+            isPrivateChat: async () => !!(await msTeamsService.getTeamsContext()).chatId,
+            isTeamsChannel: async () => !!(await msTeamsService.getTeamsContext()).channelId,
+            sendSettings: async (settings) => (teamsContext || (await msTeamsService.initTeams()), microsoftTeams.authentication.notifySuccess(settings)),
+            getAuthenticator: async () => (teamsContext || (await msTeamsService.initTeams()), microsoftTeams.authentication),
+            isExecutingOnMSTeamsSync: () => isExecutingOnMSTeamsCached,
         };
-        (l.isExecutingOnMSTeams().then((e) => {
-            a = e;
+        (msTeamsService.isExecutingOnMSTeams().then((result) => {
+            isExecutingOnMSTeamsCached = result;
         }),
-            (r = l.isExecutingOnChannelOrChat()));
-        exports.default = l;
+            (channelOrChatPromise = msTeamsService.isExecutingOnChannelOrChat()));
+        exports.default = msTeamsService;
     };

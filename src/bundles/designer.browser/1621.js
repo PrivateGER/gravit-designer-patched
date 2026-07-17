@@ -2,7 +2,7 @@ module.exports = function (module, exports, require) {
         "use strict";
         require(3);
         var GObject = require(1),
-            i = (require(18 /* GCategory */), require(31));
+            i = (require(18 /* GCategory */), require(31 /* GAction */));
         function a(e) {
             let { name, category, group, link, icon, builder } = e;
             ((this._name = name),

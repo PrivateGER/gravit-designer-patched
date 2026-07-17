@@ -2,92 +2,92 @@ module.exports = function (module, exports, require) {
         "use strict";
         (require(4), require(13));
         var GObject = require(1),
-            i = {
-                value: function (e) {
-                    var t = i.options.call(this).unit;
+            methods = {
+                value: function (value) {
+                    var unit = methods.options.call(this).unit;
                     if (arguments.length > 0) {
-                        if (e) {
-                            var n = gDesigner.getActiveDocument(),
-                                a = n ? n.getScene() : null;
-                            $(this).gInputBox("value", GObject.GUtil.formatNumber(e.toUnit(t), a ? a.getOptimalDecimalsCount(t) : 2));
+                        if (value) {
+                            var document = gDesigner.getActiveDocument(),
+                                scene = document ? document.getScene() : null;
+                            $(this).gInputBox("value", GObject.GUtil.formatNumber(value.toUnit(unit), scene ? scene.getOptimalDecimalsCount(unit) : 2));
                         } else $(this).val("");
                         return this;
                     }
-                    var r = GObject.GLength.parseEquation($(this).val(), t);
-                    return r ? r.convert(t) : new GObject.GLength(0, t);
+                    var parsedLength = GObject.GLength.parseEquation($(this).val(), unit);
+                    return parsedLength ? parsedLength.convert(unit) : new GObject.GLength(0, unit);
                 },
-                list: function (e) {
-                    i.options.call(this).list = e;
+                list: function (list) {
+                    methods.options.call(this).list = list;
                 },
                 options: function () {
                     return $(this).data("ginputbox").options;
                 },
-                init: function (e) {
+                init: function (options) {
                     return (
-                        ((e = $.extend({ unit: GObject.GLength.Unit.PX, created: false }, e)).postfix = e.unit),
+                        ((options = $.extend({ unit: GObject.GLength.Unit.PX, created: false }, options)).postfix = options.unit),
                         this.each(function () {
-                            var t = $(this),
-                                n = this;
-                            ($(this).hasClass("g-unitbox") ? (e.created = true) : t.addClass("g-unitbox").attr("type", "text"),
-                                t.gInputBox("isInit") || t.gInputBox(e));
-                            var a = function () {
-                                let e = t.gInputBox("value"),
-                                    n = $(".g-unitbox.option-list").find(".option-item");
-                                if ((n.removeClass("g-selected"), e))
-                                    for (let t = 0; t < n.length; ++t) {
-                                        let o = n[t];
-                                        $(o).data("value") == e && $(o).addClass("g-selected");
+                            var element = $(this),
+                                domElement = this;
+                            ($(this).hasClass("g-unitbox") ? (options.created = true) : element.addClass("g-unitbox").attr("type", "text"),
+                                element.gInputBox("isInit") || element.gInputBox(options));
+                            var highlightSelectedOption = function () {
+                                let currentValue = element.gInputBox("value"),
+                                    optionItems = $(".g-unitbox.option-list").find(".option-item");
+                                if ((optionItems.removeClass("g-selected"), currentValue))
+                                    for (let t = 0; t < optionItems.length; ++t) {
+                                        let optionItem = optionItems[t];
+                                        $(optionItem).data("value") == currentValue && $(optionItem).addClass("g-selected");
                                     }
                             };
-                            (t.on("change", function () {
-                                a();
+                            (element.on("change", function () {
+                                highlightSelectedOption();
                             }),
-                                e.list &&
-                                    (t.unbind("click"),
-                                    t.on("click", function (r) {
-                                        gDesigner.stats("unitbox_" + (e.source || "") + "_button");
+                                options.list &&
+                                    (element.unbind("click"),
+                                    element.on("click", function (event) {
+                                        gDesigner.stats("unitbox_" + (options.source || "") + "_button");
                                         for (
-                                            var s = $("<div></div>").addClass("g-unitbox").addClass("option-list"),
-                                                l = $("<div></div>"),
+                                            var optionList = $("<div></div>").addClass("g-unitbox").addClass("option-list"),
+                                                overlay = $("<div></div>"),
                                                 c = 0;
-                                            c < e.list.length;
+                                            c < options.list.length;
                                             c++
                                         )
                                             $("<div></div>")
                                                 .addClass("option-item")
-                                                .text(e.list[c] + " " + e.postfix)
-                                                .data("value", e.list[c])
+                                                .text(options.list[c] + " " + options.postfix)
+                                                .data("value", options.list[c])
                                                 .on("mousedown", function () {
-                                                    (i.value.call(n, new GObject.GLength($(this).data("value"), e.unit)),
-                                                        t.trigger("change"),
-                                                        l.gOverlay("close"));
+                                                    (methods.value.call(domElement, new GObject.GLength($(this).data("value"), options.unit)),
+                                                        element.trigger("change"),
+                                                        overlay.gOverlay("close"));
                                                 })
-                                                .appendTo(s);
-                                        (l.append(s).gOverlay({
+                                                .appendTo(optionList);
+                                        (overlay.append(optionList).gOverlay({
                                             releaseOnClose: true,
                                             padding: false,
                                             enterCallback: function () {
-                                                var a = $(".g-unitbox.option-list").find(".option-item:hover");
-                                                (a.length > 0 &&
-                                                    (i.value.call(n, new GObject.GLength($(a).data("value"), e.unit)), t.trigger("change")),
-                                                    l.gOverlay("close"));
+                                                var hoveredItem = $(".g-unitbox.option-list").find(".option-item:hover");
+                                                (hoveredItem.length > 0 &&
+                                                    (methods.value.call(domElement, new GObject.GLength($(hoveredItem).data("value"), options.unit)), element.trigger("change")),
+                                                    overlay.gOverlay("close"));
                                             },
                                         }),
-                                            l.css("min-width", t.outerWidth()),
-                                            l.gOverlay("open", n),
-                                            a(),
-                                            t.gInputBox("requestFocus"));
+                                            overlay.css("min-width", element.outerWidth()),
+                                            overlay.gOverlay("open", domElement),
+                                            highlightSelectedOption(),
+                                            element.gInputBox("requestFocus"));
                                     })));
                         }),
                         this
                     );
                 },
             };
-        $.fn.gUnitBox = function (e) {
-            return i[e]
-                ? i[e].apply(this, Array.prototype.slice.call(arguments, 1))
-                : "object" != typeof e && e
-                  ? void $.error("Method " + e + " does not exist on jQuery.myPlugin")
-                  : i.init.apply(this, arguments);
+        $.fn.gUnitBox = function (method) {
+            return methods[method]
+                ? methods[method].apply(this, Array.prototype.slice.call(arguments, 1))
+                : "object" != typeof method && method
+                  ? void $.error("Method " + method + " does not exist on jQuery.myPlugin")
+                  : methods.init.apply(this, arguments);
         };
     };

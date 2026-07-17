@@ -3,70 +3,70 @@ module.exports = function (module, exports, require) {
         var _interopRequireDefault = require(16);
         (require(3), require(4), require(41));
         var GObject = require(1),
-            a = require(53),
+            editorModule = require(53),
             GPlatform = require(15),
             designerConfig = require(10),
             Utils = require(40),
-            c = _interopRequireDefault(require(44 /* GSystemDialog */)),
+            GSystemDialog = _interopRequireDefault(require(44 /* GSystemDialog */)),
             GAnnotationsSidebar = require(567),
             GCategory = require(18),
-            p = require(31);
-        const g = require(358),
-            h = require(607);
-        function f() {}
-        (GObject.GObject.inherit(f, p),
-            (f.ID = "edit.delete"),
-            (f.TITLE = new GObject.GLocaleKey("GDeleteAction", "title")),
-            (f.prototype._isConfirmWindowDisplaying = false),
-            (f.prototype.getId = function () {
-                return f.ID;
+            GAction = require(31);
+        const GAnnotationsUtils = require(358),
+            PropertiesPanels = require(607);
+        function GDeleteAction() {}
+        (GObject.GObject.inherit(GDeleteAction, GAction),
+            (GDeleteAction.ID = "edit.delete"),
+            (GDeleteAction.TITLE = new GObject.GLocaleKey("GDeleteAction", "title")),
+            (GDeleteAction.prototype._isConfirmWindowDisplaying = false),
+            (GDeleteAction.prototype.getId = function () {
+                return GDeleteAction.ID;
             }),
-            (f.prototype.getTitle = function () {
-                return f.TITLE;
+            (GDeleteAction.prototype.getTitle = function () {
+                return GDeleteAction.TITLE;
             }),
-            (f.prototype.getCategory = function () {
+            (GDeleteAction.prototype.getCategory = function () {
                 return GCategory.CATEGORY_EDIT;
             }),
-            (f.prototype.getGroup = function () {
+            (GDeleteAction.prototype.getGroup = function () {
                 return "ccp";
             }),
-            (f.prototype.getShortcut = function () {
+            (GDeleteAction.prototype.getShortcut = function () {
                 return [GPlatform.GKey.Constant.REMOVE];
             }),
-            (f.prototype.getAdditionalShortcuts = function () {
-                var e = [];
+            (GDeleteAction.prototype.getAdditionalShortcuts = function () {
+                var additionalShortcuts = [];
                 return (
                     GObject.GSystem.operatingSystem === GObject.GSystem.OperatingSystem.OSX_IOS
-                        ? e.push([GPlatform.GKey.Constant.DELETE])
-                        : e.push([GPlatform.GKey.Constant.BACKSPACE]),
-                    e
+                        ? additionalShortcuts.push([GPlatform.GKey.Constant.DELETE])
+                        : additionalShortcuts.push([GPlatform.GKey.Constant.BACKSPACE]),
+                    additionalShortcuts
                 );
             }),
-            (f.prototype.isEnabled = function () {
-                var e = gDesigner.getActiveDocument();
+            (GDeleteAction.prototype.isEnabled = function () {
+                var activeDocument = gDesigner.getActiveDocument();
                 if (this._isConfirmWindowDisplaying) return false;
-                if (e) {
-                    var t = e.getEditor().getSelection();
-                    if (t) for (var n = 0; n < t.length; ++n) if (t[n] instanceof GObject.GItem || t[n] instanceof GObject.GLayer) return true;
+                if (activeDocument) {
+                    var selection = activeDocument.getEditor().getSelection();
+                    if (selection) for (var n = 0; n < selection.length; ++n) if (selection[n] instanceof GObject.GItem || selection[n] instanceof GObject.GLayer) return true;
                 }
                 return false;
             }),
-            (f.prototype.execute = function () {
-                var e = gDesigner.getActiveDocument(),
-                    t = e.getEditor(),
-                    n = e.getActiveStylesList(),
-                    o = gDesigner.getMouseOverContext();
+            (GDeleteAction.prototype.execute = function () {
+                var activeDocument = gDesigner.getActiveDocument(),
+                    editor = activeDocument.getEditor(),
+                    stylesList = activeDocument.getActiveStylesList(),
+                    mouseOverContext = gDesigner.getMouseOverContext();
                 if (designerConfig.HAS_ANNOTATIONS && gDesigner.getRightSidebars().getActiveSidebar() === GAnnotationsSidebar.ID) {
-                    var r = t.getSelection().filter((e) => g.canDeleteAnnotation(e));
-                    r.length &&
+                    var annotationsToDelete = editor.getSelection().filter((annotation) => GAnnotationsUtils.canDeleteAnnotation(annotation));
+                    annotationsToDelete.length &&
                         (this._setIsConfirmWindowDisplaying(true),
-                        c.default.confirm(
+                        GSystemDialog.default.confirm(
                             GObject.GLocale.get(new GObject.GLocaleKey("GAnnotationPanel", "text.confirm-remove")),
-                            (e) => {
-                                (e &&
+                            (confirmed) => {
+                                (confirmed &&
                                     gDesigner.getActiveDocument() &&
-                                    gDesigner.getActiveDocument().getEditor() === t &&
-                                    g.removeAnnotations(r, r[0].getParent(), GObject.GLocale.get(this.getTitle())),
+                                    gDesigner.getActiveDocument().getEditor() === editor &&
+                                    GAnnotationsUtils.removeAnnotations(annotationsToDelete, annotationsToDelete[0].getParent(), GObject.GLocale.get(this.getTitle())),
                                     this._setIsConfirmWindowDisplaying(false));
                             },
                             null,
@@ -75,35 +75,35 @@ module.exports = function (module, exports, require) {
                             true,
                             true
                         ));
-                } else if (o.context && (n.Fill || n.Border || n.Effect)) {
-                    var u = null,
-                        p = null,
-                        m = t.getSelection();
-                    if (o.context === h.FillPropertiesPanel) ((u = n.Fill), (p = "fill"));
-                    else if (o.context === h.BorderPropertiesPanel) ((u = n.Border), (p = "border"));
+                } else if (mouseOverContext.context && (stylesList.Fill || stylesList.Border || stylesList.Effect)) {
+                    var styleProperty = null,
+                        styleType = null,
+                        selectedLayers = editor.getSelection();
+                    if (mouseOverContext.context === PropertiesPanels.FillPropertiesPanel) ((styleProperty = stylesList.Fill), (styleType = "fill"));
+                    else if (mouseOverContext.context === PropertiesPanels.BorderPropertiesPanel) ((styleProperty = stylesList.Border), (styleType = "border"));
                     else {
-                        if (o.context !== h.EffectPropertiesPanel) return void t.deleteSelection();
-                        ((u = n.Effect), (p = "effect"));
+                        if (mouseOverContext.context !== PropertiesPanels.EffectPropertiesPanel) return void editor.deleteSelection();
+                        ((styleProperty = stylesList.Effect), (styleType = "effect"));
                     }
-                    a.GEditor.tryRunTransaction(
-                        e.getScene(),
+                    editorModule.GEditor.tryRunTransaction(
+                        activeDocument.getScene(),
                         function () {
-                            (0, Utils.iterateEqualStyleLayers)(p, u, m, function (e) {
-                                e.getParent().removeChild(e);
+                            (0, Utils.iterateEqualStyleLayers)(styleType, styleProperty, selectedLayers, function (layer) {
+                                layer.getParent().removeChild(layer);
                             });
                         },
-                        GObject.GLocale.get(f.TITLE)
+                        GObject.GLocale.get(GDeleteAction.TITLE)
                     );
-                } else t.deleteSelection();
+                } else editor.deleteSelection();
             }),
-            (f.prototype.getIcon = function () {
+            (GDeleteAction.prototype.getIcon = function () {
                 return gDesigner.isTouchEnabled() ? "gravit-icon-delete" : "";
             }),
-            (f.prototype._setIsConfirmWindowDisplaying = function (e) {
-                this._isConfirmWindowDisplaying = e;
+            (GDeleteAction.prototype._setIsConfirmWindowDisplaying = function (isDisplaying) {
+                this._isConfirmWindowDisplaying = isDisplaying;
             }),
-            (f.prototype.toString = function () {
+            (GDeleteAction.prototype.toString = function () {
                 return "[Object GDeleteAction]";
             }),
-            (module.exports = f));
+            (module.exports = GDeleteAction));
     };

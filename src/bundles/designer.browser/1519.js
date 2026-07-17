@@ -1,6 +1,6 @@
 module.exports = function (module, exports, require) {
         var o, i, a;
-        ((i = [require(171), require(1257), require(605), require(1258)]),
+        ((i = [require(171), require(1257), require(605), require(1258 /* lib:jquery-ui-widget */)]),
             void 0 ===
                 (a =
                     "function" ==
