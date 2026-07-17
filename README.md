@@ -81,7 +81,10 @@ hints. This is the preferred way to modify the app:
    Commit `src/bundles/` and `public/` together.
 4. `npm test` — boots the server (plus a mock Unsplash API) and drives the
    real app in headless Chromium: app boots clean, no third-party or `/null`
-   requests, dead features stay hidden, Unsplash proxy works end-to-end.
+   requests, dead features stay hidden, Unsplash proxy works end-to-end, and
+   the editor itself works — draw a rectangle, undo/redo, export PNG/SVG/PDF,
+   save to `.gvdesign` and reopen it with content intact, and the service
+   worker installs with its full precache.
    Needs a Chromium binary (set `CHROMIUM_PATH` if it isn't auto-found).
 
 The build also emits debugging aids (gitignored, regenerated each build):
