@@ -3,7 +3,7 @@ module.exports = function (module, exports, require) {
         var _interopRequireDefault = require(16);
         require(3);
         var GObject = require(1),
-            a = _interopRequireDefault(require(31)),
+            a = _interopRequireDefault(require(31 /* GAction */)),
             r = _interopRequireDefault(require(567 /* GAnnotationsSidebar */)),
             s = _interopRequireDefault(require(10 /* designerConfig */));
         function l() {}

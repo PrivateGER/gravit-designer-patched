@@ -8,13 +8,13 @@ module.exports = function (module, exports, require) {
             designerConfig = require(10),
             GInvalidationOptions = _interopRequireDefault(require(1354));
         const GSystemDialog = require(44),
-            annotationService = require(358),
+            annotationService = require(358 /* GAnnotationsUtils */),
             GSimpleTree = require(1355),
-            AnnotationsVTree = require(1713),
+            GAnnotationPanel = require(1713),
             GAnnotationReplyDocker = require(1357),
             GAnnotationRow = require(1356),
             UpdateResult = require(1279),
-            CollabUser = require(177),
+            GUser = require(177),
             watchedProperties = ["text"];
         function GAnnotationPanelWidget() {}
         function onNodeClick(nodeInfo) {
@@ -360,7 +360,7 @@ module.exports = function (module, exports, require) {
                 contentGroup = $("<span/>").addClass("assigned-content-group").appendTo(rowElement);
             return (
                 (0, collabApi.getCollabInfo)(assigneeIds[0]).then(async (collabInfo) => {
-                    let fullUserName = new CollabUser(collabInfo).getFullUserName();
+                    let fullUserName = new GUser(collabInfo).getFullUserName();
                     $("<span/>")
                         .addClass("assign-to-text")
                         .html(
@@ -786,7 +786,7 @@ module.exports = function (module, exports, require) {
                         $(this)
                             .addClass("g-annotation-panel")
                             .data("gannotationpanel", {
-                                vtree: new AnnotationsVTree(
+                                vtree: new GAnnotationPanel(
                                     this,
                                     renderTreeNode.bind(this),
                                     options.nodeStyle,

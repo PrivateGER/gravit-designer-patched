@@ -1,12 +1,12 @@
 module.exports = function (module, exports, require) {
         "use strict";
         var o = require(53);
-        const i = require(878),
+        const GTouchEventHandler = require(878),
             a = require(1585),
             r = require(879),
             s = require(1586),
             l = require(1329);
-        module.exports = class extends i {
+        module.exports = class extends GTouchEventHandler {
             constructor(e) {
                 (super(e), this.addGesture(new a()), this.addGesture(new r()), this.addGesture(new l()), this.addGesture(new s()));
             }

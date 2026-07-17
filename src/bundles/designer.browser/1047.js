@@ -1,9 +1,9 @@
 module.exports = function (module, exports, require) {
         var o, i, a, r, s, l, c, d;
         module.exports =
-            ((d = require(55)),
+            ((d = require(55 /* lib:crypto-js */)),
             require(382),
-            require(737),
+            require(737 /* lib:crypto-js */),
             (i = (o = d).x64),
             (a = i.Word),
             (r = i.WordArray),

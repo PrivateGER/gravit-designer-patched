@@ -4,62 +4,62 @@ module.exports = function (module, exports, require) {
         var GObject = require(1),
             GPlatform = require(15),
             GCategory = require(18),
-            r = require(31);
-        function s() {}
-        (GObject.GObject.inherit(s, r),
-            (s.ID = "edit.invert-selection"),
-            (s.TITLE = new GObject.GLocaleKey("GInvertSelectionAction", "title")),
-            (s.prototype.getId = function () {
-                return s.ID;
+            GAction = require(31);
+        function GInvertSelectionAction() {}
+        (GObject.GObject.inherit(GInvertSelectionAction, GAction),
+            (GInvertSelectionAction.ID = "edit.invert-selection"),
+            (GInvertSelectionAction.TITLE = new GObject.GLocaleKey("GInvertSelectionAction", "title")),
+            (GInvertSelectionAction.prototype.getId = function () {
+                return GInvertSelectionAction.ID;
             }),
-            (s.prototype.getTitle = function () {
-                return s.TITLE;
+            (GInvertSelectionAction.prototype.getTitle = function () {
+                return GInvertSelectionAction.TITLE;
             }),
-            (s.prototype.getCategory = function () {
+            (GInvertSelectionAction.prototype.getCategory = function () {
                 return GCategory.CATEGORY_EDIT;
             }),
-            (s.prototype.getGroup = function () {
+            (GInvertSelectionAction.prototype.getGroup = function () {
                 return "select";
             }),
-            (s.prototype.getShortcut = function () {
+            (GInvertSelectionAction.prototype.getShortcut = function () {
                 return [GPlatform.GKey.Constant.SHIFT, GPlatform.GKey.Constant.META, "I"];
             }),
-            (s.prototype.isEnabled = function () {
+            (GInvertSelectionAction.prototype.isEnabled = function () {
                 return !!gDesigner.getActiveDocument();
             }),
-            (s.prototype.execute = function () {
-                var e = gDesigner.getActiveDocument(),
-                    t = e.getScene(),
-                    n = t.getActivePage(),
-                    i = gDesigner.getActiveDocument().getActiveWindow().getView().getViewConfiguration().multiPageView,
-                    a = [];
-                (t.accept(function (e) {
+            (GInvertSelectionAction.prototype.execute = function () {
+                var activeDocument = gDesigner.getActiveDocument(),
+                    scene = activeDocument.getScene(),
+                    activePage = scene.getActivePage(),
+                    multiPageView = gDesigner.getActiveDocument().getActiveWindow().getView().getViewConfiguration().multiPageView,
+                    itemsToSelect = [];
+                (scene.accept(function (item) {
                     if (
-                        e instanceof GObject.GItem &&
-                        !e.hasMixin(GObject.GAnnotation) &&
-                        !(e.getParent() instanceof GObject.GItem) &&
-                        !e.hasFlag(GObject.GNode.Flag.Selected) &&
-                        (e.getPage() === n || i) &&
-                        !e.isLocked()
+                        item instanceof GObject.GItem &&
+                        !item.hasMixin(GObject.GAnnotation) &&
+                        !(item.getParent() instanceof GObject.GItem) &&
+                        !item.hasFlag(GObject.GNode.Flag.Selected) &&
+                        (item.getPage() === activePage || multiPageView) &&
+                        !item.isLocked()
                     ) {
-                        var t =
-                                !e.getProperty("vis") ||
-                                e.findParent(function (e) {
-                                    return e instanceof GObject.GBlock && !e.getProperty("vis");
+                        var isHidden =
+                                !item.getProperty("vis") ||
+                                item.findParent(function (parent) {
+                                    return parent instanceof GObject.GBlock && !parent.getProperty("vis");
                                 }),
-                            r = e.getProperty("plkt"),
-                            s =
-                                r & GObject.GBlock.ProgramLck.NoEdit &&
-                                r & GObject.GBlock.ProgramLck.NoSizeChanges &&
-                                r & GObject.GBlock.ProgramLck.NoMove &&
-                                r & GObject.GBlock.ProgramLck.NoDelete;
-                        t || s || a.push(e);
+                            lockFlags = item.getProperty("plkt"),
+                            isFullyLocked =
+                                lockFlags & GObject.GBlock.ProgramLck.NoEdit &&
+                                lockFlags & GObject.GBlock.ProgramLck.NoSizeChanges &&
+                                lockFlags & GObject.GBlock.ProgramLck.NoMove &&
+                                lockFlags & GObject.GBlock.ProgramLck.NoDelete;
+                        isHidden || isFullyLocked || itemsToSelect.push(item);
                     }
                 }),
-                    e.getEditor().updateSelection(false, a));
+                    activeDocument.getEditor().updateSelection(false, itemsToSelect));
             }),
-            (s.prototype.toString = function () {
+            (GInvertSelectionAction.prototype.toString = function () {
                 return "[Object GInvertSelectionAction]";
             }),
-            (module.exports = s));
+            (module.exports = GInvertSelectionAction));
     };

@@ -1,5 +1,5 @@
 module.exports = function (module, exports, require) {
-            var n = require(1210);
+            var n = require(1210 /* lib:jdataview */);
 
             function r(e, t) {
                 for (var i = 0, n = (t = t || 0); n < e.byteLength; n++) ((i <<= 8), (i |= 255 & e.getUint8(n)));

@@ -1,7 +1,7 @@
 module.exports = function (module, exports, require) {
         var o, i, a;
         module.exports =
-            ((a = require(55)),
+            ((a = require(55 /* lib:crypto-js */)),
             (i = (o = a).lib.WordArray),
             (o.enc.Base64 = {
                 stringify: function (e) {

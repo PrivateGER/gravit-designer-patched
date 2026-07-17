@@ -4,7 +4,7 @@ module.exports = function (module, exports, require) {
         (require(57), require(20 /* polyfill:RegExp */), require(107 /* polyfill:RegExp */), require(3), require(4), require(13));
         var editorModule = require(53),
             GObject = require(1),
-            richTooltipModule = require(67),
+            richTooltipModule = require(67 /* GRichTooltipConfig */),
             touchToolModule = _interopRequireDefault(require(340)),
             GAlignAction = require(866),
             GDistributeAction = require(867),

@@ -106,5 +106,5 @@ module.exports = function (module, exports, require) {
                     }
                 }
             })("undefined" == typeof self ? (void 0 === e ? this : e) : self);
-        }).call(this, require(109), require(183));
+        }).call(this, require(109), require(183 /* lib:process */));
     };

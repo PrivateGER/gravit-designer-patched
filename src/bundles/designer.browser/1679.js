@@ -2,111 +2,111 @@ module.exports = function (module, exports, require) {
         "use strict";
         var _interopRequireDefault = require(16);
         (require(30 /* polyfill:Object */), require(8 /* Symbol */), require(196 /* polyfill:Promise */));
-        var i = _interopRequireDefault(require(1249)),
-            a = _interopRequireDefault(require(1155)),
+        var PaymentFlow = _interopRequireDefault(require(1249)),
+            EventWaiter = _interopRequireDefault(require(1155)),
             GObject = require(1);
-        const { gApi, IN_APP_PURCHASE: { CLEVERBRIDGE: { openCartInAPopup: l = false } = {} } = {} } = require(10 /* designerConfig */),
-            c = require(808),
-            d = require(292),
+        const { gApi, IN_APP_PURCHASE: { CLEVERBRIDGE: { openCartInAPopup: openCartInAPopup = false } = {} } = {} } = require(10 /* designerConfig */),
+            GApplicationStatusEvent = require(808),
+            GUserLoggedEvent = require(292),
             GProfileDialog = require(604),
             GOfflineDialog = require(256),
             GPaymentDialog = require(1680),
-            h = require(1681),
-            f = require(1190);
-        module.exports = class extends f {
+            CartPopup = require(1681),
+            PaymentProvider = require(1190);
+        module.exports = class extends PaymentProvider {
             getOptions() {
                 return this._paymentFlow ? this._paymentFlow.getOptions() : null;
             }
-            async purchase(e) {
-                let t = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
+            async purchase(product) {
+                let options = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
                 return (
                     gDesigner.toggleLoading(true),
-                    this._purchase(e, t).finally(() => {
+                    this._purchase(product, options).finally(() => {
                         gDesigner.toggleLoading(false);
                     })
                 );
             }
-            _purchase(e) {
-                let t = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
+            _purchase(product) {
+                let options = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
                 return $(".g-payment-dialog").length
                     ? Promise.reject(false)
-                    : new Promise(async (n, o) => {
+                    : new Promise(async (resolve, reject) => {
                           try {
-                              (this._paymentFlow && this._paymentFlow.abort(), (this._paymentFlow = new i.default(t)));
-                              const l = async () => {
-                                  const { immediatePurchase: i = false, paymentCallback: l = () => {}, autoClose: p = false } = t,
-                                      g = await gDesigner.getUser();
-                                  if (!e) {
-                                      if (!g)
+                              (this._paymentFlow && this._paymentFlow.abort(), (this._paymentFlow = new PaymentFlow.default(options)));
+                              const runPurchaseFlow = async () => {
+                                  const { immediatePurchase: immediatePurchase = false, paymentCallback: paymentCallback = () => {}, autoClose: autoClose = false } = options,
+                                      currentUser = await gDesigner.getUser();
+                                  if (!product) {
+                                      if (!currentUser)
                                           return (
                                               this._paymentFlow.step(
-                                                  new a.default()
-                                                      .listen(d)
-                                                      .when((e) => !!e && !!e.user)
+                                                  new EventWaiter.default()
+                                                      .listen(GUserLoggedEvent)
+                                                      .when((event) => !!event && !!event.user)
                                                       .do(() => {
-                                                          gDesigner.openPaymentDialog(e, t);
+                                                          gDesigner.openPaymentDialog(product, options);
                                                       })
                                               ),
-                                              void n()
+                                              void resolve()
                                           );
                                       {
-                                          const n = gDesigner.now().getTime();
-                                          e = await gApi.getProduct(
+                                          const timestamp = gDesigner.now().getTime();
+                                          product = await gApi.getProduct(
                                               Object.assign(
                                                   {
-                                                      time: n,
+                                                      time: timestamp,
                                                       language: GObject.GLocale.getLocaleLanguageTag().slice(0, 2),
                                                   },
-                                                  t
+                                                  options
                                               )
                                           );
                                       }
                                   }
-                                  if (!e) return void o(new Error("Product is missing"));
-                                  const { reinstate: h = false } = e;
-                                  if (h)
+                                  if (!product) return void reject(new Error("Product is missing"));
+                                  const { reinstate: reinstate = false } = product;
+                                  if (reinstate)
                                       return (
                                           this._paymentFlow.step(
                                               gDesigner.executeWhenReady(() => {
                                                   new GProfileDialog(this._user, "purchase").open();
                                               })
                                           ),
-                                          void n({ reinstate: true })
+                                          void resolve({ reinstate: true })
                                       );
                                   (this._paymentFlow.step(
-                                      new a.default()
-                                          .listen(c)
+                                      new EventWaiter.default()
+                                          .listen(GApplicationStatusEvent)
                                           .when(() => gDesigner.isInitialized())
                                           .do(async () => {
                                               try {
-                                                  const t = await this._openCart(e, i, p);
-                                                  l(t);
+                                                  const cartResult = await this._openCart(product, immediatePurchase, autoClose);
+                                                  paymentCallback(cartResult);
                                               } catch (e) {
-                                                  l({});
+                                                  paymentCallback({});
                                               }
-                                          }, i)
+                                          }, immediatePurchase)
                                   ),
-                                      n());
+                                      resolve());
                               };
-                              gDesigner.isOffline() ? (GOfflineDialog.openRetryConnection(l), gDesigner.toggleLoading(false)) : await l();
-                          } catch (e) {
-                              o(e);
+                              gDesigner.isOffline() ? (GOfflineDialog.openRetryConnection(runPurchaseFlow), gDesigner.toggleLoading(false)) : await runPurchaseFlow();
+                          } catch (error) {
+                              reject(error);
                           }
                       }).then(
-                          (e) => (
-                              (e && e.reinstate) || ("undefined" != typeof dataLayer && dataLayer.push({ event: "USER_CART_VIEW_EVENT" })),
-                              e
+                          (result) => (
+                              (result && result.reinstate) || ("undefined" != typeof dataLayer && dataLayer.push({ event: "USER_CART_VIEW_EVENT" })),
+                              result
                           )
                       );
             }
-            _openCart(e, t, n) {
-                return l && !t ? this._openCartPopup(e) : this._openCartDialog(e, n);
+            _openCart(product, immediatePurchase, autoClose) {
+                return openCartInAPopup && !immediatePurchase ? this._openCartPopup(product) : this._openCartDialog(product, autoClose);
             }
-            _openCartPopup(e) {
-                return new h().open(e.url);
+            _openCartPopup(product) {
+                return new CartPopup().open(product.url);
             }
-            _openCartDialog(e, t) {
-                return new GPaymentDialog().open(e.url, t);
+            _openCartDialog(product, autoClose) {
+                return new GPaymentDialog().open(product.url, autoClose);
             }
         };
     };

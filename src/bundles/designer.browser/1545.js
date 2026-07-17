@@ -9,7 +9,7 @@ module.exports = function (module, exports, require) {
             require(96 /* polyfill:JSON */),
             require(30 /* polyfill:Object */),
             require(8 /* Symbol */),
-            require(356),
+            require(356 /* polyfill:RegExp */),
             require(20 /* polyfill:RegExp */),
             require(3),
             require(271 /* polyfill:String */),
@@ -37,10 +37,10 @@ module.exports = function (module, exports, require) {
             cloudDrives = require(1552),
             GCloudDrive = require(862),
             filePanelConstants = require(858),
-            GNewFilePrompt = _interopRequireDefault(require(1556)),
+            GNewFilePrompt = _interopRequireDefault(require(1556 /* GNewFilePromptDialog */)),
             GDocumentStatus = _interopRequireDefault(require(86)),
             GCloudUtils = _interopRequireDefault(require(119 /* GCommonNames */)),
-            GDrive = _interopRequireDefault(require(802)),
+            GDrive = _interopRequireDefault(require(802 /* CloudDrive */)),
             GDriveSettings = _interopRequireDefault(require(1240)),
             GSaveAsAction = _interopRequireDefault(require(445 /* GSaveAsAction */)),
             GSystemDialog = _interopRequireDefault(require(44 /* GSystemDialog */)),
@@ -48,7 +48,7 @@ module.exports = function (module, exports, require) {
             designerConfig = require(10),
             configBase = require(519),
             GRepeatActionError = _interopRequireDefault(require(1557));
-        const GDriveItem = require(156),
+        const CloudFile = require(156),
             GDocumentEvent = require(78);
         var cloudOptions = designerConfig.CloudIntegration.cloudOptions,
             nativeCloudOption = designerConfig.CloudIntegration.nativeOption,
@@ -453,9 +453,9 @@ module.exports = function (module, exports, require) {
             }),
             (GFilesPanel.prototype.handleFileDblClick = function (file) {
                 return (
-                    file.hasPermission(GDriveItem.Permission.Open) && !this.isSaveMode()
+                    file.hasPermission(CloudFile.Permission.Open) && !this.isSaveMode()
                         ? (gDesigner.stats("filespanel_open_cloudfile"), this.openFile(file))
-                        : file.hasPermission(GDriveItem.Permission.Rename) &&
+                        : file.hasPermission(CloudFile.Permission.Rename) &&
                           (gDesigner.stats("filespanel_focus_filename-input"), this.view.focusFileNameInput(file)),
                     this
                 );
@@ -624,7 +624,7 @@ module.exports = function (module, exports, require) {
                         !useSource && this.fileRequiresSourceDownload(file) && (useSource = true);
                         var fileFormat = {
                             ext: ((useSource && (file.extension || file.ext)) || ext).toLowerCase(),
-                            type: (useSource && ((file instanceof GDriveItem && file.getMimeType()) || file.type)) || type,
+                            type: (useSource && ((file instanceof CloudFile && file.getMimeType()) || file.type)) || type,
                             version: version,
                         };
                         return this.downloadFile(
@@ -901,8 +901,8 @@ module.exports = function (module, exports, require) {
                 });
             }),
             (GFilesPanel.prototype.updateCloudItemForUserPermission = function (item) {
-                return gDesigner.getApplicationManager().isOnlyFileOpenFromCloudEnabled() && item && item instanceof GDriveItem
-                    ? (item.setPermissions(Object.values(GDriveItem.Permission), false), item.setPermission(GDriveItem.Permission.Open), item)
+                return gDesigner.getApplicationManager().isOnlyFileOpenFromCloudEnabled() && item && item instanceof CloudFile
+                    ? (item.setPermissions(Object.values(CloudFile.Permission), false), item.setPermission(CloudFile.Permission.Open), item)
                     : item;
             }),
             (GFilesPanel.prototype.getDefaultCloudSettings = function () {
@@ -1153,7 +1153,7 @@ module.exports = function (module, exports, require) {
                                 void console.error(error)
                             );
                         }
-                        if (self.SELECTION[0].getType && self.SELECTION[0].getType() === GDriveItem.Type.Folder) {
+                        if (self.SELECTION[0].getType && self.SELECTION[0].getType() === CloudFile.Type.Folder) {
                             let parentFolderNode = null;
                             if (
                                 (self.SELECTION[0].getParentId() &&
@@ -1294,7 +1294,7 @@ module.exports = function (module, exports, require) {
             }),
             (GFilesPanel.prototype.fileRequiresSourceDownload = function (file) {
                 return !this.drive.getSupportedFileFormats().some((format) => {
-                    var mimeType = file instanceof GDriveItem ? file.getMimeType() : file.type;
+                    var mimeType = file instanceof CloudFile ? file.getMimeType() : file.type;
                     const extension = file.extension || file.ext || null;
                     return format.type === mimeType || (extension && format.ext.toLowerCase() === extension.toLowerCase());
                 });

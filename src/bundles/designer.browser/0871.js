@@ -1,39 +1,39 @@
 module.exports = function (module, exports, require) {
         "use strict";
         (require(3), require(4), require(41));
-        var o = require(53),
+        var Editor = require(53),
             GObject = require(1),
-            a = require(67),
+            GRichTooltipConfig = require(67),
             GCategory = require(18),
-            s = require(31);
-        function l(e) {
-            ((this._type = e),
-                (this._title = new GObject.GLocaleKey("GTransformAction", "title." + e)),
-                (l.TOOLTIP_CONFIG = {
-                    [a.TOOLTIP_AREA.TOOLBAR]: {
-                        [l.Type.Rotate45Left]: null,
-                        [l.Type.Rotate90Left]: a.GRichTooltipConfig.from({
+            GAction = require(31);
+        function GTransformAction(type) {
+            ((this._type = type),
+                (this._title = new GObject.GLocaleKey("GTransformAction", "title." + type)),
+                (GTransformAction.TOOLTIP_CONFIG = {
+                    [GRichTooltipConfig.TOOLTIP_AREA.TOOLBAR]: {
+                        [GTransformAction.Type.Rotate45Left]: null,
+                        [GTransformAction.Type.Rotate90Left]: GRichTooltipConfig.GRichTooltipConfig.from({
                             title: GObject.GLocale.get(new GObject.GLocaleKey("GTransformAction", "rotate-90-left-tooltip-title")),
                             description: GObject.GLocale.get(new GObject.GLocaleKey("GTransformAction", "rotate-90-left-tooltip-description")),
                             learnMore:
                                 "/docs/basics/moving-transforming-and-arranging-objects/#rotating-objects",
                         }),
-                        [l.Type.Rotate180Left]: null,
-                        [l.Type.Rotate45Right]: null,
-                        [l.Type.Rotate90Right]: a.GRichTooltipConfig.from({
+                        [GTransformAction.Type.Rotate180Left]: null,
+                        [GTransformAction.Type.Rotate45Right]: null,
+                        [GTransformAction.Type.Rotate90Right]: GRichTooltipConfig.GRichTooltipConfig.from({
                             title: GObject.GLocale.get(new GObject.GLocaleKey("GTransformAction", "rotate-90-right-tooltip-title")),
                             description: GObject.GLocale.get(new GObject.GLocaleKey("GTransformAction", "rotate-90-right-tooltip-description")),
                             learnMore:
                                 "/docs/basics/moving-transforming-and-arranging-objects/#rotating-objects",
                         }),
-                        [l.Type.Rotate180Right]: null,
-                        [l.Type.FlipVertical]: a.GRichTooltipConfig.from({
+                        [GTransformAction.Type.Rotate180Right]: null,
+                        [GTransformAction.Type.FlipVertical]: GRichTooltipConfig.GRichTooltipConfig.from({
                             title: GObject.GLocale.get(new GObject.GLocaleKey("GTransformAction", "flip-vertical-tooltip-title")),
                             description: GObject.GLocale.get(new GObject.GLocaleKey("GTransformAction", "flip-vertical-tooltip-description")),
                             learnMore:
                                 "/docs/basics/moving-transforming-and-arranging-objects/#flipping-objects",
                         }),
-                        [l.Type.FlipHorizontal]: a.GRichTooltipConfig.from({
+                        [GTransformAction.Type.FlipHorizontal]: GRichTooltipConfig.GRichTooltipConfig.from({
                             title: GObject.GLocale.get(new GObject.GLocaleKey("GTransformAction", "flip-horizontal-tooltip-title")),
                             description: GObject.GLocale.get(new GObject.GLocaleKey("GTransformAction", "flip-horizontal-tooltip-description")),
                             learnMore:
@@ -42,8 +42,8 @@ module.exports = function (module, exports, require) {
                     },
                 }));
         }
-        (GObject.GObject.inherit(l, s),
-            (l.Type = {
+        (GObject.GObject.inherit(GTransformAction, GAction),
+            (GTransformAction.Type = {
                 Rotate45Left: "rotate-45-left",
                 Rotate90Left: "rotate-90-left",
                 Rotate180Left: "rotate-180-left",
@@ -53,107 +53,107 @@ module.exports = function (module, exports, require) {
                 FlipVertical: "flip-vertical",
                 FlipHorizontal: "flip-horizontal",
             }),
-            (l.TOOLTIP_CONFIG = null),
-            (l.ID = "arrange.transform"),
-            (l.prototype._type = null),
-            (l.prototype._title = null),
-            (l.prototype.getId = function () {
-                return l.ID + "." + this._type;
+            (GTransformAction.TOOLTIP_CONFIG = null),
+            (GTransformAction.ID = "arrange.transform"),
+            (GTransformAction.prototype._type = null),
+            (GTransformAction.prototype._title = null),
+            (GTransformAction.prototype.getId = function () {
+                return GTransformAction.ID + "." + this._type;
             }),
-            (l.prototype.getTitle = function () {
+            (GTransformAction.prototype.getTitle = function () {
                 return this._title;
             }),
-            (l.prototype.getIcon = function () {
+            (GTransformAction.prototype.getIcon = function () {
                 switch (this._type) {
-                    case l.Type.Rotate90Left:
-                    case l.Type.Rotate90Right:
+                    case GTransformAction.Type.Rotate90Left:
+                    case GTransformAction.Type.Rotate90Right:
                         return "gravit-icon-rotate";
-                    case l.Type.FlipVertical:
+                    case GTransformAction.Type.FlipVertical:
                         return "gravit-icon-flip-vertical";
-                    case l.Type.FlipHorizontal:
+                    case GTransformAction.Type.FlipHorizontal:
                         return "gravit-icon-flip-horizontal";
                     default:
                         return null;
                 }
             }),
-            (l.prototype.getCategory = function () {
+            (GTransformAction.prototype.getCategory = function () {
                 return GCategory.CATEGORY_MODIFY_TRANSFORM;
             }),
-            (l.prototype.getGroup = function () {
-                var e = "";
+            (GTransformAction.prototype.getGroup = function () {
+                var group = "";
                 switch (this._type) {
-                    case l.Type.Rotate45Left:
-                    case l.Type.Rotate90Left:
-                    case l.Type.Rotate180Left:
-                        e = "rotate-left";
+                    case GTransformAction.Type.Rotate45Left:
+                    case GTransformAction.Type.Rotate90Left:
+                    case GTransformAction.Type.Rotate180Left:
+                        group = "rotate-left";
                         break;
-                    case l.Type.Rotate45Right:
-                    case l.Type.Rotate90Right:
-                    case l.Type.Rotate180Right:
-                        e = "rotate-right";
+                    case GTransformAction.Type.Rotate45Right:
+                    case GTransformAction.Type.Rotate90Right:
+                    case GTransformAction.Type.Rotate180Right:
+                        group = "rotate-right";
                         break;
-                    case l.Type.FlipVertical:
-                    case l.Type.FlipHorizontal:
-                        e = "flip";
+                    case GTransformAction.Type.FlipVertical:
+                    case GTransformAction.Type.FlipHorizontal:
+                        group = "flip";
                 }
-                return "arrange/transform-" + e;
+                return "arrange/transform-" + group;
             }),
-            (l.prototype.getShortcut = function () {
+            (GTransformAction.prototype.getShortcut = function () {
                 return null;
             }),
-            (l.prototype.isEnabled = function (e) {
-                let t = e || (gDesigner.getActiveDocument() ? gDesigner.getActiveDocument().getEditor().getSelection() : null) || [];
+            (GTransformAction.prototype.isEnabled = function (elements) {
+                let selection = elements || (gDesigner.getActiveDocument() ? gDesigner.getActiveDocument().getEditor().getSelection() : null) || [];
                 return (
-                    (t = t.filter((e) => {
-                        var t = o.GElementEditor.getEditor(e);
-                        return t && (t.hasFlag(o.GBoxEditor.Flag.RotateCorners) || t.hasFlag(o.GBoxEditor.Flag.RotateHandle));
+                    (selection = selection.filter((element) => {
+                        var elementEditor = Editor.GElementEditor.getEditor(element);
+                        return elementEditor && (elementEditor.hasFlag(Editor.GBoxEditor.Flag.RotateCorners) || elementEditor.hasFlag(Editor.GBoxEditor.Flag.RotateHandle));
                     })),
-                    t.length > 0
+                    selection.length > 0
                 );
             }),
-            (l.prototype.execute = function (e) {
-                var t = gDesigner.getActiveDocument(),
-                    n = t.getScene();
-                (e || (e = t.getEditor().getSelection()),
-                    (e = (e = t.getEditor().filterIndividualElements(e)).filter((e) => {
-                        var t = o.GElementEditor.getEditor(e);
-                        return t && (t.hasFlag(o.GBoxEditor.Flag.RotateCorners) || t.hasFlag(o.GBoxEditor.Flag.RotateHandle));
+            (GTransformAction.prototype.execute = function (elements) {
+                var document = gDesigner.getActiveDocument(),
+                    scene = document.getScene();
+                (elements || (elements = document.getEditor().getSelection()),
+                    (elements = (elements = document.getEditor().filterIndividualElements(elements)).filter((element) => {
+                        var elementEditor = Editor.GElementEditor.getEditor(element);
+                        return elementEditor && (elementEditor.hasFlag(Editor.GBoxEditor.Flag.RotateCorners) || elementEditor.hasFlag(Editor.GBoxEditor.Flag.RotateHandle));
                     })));
-                var a = o.GEditor.getGroupGeometryBBox(e);
-                a &&
-                    o.GEditor.tryRunTransaction(
-                        n,
+                var boundingBox = Editor.GEditor.getGroupGeometryBBox(elements);
+                boundingBox &&
+                    Editor.GEditor.tryRunTransaction(
+                        scene,
                         function () {
-                            for (var t = 0; t < e.length; ++t) {
-                                var n = e[t];
-                                if (n.hasMixin(GObject.GElement.Transform) && a) {
-                                    var o = a.getSide(GObject.GRect.Side.CENTER),
+                            for (var t = 0; t < elements.length; ++t) {
+                                var n = elements[t];
+                                if (n.hasMixin(GObject.GElement.Transform) && boundingBox) {
+                                    var o = boundingBox.getSide(GObject.GRect.Side.CENTER),
                                         r = 0,
                                         s = 1,
                                         c = 1;
                                     switch (this._type) {
-                                        case l.Type.Rotate45Left:
+                                        case GTransformAction.Type.Rotate45Left:
                                             r = -45;
                                             break;
-                                        case l.Type.Rotate90Left:
+                                        case GTransformAction.Type.Rotate90Left:
                                             r = -90;
                                             break;
-                                        case l.Type.Rotate180Left:
+                                        case GTransformAction.Type.Rotate180Left:
                                             r = -180;
                                             break;
-                                        case l.Type.Rotate45Right:
+                                        case GTransformAction.Type.Rotate45Right:
                                             r = 45;
                                             break;
-                                        case l.Type.Rotate90Right:
+                                        case GTransformAction.Type.Rotate90Right:
                                             r = 90;
                                             break;
-                                        case l.Type.Rotate180Right:
+                                        case GTransformAction.Type.Rotate180Right:
                                             r = 180;
                                             break;
-                                        case l.Type.FlipVertical:
+                                        case GTransformAction.Type.FlipVertical:
                                             c = -1;
                                             break;
-                                        case l.Type.FlipHorizontal:
+                                        case GTransformAction.Type.FlipHorizontal:
                                             s = -1;
                                     }
                                     var d = new GObject.GTransform()
@@ -168,11 +168,11 @@ module.exports = function (module, exports, require) {
                         GObject.GLocale.get(this.getTitle())
                     );
             }),
-            (l.prototype.getTooltipConfig = function (e) {
-                return (e && l.TOOLTIP_CONFIG[e] && l.TOOLTIP_CONFIG[e][this._type]) || null;
+            (GTransformAction.prototype.getTooltipConfig = function (area) {
+                return (area && GTransformAction.TOOLTIP_CONFIG[area] && GTransformAction.TOOLTIP_CONFIG[area][this._type]) || null;
             }),
-            (l.prototype.toString = function () {
+            (GTransformAction.prototype.toString = function () {
                 return "[Object GTransformAction]";
             }),
-            (module.exports = l));
+            (module.exports = GTransformAction));
     };

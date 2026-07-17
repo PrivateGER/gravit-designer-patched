@@ -2,231 +2,231 @@ module.exports = function (module, exports, require) {
         "use strict";
         (require(58 /* polyfill:Array */), require(19), require(8 /* Symbol */), require(71 /* polyfill:String */), require(4), require(41), require(13), require(32), require(38), require(97), require(33), require(26));
         var GObject = require(1),
-            i = require(53),
+            GEditor = require(53),
             Utils = require(40),
             designerConfig = require(10),
-            s = require(592),
-            l = require(1094);
-        const c = require(434);
-        function d() {}
-        async function u(e, t) {
-            const n = gDesigner.getSyncUser(),
-                o = gDesigner.getApplicationManager(),
-                i = d.isOwner(n, e),
-                a = (e.getProperty("asgn") || []).includes(n.getUID()),
-                r = o.isCommentingEditingEnabled(),
-                s = await o.hasAccess(t);
-            return r && (s || i || a);
+            GError = require(592),
+            GCloudAnnotations = require(1094);
+        const CommentPermissions = require(434);
+        function GAnnotationsUtils() {}
+        async function hasAnnotationPermission(annotation, action) {
+            const syncUser = gDesigner.getSyncUser(),
+                applicationManager = gDesigner.getApplicationManager(),
+                isOwner = GAnnotationsUtils.isOwner(syncUser, annotation),
+                isAssigned = (annotation.getProperty("asgn") || []).includes(syncUser.getUID()),
+                commentingEnabled = applicationManager.isCommentingEditingEnabled(),
+                hasAccess = await applicationManager.hasAccess(action);
+            return commentingEnabled && (hasAccess || isOwner || isAssigned);
         }
-        ((d.getCloudAnnotationsForDocument = async function (e) {
-            const t = e.getAnnotationsId();
-            if (!t) throw new s("GAnnotationsUtils.getCloudAnnotationsForDocument: can't get annotations id for the document");
-            const n = await e.getAnnotationsToken(t);
+        ((GAnnotationsUtils.getCloudAnnotationsForDocument = async function (document) {
+            const annotationsId = document.getAnnotationsId();
+            if (!annotationsId) throw new GError("GAnnotationsUtils.getCloudAnnotationsForDocument: can't get annotations id for the document");
+            const annotationsToken = await document.getAnnotationsToken(annotationsId);
             return gDesigner
                 .getAnnotationsManager()
-                .getAnnotations(t, n)
-                .then((o) => new l(o, t, n, e));
+                .getAnnotations(annotationsId, annotationsToken)
+                .then((annotationsData) => new GCloudAnnotations(annotationsData, annotationsId, annotationsToken, document));
         }),
-            (d.updateAndReturnCloudAnnotationsForDocument = async function (e, t) {
-                const n = e.getAnnotationsId();
-                if (!n)
-                    throw new s("GAnnotationsUtils.updateAndReturnCloudAnnotationsForDocument: can't get annotations id for the document");
-                t || (t = []);
-                const o = await e.getAnnotationsToken(n);
+            (GAnnotationsUtils.updateAndReturnCloudAnnotationsForDocument = async function (document, annotations) {
+                const annotationsId = document.getAnnotationsId();
+                if (!annotationsId)
+                    throw new GError("GAnnotationsUtils.updateAndReturnCloudAnnotationsForDocument: can't get annotations id for the document");
+                annotations || (annotations = []);
+                const annotationsToken = await document.getAnnotationsToken(annotationsId);
                 return gDesigner
                     .getAnnotationsManager()
-                    .updateAnnotations(n, this._prepareAnnotations(e, t), o)
-                    .then((t) => new l(t, n, o, e));
+                    .updateAnnotations(annotationsId, this._prepareAnnotations(document, annotations), annotationsToken)
+                    .then((updatedAnnotations) => new GCloudAnnotations(updatedAnnotations, annotationsId, annotationsToken, document));
             }),
-            (d._prepareAnnotations = function (e, t) {
-                return t;
+            (GAnnotationsUtils._prepareAnnotations = function (document, annotations) {
+                return annotations;
             }),
-            (d.saveDocumentAnnotations = async function (e, t, n, i) {
-                var a = t;
+            (GAnnotationsUtils.saveDocumentAnnotations = async function (document, isSecondaryFormat, scene, isDuplicateSave) {
+                var needsAccessToken = isSecondaryFormat;
                 if (
-                    ((n = n || e.getScene()),
-                    (!e.isCloudFile() && !e.isExternalFile()) || !n || (!n.hasAnnotations() && !n.isCloudAnnotations()))
+                    ((scene = scene || document.getScene()),
+                    (!document.isCloudFile() && !document.isExternalFile()) || !scene || (!scene.hasAnnotations() && !scene.isCloudAnnotations()))
                 )
                     return false;
-                var r = e.getId(),
-                    s = n.getProperty("cid"),
-                    c = e.getReservedId();
-                let u = [];
-                var p;
-                n.iteratePages((e) => {
-                    let t = e.getAnnotations();
-                    (i && (d.removeSidFromAnnotations(t), e.getProperty("Guid") || d.removeGuidFromAnnotations(t)), u.push(t));
+                var documentId = document.getId(),
+                    cloudId = scene.getProperty("cid"),
+                    reservedId = document.getReservedId();
+                let pageAnnotationsList = [];
+                var annotationsFileId;
+                scene.iteratePages((page) => {
+                    let annotations = page.getAnnotations();
+                    (isDuplicateSave && (GAnnotationsUtils.removeSidFromAnnotations(annotations), page.getProperty("Guid") || GAnnotationsUtils.removeGuidFromAnnotations(annotations)), pageAnnotationsList.push(annotations));
                 }, true);
-                var g = null;
-                const h = async () => {
-                    let e = await gApi.getFile(p, true).catch(() => null);
-                    if (e && e.link_accesses && e.link_accesses.length)
-                        for (var t = 0; t < e.link_accesses.length && !g; ++t) {
-                            let n = e.link_accesses[t];
-                            if (n.token && n.comment) return n.token;
+                var accessToken = null;
+                const findAccessToken = async () => {
+                    let file = await gApi.getFile(annotationsFileId, true).catch(() => null);
+                    if (file && file.link_accesses && file.link_accesses.length)
+                        for (var t = 0; t < file.link_accesses.length && !accessToken; ++t) {
+                            let linkAccess = file.link_accesses[t];
+                            if (linkAccess.token && linkAccess.comment) return linkAccess.token;
                         }
                     return null;
                 };
-                if (((p = r || s || c) && a && ((g = await e.getAnnotationsToken(p)) || (g = await h())), !p))
+                if (((annotationsFileId = documentId || cloudId || reservedId) && needsAccessToken && ((accessToken = await document.getAnnotationsToken(annotationsFileId)) || (accessToken = await findAccessToken())), !annotationsFileId))
                     try {
-                        const t = { trashed: null };
-                        let n = await gApi.createFile(t);
-                        (p = n.id) && e.setReservedId(p);
+                        const fileData = { trashed: null };
+                        let newFile = await gApi.createFile(fileData);
+                        (annotationsFileId = newFile.id) && document.setReservedId(annotationsFileId);
                     } catch (e) {
                         console.warn("Failed to record annotations");
                     }
-                if (!p) return false;
-                a && !g && (g = await h());
-                const f = this._prepareAnnotations(e, u.map(GObject.GNode.store));
+                if (!annotationsFileId) return false;
+                needsAccessToken && !accessToken && (accessToken = await findAccessToken());
+                const preparedAnnotations = this._prepareAnnotations(document, pageAnnotationsList.map(GObject.GNode.store));
                 return (
-                    f instanceof Array || (f.suppressNewPageNotifications = !!i),
+                    preparedAnnotations instanceof Array || (preparedAnnotations.suppressNewPageNotifications = !!isDuplicateSave),
                     gDesigner
                         .getAnnotationsManager()
-                        .updateAnnotations(p, f, g)
-                        .then((t) => {
-                            var r = new l(t, p, g, e);
-                            let s,
-                                c = r.annotationsCollection;
+                        .updateAnnotations(annotationsFileId, preparedAnnotations, accessToken)
+                        .then((updateResult) => {
+                            var snapshot = new GCloudAnnotations(updateResult, annotationsFileId, accessToken, document);
+                            let lastModifiedTime,
+                                annotationsCollection = snapshot.annotationsCollection;
                             return (
-                                (s = (i && n.getLastSavedTime()) || new Date(r.lastUpdateTime).getTime()),
-                                c && c.length
-                                    ? (n.iteratePages((e) => {
-                                          let t = d.findAnnotationsListForPage(e, c);
-                                          t && e.setAnnotations(GObject.GNode.restore(t));
+                                (lastModifiedTime = (isDuplicateSave && scene.getLastSavedTime()) || new Date(snapshot.lastUpdateTime).getTime()),
+                                annotationsCollection && annotationsCollection.length
+                                    ? (scene.iteratePages((page) => {
+                                          let pageAnnotations = GAnnotationsUtils.findAnnotationsListForPage(page, annotationsCollection);
+                                          pageAnnotations && page.setAnnotations(GObject.GNode.restore(pageAnnotations));
                                       }, true),
-                                      n.getProperty("cid") !== p && n.setCloudAnnotations(p),
-                                      a && g && n.setProperty("asec", g))
-                                    : (n.setCloudAnnotations(null), n.cleanAnnotations(), a && g && n.setProperty("asec", g)),
-                                n.setLastTimeAnnotationsFromCloudModified(s),
+                                      scene.getProperty("cid") !== annotationsFileId && scene.setCloudAnnotations(annotationsFileId),
+                                      needsAccessToken && accessToken && scene.setProperty("asec", accessToken))
+                                    : (scene.setCloudAnnotations(null), scene.cleanAnnotations(), needsAccessToken && accessToken && scene.setProperty("asec", accessToken)),
+                                scene.setLastTimeAnnotationsFromCloudModified(lastModifiedTime),
                                 true
                             );
                         })
-                        .catch((e) => (n.setCloudAnnotations(null), console.warn("Failed to record annotations: " + e), false))
+                        .catch((error) => (scene.setCloudAnnotations(null), console.warn("Failed to record annotations: " + error), false))
                 );
             }),
-            (d.findAnnotationsListForPage = function (e, t) {
-                const n = e.getProperty("Guid", true) || e.getAnnotations().getProperty("Guid");
-                let o = null;
-                if (!t || !t.length) return o;
+            (GAnnotationsUtils.findAnnotationsListForPage = function (page, annotationsCollection) {
+                const guid = page.getProperty("Guid", true) || page.getAnnotations().getProperty("Guid");
+                let result = null;
+                if (!annotationsCollection || !annotationsCollection.length) return result;
                 if (
-                    (n &&
-                        (o = this._findInAnnotationsObj(
-                            t,
-                            (e) => e.Guid === n || e.aid === n,
-                            (e) => e.$Guid === n || e["@Guid"] === n || e.$aid === n
+                    (guid &&
+                        (result = this._findInAnnotationsObj(
+                            annotationsCollection,
+                            (item) => item.Guid === guid || item.aid === guid,
+                            (item) => item.$Guid === guid || item["@Guid"] === guid || item.$aid === guid
                         )),
-                    !o)
+                    !result)
                 ) {
-                    const n = e.getAnnotations().getProperty("aid");
-                    n &&
-                        (o = this._findInAnnotationsObj(
-                            t,
-                            (e) => e.aid === n,
-                            (e) => e.$aid === n
+                    const aid = page.getAnnotations().getProperty("aid");
+                    aid &&
+                        (result = this._findInAnnotationsObj(
+                            annotationsCollection,
+                            (item) => item.aid === aid,
+                            (item) => item.$aid === aid
                         ));
                 }
-                if (!o) {
-                    const n = e.getId();
-                    n &&
-                        (o = this._findInAnnotationsObj(
-                            t,
-                            (e) => e.pgid === n,
-                            (e) => e.$pgid === n
+                if (!result) {
+                    const pageId = page.getId();
+                    pageId &&
+                        (result = this._findInAnnotationsObj(
+                            annotationsCollection,
+                            (item) => item.pgid === pageId,
+                            (item) => item.$pgid === pageId
                         ));
                 }
-                return o;
+                return result;
             }),
-            (d._findInAnnotationsObj = function (e, t, n) {
-                return e.find((e) => (e instanceof GObject.GAnnotationsList ? n(e) : t(e)));
+            (GAnnotationsUtils._findInAnnotationsObj = function (list, matchDefault, matchAnnotationsList) {
+                return list.find((item) => (item instanceof GObject.GAnnotationsList ? matchAnnotationsList(item) : matchDefault(item)));
             }),
-            (d.mergeAnnotations = function (e, t, n, i, r) {
-                let s = {},
-                    l = {},
-                    c = false;
-                (t.forEach((e) => {
-                    ((l[e.getId()] = e), e.hasFlag(GObject.GNode.Flag.Selected) && (s[e.getId()] = 1));
+            (GAnnotationsUtils.mergeAnnotations = function (annotationsList, existingChildren, restoredList, restoredChildren, recordedProperties) {
+                let selectedIds = {},
+                    existingById = {},
+                    changed = false;
+                (existingChildren.forEach((child) => {
+                    ((existingById[child.getId()] = child), child.hasFlag(GObject.GNode.Flag.Selected) && (selectedIds[child.getId()] = 1));
                 }),
-                    t.forEach((t) => {
-                        i.some((e) => e.getId() === t.getId()) || (e.removeChild(t), (c = true));
+                    existingChildren.forEach((existingChild) => {
+                        restoredChildren.some((restoredChild) => restoredChild.getId() === existingChild.getId()) || (annotationsList.removeChild(existingChild), (changed = true));
                     }));
-                const d = ["$lmd", "$storedUrl", "$__ids", "$plkt", "$mtime", "$lkt", "@_lkt"];
-                r && r instanceof Object && d.push(...Object.keys(r).map((e) => "$" + e));
-                for (let t = 0; t < i.length; t++) {
-                    let n = i[t],
-                        r = l[n.getId()];
-                    (r &&
-                        ((0, Utils.isDifferent)(n, r, d.concat(n instanceof GObject.GRectangleAnnotation ? ["$cu"] : [])) &&
-                            ((0, Utils.mergeNode)(r, n), (c = true)),
-                        r.setProperty("mtime", n.getProperty("mtime"))),
-                        1 === s[n.getId()] && n.setFlag(GObject.GNode.Flag.Selected),
-                        l[n.getId()] || (e.appendChild(n), (c = true)));
+                const excludedPropertyKeys = ["$lmd", "$storedUrl", "$__ids", "$plkt", "$mtime", "$lkt", "@_lkt"];
+                recordedProperties && recordedProperties instanceof Object && excludedPropertyKeys.push(...Object.keys(recordedProperties).map((key) => "$" + key));
+                for (let t = 0; t < restoredChildren.length; t++) {
+                    let restoredChild = restoredChildren[t],
+                        existingChild = existingById[restoredChild.getId()];
+                    (existingChild &&
+                        ((0, Utils.isDifferent)(restoredChild, existingChild, excludedPropertyKeys.concat(restoredChild instanceof GObject.GRectangleAnnotation ? ["$cu"] : [])) &&
+                            ((0, Utils.mergeNode)(existingChild, restoredChild), (changed = true)),
+                        existingChild.setProperty("mtime", restoredChild.getProperty("mtime"))),
+                        1 === selectedIds[restoredChild.getId()] && restoredChild.setFlag(GObject.GNode.Flag.Selected),
+                        existingById[restoredChild.getId()] || (annotationsList.appendChild(restoredChild), (changed = true)));
                 }
-                e.setProperty("sid", n.getProperty("sid") || null);
-                const u = n.getProperty("Guid");
-                return (u && e.setProperty("Guid", u), c);
+                annotationsList.setProperty("sid", restoredList.getProperty("sid") || null);
+                const guid = restoredList.getProperty("Guid");
+                return (guid && annotationsList.setProperty("Guid", guid), changed);
             }),
-            (d.canDeleteAnnotation = function (e) {
-                var t = gDesigner.getSyncUser();
-                return d.isOwner(t, e);
+            (GAnnotationsUtils.canDeleteAnnotation = function (annotation) {
+                var syncUser = gDesigner.getSyncUser();
+                return GAnnotationsUtils.isOwner(syncUser, annotation);
             }),
-            (d.removeAnnotations = function (e, t, n) {
+            (GAnnotationsUtils.removeAnnotations = function (elements, parent, title) {
                 let o = !(arguments.length > 3 && void 0 !== arguments[3]) || arguments[3];
-                if (!t || !t.getScene()) return;
-                let a = t.getScene(),
-                    r = gDesigner.getActiveDocument();
-                if (r.getScene() === a) {
-                    var s = !!r.getAnnotationsId();
-                    i.GAnnotationEditor.removeAnnotations(e, t, n, o, !s);
+                if (!parent || !parent.getScene()) return;
+                let scene = parent.getScene(),
+                    activeDocument = gDesigner.getActiveDocument();
+                if (activeDocument.getScene() === scene) {
+                    var hasAnnotationsId = !!activeDocument.getAnnotationsId();
+                    GEditor.GAnnotationEditor.removeAnnotations(elements, parent, title, o, !hasAnnotationsId);
                 }
             }),
-            (d.filterAnnotationElements = function (e) {
-                return e.filter((e) => e.hasMixin(GObject.GAnnotation) || e instanceof GObject.GComment);
+            (GAnnotationsUtils.filterAnnotationElements = function (elements) {
+                return elements.filter((element) => element.hasMixin(GObject.GAnnotation) || element instanceof GObject.GComment);
             }),
-            (d.canResolveAnnotation = function (e) {
-                return u(e, c.RESOLVE_COMMENT_ANNOTATION);
+            (GAnnotationsUtils.canResolveAnnotation = function (annotation) {
+                return hasAnnotationPermission(annotation, CommentPermissions.RESOLVE_COMMENT_ANNOTATION);
             }),
-            (d.canReopenAnnotation = function (e) {
-                return u(e, c.REOPEN_COMMENT_ANNOTATION);
+            (GAnnotationsUtils.canReopenAnnotation = function (annotation) {
+                return hasAnnotationPermission(annotation, CommentPermissions.REOPEN_COMMENT_ANNOTATION);
             }),
-            (d.isOwner = function (e, t) {
-                if (e) {
-                    const n = t.getProperty ? t.getProperty("uid") : t.uid;
-                    return e.getUID() === n;
+            (GAnnotationsUtils.isOwner = function (user, annotation) {
+                if (user) {
+                    const ownerUid = annotation.getProperty ? annotation.getProperty("uid") : annotation.uid;
+                    return user.getUID() === ownerUid;
                 }
                 return false;
             }),
-            (d.canUpdate = function (e) {
-                return !(gDesigner.isAnonymous() && !designerConfig.ANONYMOUS_SESSION_ENABLED) && !!e;
+            (GAnnotationsUtils.canUpdate = function (annotation) {
+                return !(gDesigner.isAnonymous() && !designerConfig.ANONYMOUS_SESSION_ENABLED) && !!annotation;
             }),
-            (d.resolveAllComments = function (e) {
-                var t = e.getScene();
-                t &&
-                    i.GEditor.tryRunTransaction(
-                        t,
+            (GAnnotationsUtils.resolveAllComments = function (document) {
+                var scene = document.getScene();
+                scene &&
+                    GEditor.GEditor.tryRunTransaction(
+                        scene,
                         function () {
-                            t.iteratePages((e) => {
-                                e.getAnnotations().resolve();
+                            scene.iteratePages((page) => {
+                                page.getAnnotations().resolve();
                             }, true);
                         },
                         GObject.GLocale.get(new GObject.GLocaleKey("GAnnotationsSidebar", "text.resolve-all-comments"))
                     );
             }),
-            (d.getCommentsCount = function (e) {
-                if (!e.annotations) return 0;
+            (GAnnotationsUtils.getCommentsCount = function (file) {
+                if (!file.annotations) return 0;
                 let t = 0;
-                const n = { annotationsCollection: e.annotations, lastUpdateTime: 0 };
-                let o = new l(n, e.id);
+                const snapshotData = { annotationsCollection: file.annotations, lastUpdateTime: 0 };
+                let snapshot = new GCloudAnnotations(snapshotData, file.id);
                 return (
-                    o &&
-                        o.annotationsCollection &&
-                        o.annotationsCollection.forEach((e) => {
-                            e.$ &&
-                                e.$.forEach(function (e) {
-                                    e.rsv ||
-                                        (e.$ &&
-                                            0 !== e.$.length &&
-                                            e.$.forEach(function (e) {
-                                                "cmt" === e["@"] && t++;
+                    snapshot &&
+                        snapshot.annotationsCollection &&
+                        snapshot.annotationsCollection.forEach((annotationsListEntry) => {
+                            annotationsListEntry.$ &&
+                                annotationsListEntry.$.forEach(function (entry) {
+                                    entry.rsv ||
+                                        (entry.$ &&
+                                            0 !== entry.$.length &&
+                                            entry.$.forEach(function (child) {
+                                                "cmt" === child["@"] && t++;
                                             }),
                                         t++);
                                 });
@@ -234,16 +234,16 @@ module.exports = function (module, exports, require) {
                     t
                 );
             }),
-            (d.removeSidFromAnnotations = function (e) {
-                d.setPropertyValueInAnnotations(e, "sid", null);
+            (GAnnotationsUtils.removeSidFromAnnotations = function (annotations) {
+                GAnnotationsUtils.setPropertyValueInAnnotations(annotations, "sid", null);
             }),
-            (d.removeGuidFromAnnotations = function (e) {
-                d.setPropertyValueInAnnotations(e, "Guid", "");
+            (GAnnotationsUtils.removeGuidFromAnnotations = function (annotations) {
+                GAnnotationsUtils.setPropertyValueInAnnotations(annotations, "Guid", "");
             }),
-            (d.setPropertyValueInAnnotations = function (e, t, n, i) {
-                e.accept((e) => {
-                    (e instanceof GObject.GAnnotationsList || e.hasMixin(GObject.GAnnotation) || e instanceof GObject.GComment) && e.setProperty(t, n, i);
+            (GAnnotationsUtils.setPropertyValueInAnnotations = function (node, propertyName, propertyValue, i) {
+                node.accept((node) => {
+                    (node instanceof GObject.GAnnotationsList || node.hasMixin(GObject.GAnnotation) || node instanceof GObject.GComment) && node.setProperty(propertyName, propertyValue, i);
                 });
             }),
-            (module.exports = d));
+            (module.exports = GAnnotationsUtils));
     };

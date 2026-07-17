@@ -5,28 +5,28 @@ module.exports = function (module, exports, require) {
         var GObject = require(1),
             GGoogleAPI = require(1036),
             designerConfig = require(10),
-            s = _interopRequireDefault(require(734)),
-            l = (_interopRequireDefault(require(355)), _interopRequireDefault(require(1037 /* GTranslationLoader */))),
-            c = require(255),
-            d = require(590),
+            ExternalFileSettingsError = _interopRequireDefault(require(734)),
+            translationLoader = (_interopRequireDefault(require(355)), _interopRequireDefault(require(1037 /* GTranslationLoader */))),
+            fontsProviderManager = require(255 /* FontsProviderManager */),
+            defaultFontsProvider = require(590 /* DefaultFontsProvider */),
             GCategory = require(18),
-            p = require(843),
-            g = require(257),
-            h = require(219),
+            GOpenRecentAction = require(843),
+            iconClassMap = require(257),
+            MessageDialog = require(219),
             GSystemDialog = require(44),
-            m = require(78);
-        function y() {}
-        (GObject.GObject.inherit(y, GObject.GEventTarget),
-            (y.OpenFileRequest = function (e, t) {
-                ((this._type = e), (this._content = t));
+            GDocumentEvent = require(78);
+        function GContainer() {}
+        (GObject.GObject.inherit(GContainer, GObject.GEventTarget),
+            (GContainer.OpenFileRequest = function (type, content) {
+                ((this._type = type), (this._content = content));
             }),
-            (y.OpenFileRequest.prototype.getType = function () {
+            (GContainer.OpenFileRequest.prototype.getType = function () {
                 return this._type;
             }),
-            (y.OpenFileRequest.prototype.getContent = function () {
+            (GContainer.OpenFileRequest.prototype.getContent = function () {
                 return this._content;
             }),
-            (y.OpenFileRequest.Type = {
+            (GContainer.OpenFileRequest.Type = {
                 Document: "document",
                 Token: "token",
                 DocumentOrToken: "documentOrToken",
@@ -36,7 +36,7 @@ module.exports = function (module, exports, require) {
                 Preset: "preset",
                 MSTeamsDeepLink: "msteamsdeeplink",
             }),
-            (y.DeepLinking = {
+            (GContainer.DeepLinking = {
                 ProCoupon: "procoupon",
                 PurchaseFlow: "purchase_flow",
                 PurchaseFlowNew: "purchase_flow_new",
@@ -55,7 +55,7 @@ module.exports = function (module, exports, require) {
                 CreateShare: "create_share",
                 ActivateTrial: "activate_trial",
             }),
-            (y.Runtime = {
+            (GContainer.Runtime = {
                 Browser: "browser",
                 Chrome: "chrome",
                 WebWorker: "webworker",
@@ -64,266 +64,266 @@ module.exports = function (module, exports, require) {
                 PWA: "pwa",
                 IPad: "ipad",
             }),
-            (y.GravitLanguages = [...GObject.GLocale.getAvailableLanguages()]),
-            (y.prototype._recentDocuments = null),
-            (y.prototype._deepLinking = null),
-            (y.prototype.getRuntime = function () {
+            (GContainer.GravitLanguages = [...GObject.GLocale.getAvailableLanguages()]),
+            (GContainer.prototype._recentDocuments = null),
+            (GContainer.prototype._deepLinking = null),
+            (GContainer.prototype.getRuntime = function () {
                 throw new Error("Not implemented.");
             }),
-            (y.prototype.getStorage = function () {
+            (GContainer.prototype.getStorage = function () {
                 throw new Error("Not implemented.");
             }),
-            (y.prototype.getRootPath = function () {
+            (GContainer.prototype.getRootPath = function () {
                 return "";
             }),
-            (y.prototype.registerFontProviders = function () {
-                c.registerProvider(d);
+            (GContainer.prototype.registerFontProviders = function () {
+                fontsProviderManager.registerProvider(defaultFontsProvider);
             }),
-            (y.prototype.getSystemFontsProvider = function () {
+            (GContainer.prototype.getSystemFontsProvider = function () {
                 return null;
             }),
-            (y.prototype.supportsLocalFonts = function () {
+            (GContainer.prototype.supportsLocalFonts = function () {
                 return false;
             }),
-            (y.prototype.getProperty = function (e) {
-                return new Promise((t) => {
-                    var n = window.localStorage.getItem(e) || null;
-                    t(n ? JSON.parse(n) : null);
+            (GContainer.prototype.getProperty = function (key) {
+                return new Promise((resolve) => {
+                    var rawValue = window.localStorage.getItem(key) || null;
+                    resolve(rawValue ? JSON.parse(rawValue) : null);
                 });
             }),
-            (y.prototype.setProperty = function (e, t) {
-                window.localStorage.setItem(e, JSON.stringify(t));
+            (GContainer.prototype.setProperty = function (key, value) {
+                window.localStorage.setItem(key, JSON.stringify(value));
             }),
-            (y.prototype.removeProperty = function (e) {
-                window.localStorage.removeItem(e);
+            (GContainer.prototype.removeProperty = function (key) {
+                window.localStorage.removeItem(key);
             }),
-            (y.prototype.getPropertyKeyByIndex = function (e) {
-                return window.localStorage.key(e);
+            (GContainer.prototype.getPropertyKeyByIndex = function (index) {
+                return window.localStorage.key(index);
             }),
-            (y.prototype.getStorageLength = function () {
+            (GContainer.prototype.getStorageLength = function () {
                 return window.localStorage.length;
             }),
-            (y.prototype.setCookie = function (e) {
-                let { name, value } = e;
+            (GContainer.prototype.setCookie = function (cookieOptions) {
+                let { name, value } = cookieOptions;
                 return navigator.cookieEnabled
                     ? ((document.cookie = "".concat(name, "=").concat(value, "; path=/")),
                       (document.cookie = "".concat(name, "=").concat(value, "; path=/; domain=").concat(designerConfig.DOMAIN)),
                       Promise.resolve())
                     : Promise.reject();
             }),
-            (y.prototype.handleDeepLinking = function (e) {
-                const t = new URL(e || window.location.href).searchParams,
-                    n = Object.keys(y.DeepLinking).find((e) => t.has(y.DeepLinking[e]));
-                if (n) {
-                    const e = {
-                        link: y.DeepLinking[n],
-                        options: Array.from(t.entries()).reduce((e, t) => ((e[t[0]] = t[1]), e), {}),
+            (GContainer.prototype.handleDeepLinking = function (url) {
+                const searchParams = new URL(url || window.location.href).searchParams,
+                    matchedKey = Object.keys(GContainer.DeepLinking).find((key) => searchParams.has(GContainer.DeepLinking[key]));
+                if (matchedKey) {
+                    const deepLinkInfo = {
+                        link: GContainer.DeepLinking[matchedKey],
+                        options: Array.from(searchParams.entries()).reduce((acc, entry) => ((acc[entry[0]] = entry[1]), acc), {}),
                     };
-                    return ((this._deepLinking = e), this._deepLinking);
+                    return ((this._deepLinking = deepLinkInfo), this._deepLinking);
                 }
                 return null;
             }),
-            (y.prototype.shouldBypassEmailVerification = function () {
-                return this._deepLinking && this._deepLinking.link === y.DeepLinking.DirectLink;
+            (GContainer.prototype.shouldBypassEmailVerification = function () {
+                return this._deepLinking && this._deepLinking.link === GContainer.DeepLinking.DirectLink;
             }),
-            (y.prototype.init = function (e) {
-                return (window.gDesigner && gDesigner.addEventListener(m, this._documentEvent, this), e(this));
+            (GContainer.prototype.init = function (callback) {
+                return (window.gDesigner && gDesigner.addEventListener(GDocumentEvent, this._documentEvent, this), callback(this));
             }),
-            (y.prototype._documentEvent = function (e) {
-                (e.type !== m.Type.Activated && e.type !== m.Type.StorageItemUpdated) || this._updateClientAPI(e.document);
+            (GContainer.prototype._documentEvent = function (event) {
+                (event.type !== GDocumentEvent.Type.Activated && event.type !== GDocumentEvent.Type.StorageItemUpdated) || this._updateClientAPI(event.document);
             }),
-            (y.prototype._updateClientAPI = function (e) {
-                const t = e && e.getToken();
-                if (t) {
-                    const n = gDesigner.getActiveDocument();
-                    (!n || e === n) && designerConfig.gApi.setToken({ token: t });
+            (GContainer.prototype._updateClientAPI = function (document) {
+                const token = document && document.getToken();
+                if (token) {
+                    const activeDocument = gDesigner.getActiveDocument();
+                    (!activeDocument || document === activeDocument) && designerConfig.gApi.setToken({ token: token });
                 }
             }),
-            (y.prototype.start = function () {}),
-            (y.prototype.preLogin = async function () {}),
-            (y.prototype.signWithMagicLink = function (e, t, n) {
+            (GContainer.prototype.start = function () {}),
+            (GContainer.prototype.preLogin = async function () {}),
+            (GContainer.prototype.signWithMagicLink = function (e, t, n) {
                 return designerConfig.gApi.magicLink.authenticate(e, t, n);
             }),
-            (y.prototype.canUnload = function (e, t) {
-                let n = !(arguments.length > 2 && void 0 !== arguments[2]) || arguments[2];
-                var o = !e && !t;
-                return n ? Promise.resolve(o) : o;
+            (GContainer.prototype.canUnload = function (e, t) {
+                let asPromise = !(arguments.length > 2 && void 0 !== arguments[2]) || arguments[2];
+                var canUnloadResult = !e && !t;
+                return asPromise ? Promise.resolve(canUnloadResult) : canUnloadResult;
             }),
-            (y.prototype.openExternalLink = function () {}),
-            (y.prototype.copyToClipboard = function () {
+            (GContainer.prototype.openExternalLink = function () {}),
+            (GContainer.prototype.copyToClipboard = function () {
                 return Promise.resolve();
             }),
-            (y.prototype.initLanguage = function (e, t) {
-                const n = () =>
-                    this.getProperty("designer.settings").then(async (e) => {
-                        if (e && e.hasOwnProperty("language")) {
-                            const t = e.language;
-                            if (y.GravitLanguages.indexOf(t) >= 0) await l.default.setLanguage(t);
+            (GContainer.prototype.initLanguage = function (callback, preferredLanguage) {
+                const applySavedLanguage = () =>
+                    this.getProperty("designer.settings").then(async (settings) => {
+                        if (settings && settings.hasOwnProperty("language")) {
+                            const savedLanguage = settings.language;
+                            if (GContainer.GravitLanguages.indexOf(savedLanguage) >= 0) await translationLoader.default.setLanguage(savedLanguage);
                             else {
-                                let e = GObject.GSystem.language && GObject.GLocale.lookupLanguage(GObject.GSystem.language);
-                                e && y.GravitLanguages.includes(e)
-                                    ? await l.default.setLanguage(e)
-                                    : await l.default.setLanguage(GObject.GLocaleLanguage.English);
+                                let systemLanguage = GObject.GSystem.language && GObject.GLocale.lookupLanguage(GObject.GSystem.language);
+                                systemLanguage && GContainer.GravitLanguages.includes(systemLanguage)
+                                    ? await translationLoader.default.setLanguage(systemLanguage)
+                                    : await translationLoader.default.setLanguage(GObject.GLocaleLanguage.English);
                             }
                         }
                     });
-                if (t)
-                    return new Promise(async (i) => {
+                if (preferredLanguage)
+                    return new Promise(async (resolve) => {
                         try {
-                            (await o(t), e && e(), i());
+                            (await applyLanguage(preferredLanguage), callback && callback(), resolve());
                         } catch (t) {
-                            (await n(), e && e(), i());
+                            (await applySavedLanguage(), callback && callback(), resolve());
                         }
                     });
-                async function o(e) {
-                    const t = GObject.GLocale.lookupLanguage(e);
-                    null !== t &&
-                        (y.GravitLanguages.indexOf(t) >= 0
-                            ? ("undefined" != typeof gDesigner && gDesigner.setSetting("language", t), await l.default.setLanguage(t))
-                            : await l.default.setLanguage(GObject.GLocaleLanguage.English));
+                async function applyLanguage(languageCode) {
+                    const resolvedLanguage = GObject.GLocale.lookupLanguage(languageCode);
+                    null !== resolvedLanguage &&
+                        (GContainer.GravitLanguages.indexOf(resolvedLanguage) >= 0
+                            ? ("undefined" != typeof gDesigner && gDesigner.setSetting("language", resolvedLanguage), await translationLoader.default.setLanguage(resolvedLanguage))
+                            : await translationLoader.default.setLanguage(GObject.GLocaleLanguage.English));
                 }
                 designerConfig.gApi
                     .getUser()
-                    .then(async (t) => {
-                        (t && !t.anonymous ? await o(t.locale) : await n(), e && e());
+                    .then(async (user) => {
+                        (user && !user.anonymous ? await applyLanguage(user.locale) : await applySavedLanguage(), callback && callback());
                     })
                     .catch(async () => {
-                        (await n(), e && e());
+                        (await applySavedLanguage(), callback && callback());
                     });
             }),
-            (y.prototype.newDocumentActionPerformed = function (e) {
-                e && e();
+            (GContainer.prototype.newDocumentActionPerformed = function (callback) {
+                callback && callback();
             }),
-            (y.prototype.getRecentDocuments = function () {
+            (GContainer.prototype.getRecentDocuments = function () {
                 return this._recentDocuments || [];
             }),
-            (y.prototype.isRecentDocument = function (e) {
+            (GContainer.prototype.isRecentDocument = function (document) {
                 return (
-                    !!(e && this._recentDocuments && this._recentDocuments.length) && !!this._recentDocuments.find((t) => t._id === e._id)
+                    !!(document && this._recentDocuments && this._recentDocuments.length) && !!this._recentDocuments.find((recentDocument) => recentDocument._id === document._id)
                 );
             }),
-            (y.prototype.updateRecentDocumentsAction = function (e) {
-                var t;
-                this._recentDocuments = e;
-                const n = gDesigner.getMainMenu();
-                if (n) {
-                    const e = (t = n.findItem(GObject.GLocale.get(GCategory.CATEGORY_FILE.label)));
-                    if (e && e.getMenu()) {
-                        const n = e.getMenu().findItem(GObject.GLocale.get(GCategory.CATEGORY_FILE_OPEN_RECENT.label).split("/")[1]);
-                        n && (t = n.getMenu());
+            (GContainer.prototype.updateRecentDocumentsAction = function (documents) {
+                var targetMenu;
+                this._recentDocuments = documents;
+                const mainMenu = gDesigner.getMainMenu();
+                if (mainMenu) {
+                    const fileMenuItem = (targetMenu = mainMenu.findItem(GObject.GLocale.get(GCategory.CATEGORY_FILE.label)));
+                    if (fileMenuItem && fileMenuItem.getMenu()) {
+                        const openRecentMenuItem = fileMenuItem.getMenu().findItem(GObject.GLocale.get(GCategory.CATEGORY_FILE_OPEN_RECENT.label).split("/")[1]);
+                        openRecentMenuItem && (targetMenu = openRecentMenuItem.getMenu());
                     }
                 }
-                if (t)
-                    if ((t.clearItems(), e.length > 0))
-                        for (var o = e[0] instanceof this._storage.constructor.Item, a = 0; a < e.length; ++a) {
-                            let n = e[a];
-                            n instanceof this._storage.constructor.Item || !o || (gDesigner.addMenuSeparator(t), (o = false));
-                            const i = this.getRecentDocumentIconClass(n),
-                                r = n.getName() + "." + n.getExtension().toLowerCase();
-                            gDesigner.addMenuItem(t, r, i, null, null, function () {
+                if (targetMenu)
+                    if ((targetMenu.clearItems(), documents.length > 0))
+                        for (var pendingSeparator = documents[0] instanceof this._storage.constructor.Item, a = 0; a < documents.length; ++a) {
+                            let recentDocument = documents[a];
+                            recentDocument instanceof this._storage.constructor.Item || !pendingSeparator || (gDesigner.addMenuSeparator(targetMenu), (pendingSeparator = false));
+                            const iconClass = this.getRecentDocumentIconClass(recentDocument),
+                                label = recentDocument.getName() + "." + recentDocument.getExtension().toLowerCase();
+                            gDesigner.addMenuItem(targetMenu, label, iconClass, null, null, function () {
                                 try {
-                                    gDesigner.openDocument(n);
-                                } catch (e) {
-                                    if (!(e instanceof s.default)) throw e;
+                                    gDesigner.openDocument(recentDocument);
+                                } catch (error) {
+                                    if (!(error instanceof ExternalFileSettingsError.default)) throw error;
                                     GSystemDialog.externalFileError(true);
                                 }
                             });
                         }
                     else {
-                        var r = gDesigner.addMenuItem(t);
-                        gDesigner.updateMenuItem(r, GObject.GLocale.get(p.TITLE), false, false);
+                        var menuItem = gDesigner.addMenuItem(targetMenu);
+                        gDesigner.updateMenuItem(menuItem, GObject.GLocale.get(GOpenRecentAction.TITLE), false, false);
                     }
             }),
-            (y.prototype.getRecentDocumentIconClass = function (e) {
-                return e instanceof this._storage.constructor.Item
+            (GContainer.prototype.getRecentDocumentIconClass = function (item) {
+                return item instanceof this._storage.constructor.Item
                     ? null
-                    : "[Object GGoogleDriveStorage.Item]" === e.toString()
+                    : "[Object GGoogleDriveStorage.Item]" === item.toString()
                       ? "gravit-icon-googledrive-logo"
-                      : "[Object GSharePointStorage.Item]" === e.toString()
+                      : "[Object GSharePointStorage.Item]" === item.toString()
                         ? "gravit-icon-sharepoint-logo"
-                        : "[Object GOneDriveBusinessStorage.Item]" === e.toString()
+                        : "[Object GOneDriveBusinessStorage.Item]" === item.toString()
                           ? "gravit-icon-onedrivebusiness-logo"
-                          : g["gravit-icon-cloud-logo"];
+                          : iconClassMap["gravit-icon-cloud-logo"];
             }),
-            (y.prototype.triggerClose = function () {}),
-            (y.prototype.getGoogleAPI = function () {
+            (GContainer.prototype.triggerClose = function () {}),
+            (GContainer.prototype.getGoogleAPI = function () {
                 return GGoogleAPI.GDefaultGoogleAPI;
             }),
-            (y.prototype.signWithOAuth = function (e) {
-                return new Promise((t, n) => {
+            (GContainer.prototype.signWithOAuth = function (provider) {
+                return new Promise((resolve, reject) => {
                     designerConfig.gApi
-                        .popup("/auth/" + e)
-                        .then((e) => {
-                            e ? t(e) : n();
+                        .popup("/auth/" + provider)
+                        .then((user) => {
+                            user ? resolve(user) : reject();
                         })
-                        .catch((e) => {
-                            let t;
-                            ("string" == typeof e && (t = e),
-                                !t && e && e.message && (t = e.message),
-                                !t && e && e.errors && (t = e.errors.toString()),
-                                !t && e && (t = e),
-                                n(t));
+                        .catch((error) => {
+                            let errorMessage;
+                            ("string" == typeof error && (errorMessage = error),
+                                !errorMessage && error && error.message && (errorMessage = error.message),
+                                !errorMessage && error && error.errors && (errorMessage = error.errors.toString()),
+                                !errorMessage && error && (errorMessage = error),
+                                reject(errorMessage));
                         });
                 });
             }),
-            (y.prototype.isMemoryInfoAvailable = function () {
+            (GContainer.prototype.isMemoryInfoAvailable = function () {
                 return false;
             }),
-            (y.prototype.getMemoryInfo = function () {
+            (GContainer.prototype.getMemoryInfo = function () {
                 return null;
             }),
-            (y.prototype._getJsHeapLimitSize = function () {
+            (GContainer.prototype._getJsHeapLimitSize = function () {
                 return window.performance.memory ? window.performance.memory.jsHeapSizeLimit : designerConfig.JS_HEAP_SIZE_LIMIT_POYFILL;
             }),
-            (y.prototype._estimatingMemoryUsage = function () {
+            (GContainer.prototype._estimatingMemoryUsage = function () {
                 return (
                     gDesigner
                         .getDocuments()
-                        .reduce((e, t) => (e + (t && t.getStorageItem()) ? t.getStorageItem().documentRealFileSize : 0), 0) *
+                        .reduce((acc, doc) => (acc + (doc && doc.getStorageItem()) ? doc.getStorageItem().documentRealFileSize : 0), 0) *
                         designerConfig.FILE_SIZE_TO_RAM_COEFFCIENT +
                     designerConfig.MIN_JS_HEAP_SIZE
                 );
             }),
-            (y.prototype.verifyEnoughMemoryToSave = function (e) {
+            (GContainer.prototype.verifyEnoughMemoryToSave = function (document) {
                 try {
-                    if (e && e.getStorageItem()) {
-                        var t = this._estimatingMemoryUsage(),
-                            n =
+                    if (document && document.getStorageItem()) {
+                        var estimatedMemory = this._estimatingMemoryUsage(),
+                            availableMemory =
                                 this._getJsHeapLimitSize() -
-                                (t += e.getStorageItem().documentRealFileSize * designerConfig.FILE_SIZE_TO_SAVING_RAM_COEFFCIENT);
-                        if (2 * e.getStorageItem().documentRealFileSize > n) {
-                            var o = GObject.GLocale.get(new GObject.GLocaleKey("GContainer", "text.not-memary-enough"));
-                            new h(o).open();
+                                (estimatedMemory += document.getStorageItem().documentRealFileSize * designerConfig.FILE_SIZE_TO_SAVING_RAM_COEFFCIENT);
+                        if (2 * document.getStorageItem().documentRealFileSize > availableMemory) {
+                            var message = GObject.GLocale.get(new GObject.GLocaleKey("GContainer", "text.not-memary-enough"));
+                            new MessageDialog(message).open();
                         }
                     }
-                } catch (e) {
-                    console.error(e);
+                } catch (error) {
+                    console.error(error);
                 }
             }),
-            (y.prototype.minimizeWindow = function () {}),
-            (y.prototype.maximizeWindow = function () {}),
-            (y.prototype.closeWindow = function () {}),
-            (y.prototype.getStorageDestinations = function () {
+            (GContainer.prototype.minimizeWindow = function () {}),
+            (GContainer.prototype.maximizeWindow = function () {}),
+            (GContainer.prototype.closeWindow = function () {}),
+            (GContainer.prototype.getStorageDestinations = function () {
                 return [];
             }),
-            (y.prototype.getDefaultStorageDestination = function (e) {
-                const t = this.getStorageDestinations();
-                return t ? t.find((t) => t.isSupported(e)) : null;
+            (GContainer.prototype.getDefaultStorageDestination = function (fileExt) {
+                const destinations = this.getStorageDestinations();
+                return destinations ? destinations.find((destination) => destination.isSupported(fileExt)) : null;
             }),
-            (y.prototype.getSharepointAuthenticator = function () {
+            (GContainer.prototype.getSharepointAuthenticator = function () {
                 return null;
             }),
-            (y.prototype.toString = function () {
+            (GContainer.prototype.toString = function () {
                 return "[Object GContainer]";
             }),
-            (y.prototype.nativeShareLink = function (e, t, n) {
-                return this._getNativeShareLinkInstance().share(e, t, n);
+            (GContainer.prototype.nativeShareLink = function (title, description, url) {
+                return this._getNativeShareLinkInstance().share(title, description, url);
             }),
-            (y.prototype.isNativeShareLinkSupported = function () {
+            (GContainer.prototype.isNativeShareLinkSupported = function () {
                 return !!this._getNativeShareLinkInstance() && this._getNativeShareLinkInstance().isSupported();
             }),
-            (y.prototype._getNativeShareLinkInstance = function () {
+            (GContainer.prototype._getNativeShareLinkInstance = function () {
                 return null;
             }),
-            (module.exports = y));
+            (module.exports = GContainer));
     };

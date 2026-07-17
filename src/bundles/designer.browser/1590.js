@@ -1,8 +1,8 @@
 module.exports = function (module, exports, require) {
         "use strict";
         var o = require(16 /* _interopRequireDefault */)(require(879));
-        const i = require(878);
-        module.exports = class extends i {
+        const GTouchEventHandler = require(878);
+        module.exports = class extends GTouchEventHandler {
             constructor(e) {
                 (super(e), this.addGesture(new o.default()), this.setDelayedTouchEventsEnabled(false));
             }

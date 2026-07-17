@@ -2,222 +2,222 @@ module.exports = function (module, exports, require) {
         "use strict";
         var _interopRequireDefault = require(16);
         (require(19), require(57), require(91 /* polyfill:String */), require(4), require(13), require(26));
-        var i = require(53),
+        var editorModule = require(53),
             GObject = require(1),
-            r = (require(15 /* GPlatform */), _interopRequireDefault(require(565))),
-            s = require(67),
-            l = _interopRequireDefault(require(135)),
-            c = require(451 /* GVirtualTree */).GVirtualTree,
-            d = (require(451 /* GVirtualTree */).GVirtualTreeNode, require(451 /* GVirtualTree */).GVirtualTreeNodeNamed),
+            dragMode = (require(15 /* GPlatform */), _interopRequireDefault(require(565))),
+            richTooltipModule = require(67 /* GRichTooltipConfig */),
+            GSettingChangedEvent = _interopRequireDefault(require(135)),
+            GVirtualTree = require(451 /* GVirtualTree */).GVirtualTree,
+            GVirtualTreeNodeNamed = (require(451 /* GVirtualTree */).GVirtualTreeNode, require(451 /* GVirtualTree */).GVirtualTreeNodeNamed),
             { VTREE_FREE_HEIGHT, VTREE_FREE_HEIGHT_TOUCH } = require(10 /* designerConfig */),
-            g = (require(173), require(450));
-        function h() {}
-        function f(e, t, n, o, i) {
-            var a = true,
-                r = $(this).data("gpagepanel");
-            if (r.options.canDropCallback) {
+            menuContextIds = (require(173), require(450));
+        function GPagePanel() {}
+        function vtreeCanDropHandler(targetItem, referenceItem, n, draggedItems, allowedItems) {
+            var canDrop = true,
+                panelData = $(this).data("gpagepanel");
+            if (panelData.options.canDropCallback) {
                 for (
-                    var s = e.id ? b.call(this, e.id) : $(this).data("gpagepanel").scene, l = t ? b.call(this, t.id) : null, c = [], d = 0;
-                    d < o.length;
+                    var targetNode = targetItem.id ? getNodeById.call(this, targetItem.id) : $(this).data("gpagepanel").scene, referenceNode = referenceItem ? getNodeById.call(this, referenceItem.id) : null, draggedNodes = [], d = 0;
+                    d < draggedItems.length;
                     ++d
                 )
-                    c.push(b.call(this, o[d].id));
-                var u = [];
-                if ((a = r.options.canDropCallback(s, l, c, u)))
-                    for (d = 0; d < u.length; ++d) {
-                        var p = u[d];
-                        i.push(o[p]);
+                    draggedNodes.push(getNodeById.call(this, draggedItems[d].id));
+                var allowedIndices = [];
+                if ((canDrop = panelData.options.canDropCallback(targetNode, referenceNode, draggedNodes, allowedIndices)))
+                    for (d = 0; d < allowedIndices.length; ++d) {
+                        var p = allowedIndices[d];
+                        allowedItems.push(draggedItems[p]);
                     }
             }
-            return a;
+            return canDrop;
         }
-        function m(e, t, n, o) {
-            if (!n || !n.length || !e) return false;
-            var i = true;
+        function defaultCanDropValidator(targetNode, referenceNode, draggedNodes, allowedIndices) {
+            if (!draggedNodes || !draggedNodes.length || !targetNode) return false;
+            var canInsert = true;
             if (gDesigner.getApplicationManager().isEditingEnabled()) {
-                for (var a = 0; a < n.length && i; ++a) (i = !e.isLocked() && n[a] && n[a].validateInsertion(e, t)) && o.push[a];
-                return i;
+                for (var a = 0; a < draggedNodes.length && canInsert; ++a) (canInsert = !targetNode.isLocked() && draggedNodes[a] && draggedNodes[a].validateInsertion(targetNode, referenceNode)) && allowedIndices.push[a];
+                return canInsert;
             }
         }
-        function y(e, t, n, o) {
-            var i = $(this).data("gpagepanel");
-            if (i.options.moveCallback) {
+        function vtreeMoveHandler(targetItem, referenceItem, n, draggedItems) {
+            var panelData = $(this).data("gpagepanel");
+            if (panelData.options.moveCallback) {
                 for (
-                    var a = e.id ? b.call(this, e.id) : $(this).data("gpagepanel").scene, r = t ? b.call(this, t.id) : null, s = [], l = 0;
-                    l < o.length;
+                    var targetNode = targetItem.id ? getNodeById.call(this, targetItem.id) : $(this).data("gpagepanel").scene, referenceNode = referenceItem ? getNodeById.call(this, referenceItem.id) : null, draggedNodes = [], l = 0;
+                    l < draggedItems.length;
                     ++l
                 )
-                    s.push(b.call(this, o[l].id));
-                i.options.moveCallback(a, r, s);
+                    draggedNodes.push(getNodeById.call(this, draggedItems[l].id));
+                panelData.options.moveCallback(targetNode, referenceNode, draggedNodes);
             }
         }
-        function v(e) {
-            var t = $(this).data("gpagepanel");
-            if (t.options.clickCallback) {
-                var n = b.call(this, e.id);
-                t.options.clickCallback(n);
+        function vtreeClickHandler(item) {
+            var panelData = $(this).data("gpagepanel");
+            if (panelData.options.clickCallback) {
+                var node = getNodeById.call(this, item.id);
+                panelData.options.clickCallback(node);
             }
         }
-        function _(e, t) {
-            var n = $(this).data("gpagepanel");
-            (n.options.renderer && n.options.renderer(e.id, t), R.call(this));
+        function vtreeRenderHandler(item, element) {
+            var panelData = $(this).data("gpagepanel");
+            (panelData.options.renderer && panelData.options.renderer(item.id, element), updateTouchPanelHeight.call(this));
         }
-        function b(e) {
-            var t = $(this).data("gpagepanel").pagesTreeNodeMap[e];
-            return t ? t.node : null;
+        function getNodeById(treeId) {
+            var entry = $(this).data("gpagepanel").pagesTreeNodeMap[treeId];
+            return entry ? entry.node : null;
         }
-        function w(e) {
-            return $(this).data("gpagepanel").pagesTreeNodeMap[e];
+        function getTreeEntryById(treeId) {
+            return $(this).data("gpagepanel").pagesTreeNodeMap[treeId];
         }
-        function C(e) {
-            var t = $(this).data("gpagepanel").pagesTreeNodeMapByNodes.get(e);
-            return t ? t.treeNode : null;
+        function getTreeNodeByNode(node) {
+            var entry = $(this).data("gpagepanel").pagesTreeNodeMapByNodes.get(node);
+            return entry ? entry.treeNode : null;
         }
-        function x(e) {
-            var t = $(this).data("gpagepanel").pagesTreeNodeMap,
-                n = $(this).data("gpagepanel").pagesTreeNodeMapByNodes;
-            e.accept(
-                function (e) {
-                    if (e instanceof GObject.GPage) {
-                        var o = n.get(e);
-                        o && (n.delete(e), (t[o.treeId] = null));
+        function removePageMapEntries(rootNode) {
+            var treeNodeMap = $(this).data("gpagepanel").pagesTreeNodeMap,
+                treeNodeMapByNodes = $(this).data("gpagepanel").pagesTreeNodeMapByNodes;
+            rootNode.accept(
+                function (node) {
+                    if (node instanceof GObject.GPage) {
+                        var entry = treeNodeMapByNodes.get(node);
+                        entry && (treeNodeMapByNodes.delete(node), (treeNodeMap[entry.treeId] = null));
                     }
                 }.bind(this)
             );
         }
-        function S(e, t) {
-            var n = $(this).data("gpagepanel"),
-                o = w.call(this, e),
-                l = o.node;
-            if (l) {
-                if (!(l instanceof GObject.GPage)) throw new Error("item not page");
-                var c = l.getProperty("lkt"),
-                    d = !!l.getSlavePages().length,
-                    u = 0 === l.getProperty("w") && 0 === l.getProperty("h"),
-                    p = $(t);
-                p.attr("draggable", false)
+        function renderPageRow(treeId, rowElement) {
+            var panelData = $(this).data("gpagepanel"),
+                entry = getTreeEntryById.call(this, treeId),
+                pageNode = entry.node;
+            if (pageNode) {
+                if (!(pageNode instanceof GObject.GPage)) throw new Error("item not page");
+                var lockType = pageNode.getProperty("lkt"),
+                    isMaster = !!pageNode.getSlavePages().length,
+                    isInfinitePage = 0 === pageNode.getProperty("w") && 0 === pageNode.getProperty("h"),
+                    row = $(rowElement);
+                row.attr("draggable", false)
                     .on("mouseenter", function () {
-                        l.getProperty("w") && !l.hasFlag(GObject.GElement.Flag.Hidden) && l.setFlag(GObject.GNode.Flag.Highlighted);
+                        pageNode.getProperty("w") && !pageNode.hasFlag(GObject.GElement.Flag.Hidden) && pageNode.setFlag(GObject.GNode.Flag.Highlighted);
                     })
                     .on("mouseleave", function () {
-                        l.getProperty("w") && !l.hasFlag(GObject.GElement.Flag.Hidden) && l.removeFlag(GObject.GNode.Flag.Highlighted);
+                        pageNode.getProperty("w") && !pageNode.hasFlag(GObject.GElement.Flag.Hidden) && pageNode.removeFlag(GObject.GNode.Flag.Highlighted);
                     });
-                var h = $("<span></span>").addClass("page-title-group");
-                (h.appendTo(p), (o.element = h));
-                var f = l.getProperty("name");
-                ((f = f || l.getNodeNameTranslated()), d && !gDesigner.isTouchEnabled() && (f += " (master)"));
-                var m = $("<span></span>").html(f);
-                m.addClass("page-title").appendTo(h);
-                var y = this;
-                (l.hasFlag(GObject.GElement.Flag.PartialLocked) ||
-                    h
+                var titleGroup = $("<span></span>").addClass("page-title-group");
+                (titleGroup.appendTo(row), (entry.element = titleGroup));
+                var pageName = pageNode.getProperty("name");
+                ((pageName = pageName || pageNode.getNodeNameTranslated()), isMaster && !gDesigner.isTouchEnabled() && (pageName += " (master)"));
+                var titleSpan = $("<span></span>").html(pageName);
+                titleSpan.addClass("page-title").appendTo(titleGroup);
+                var panelElement = this;
+                (pageNode.hasFlag(GObject.GElement.Flag.PartialLocked) ||
+                    titleGroup
                         .attr("draggable", true)
-                        .attr("data-drag-mode", r.default.PRESS_AND_HOLD)
+                        .attr("data-drag-mode", dragMode.default.PRESS_AND_HOLD)
                         .on("dragstart", function (e) {
-                            if (n.options.startDraggingCallback) {
-                                var t = n.options.startDraggingCallback(l);
-                                if (t && t.length) {
+                            if (panelData.options.startDraggingCallback) {
+                                var draggedNodes = panelData.options.startDraggingCallback(pageNode);
+                                if (draggedNodes && draggedNodes.length) {
                                     $(this).addClass("g-dragging");
-                                    var o = "",
-                                        i = t[0].getProperty("name");
-                                    (i = i || t[0].getNodeNameTranslated()) && (o = i);
-                                    for (var a = 1; a < t.length; ++a)
-                                        (i = (i = t[a].getProperty("name")) || t[a].getNodeNameTranslated()) && (o += ", " + i);
-                                    o.length && $(m).html(o);
-                                    var r = n.vtree,
-                                        s = [];
-                                    for (a = 0; a < t.length; ++a) {
-                                        var c = C.call(y, t[a]);
-                                        c && s.push(c);
+                                    var dragLabel = "",
+                                        nodeName = draggedNodes[0].getProperty("name");
+                                    (nodeName = nodeName || draggedNodes[0].getNodeNameTranslated()) && (dragLabel = nodeName);
+                                    for (var a = 1; a < draggedNodes.length; ++a)
+                                        (nodeName = (nodeName = draggedNodes[a].getProperty("name")) || draggedNodes[a].getNodeNameTranslated()) && (dragLabel += ", " + nodeName);
+                                    dragLabel.length && $(titleSpan).html(dragLabel);
+                                    var vtree = panelData.vtree,
+                                        dragTreeNodes = [];
+                                    for (a = 0; a < draggedNodes.length; ++a) {
+                                        var c = getTreeNodeByNode.call(panelElement, draggedNodes[a]);
+                                        c && dragTreeNodes.push(c);
                                     }
-                                    (r.setDragNodes(s),
+                                    (vtree.setDragNodes(dragTreeNodes),
                                         setTimeout(
                                             function () {
-                                                ($(this).removeClass("g-dragging"), $(m).html(f));
+                                                ($(this).removeClass("g-dragging"), $(titleSpan).html(pageName));
                                             }.bind(this),
                                             0
                                         ));
                                 } else $(this).attr("draggable", false);
                             }
                         }),
-                    p.toggleClass("g-active", l.hasFlag(GObject.GNode.Flag.Active)),
-                    n.blockHighlight || p.toggleClass("g-highlighted-row", l.hasFlag(GObject.GNode.Flag.Highlighted)),
-                    !c &&
+                    row.toggleClass("g-active", pageNode.hasFlag(GObject.GNode.Flag.Active)),
+                    panelData.blockHighlight || row.toggleClass("g-highlighted-row", pageNode.hasFlag(GObject.GNode.Flag.Highlighted)),
+                    !lockType &&
                         gDesigner.getApplicationManager().isEditingEnabled() &&
-                        $(h).gAutoEdit({
+                        $(titleGroup).gAutoEdit({
                             textSelector: "> .page-title",
                             getContainer: function () {
-                                return w.call(y, e).element;
+                                return getTreeEntryById.call(panelElement, treeId).element;
                             },
-                            submitCallback: function (e) {
-                                e &&
-                                    "" !== e.trim() &&
-                                    i.GEditor.tryRunTransaction(
-                                        l,
+                            submitCallback: function (newName) {
+                                newName &&
+                                    "" !== newName.trim() &&
+                                    editorModule.GEditor.tryRunTransaction(
+                                        pageNode,
                                         function () {
-                                            l.setProperty("name", e);
+                                            pageNode.setProperty("name", newName);
                                         },
                                         GObject.GLocale.get(new GObject.GLocaleKey("GPagePanel", "action.rename-page"))
                                     );
                             },
                         }));
-                var v = $("<span></span>").addClass("page-icon gravit-icon-page").insertBefore(m);
+                var pageIcon = $("<span></span>").addClass("page-icon gravit-icon-page").insertBefore(titleSpan);
                 gDesigner.isTouchEnabled() &&
-                    (u
-                        ? (v.toggleClass("gravit-icon-page-infinity", true), v.toggleClass("gravit-icon-page", false))
-                        : d && (v.toggleClass("gravit-icon-page-master", true), v.toggleClass("gravit-icon-page", false)));
-                var _ = c ? "gravit-icon-lock" : "gravit-icon-unlock";
-                ((_ = gDesigner.isTouchEnabled() ? _ + "-small" : _),
+                    (isInfinitePage
+                        ? (pageIcon.toggleClass("gravit-icon-page-infinity", true), pageIcon.toggleClass("gravit-icon-page", false))
+                        : isMaster && (pageIcon.toggleClass("gravit-icon-page-master", true), pageIcon.toggleClass("gravit-icon-page", false)));
+                var lockIconClass = lockType ? "gravit-icon-lock" : "gravit-icon-unlock";
+                ((lockIconClass = gDesigner.isTouchEnabled() ? lockIconClass + "-small" : lockIconClass),
                     $("<span></span>")
-                        .addClass("page-action page-lock " + _)
-                        .toggleClass("g-active", !!c)
+                        .addClass("page-action page-lock " + lockIconClass)
+                        .toggleClass("g-active", !!lockType)
                         .attr("data-title", GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "action.toggle-lock")))
-                        .on("click", function (e) {
-                            (gDesigner.stats("pages_change_lock"), e.stopPropagation());
-                            var t = l.getProperty("lkt");
-                            ((t = t ? null : GObject.GBlock.LockType.Full),
-                                i.GEditor.tryRunTransaction(
-                                    l,
+                        .on("click", function (event) {
+                            (gDesigner.stats("pages_change_lock"), event.stopPropagation());
+                            var newLockType = pageNode.getProperty("lkt");
+                            ((newLockType = newLockType ? null : GObject.GBlock.LockType.Full),
+                                editorModule.GEditor.tryRunTransaction(
+                                    pageNode,
                                     function () {
-                                        if ((l.setProperty("lkt", t), t === GObject.GBlock.LockType.Full)) {
-                                            n.scene.setProperty("edit", false);
-                                            var e = gDesigner.getActiveDocument();
-                                            e && e.getEditor().clearSelection();
-                                        } else n.scene.setProperty("edit", true);
+                                        if ((pageNode.setProperty("lkt", newLockType), newLockType === GObject.GBlock.LockType.Full)) {
+                                            panelData.scene.setProperty("edit", false);
+                                            var activeDocument = gDesigner.getActiveDocument();
+                                            activeDocument && activeDocument.getEditor().clearSelection();
+                                        } else panelData.scene.setProperty("edit", true);
                                     },
                                     GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "action.toggle-lock"))
                                 ));
                         })
-                        .appendTo(p)
+                        .appendTo(row)
                         .gRichTooltip(
-                            s.GRichTooltipConfig.from({
+                            richTooltipModule.GRichTooltipConfig.from({
                                 title: GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.page-toggle-lock-tooltip-title")),
                                 description: GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.page-toggle-lock-tooltip-description")),
                                 learnMore: "/docs/organizing-your-designs/pages/#page-panel",
                             })
                         ));
-                var b = false === l.getProperty("vis");
-                p.toggleClass("page-hiden", b);
-                var x = b ? "gravit-icon-hide" : "gravit-icon-display";
-                ((x = gDesigner.isTouchEnabled() ? x + "-small" : x),
+                var isHidden = false === pageNode.getProperty("vis");
+                row.toggleClass("page-hiden", isHidden);
+                var visibilityIconClass = isHidden ? "gravit-icon-hide" : "gravit-icon-display";
+                ((visibilityIconClass = gDesigner.isTouchEnabled() ? visibilityIconClass + "-small" : visibilityIconClass),
                     $("<span></span>")
-                        .addClass("page-action page-visibility " + x)
-                        .toggleClass("g-active", b)
+                        .addClass("page-action page-visibility " + visibilityIconClass)
+                        .toggleClass("g-active", isHidden)
                         .attr("data-title", GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "action.toggle-visibility")))
-                        .on("click", function (e) {
-                            (gDesigner.stats("pages_change_visibility"), e.stopPropagation());
-                            var t = !l.getProperty("vis");
-                            i.GEditor.tryRunTransaction(
-                                l,
+                        .on("click", function (event) {
+                            (gDesigner.stats("pages_change_visibility"), event.stopPropagation());
+                            var newVisibility = !pageNode.getProperty("vis");
+                            editorModule.GEditor.tryRunTransaction(
+                                pageNode,
                                 function () {
-                                    l.setProperty("vis", t);
+                                    pageNode.setProperty("vis", newVisibility);
                                 },
                                 GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "action.toggle-visibility"))
                             );
                         })
-                        .appendTo(p)
+                        .appendTo(row)
                         .gRichTooltip(
-                            s.GRichTooltipConfig.from({
+                            richTooltipModule.GRichTooltipConfig.from({
                                 title: GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.page-toggle-visibility-tooltip-title")),
                                 description: GObject.GLocale.get(
                                     new GObject.GLocaleKey("GCommonNames", "text.page-toggle-visibility-tooltip-description")
@@ -225,102 +225,102 @@ module.exports = function (module, exports, require) {
                                 learnMore: "/docs/organizing-your-designs/pages/#page-panel",
                             })
                         ),
-                    p.contextmenu(
-                        { context: g.PagePanel },
-                        function (e) {
-                            ($(this).data("gpagepanel").scene.setActivePage(l),
-                                $(gDesigner.getWindows().getHtmlElement()).trigger("contextmenu", e));
+                    row.contextmenu(
+                        { context: menuContextIds.PagePanel },
+                        function (event) {
+                            ($(this).data("gpagepanel").scene.setActivePage(pageNode),
+                                $(gDesigner.getWindows().getHtmlElement()).trigger("contextmenu", event));
                         }.bind(this)
                     ));
             }
         }
-        function E(e, t) {
-            var n = new d(e);
-            return ($(this).data("gpagepanel").vtree.insertNodeBefore(t, n), n);
+        function insertTreeNodeBefore(treeId, beforeTreeNode) {
+            var treeNode = new GVirtualTreeNodeNamed(treeId);
+            return ($(this).data("gpagepanel").vtree.insertNodeBefore(beforeTreeNode, treeNode), treeNode);
         }
-        function A(e, t) {
-            var n = new d(e);
-            return ($(this).data("gpagepanel").vtree.appendNode(t, n), n);
+        function appendTreeNode(treeId, parentTreeNode) {
+            var treeNode = new GVirtualTreeNodeNamed(treeId);
+            return ($(this).data("gpagepanel").vtree.appendNode(parentTreeNode, treeNode), treeNode);
         }
-        function T(e) {
-            $(this).data("gpagepanel").vtree.removeNode(e);
+        function removeTreeNode(treeNode) {
+            $(this).data("gpagepanel").vtree.removeNode(treeNode);
         }
-        function G(e) {
-            var t,
-                n,
-                o = GObject.GUtil.uuid(),
-                i = $(this).data("gpagepanel"),
-                r = i.vtree;
-            for (r.beginUpdate(), t = e.getNext(); t && !(t instanceof GObject.GPage); t = t.getNext());
-            var s = t ? C.call(this, t) : null;
-            ((n = s ? E.call(this, o, s) : A.call(this, o, null)),
-                (i.pagesTreeNodeMap[o] = { node: e, treeNode: n, element: null }),
-                i.pagesTreeNodeMapByNodes.set(e, {
+        function addPageTreeNode(pageNode) {
+            var nextPageNode,
+                newTreeNode,
+                treeId = GObject.GUtil.uuid(),
+                panelData = $(this).data("gpagepanel"),
+                vtree = panelData.vtree;
+            for (vtree.beginUpdate(), nextPageNode = pageNode.getNext(); nextPageNode && !(nextPageNode instanceof GObject.GPage); nextPageNode = nextPageNode.getNext());
+            var nextTreeNode = nextPageNode ? getTreeNodeByNode.call(this, nextPageNode) : null;
+            ((newTreeNode = nextTreeNode ? insertTreeNodeBefore.call(this, treeId, nextTreeNode) : appendTreeNode.call(this, treeId, null)),
+                (panelData.pagesTreeNodeMap[treeId] = { node: pageNode, treeNode: newTreeNode, element: null }),
+                panelData.pagesTreeNodeMapByNodes.set(pageNode, {
                     element: null,
-                    treeNode: n,
-                    treeId: o,
+                    treeNode: newTreeNode,
+                    treeId: treeId,
                 }),
-                r.endUpdate());
+                vtree.endUpdate());
         }
-        function P(e) {
-            var t = C.call(this, e);
-            t && (T.call(this, t), x.call(this, e));
+        function removePageTreeNode(pageNode) {
+            var treeNode = getTreeNodeByNode.call(this, pageNode);
+            treeNode && (removeTreeNode.call(this, treeNode), removePageMapEntries.call(this, pageNode));
         }
-        function D(e) {
-            !$(this).data("gpagepanel").blockHandlers && e.node instanceof GObject.GPage && G.call(this, e.node);
+        function afterNodeInsertHandler(event) {
+            !$(this).data("gpagepanel").blockHandlers && event.node instanceof GObject.GPage && addPageTreeNode.call(this, event.node);
         }
-        function L(e) {
-            !$(this).data("gpagepanel").blockHandlers && e.node instanceof GObject.GPage && P.call(this, e.node);
+        function beforeNodeRemoveHandler(event) {
+            !$(this).data("gpagepanel").blockHandlers && event.node instanceof GObject.GPage && removePageTreeNode.call(this, event.node);
         }
-        function I(e) {
-            if (!e.temporary && !$(this).data("gpagepanel").blockHandlers && (e.node instanceof GObject.GPage || e.node instanceof GObject.GScene)) {
-                if (e.node instanceof GObject.GScene && 1 === e.properties.length && "pi" === e.properties[0]) return;
+        function afterPropertiesChangeHandler(event) {
+            if (!event.temporary && !$(this).data("gpagepanel").blockHandlers && (event.node instanceof GObject.GPage || event.node instanceof GObject.GScene)) {
+                if (event.node instanceof GObject.GScene && 1 === event.properties.length && "pi" === event.properties[0]) return;
                 $(this).data("gpagepanel").vtree.requestInvalidation();
             }
         }
-        function k(e) {
-            if (!e) return;
+        function focusActiveRow(treeNode) {
+            if (!treeNode) return;
             $(this).find(".page-row.g-active").removeClass("g-active");
-            const t = w.call(this, e.id),
-                n = t && t.element;
-            n && $(n).closest(".page-row").addClass("g-active");
+            const entry = getTreeEntryById.call(this, treeNode.id),
+                element = entry && entry.element;
+            element && $(element).closest(".page-row").addClass("g-active");
         }
-        function O(e) {
-            var t = $(this).data("gpagepanel"),
-                n = $(this).data("gpagepanel").vtree;
-            if (!t.blockHandlers && e.node instanceof GObject.GPage)
+        function afterFlagChangeHandler(event) {
+            var panelData = $(this).data("gpagepanel"),
+                vtree = $(this).data("gpagepanel").vtree;
+            if (!panelData.blockHandlers && event.node instanceof GObject.GPage)
                 if (
-                    e.flag === GObject.GElement.Flag.Hidden ||
-                    e.flag === GObject.GElement.Flag.PartialLocked ||
-                    e.flag === GObject.GElement.Flag.FullLocked ||
-                    e.flag === GObject.GNode.Flag.Active
+                    event.flag === GObject.GElement.Flag.Hidden ||
+                    event.flag === GObject.GElement.Flag.PartialLocked ||
+                    event.flag === GObject.GElement.Flag.FullLocked ||
+                    event.flag === GObject.GNode.Flag.Active
                 ) {
-                    var o = e.node.getScene(),
-                        i = o && o.getActivePage();
-                    if (i && i == e.node && e.set) {
-                        var r = C.call(this, e.node);
-                        (n.expandAndFocus(r, true), e.flag === GObject.GNode.Flag.Active ? k.call(this, r) : n.requestInvalidation());
+                    var scene = event.node.getScene(),
+                        activePage = scene && scene.getActivePage();
+                    if (activePage && activePage == event.node && event.set) {
+                        var treeNode = getTreeNodeByNode.call(this, event.node);
+                        (vtree.expandAndFocus(treeNode, true), event.flag === GObject.GNode.Flag.Active ? focusActiveRow.call(this, treeNode) : vtree.requestInvalidation());
                     }
-                } else t.blockHighlight || e.flag !== GObject.GNode.Flag.Highlighted || n.requestInvalidation();
+                } else panelData.blockHighlight || event.flag !== GObject.GNode.Flag.Highlighted || vtree.requestInvalidation();
         }
-        function F(e) {
-            "touch" === e.key && N._updateLayout.call(this);
+        function settingChangedHandler(event) {
+            "touch" === event.key && pagePanelMethods._updateLayout.call(this);
         }
-        function R() {
+        function updateTouchPanelHeight() {
             gDesigner.isTouchEnabled() &&
                 $(this)
                     .parent()
                     .css("height", parseInt($(this).find(".vscroller").css("height"), 10) + VTREE_FREE_HEIGHT + "px");
         }
-        function M() {
-            var e = $(this).data("gpagepanel");
-            (e.vtree.clean(), (e.pagesTreeNodeMap = {}), (e.pagesTreeNodeMapByNodes = new Map()), (e.scene = null));
+        function resetPagePanelState() {
+            var panelData = $(this).data("gpagepanel");
+            (panelData.vtree.clean(), (panelData.pagesTreeNodeMap = {}), (panelData.pagesTreeNodeMapByNodes = new Map()), (panelData.scene = null));
         }
-        GObject.GObject.inheritAndMix(h, GObject.GObject);
-        var N = {
-            init: function (e) {
+        GObject.GObject.inheritAndMix(GPagePanel, GObject.GObject);
+        var pagePanelMethods = {
+            init: function (options) {
                 return (
-                    (e = $.extend(
+                    (options = $.extend(
                         {
                             nodeStyle: "page-row",
                             collapseStyle: "page-arrow gravit-icon-down",
@@ -330,43 +330,43 @@ module.exports = function (module, exports, require) {
                             upSeparatorSpan2Style: "g-up-separator-span2",
                             downSeparatorSpan1Style: "g-down-separator-span1",
                             downSeparatorSpan2Style: "g-down-separator-span2",
-                            renderer: S.bind(this),
+                            renderer: renderPageRow.bind(this),
                             separatorRenderer: null,
-                            canDropCallback: m.bind(this),
+                            canDropCallback: defaultCanDropValidator.bind(this),
                             moveCallback: null,
                             clickCallback: null,
                             startDraggingCallback: null,
                         },
-                        e
+                        options
                     )),
                     this.each(function () {
                         $(this)
                             .addClass("g-page-panel")
                             .data("gpagepanel", {
-                                vtree: new c(
+                                vtree: new GVirtualTree(
                                     this,
-                                    _.bind(this),
-                                    e.nodeStyle,
+                                    vtreeRenderHandler.bind(this),
+                                    options.nodeStyle,
                                     null,
                                     null,
-                                    e.separatorRenderer ? e.separatorRenderer : null,
-                                    e.freeHeight,
-                                    e.insertIntoStyle,
-                                    f.bind(this),
-                                    y.bind(this),
+                                    options.separatorRenderer ? options.separatorRenderer : null,
+                                    options.freeHeight,
+                                    options.insertIntoStyle,
+                                    vtreeCanDropHandler.bind(this),
+                                    vtreeMoveHandler.bind(this),
                                     null,
                                     null,
-                                    v.bind(this),
+                                    vtreeClickHandler.bind(this),
                                     null,
-                                    e.upSeparatorSpan1Style,
-                                    e.upSeparatorSpan2Style,
-                                    e.downSeparatorSpan1Style,
-                                    e.downSeparatorSpan2Style,
+                                    options.upSeparatorSpan1Style,
+                                    options.upSeparatorSpan2Style,
+                                    options.downSeparatorSpan1Style,
+                                    options.downSeparatorSpan2Style,
                                     false,
                                     0,
                                     21
                                 ),
-                                options: e,
+                                options: options,
                                 pagesTreeNodeMap: {},
                                 pagesTreeNodeMapByNodes: new Map(),
                                 scene: null,
@@ -379,71 +379,71 @@ module.exports = function (module, exports, require) {
                 $(this).data("gpagepanel").vtree.refresh();
             },
             relayout: function () {
-                var e = $(this).data("gpagepanel"),
-                    t = e.vtree,
-                    n = e.currentFocus;
-                (n && t.expandAndFocus(n), t.requestInvalidation());
+                var panelData = $(this).data("gpagepanel"),
+                    vtree = panelData.vtree,
+                    currentFocus = panelData.currentFocus;
+                (currentFocus && vtree.expandAndFocus(currentFocus), vtree.requestInvalidation());
             },
-            scene: function (e) {
-                var t = $(this),
-                    n = t.data("gpagepanel");
-                if (!arguments.length) return n.scene;
+            scene: function (newScene) {
+                var panel = $(this),
+                    panelData = panel.data("gpagepanel");
+                if (!arguments.length) return panelData.scene;
                 if (
-                    e !== n.scene &&
-                    (n.scene &&
-                        n.scene.hasMixin(GObject.GEventTarget) &&
-                        (n.scene.removeEventListener(GObject.GNode.AfterInsertEvent, n.afterNodeInsertHandler, this),
-                        n.scene.removeEventListener(GObject.GNode.BeforeRemoveEvent, n.beforeNodeRemoveHandler, this),
-                        n.scene.removeEventListener(GObject.GNode.AfterPropertiesChangeEvent, n.afterPropertiesChangeHandler, this),
-                        n.scene.removeEventListener(GObject.GNode.AfterFlagChangeEvent, n.afterFlagChangeHandler, this),
-                        gDesigner.removeEventListener(l.default, n.settingChangedEvent, this)),
-                    M.call(this),
-                    (n.scene = e),
-                    n.scene)
+                    newScene !== panelData.scene &&
+                    (panelData.scene &&
+                        panelData.scene.hasMixin(GObject.GEventTarget) &&
+                        (panelData.scene.removeEventListener(GObject.GNode.AfterInsertEvent, panelData.afterNodeInsertHandler, this),
+                        panelData.scene.removeEventListener(GObject.GNode.BeforeRemoveEvent, panelData.beforeNodeRemoveHandler, this),
+                        panelData.scene.removeEventListener(GObject.GNode.AfterPropertiesChangeEvent, panelData.afterPropertiesChangeHandler, this),
+                        panelData.scene.removeEventListener(GObject.GNode.AfterFlagChangeEvent, panelData.afterFlagChangeHandler, this),
+                        gDesigner.removeEventListener(GSettingChangedEvent.default, panelData.settingChangedEvent, this)),
+                    resetPagePanelState.call(this),
+                    (panelData.scene = newScene),
+                    panelData.scene)
                 ) {
-                    n.scene.hasMixin(GObject.GEventTarget) &&
-                        ((n.afterNodeInsertHandler = D.bind(this)),
-                        (n.beforeNodeRemoveHandler = L.bind(this)),
-                        (n.afterPropertiesChangeHandler = I.bind(this)),
-                        (n.afterFlagChangeHandler = O.bind(this)),
-                        (n.settingChangedEvent = F.bind(this)),
-                        gDesigner.addEventListener(l.default, n.settingChangedEvent, this),
-                        n.scene.addEventListener(GObject.GNode.AfterInsertEvent, n.afterNodeInsertHandler, this),
-                        n.scene.addEventListener(GObject.GNode.BeforeRemoveEvent, n.beforeNodeRemoveHandler, this),
-                        n.scene.addEventListener(GObject.GNode.AfterPropertiesChangeEvent, n.afterPropertiesChangeHandler, this),
-                        n.scene.addEventListener(GObject.GNode.AfterFlagChangeEvent, n.afterFlagChangeHandler, this));
-                    for (var o = n.scene.getLastChild(); null !== o; o = o.getPrevious()) o instanceof GObject.GPage && G.call(this, o);
-                    N._updateLayout.call(this);
+                    panelData.scene.hasMixin(GObject.GEventTarget) &&
+                        ((panelData.afterNodeInsertHandler = afterNodeInsertHandler.bind(this)),
+                        (panelData.beforeNodeRemoveHandler = beforeNodeRemoveHandler.bind(this)),
+                        (panelData.afterPropertiesChangeHandler = afterPropertiesChangeHandler.bind(this)),
+                        (panelData.afterFlagChangeHandler = afterFlagChangeHandler.bind(this)),
+                        (panelData.settingChangedEvent = settingChangedHandler.bind(this)),
+                        gDesigner.addEventListener(GSettingChangedEvent.default, panelData.settingChangedEvent, this),
+                        panelData.scene.addEventListener(GObject.GNode.AfterInsertEvent, panelData.afterNodeInsertHandler, this),
+                        panelData.scene.addEventListener(GObject.GNode.BeforeRemoveEvent, panelData.beforeNodeRemoveHandler, this),
+                        panelData.scene.addEventListener(GObject.GNode.AfterPropertiesChangeEvent, panelData.afterPropertiesChangeHandler, this),
+                        panelData.scene.addEventListener(GObject.GNode.AfterFlagChangeEvent, panelData.afterFlagChangeHandler, this));
+                    for (var child = panelData.scene.getLastChild(); null !== child; child = child.getPrevious()) child instanceof GObject.GPage && addPageTreeNode.call(this, child);
+                    pagePanelMethods._updateLayout.call(this);
                 }
                 return this;
             },
-            blockHandlers: function (e) {
-                $(this).data("gpagepanel").blockHandlers = !!e;
+            blockHandlers: function (block) {
+                $(this).data("gpagepanel").blockHandlers = !!block;
             },
             getLastVisitedDroppable: function () {
                 return $(this).data("gpagepanel").vtree.getLastVisitedDroppable();
             },
-            setBlockHighlight: function (e) {
-                $(this).data("gpagepanel").blockHighlight = !!e;
+            setBlockHighlight: function (block) {
+                $(this).data("gpagepanel").blockHighlight = !!block;
             },
-            resetVTreeRowHeight: function (e) {
-                $(this).data("gpagepanel").vtree.resetRowHeight(e);
+            resetVTreeRowHeight: function (rowHeight) {
+                $(this).data("gpagepanel").vtree.resetRowHeight(rowHeight);
             },
             _updateLayout: function () {
-                const e = $(this).data("gpagepanel"),
-                    t = e && e.vtree;
-                if (t) {
-                    const e = gDesigner.isTouchEnabled();
-                    (t.setFreeHeight(e ? VTREE_FREE_HEIGHT_TOUCH : VTREE_FREE_HEIGHT), t.setAnimatedDragEnabled(e));
+                const panelData = $(this).data("gpagepanel"),
+                    vtree = panelData && panelData.vtree;
+                if (vtree) {
+                    const isTouchEnabled = gDesigner.isTouchEnabled();
+                    (vtree.setFreeHeight(isTouchEnabled ? VTREE_FREE_HEIGHT_TOUCH : VTREE_FREE_HEIGHT), vtree.setAnimatedDragEnabled(isTouchEnabled));
                 }
             },
         };
-        ((module.exports = h),
-            ($.fn.gPagePanel = function (e) {
-                return N[e]
-                    ? N[e].apply(this, Array.prototype.slice.call(arguments, 1))
-                    : "object" != typeof e && e
-                      ? void $.error("Method " + e + " does not exist on jQuery.myPlugin")
-                      : N.init.apply(this, arguments);
+        ((module.exports = GPagePanel),
+            ($.fn.gPagePanel = function (method) {
+                return pagePanelMethods[method]
+                    ? pagePanelMethods[method].apply(this, Array.prototype.slice.call(arguments, 1))
+                    : "object" != typeof method && method
+                      ? void $.error("Method " + method + " does not exist on jQuery.myPlugin")
+                      : pagePanelMethods.init.apply(this, arguments);
             }));
     };

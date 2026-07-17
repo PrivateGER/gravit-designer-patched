@@ -3,48 +3,48 @@ module.exports = function (module, exports, require) {
         (require(4), require(13));
         var GObject = require(1),
             Utils = require(40),
-            a = (require(173), false),
-            r = null,
-            s = null;
-        function l() {}
-        function c(e, t) {
-            var n = gDesigner.getActiveDocument().getEditor(),
-                i = n.getSelection();
-            if (i && i.length > 0) {
-                var a = GObject.GLocale.get(new GObject.GLocaleKey("GDesignerStyleEditor", "text.style-attribution"));
-                n.beginTransaction();
+            dragAllowed = (require(173), false),
+            draggedStyle = null,
+            draggedElement = null;
+        function StyleEditorBase() {}
+        function applyStyleToSelection(style, remove) {
+            var editor = gDesigner.getActiveDocument().getEditor(),
+                selection = editor.getSelection();
+            if (selection && selection.length > 0) {
+                var transactionLabel = GObject.GLocale.get(new GObject.GLocaleKey("GDesignerStyleEditor", "text.style-attribution"));
+                editor.beginTransaction();
                 try {
-                    for (var r = 0; r < i.length; ++r) t ? i[r].removeStyle(e.getReferenceId()) : i[r].addStyle(e.getReferenceId());
+                    for (var r = 0; r < selection.length; ++r) remove ? selection[r].removeStyle(style.getReferenceId()) : selection[r].addStyle(style.getReferenceId());
                 } finally {
-                    n.commitTransaction(a);
+                    editor.commitTransaction(transactionLabel);
                 }
-                n.updateSelection(false, i);
+                editor.updateSelection(false, selection);
             }
         }
-        function d(e, t, n, i) {
-            var a = gDesigner.getActiveDocument();
-            t ||
-                ((n = new GObject.GStyle()).setProperty("name", GObject.GLocale.get(new GObject.GLocaleKey("GDesignerStyleEditor", "text.new-style"))),
-                n.setProperty("defaultStyle", false));
-            var r = n.clone(),
-                s = null;
-            (a.getEditor().getSelection() && a.getEditor().getSelection().length > 0 && (s = a.getEditor().getSelection()[0]),
-                !t && s && r.assignStyleFrom(s));
-            var l = t
+        function openStyleDialog(anchorElement, isEdit, style, parentOverlay) {
+            var activeDocument = gDesigner.getActiveDocument();
+            isEdit ||
+                ((style = new GObject.GStyle()).setProperty("name", GObject.GLocale.get(new GObject.GLocaleKey("GDesignerStyleEditor", "text.new-style"))),
+                style.setProperty("defaultStyle", false));
+            var previewStyle = style.clone(),
+                selectedElement = null;
+            (activeDocument.getEditor().getSelection() && activeDocument.getEditor().getSelection().length > 0 && (selectedElement = activeDocument.getEditor().getSelection()[0]),
+                !isEdit && selectedElement && previewStyle.assignStyleFrom(selectedElement));
+            var headerLabel = isEdit
                     ? GObject.GLocale.get(new GObject.GLocaleKey("GDesignerStyleEditor", "text.style-editor"))
                     : GObject.GLocale.get(new GObject.GLocaleKey("GDesignerStyleEditor", "text.style-creator")),
-                d = $("<div/>").append($("<span/>").text(l)).addClass("creator-toolbar"),
-                u = $("<input/>").css("align-self", "center").css("width", "100%").attr("type", "text").val(n.getProperty("name")),
-                g = $("<div/>")
+                toolbarHeader = $("<div/>").append($("<span/>").text(headerLabel)).addClass("creator-toolbar"),
+                nameInput = $("<input/>").css("align-self", "center").css("width", "100%").attr("type", "text").val(style.getProperty("name")),
+                previewRow = $("<div/>")
                     .addClass("style")
                     .append(
                         $("<img/>")
                             .css("align-self", "center")
                             .css("margin-left", "10px")
-                            .attr("src", gDesigner.getStylePreview(r, s instanceof GObject.GText))
+                            .attr("src", gDesigner.getStylePreview(previewStyle, selectedElement instanceof GObject.GText))
                     )
-                    .append(u),
-                f = $("<div/>")
+                    .append(nameInput),
+                checkboxesContainer = $("<div/>")
                     .addClass("checkboxes")
                     .append(
                         $("<div/>")
@@ -52,7 +52,7 @@ module.exports = function (module, exports, require) {
                                 $("<input/>")
                                     .attr("data-property", "style")
                                     .attr("type", "checkbox")
-                                    .prop("checked", !t || $.inArray(GObject.GStylable.PropertySet.Style, n.getProperty("ps")) >= 0)
+                                    .prop("checked", !isEdit || $.inArray(GObject.GStylable.PropertySet.Style, style.getProperty("ps")) >= 0)
                             )
                             .append($("<span/>").text(GObject.GLocale.get(new GObject.GLocaleKey("GDesignerStyleEditor", "text.style"))))
                             .addClass("checkbox")
@@ -63,7 +63,7 @@ module.exports = function (module, exports, require) {
                                 $("<input/>")
                                     .attr("data-property", "fill")
                                     .attr("type", "checkbox")
-                                    .prop("checked", !t || $.inArray(GObject.GStylable.PropertySet.FillPaintLayers, n.getProperty("ps")) >= 0)
+                                    .prop("checked", !isEdit || $.inArray(GObject.GStylable.PropertySet.FillPaintLayers, style.getProperty("ps")) >= 0)
                             )
                             .append($("<span/>").text(GObject.GLocale.get(new GObject.GLocaleKey("GDesignerStyleEditor", "text.fill"))))
                             .addClass("checkbox")
@@ -74,7 +74,7 @@ module.exports = function (module, exports, require) {
                                 $("<input/>")
                                     .attr("data-property", "border")
                                     .attr("type", "checkbox")
-                                    .prop("checked", !t || $.inArray(GObject.GStylable.PropertySet.BorderPaintLayers, n.getProperty("ps")) >= 0)
+                                    .prop("checked", !isEdit || $.inArray(GObject.GStylable.PropertySet.BorderPaintLayers, style.getProperty("ps")) >= 0)
                             )
                             .append($("<span/>").text(GObject.GLocale.get(new GObject.GLocaleKey("GDesignerStyleEditor", "text.border"))))
                             .addClass("checkbox")
@@ -85,7 +85,7 @@ module.exports = function (module, exports, require) {
                                 $("<input/>")
                                     .attr("data-property", "effects")
                                     .attr("type", "checkbox")
-                                    .prop("checked", !t || $.inArray(GObject.GStylable.PropertySet.Effects, n.getProperty("ps")) >= 0)
+                                    .prop("checked", !isEdit || $.inArray(GObject.GStylable.PropertySet.Effects, style.getProperty("ps")) >= 0)
                             )
                             .append($("<span/>").text(GObject.GLocale.get(new GObject.GLocaleKey("GDesignerStyleEditor", "text.effects"))))
                             .addClass("checkbox")
@@ -98,153 +98,153 @@ module.exports = function (module, exports, require) {
                                     .attr("type", "checkbox")
                                     .prop(
                                         "checked",
-                                        t ? $.inArray(GObject.GStylable.PropertySet.Text, n.getProperty("ps")) >= 0 : s instanceof GObject.GText
+                                        isEdit ? $.inArray(GObject.GStylable.PropertySet.Text, style.getProperty("ps")) >= 0 : selectedElement instanceof GObject.GText
                                     )
                             )
                             .append($("<span/>").text(GObject.GLocale.get(new GObject.GLocaleKey("GDesignerStyleEditor", "text.text"))))
                             .addClass("checkbox")
                     ),
-                m = $("<div/>"),
-                y = $("<div/>")
+                overlay = $("<div/>"),
+                footerToolbar = $("<div/>")
                     .append(
                         $("<button/>")
                             .html(
-                                t
+                                isEdit
                                     ? GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "action.apply"))
                                     : GObject.GLocale.get(new GObject.GLocaleKey("GDesignerStyleEditor", "action.create"))
                             )
                             .on("click", function () {
                                 gDesigner.stats("designerstyle_click_create");
-                                var r = [];
+                                var propertySets = [];
                                 if (
-                                    (f.find('input[data-property="style"]').is(":checked") && r.push(GObject.GStylable.PropertySet.Style),
-                                    f.find('input[data-property="fill"]').is(":checked") && r.push(GObject.GStylable.PropertySet.FillPaintLayers),
-                                    f.find('input[data-property="border"]').is(":checked") &&
-                                        r.push(GObject.GStylable.PropertySet.BorderPaintLayers),
-                                    f.find('input[data-property="effects"]').is(":checked") && r.push(GObject.GStylable.PropertySet.Effects),
-                                    f.find('input[data-property="text"]').is(":checked") &&
-                                        (r.push(GObject.GStylable.PropertySet.Text), r.push(GObject.GStylable.PropertySet.Paragraph)),
-                                    n.setProperties(["name", "ps"], [g.find("input").val(), r]),
-                                    !t)
+                                    (checkboxesContainer.find('input[data-property="style"]').is(":checked") && propertySets.push(GObject.GStylable.PropertySet.Style),
+                                    checkboxesContainer.find('input[data-property="fill"]').is(":checked") && propertySets.push(GObject.GStylable.PropertySet.FillPaintLayers),
+                                    checkboxesContainer.find('input[data-property="border"]').is(":checked") &&
+                                        propertySets.push(GObject.GStylable.PropertySet.BorderPaintLayers),
+                                    checkboxesContainer.find('input[data-property="effects"]').is(":checked") && propertySets.push(GObject.GStylable.PropertySet.Effects),
+                                    checkboxesContainer.find('input[data-property="text"]').is(":checked") &&
+                                        (propertySets.push(GObject.GStylable.PropertySet.Text), propertySets.push(GObject.GStylable.PropertySet.Paragraph)),
+                                    style.setProperties(["name", "ps"], [previewRow.find("input").val(), propertySets]),
+                                    !isEdit)
                                 ) {
-                                    if ((s && n.assignStyleFrom(s), a.getScene().getStyles().appendChild(n), h(n, e, false, i), i.parent())) {
-                                        var l = i.parent();
-                                        l.offset().top + l.height() > document.body.clientHeight &&
-                                            l.offset({
-                                                top: l.offset().top - 34,
-                                                left: l.offset().left,
+                                    if ((selectedElement && style.assignStyleFrom(selectedElement), activeDocument.getScene().getStyles().appendChild(style), renderStyleRow(style, anchorElement, false, parentOverlay), parentOverlay.parent())) {
+                                        var parentPanel = parentOverlay.parent();
+                                        parentPanel.offset().top + parentPanel.height() > document.body.clientHeight &&
+                                            parentPanel.offset({
+                                                top: parentPanel.offset().top - 34,
+                                                left: parentPanel.offset().left,
                                             });
                                     }
-                                    c(n);
+                                    applyStyleToSelection(style);
                                 }
-                                (gDesigner.createNewStylePreview(n, true, s instanceof GObject.GText),
-                                    m.gOverlay("close", e),
-                                    !t && i && i.gOverlay("close"),
-                                    p(t ? $(".g-style-creator").find(".styles") : $(".g-style-editor").find(".styles:not(.no-style)"), t));
+                                (gDesigner.createNewStylePreview(style, true, selectedElement instanceof GObject.GText),
+                                    overlay.gOverlay("close", anchorElement),
+                                    !isEdit && parentOverlay && parentOverlay.gOverlay("close"),
+                                    refreshStylesList(isEdit ? $(".g-style-creator").find(".styles") : $(".g-style-editor").find(".styles:not(.no-style)"), isEdit));
                             })
                     )
                     .addClass("creator-toolbar bottom");
-            m.addClass("g-style-creator")
-                .append(d)
-                .append($("<div/>").addClass("styles").append(g))
-                .append(f)
-                .append(y)
+            overlay.addClass("g-style-creator")
+                .append(toolbarHeader)
+                .append($("<div/>").addClass("styles").append(previewRow))
+                .append(checkboxesContainer)
+                .append(footerToolbar)
                 .gOverlay({ padding: false, releaseOnClose: true })
-                .gOverlay("open", e);
-            var v = m.parent().offset().top,
-                _ = m.parent().offset().left;
-            (m.parent().offset({ top: v, left: _ - 100 }), u.focus());
+                .gOverlay("open", anchorElement);
+            var overlayTop = overlay.parent().offset().top,
+                overlayLeft = overlay.parent().offset().left;
+            (overlay.parent().offset({ top: overlayTop, left: overlayLeft - 100 }), nameInput.focus());
         }
-        function u(e) {
-            if (r) {
-                var t = $(e).data("style");
-                return t && t.getReferenceId() !== r.getReferenceId();
+        function canAcceptDrop(element) {
+            if (draggedStyle) {
+                var style = $(element).data("style");
+                return style && style.getReferenceId() !== draggedStyle.getReferenceId();
             }
             return false;
         }
-        function p(e, t) {
-            if ((e.empty(), gDesigner.getActiveDocument().getScene().getStyles())) {
-                var n = gDesigner.getActiveDocument().getScene().getStyles();
-                t || ($(".g-style-editor").find(".no-style").empty(), f($(".g-style-editor").find(".no-style")));
-                for (var o = n.getFirstChild(); null !== o; o = o.getNext()) false === o.getProperty("defaultStyle") && h(o, e, t);
+        function refreshStylesList(container, draggable) {
+            if ((container.empty(), gDesigner.getActiveDocument().getScene().getStyles())) {
+                var styles = gDesigner.getActiveDocument().getScene().getStyles();
+                draggable || ($(".g-style-editor").find(".no-style").empty(), renderNoStyleOption($(".g-style-editor").find(".no-style")));
+                for (var styleNode = styles.getFirstChild(); null !== styleNode; styleNode = styleNode.getNext()) false === styleNode.getProperty("defaultStyle") && renderStyleRow(styleNode, container, draggable);
             }
         }
-        function g(e) {
-            var t = gDesigner.getActiveDocument().getEditor().getSelection();
-            return !!(t && t.length > 0) && t[0].getProperty("sref") === e.getReferenceId();
+        function isStyleSelected(style) {
+            var selection = gDesigner.getActiveDocument().getEditor().getSelection();
+            return !!(selection && selection.length > 0) && selection[0].getProperty("sref") === style.getReferenceId();
         }
-        function h(e, t, n, i) {
-            var l = function (e) {
-                    if (!a) return (e.preventDefault(), void e.stopPropagation());
-                    var n = (s = $(e.target).closest(".style")).offset(),
-                        o = e.originalEvent;
-                    (o.stopPropagation(),
-                        (r = s.data("style")),
+        function renderStyleRow(style, container, draggable, parentOverlay) {
+            var handleDragStart = function (event) {
+                    if (!dragAllowed) return (event.preventDefault(), void event.stopPropagation());
+                    var offset = (draggedElement = $(event.target).closest(".style")).offset(),
+                        nativeEvent = event.originalEvent;
+                    (nativeEvent.stopPropagation(),
+                        (draggedStyle = draggedElement.data("style")),
                         false,
-                        o.pageX - n.left,
-                        o.pageY - n.top,
-                        (o.dataTransfer.effectAllowed = "move"),
-                        o.dataTransfer.setData("text/plain", "dummy_data"),
-                        t.find(".style").each(function (e, n) {
-                            $(n)
+                        nativeEvent.pageX - offset.left,
+                        nativeEvent.pageY - offset.top,
+                        (nativeEvent.dataTransfer.effectAllowed = "move"),
+                        nativeEvent.dataTransfer.setData("text/plain", "dummy_data"),
+                        container.find(".style").each(function (e, element) {
+                            $(element)
                                 .on("dragenter", function (e) {
-                                    u(this) && ($(this).parent().find(".style").removeClass("g-drop"), $(this).addClass("g-drop"));
+                                    canAcceptDrop(this) && ($(this).parent().find(".style").removeClass("g-drop"), $(this).addClass("g-drop"));
                                 })
-                                .on("dragleave", function (e) {
-                                    u(this) && $(e.target).parent() !== this && e.target !== this && $(this).removeClass("g-drop");
+                                .on("dragleave", function (event) {
+                                    canAcceptDrop(this) && $(event.target).parent() !== this && event.target !== this && $(this).removeClass("g-drop");
                                 })
-                                .on("dragover", function (e) {
-                                    var t = e.originalEvent;
-                                    u(this) && (t.preventDefault(), t.stopPropagation(), (t.dataTransfer.dropEffect = "move"));
+                                .on("dragover", function (event) {
+                                    var nativeEvent = event.originalEvent;
+                                    canAcceptDrop(this) && (nativeEvent.preventDefault(), nativeEvent.stopPropagation(), (nativeEvent.dataTransfer.dropEffect = "move"));
                                 })
                                 .on("drop", function () {
-                                    var e = $(this);
-                                    (e.removeClass("g-drop"), true);
-                                    var n = e.data("style");
-                                    if (r && n && r.getParent() === n.getParent()) {
-                                        var o = r.getParent(),
-                                            i = o.getIndexOfChild(r),
-                                            a = o.getIndexOfChild(n);
-                                        (o.removeChild(r), o.insertChild(r, i < a ? n.getNext() : n), p(t, true));
+                                    var element = $(this);
+                                    (element.removeClass("g-drop"), true);
+                                    var targetStyle = element.data("style");
+                                    if (draggedStyle && targetStyle && draggedStyle.getParent() === targetStyle.getParent()) {
+                                        var parent = draggedStyle.getParent(),
+                                            draggedIndex = parent.getIndexOfChild(draggedStyle),
+                                            targetIndex = parent.getIndexOfChild(targetStyle);
+                                        (parent.removeChild(draggedStyle), parent.insertChild(draggedStyle, draggedIndex < targetIndex ? targetStyle.getNext() : targetStyle), refreshStylesList(container, true));
                                     }
                                 });
                         }));
                 }.bind(this),
-                h = function () {
+                handleDragEnd = function () {
                     false;
                 }.bind(this),
-                f = $("<div/>").addClass("style").data("style", e).appendTo(t);
-            ($("<div/>").addClass("style-selector").appendTo(f),
-                n &&
-                    f
+                rowElement = $("<div/>").addClass("style").data("style", style).appendTo(container);
+            ($("<div/>").addClass("style-selector").appendTo(rowElement),
+                draggable &&
+                    rowElement
                         .attr("draggable", true)
-                        .on("mousedown", function (e) {
-                            a = $(e.target).hasClass("style") || $(e.target).parent().hasClass("style");
+                        .on("mousedown", function (event) {
+                            dragAllowed = $(event.target).hasClass("style") || $(event.target).parent().hasClass("style");
                         })
-                        .on("dragstart", l)
-                        .on("dragend", h),
-                n ||
-                    f
-                        .attr("data-selected", g(e) ? "yes" : "no")
-                        .addClass(g(e) ? "g-selected" : "")
+                        .on("dragstart", handleDragStart)
+                        .on("dragend", handleDragEnd),
+                draggable ||
+                    rowElement
+                        .attr("data-selected", isStyleSelected(style) ? "yes" : "no")
+                        .addClass(isStyleSelected(style) ? "g-selected" : "")
                         .on("click", function () {
-                            var t = $(this);
-                            (gDesigner.stats("designerstyle_click_assign", e && e.getReferenceId()),
-                                "no" === t.attr("data-selected") &&
+                            var clickedRow = $(this);
+                            (gDesigner.stats("designerstyle_click_assign", style && style.getReferenceId()),
+                                "no" === clickedRow.attr("data-selected") &&
                                     ($(".g-style-editor").find(".style").removeClass("g-selected"),
                                     $(".g-style-editor").find(".style").attr("data-selected", "no"),
-                                    t.attr("data-selected", "yes").addClass("g-selected"),
-                                    c(e)),
-                                i && i.gOverlay("close"));
+                                    clickedRow.attr("data-selected", "yes").addClass("g-selected"),
+                                    applyStyleToSelection(style)),
+                                parentOverlay && parentOverlay.gOverlay("close"));
                         }));
-            var m = null,
-                y = gDesigner.getActiveDocument().getEditor().getSelection();
+            var selectedElement = null,
+                selection = gDesigner.getActiveDocument().getEditor().getSelection();
             if (
-                (y && y.length > 0 && (m = y[0]),
-                f.append(
+                (selection && selection.length > 0 && (selectedElement = selection[0]),
+                rowElement.append(
                     $("<img/>")
                         .css("align-self", "center")
-                        .attr("src", gDesigner.getStylePreview(e, m instanceof GObject.GText))
+                        .attr("src", gDesigner.getStylePreview(style, selectedElement instanceof GObject.GText))
                 ),
                 $("<span/>")
                     .css({
@@ -254,9 +254,9 @@ module.exports = function (module, exports, require) {
                         overflow: "hidden",
                         width: "200px",
                     })
-                    .text(e.getProperty("name"))
-                    .appendTo(f),
-                n)
+                    .text(style.getProperty("name"))
+                    .appendTo(rowElement),
+                draggable)
             )
                 $("<div/>")
                     .addClass("styles-buttons")
@@ -267,10 +267,10 @@ module.exports = function (module, exports, require) {
                             .css("align-self", "center")
                             .append($("<span/>").addClass("gravit-icon-trash"))
                             .on("click", function () {
-                                (gDesigner.stats("designerstyle_click_disconnect", e && e.getReferenceId()),
-                                    e.disconnectStyle(),
-                                    gDesigner.getActiveDocument().getScene().getStyles().removeChild(e),
-                                    f.remove());
+                                (gDesigner.stats("designerstyle_click_disconnect", style && style.getReferenceId()),
+                                    style.disconnectStyle(),
+                                    gDesigner.getActiveDocument().getScene().getStyles().removeChild(style),
+                                    rowElement.remove());
                             })
                     )
                     .append(
@@ -279,57 +279,57 @@ module.exports = function (module, exports, require) {
                             .css("align-self", "center")
                             .append($("<span/>").addClass("gravit-icon-settings"))
                             .on("click", function () {
-                                (gDesigner.stats("designerstyle_click_open", e && e.getReferenceId()), d(f, true, e));
+                                (gDesigner.stats("designerstyle_click_open", style && style.getReferenceId()), openStyleDialog(rowElement, true, style));
                             })
                     )
-                    .appendTo(f);
-            t.hasClass("styles") || t.addClass("styles");
+                    .appendTo(rowElement);
+            container.hasClass("styles") || container.addClass("styles");
         }
-        function f(e, t) {
-            var n = gDesigner.getActiveDocument().getEditor().getSelection();
-            if (n && n.length > 0) {
-                var i = $("<div/>").addClass("style").appendTo(e),
-                    a = n[0],
-                    r = !a.getProperty("sref");
-                ($("<div/>").addClass("style-selector").appendTo(i),
-                    i
-                        .attr("data-selected", r ? "yes" : "no")
-                        .addClass(r ? "g-selected" : "")
+        function renderNoStyleOption(container, parentOverlay) {
+            var selection = gDesigner.getActiveDocument().getEditor().getSelection();
+            if (selection && selection.length > 0) {
+                var rowElement = $("<div/>").addClass("style").appendTo(container),
+                    selectedElement = selection[0],
+                    isNoStyleSelected = !selectedElement.getProperty("sref");
+                ($("<div/>").addClass("style-selector").appendTo(rowElement),
+                    rowElement
+                        .attr("data-selected", isNoStyleSelected ? "yes" : "no")
+                        .addClass(isNoStyleSelected ? "g-selected" : "")
                         .on("click", function () {
-                            var e = $(this);
-                            ("no" === e.attr("data-selected") &&
-                                (e.parent().find(".style").attr("data-selected", "no").removeClass("g-selected"),
-                                e.attr("data-selected", "yes").addClass("g-selected"),
-                                c(a.getReferencedStyle(), true)),
-                                t && t.gOverlay("close"));
+                            var element = $(this);
+                            ("no" === element.attr("data-selected") &&
+                                (element.parent().find(".style").attr("data-selected", "no").removeClass("g-selected"),
+                                element.attr("data-selected", "yes").addClass("g-selected"),
+                                applyStyleToSelection(selectedElement.getReferencedStyle(), true)),
+                                parentOverlay && parentOverlay.gOverlay("close"));
                         }),
                     $("<span/>")
                         .css("align-self", "center")
                         .text(GObject.GLocale.get(new GObject.GLocaleKey("GDesignerStyleEditor", "text.no-style")))
                         .css("width", "165px")
                         .css("margin-left", "10px")
-                        .appendTo(i),
-                    e.hasClass("styles") || (e.addClass("styles"), e.addClass("no-style")));
+                        .appendTo(rowElement),
+                    container.hasClass("styles") || (container.addClass("styles"), container.addClass("no-style")));
             }
         }
-        GObject.GObject.inheritAndMix(l, GObject.GObject);
-        var m = {
+        GObject.GObject.inheritAndMix(StyleEditorBase, GObject.GObject);
+        var pluginMethods = {
             init: function () {
                 return this.each(function () {
-                    var e = this,
-                        t = $(this),
-                        n = function () {
-                            var n = $("<div/>"),
-                                i = $("<div/>"),
-                                a = $("<div></div>").addClass("g-style-editor").css("width", "250px");
-                            if ((f(n, a), gDesigner.getActiveDocument().getScene().getStyles()))
+                    var element = this,
+                        field = $(this),
+                        openStylePanel = function () {
+                            var noStyleContainer = $("<div/>"),
+                                stylesContainer = $("<div/>"),
+                                overlayPanel = $("<div></div>").addClass("g-style-editor").css("width", "250px");
+                            if ((renderNoStyleOption(noStyleContainer, overlayPanel), gDesigner.getActiveDocument().getScene().getStyles()))
                                 for (
-                                    var r = gDesigner.getActiveDocument().getScene().getStyles().getFirstChild();
-                                    null !== r;
-                                    r = r.getNext()
+                                    var styleNode = gDesigner.getActiveDocument().getScene().getStyles().getFirstChild();
+                                    null !== styleNode;
+                                    styleNode = styleNode.getNext()
                                 )
-                                    false === r.getProperty("defaultStyle") && h(r, i, false, a);
-                            var s = $("<div/>")
+                                    false === styleNode.getProperty("defaultStyle") && renderStyleRow(styleNode, stylesContainer, false, overlayPanel);
+                            var toolbar = $("<div/>")
                                 .addClass("style-toolbar")
                                 .append(
                                     $("<div/>")
@@ -339,7 +339,7 @@ module.exports = function (module, exports, require) {
                                                 .html(GObject.GLocale.get(new GObject.GLocaleKey("GDesignerStyleEditor", "action.create-new-style")))
                                         )
                                         .on("click", function () {
-                                            (gDesigner.stats("designerstyle_click_createnewstyle"), d(i, false, null, a));
+                                            (gDesigner.stats("designerstyle_click_createnewstyle"), openStyleDialog(stylesContainer, false, null, overlayPanel));
                                         })
                                 )
                                 .append(
@@ -354,8 +354,8 @@ module.exports = function (module, exports, require) {
                                         )
                                         .on("click", function () {
                                             (gDesigner.stats("designerstyle_click_organize"),
-                                                (function (e) {
-                                                    var t = $("<div/>")
+                                                (function (parentOverlay) {
+                                                    var organizerHeader = $("<div/>")
                                                             .append(
                                                                 $("<span/>").text(
                                                                     GObject.GLocale.get(
@@ -364,53 +364,53 @@ module.exports = function (module, exports, require) {
                                                                 )
                                                             )
                                                             .addClass("creator-toolbar"),
-                                                        n = $("<div/>"),
-                                                        i = gDesigner.getActiveDocument().getScene().getStyles(),
-                                                        a = false;
-                                                    if (i)
-                                                        for (var r = i.getFirstChild(); null !== r; r = r.getNext())
-                                                            false === r.getProperty("defaultStyle") && ((a = true), h(r, n, true));
-                                                    a || f(n);
-                                                    var s = $("<div/>"),
-                                                        l = $("<div/>")
+                                                        stylesContainer = $("<div/>"),
+                                                        styles = gDesigner.getActiveDocument().getScene().getStyles(),
+                                                        hasStyles = false;
+                                                    if (styles)
+                                                        for (var styleNode = styles.getFirstChild(); null !== styleNode; styleNode = styleNode.getNext())
+                                                            false === styleNode.getProperty("defaultStyle") && ((hasStyles = true), renderStyleRow(styleNode, stylesContainer, true));
+                                                    hasStyles || renderNoStyleOption(stylesContainer);
+                                                    var dialog = $("<div/>"),
+                                                        footerToolbar = $("<div/>")
                                                             .append(
                                                                 $("<button/>")
                                                                     .html(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.finish")))
                                                                     .on("click", function () {
                                                                         gDesigner.stats("designerstyle_click_finish");
-                                                                        var t = $(".g-style-editor").find(".styles:not(.no-style)");
-                                                                        if ((t.empty(), i))
-                                                                            for (var n = i.getFirstChild(); null !== n; n = n.getNext())
-                                                                                false === n.getProperty("defaultStyle") && h(n, t, false, e);
-                                                                        s.gDialog("close");
+                                                                        var stylesContainer = $(".g-style-editor").find(".styles:not(.no-style)");
+                                                                        if ((stylesContainer.empty(), styles))
+                                                                            for (var styleNode = styles.getFirstChild(); null !== styleNode; styleNode = styleNode.getNext())
+                                                                                false === styleNode.getProperty("defaultStyle") && renderStyleRow(styleNode, stylesContainer, false, parentOverlay);
+                                                                        dialog.gDialog("close");
                                                                     })
                                                             )
                                                             .addClass("creator-toolbar bottom");
-                                                    (s.append(t).append(n).append(l).gDialog({
+                                                    (dialog.append(organizerHeader).append(stylesContainer).append(footerToolbar).gDialog({
                                                         releaseOnClose: true,
                                                         className: "g-style-creator organizer",
                                                     }),
-                                                        s.gDialog("open", false));
-                                                })(a));
+                                                        dialog.gDialog("open", false));
+                                                })(overlayPanel));
                                         })
                                 );
-                            a.append(n)
-                                .append(i)
-                                .append(s)
+                            overlayPanel.append(noStyleContainer)
+                                .append(stylesContainer)
+                                .append(toolbar)
                                 .on("open", function () {
-                                    t.trigger("open");
+                                    field.trigger("open");
                                 })
                                 .on("close", function () {
-                                    t.trigger("close");
+                                    field.trigger("close");
                                 })
                                 .gOverlay({ padding: false, releaseOnClose: true })
-                                .gOverlay("open", e);
+                                .gOverlay("open", element);
                         };
-                    t.gPro().on(
+                    field.gPro().on(
                         "click",
                         Utils.watchDog.trap(
                             function () {
-                                (gDesigner.stats("designerstyle_click_openpanel"), t.find(".g-styles-field").hasClass("g-disabled") || n());
+                                (gDesigner.stats("designerstyle_click_openpanel"), field.find(".g-styles-field").hasClass("g-disabled") || openStylePanel());
                             },
                             null,
                             () => {
@@ -422,12 +422,12 @@ module.exports = function (module, exports, require) {
             },
             value: function (e) {},
         };
-        ((module.exports = l),
-            ($.fn.gDesignerStyleEditor = function (e) {
-                return m[e]
-                    ? m[e].apply(this, Array.prototype.slice.call(arguments, 1))
-                    : "object" != typeof e && e
-                      ? void $.error("Method " + e + " does not exist on jQuery.myPlugin")
-                      : m.init.apply(this, arguments);
+        ((module.exports = StyleEditorBase),
+            ($.fn.gDesignerStyleEditor = function (method) {
+                return pluginMethods[method]
+                    ? pluginMethods[method].apply(this, Array.prototype.slice.call(arguments, 1))
+                    : "object" != typeof method && method
+                      ? void $.error("Method " + method + " does not exist on jQuery.myPlugin")
+                      : pluginMethods.init.apply(this, arguments);
             }));
     };

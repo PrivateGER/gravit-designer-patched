@@ -3,11 +3,11 @@ module.exports = function (module, exports, require) {
         require(3);
         var GObject = require(1);
         const GCategory = require(18),
-            a = require(31),
-            r = require(1640),
+            GAction = require(31),
+            GTranslationToolDialog = require(1640),
             { IS_TRUNK, IS_LOCALHOST } = require(231 /* IS_TRUNK */);
         function c() {}
-        (GObject.GObject.inherit(c, a),
+        (GObject.GObject.inherit(c, GAction),
             (c.ID = "help.translationtool"),
             (c.TITLE = new GObject.GLocaleKey("GTranslationToolAction", "title")),
             (c.prototype._translationTool = null),
@@ -30,7 +30,7 @@ module.exports = function (module, exports, require) {
                 return !(!IS_TRUNK && !IS_LOCALHOST);
             }),
             (c.prototype.execute = function () {
-                (this._translationTool || (this._translationTool = new r()), this._translationTool.init());
+                (this._translationTool || (this._translationTool = new GTranslationToolDialog()), this._translationTool.init());
             }),
             (c.prototype.toString = function () {
                 return "[Object GTranslationToolAction]";

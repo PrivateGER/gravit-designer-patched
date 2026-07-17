@@ -1,10 +1,10 @@
 module.exports = function (module, exports, require) {
         "use strict";
         var Utils = require(40);
-        function i(e, t, n) {
-            ((this.element = e), (this.mouseMoveCallback = t || Utils.fakeFunction), (this.mouseUpCallback = n || Utils.fakeFunction), this.init());
+        function DraggablePoint(element, mouseMoveCallback, mouseUpCallback) {
+            ((this.element = element), (this.mouseMoveCallback = mouseMoveCallback || Utils.fakeFunction), (this.mouseUpCallback = mouseUpCallback || Utils.fakeFunction), this.init());
         }
-        ((i.prototype.init = function () {
+        ((DraggablePoint.prototype.init = function () {
             ((this._handleMouseDown = this._handleMouseDown.bind(this)),
                 (this._onDragStart = this._onDragStart.bind(this)),
                 (this._onMouseUp = this._onMouseUp.bind(this)),
@@ -12,50 +12,50 @@ module.exports = function (module, exports, require) {
                 this.element.addEventListener("mousedown", this._handleMouseDown),
                 (this.element.style.position = "absolute"));
         }),
-            (i.prototype._updateElementOffset = function (e, t) {
-                const n = this.element.getBoundingClientRect();
-                ((this._offsetX = e - n.left), (this._offsetY = t - n.top));
+            (DraggablePoint.prototype._updateElementOffset = function (pageX, pageY) {
+                const rect = this.element.getBoundingClientRect();
+                ((this._offsetX = pageX - rect.left), (this._offsetY = pageY - rect.top));
             }),
-            (i.prototype._resetElementOffset = function () {
+            (DraggablePoint.prototype._resetElementOffset = function () {
                 ((this._offsetX = 0), (this._offsetY = 0));
             }),
-            (i.prototype._hasElementOffset = function () {
+            (DraggablePoint.prototype._hasElementOffset = function () {
                 return !!this._offsetX && !!this._offsetY;
             }),
-            (i.prototype._handleMouseDown = function (e) {
-                (e.preventDefault(),
-                    e.stopPropagation(),
+            (DraggablePoint.prototype._handleMouseDown = function (event) {
+                (event.preventDefault(),
+                    event.stopPropagation(),
                     this._resetElementOffset(),
                     document.addEventListener("mousemove", this._onMouseMove),
                     document.addEventListener("mouseup", this._onMouseUp),
                     this.element.addEventListener("dragstart", this._onDragStart),
-                    this.moveTo(e.pageX, e.pageY));
+                    this.moveTo(event.pageX, event.pageY));
             }),
-            (i.prototype.moveTo = function (e, t, n) {
-                (n ? this._resetElementOffset() : this._hasElementOffset() || this._updateElementOffset(e, t),
+            (DraggablePoint.prototype.moveTo = function (pageX, pageY, resetOffset) {
+                (resetOffset ? this._resetElementOffset() : this._hasElementOffset() || this._updateElementOffset(pageX, pageY),
                     this.mouseMoveCallback({
-                        elementX: e - this._offsetX,
-                        elementY: t - this._offsetY,
-                        centerX: e - this._offsetX / 2,
-                        centerY: t - this._offsetY / 2,
-                        pageX: e,
-                        pageY: t,
+                        elementX: pageX - this._offsetX,
+                        elementY: pageY - this._offsetY,
+                        centerX: pageX - this._offsetX / 2,
+                        centerY: pageY - this._offsetY / 2,
+                        pageX: pageX,
+                        pageY: pageY,
                     }));
             }),
-            (i.prototype._onMouseMove = function (e) {
-                this.moveTo(e.pageX, e.pageY);
+            (DraggablePoint.prototype._onMouseMove = function (event) {
+                this.moveTo(event.pageX, event.pageY);
             }),
-            (i.prototype._onDragStart = function () {
+            (DraggablePoint.prototype._onDragStart = function () {
                 return false;
             }),
-            (i.prototype._onMouseUp = function (e) {
-                (this.unmount(), this.mouseUpCallback(e));
+            (DraggablePoint.prototype._onMouseUp = function (event) {
+                (this.unmount(), this.mouseUpCallback(event));
             }),
-            (i.prototype.unmount = function () {
+            (DraggablePoint.prototype.unmount = function () {
                 (document.removeEventListener("mousemove", this._onMouseMove),
                     document.removeEventListener("mouseup", this._onMouseUp),
                     this.element.removeEventListener("mousedown", this._handleMouseDown),
                     this.element.removeEventListener("dragstart", this._onDragStart));
             }),
-            (module.exports = i));
+            (module.exports = DraggablePoint));
     };

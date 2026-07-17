@@ -2,26 +2,26 @@ module.exports = function (module, exports, require) {
         "use strict";
         (require(4), require(13), require(38));
         const { GLocale, GLocaleKey } = require(1 /* GObject */);
-        function a() {
+        function GCollaborators() {
             throw "No instantiate";
         }
-        a.Mode = { Online: "online", Offline: "offline" };
-        const r = {
+        GCollaborators.Mode = { Online: "online", Offline: "offline" };
+        const methods = {
             init: function () {
                 return this.each(function () {
                     $(this)
-                        .data("mode", a.Mode.Online)
+                        .data("mode", GCollaborators.Mode.Online)
                         .addClass("g-collaborators")
                         .append($("<div/>").addClass("g-collaborators-container"));
                 });
             },
-            mode: function (e) {
-                const t = r[e];
-                return (t && ($(this).data("mode", e), t.call(this)), this);
+            mode: function (methodName) {
+                const method = methods[methodName];
+                return (method && ($(this).data("mode", methodName), method.call(this)), this);
             },
             online: function () {
-                const e = $(this).data("collaborators") || [];
-                return (r.collaborators.call(this, e), this);
+                const collaborators = $(this).data("collaborators") || [];
+                return (methods.collaborators.call(this, collaborators), this);
             },
             offline: function () {
                 return (
@@ -36,72 +36,72 @@ module.exports = function (module, exports, require) {
                     this
                 );
             },
-            collaborators: function (e) {
+            collaborators: function (collaborators) {
                 if (arguments.length > 0) {
-                    if (!((e && e.length) || $(this).data("mode") !== a.Mode.Offline)) return;
-                    const t = (e) => {
-                            const t = e.getUserColor(),
-                                n = e.getTooltip() || "",
-                                o = e.getIcon(),
-                                i = $("<div/>")
+                    if (!((collaborators && collaborators.length) || $(this).data("mode") !== GCollaborators.Mode.Offline)) return;
+                    const renderCollaborator = (collaborator) => {
+                            const color = collaborator.getUserColor(),
+                                tooltip = collaborator.getTooltip() || "",
+                                icon = collaborator.getIcon(),
+                                collaboratorElement = $("<div/>")
                                     .addClass("g-collaborator")
-                                    .attr("data-title", n)
-                                    .css("border-color", t)
-                                    .css("background-color", t)
+                                    .attr("data-title", tooltip)
+                                    .css("border-color", color)
+                                    .css("background-color", color)
                                     .append(
                                         $("<span/>")
                                             .addClass("icon")
-                                            .addClass(o || "")
-                                            .css("display", o ? "flex" : "none")
+                                            .addClass(icon || "")
+                                            .css("display", icon ? "flex" : "none")
                                     );
-                            if (e.hasOwnPictureAvatar()) {
-                                const t = e.avatar;
-                                "<svg>" === t.substr(0, "<svg>".length)
-                                    ? $(t).appendTo(i)
-                                    : i.css({ backgroundImage: 'url("'.concat(t, '")') });
-                            } else $("<span/>").text(e.getUserNameInitials()).appendTo(i);
-                            return i;
+                            if (collaborator.hasOwnPictureAvatar()) {
+                                const avatarSource = collaborator.avatar;
+                                "<svg>" === avatarSource.substr(0, "<svg>".length)
+                                    ? $(avatarSource).appendTo(collaboratorElement)
+                                    : collaboratorElement.css({ backgroundImage: 'url("'.concat(avatarSource, '")') });
+                            } else $("<span/>").text(collaborator.getUserNameInitials()).appendTo(collaboratorElement);
+                            return collaboratorElement;
                         },
-                        n = $(this)
-                            .data("collaborators", e)
+                        container = $(this)
+                            .data("collaborators", collaborators)
                             .find(".g-collaborators-container")
                             .removeAttr("data-title")
                             .empty()
-                            .append(e.slice(0, 4).map((e) => t(e)));
-                    if (e.length > 4) {
-                        const o = $("<div/>")
+                            .append(collaborators.slice(0, 4).map((collaborator) => renderCollaborator(collaborator)));
+                    if (collaborators.length > 4) {
+                        const overlay = $("<div/>")
                             .gOverlay({ clazz: "g-collaborators-overlay" })
                             .append(
                                 $("<div/>")
                                     .addClass("g-collaborators-container")
                                     .append(
-                                        e
-                                            .slice(4, e.length)
-                                            .map((e) =>
-                                                $("<div/>").addClass("g-collaborator-row").append(t(e)).append($("<span/>").text(e.name))
+                                        collaborators
+                                            .slice(4, collaborators.length)
+                                            .map((collaborator) =>
+                                                $("<div/>").addClass("g-collaborator-row").append(renderCollaborator(collaborator)).append($("<span/>").text(collaborator.name))
                                             )
                                     )
                             );
                         $("<div/>")
                             .addClass("g-collaborator")
                             .addClass("plus")
-                            .append($("<span/>").text("+ ".concat(e.length - 4)))
-                            .on("click", (e) => {
-                                o.gOverlay("open", $(e.target).closest(".g-collaborator"));
+                            .append($("<span/>").text("+ ".concat(collaborators.length - 4)))
+                            .on("click", (event) => {
+                                overlay.gOverlay("open", $(event.target).closest(".g-collaborator"));
                             })
-                            .appendTo(n);
+                            .appendTo(container);
                     }
                     return this;
                 }
                 return $(this).data("collaborators");
             },
         };
-        (($.fn.gCollaborators = function (e) {
-            return r[e]
-                ? r[e].apply(this, Array.prototype.slice.call(arguments, 1))
-                : "object" != typeof e && e
-                  ? void $.error("Method " + e + " does not exist on jQuery.gCollaborators")
-                  : r.init.apply(this, arguments);
+        (($.fn.gCollaborators = function (methodName) {
+            return methods[methodName]
+                ? methods[methodName].apply(this, Array.prototype.slice.call(arguments, 1))
+                : "object" != typeof methodName && methodName
+                  ? void $.error("Method " + methodName + " does not exist on jQuery.gCollaborators")
+                  : methods.init.apply(this, arguments);
         }),
-            (module.exports = a));
+            (module.exports = GCollaborators));
     };

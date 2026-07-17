@@ -1,67 +1,67 @@
 module.exports = function (module, exports, require) {
         "use strict";
         require(3);
-        var o = require(53),
+        var editorModule = require(53),
             GObject = require(1),
-            a = (require(15 /* GPlatform */), require(18 /* GCategory */)),
-            r = require(106);
-        function s() {
+            GCategory = (require(15 /* GPlatform */), require(18 /* GCategory */)),
+            GElementAction = require(106);
+        function EditElementAction() {
             this._title = new GObject.GLocaleKey("GEditElementActon", "title");
         }
-        (GObject.GObject.inherit(s, r),
-            (s.ID = "edit.edit"),
-            (s.prototype._title = null),
-            (s.prototype.getId = function () {
-                return s.ID;
+        (GObject.GObject.inherit(EditElementAction, GElementAction),
+            (EditElementAction.ID = "edit.edit"),
+            (EditElementAction.prototype._title = null),
+            (EditElementAction.prototype.getId = function () {
+                return EditElementAction.ID;
             }),
-            (s.prototype.getTitle = function () {
+            (EditElementAction.prototype.getTitle = function () {
                 return this._title;
             }),
-            (s.prototype.getCategory = function () {
-                return a.CATEGORY_EDIT;
+            (EditElementAction.prototype.getCategory = function () {
+                return GCategory.CATEGORY_EDIT;
             }),
-            (s.prototype.getGroup = function () {
+            (EditElementAction.prototype.getGroup = function () {
                 return "select";
             }),
-            (s.prototype.getShortcut = function () {
+            (EditElementAction.prototype.getShortcut = function () {
                 return null;
             }),
-            (s.prototype.isEnabled = function (e) {
-                if (!r.prototype.isEnabled.call(this)) return false;
-                var t = false;
+            (EditElementAction.prototype.isEnabled = function (selection) {
+                if (!GElementAction.prototype.isEnabled.call(this)) return false;
+                var enabled = false;
                 if (
-                    (e =
-                        e || (gDesigner.getActiveDocument() ? gDesigner.getActiveDocument().getEditor().getIndividualSelection() : null)) &&
-                    e.length > 0 &&
+                    (selection =
+                        selection || (gDesigner.getActiveDocument() ? gDesigner.getActiveDocument().getEditor().getIndividualSelection() : null)) &&
+                    selection.length > 0 &&
                     !gDesigner.getActiveDocument().getEditor().isInlineEditing()
                 )
-                    if (gDesigner.getToolManager().getActiveTool() != gDesigner.getToolManager().getTool(o.GSubSelectTool)) t = true;
-                    else for (var n = 0; n < e.length; ++n) e[n] instanceof GObject.GText && (t = true);
-                return t;
+                    if (gDesigner.getToolManager().getActiveTool() != gDesigner.getToolManager().getTool(editorModule.GSubSelectTool)) enabled = true;
+                    else for (var n = 0; n < selection.length; ++n) selection[n] instanceof GObject.GText && (enabled = true);
+                return enabled;
             }),
-            (s.prototype.execute = function (e) {
-                var t = false;
+            (EditElementAction.prototype.execute = function (selection) {
+                var opened = false;
                 if (
-                    (e =
-                        e || (gDesigner.getActiveDocument() ? gDesigner.getActiveDocument().getEditor().getIndividualSelection() : null)) &&
-                    e.length > 0
+                    (selection =
+                        selection || (gDesigner.getActiveDocument() ? gDesigner.getActiveDocument().getEditor().getIndividualSelection() : null)) &&
+                    selection.length > 0
                 ) {
-                    for (var n = 0; n < e.length && !t; ++n)
-                        if (e[n] instanceof GObject.GText) {
-                            var a = e[n].getGeometryBBox(),
+                    for (var n = 0; n < selection.length && !opened; ++n)
+                        if (selection[n] instanceof GObject.GText) {
+                            var a = selection[n].getGeometryBBox(),
                                 r = gDesigner.getWindows().getActiveWindow(),
                                 s = r ? r.getView() : null;
                             a &&
                                 s &&
-                                (t = gDesigner.getActiveDocument().getEditor().openInlineEditor(e[n], s, new GObject.GPoint(a.getX(), a.getY())));
+                                (opened = gDesigner.getActiveDocument().getEditor().openInlineEditor(selection[n], s, new GObject.GPoint(a.getX(), a.getY())));
                         }
-                    t ||
-                        gDesigner.getToolManager().getActiveTool() == gDesigner.getToolManager().getTool(o.GSubSelectTool) ||
-                        gDesigner.getToolManager().activateTool(o.GSubSelectTool, null, true);
+                    opened ||
+                        gDesigner.getToolManager().getActiveTool() == gDesigner.getToolManager().getTool(editorModule.GSubSelectTool) ||
+                        gDesigner.getToolManager().activateTool(editorModule.GSubSelectTool, null, true);
                 }
             }),
-            (s.prototype.toString = function () {
+            (EditElementAction.prototype.toString = function () {
                 return "[Object GEditElementActon]";
             }),
-            (module.exports = s));
+            (module.exports = EditElementAction));
     };

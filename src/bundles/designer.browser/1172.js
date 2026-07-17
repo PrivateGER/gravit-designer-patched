@@ -3,8 +3,8 @@ module.exports = function (module, exports, require) {
         var _interopRequireDefault = require(16);
         require(3);
         var GObject = require(1),
-            a = (require(15 /* GPlatform */), _interopRequireDefault(require(31))),
-            r = (_interopRequireDefault(require(85)), _interopRequireDefault(require(18 /* GCategory */))),
+            a = (require(15 /* GPlatform */), _interopRequireDefault(require(31 /* GAction */))),
+            r = (_interopRequireDefault(require(85 /* GContainer */)), _interopRequireDefault(require(18 /* GCategory */))),
             s = _interopRequireDefault(require(1173));
         function l() {}
         (GObject.GObject.inherit(l, a.default),

@@ -1,9 +1,9 @@
 module.exports = function (module, exports, require) {
         "use strict";
         var GObject = require(1),
-            i = {
-                init: function (e) {
-                    var t = [
+            methods = {
+                init: function (options) {
+                    var units = [
                         {
                             unit: GObject.GLength.Unit.PX,
                             name: GObject.GLocale.get(new GObject.GLocaleKey("GLength", "unit.px")),
@@ -36,25 +36,25 @@ module.exports = function (module, exports, require) {
                         },
                     ];
                     return (
-                        (e = $.extend({ short: false }, e)),
+                        (options = $.extend({ short: false }, options)),
                         this.each(function () {
-                            var n = $(this);
-                            if (n.is("select"))
-                                for (var o = 0; o < t.length; ++o)
-                                    n.append(
+                            var element = $(this);
+                            if (element.is("select"))
+                                for (var o = 0; o < units.length; ++o)
+                                    element.append(
                                         $("<option></option>")
-                                            .attr("value", t[o].unit)
-                                            .text(e.short ? t[o].short : t[o].name)
+                                            .attr("value", units[o].unit)
+                                            .text(options.short ? units[o].short : units[o].name)
                                     );
                         })
                     );
                 },
             };
-        $.fn.gUnit = function (e) {
-            return i[e]
-                ? i[e].apply(this, Array.prototype.slice.call(arguments, 1))
-                : "object" != typeof e && e
-                  ? void $.error("Method " + e + " does not exist on jQuery.myPlugin")
-                  : i.init.apply(this, arguments);
+        $.fn.gUnit = function (method) {
+            return methods[method]
+                ? methods[method].apply(this, Array.prototype.slice.call(arguments, 1))
+                : "object" != typeof method && method
+                  ? void $.error("Method " + method + " does not exist on jQuery.myPlugin")
+                  : methods.init.apply(this, arguments);
         };
     };

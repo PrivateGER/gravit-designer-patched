@@ -4,96 +4,96 @@ module.exports = function (module, exports, require) {
         (require(19), require(96 /* polyfill:JSON */), require(30 /* polyfill:Object */), require(8 /* Symbol */), require(4), require(41), require(13), require(26));
         var GObject = require(1),
             designerConfig = require(10),
-            r = _interopRequireDefault(require(336)),
-            s = _interopRequireDefault(require(44 /* GSystemDialog */)),
+            GStorageEvent = _interopRequireDefault(require(336)),
+            GSystemDialog = _interopRequireDefault(require(44 /* GSystemDialog */)),
             Utils = require(40),
-            c = _interopRequireDefault(require(554)),
-            d = _interopRequireDefault(require(555)),
+            GThumbnail = _interopRequireDefault(require(554)),
+            GProgress = _interopRequireDefault(require(555)),
             GStorage = require(237),
             GCommonNames = require(119);
-        const g = require(436),
-            h = require(86);
-        var f = designerConfig.FILE_FORMATS.find((e) => e.default),
-            m = designerConfig.FILE_FORMATS.filter((e) => !e.default);
-        const y = require(435),
-            PDFNodeStream = require(165);
-        function _(e) {
+        const CollaborativeFileMixin = require(436),
+            FileStatus = require(86);
+        var defaultFileFormat = designerConfig.FILE_FORMATS.find((format) => format.default),
+            alternateFileFormats = designerConfig.FILE_FORMATS.filter((format) => !format.default);
+        const Md5 = require(435),
+            pako = require(165 /* PDFNodeStream */);
+        function reportErrorToServer(errorInfo) {
             return fetch(designerConfig.gApi.url + "/error", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(Object.assign(e, { ua: window.navigator.userAgent })),
+                body: JSON.stringify(Object.assign(errorInfo, { ua: window.navigator.userAgent })),
             });
         }
-        function b() {}
-        (GObject.GObject.inherit(b, GStorage),
-            (b.ProgressStages = {
+        function GCloudStorage() {}
+        (GObject.GObject.inherit(GCloudStorage, GStorage),
+            (GCloudStorage.ProgressStages = {
                 Preparing: 0,
                 SyncingImages: 50,
                 UploadingFile: 100,
             }),
-            (b.from = async function (e, t, n, o, i) {
-                let a = t;
+            (GCloudStorage.from = async function (type, source, filenameOverride, versionId, isAutoSave) {
+                let fileData = source;
                 return (
-                    "string" == typeof t && (a = await GCommonNames.getFileDataForVersionOrAutoSave(t, o, i)),
-                    a ? new b.Item(e, a.id, n || a.name, a, o || a.version, null, i) : null
+                    "string" == typeof source && (fileData = await GCommonNames.getFileDataForVersionOrAutoSave(source, versionId, isAutoSave)),
+                    fileData ? new GCloudStorage.Item(type, fileData.id, filenameOverride || fileData.name, fileData, versionId || fileData.version, null, isAutoSave) : null
                 );
             }),
-            (b.Item = function (e, t, n, o, i, a, r) {
+            (GCloudStorage.Item = function (type, id, filename, fileData, versionId, token, isAutoSave) {
                 if (
-                    (GStorage.Item.call(this, e),
-                    (this._filename = n),
-                    (this._id = t),
-                    (this._file = o && GCommonNames.convertToCloudItem(o)),
-                    (this._versionId = i),
-                    (this._token = a),
-                    (this._isAutoSave = "boolean" == typeof r ? r : !(!o || !o.autosave)),
-                    (this._fileLastModifiedDate = o && new Date(o.updated || o.created)),
-                    (this._fileAutoSaveLastModifiedDate = o && new Date(o.autosave_updated)),
-                    o && m.length)
+                    (GStorage.Item.call(this, type),
+                    (this._filename = filename),
+                    (this._id = id),
+                    (this._file = fileData && GCommonNames.convertToCloudItem(fileData)),
+                    (this._versionId = versionId),
+                    (this._token = token),
+                    (this._isAutoSave = "boolean" == typeof isAutoSave ? isAutoSave : !(!fileData || !fileData.autosave)),
+                    (this._fileLastModifiedDate = fileData && new Date(fileData.updated || fileData.created)),
+                    (this._fileAutoSaveLastModifiedDate = fileData && new Date(fileData.autosave_updated)),
+                    fileData && alternateFileFormats.length)
                 ) {
-                    var s = null;
-                    (o.type
-                        ? (s = m.find((e) => e.type === this._file.getMimeType()))
-                        : this._file.getExtension() && (s = m.find((e) => e.ext === this._file.getExtension())),
-                        s && ((this._ext = s.ext.toUpperCase()), (this._type = s.type)));
+                    var matchedFormat = null;
+                    (fileData.type
+                        ? (matchedFormat = alternateFileFormats.find((format) => format.type === this._file.getMimeType()))
+                        : this._file.getExtension() && (matchedFormat = alternateFileFormats.find((format) => format.ext === this._file.getExtension())),
+                        matchedFormat && ((this._ext = matchedFormat.ext.toUpperCase()), (this._type = matchedFormat.type)));
                 }
             }),
-            GObject.GObject.inheritAndMix(b.Item, GStorage.Item, [g]),
-            (b.Item.prototype._filename = null),
-            (b.Item.prototype._ext = null),
-            (b.Item.prototype._type = null),
-            (b.Item.prototype._id = null),
-            (b.Item.prototype._file = null),
-            (b.Item.prototype._versionId = null),
-            (b.Item.prototype._token = null),
-            (b.Item.prototype._isAutoSave = null),
-            (b.Item.prototype.isRegistrable = function () {
+            GObject.GObject.inheritAndMix(GCloudStorage.Item, GStorage.Item, [CollaborativeFileMixin]),
+            (GCloudStorage.Item.prototype._filename = null),
+            (GCloudStorage.Item.prototype._ext = null),
+            (GCloudStorage.Item.prototype._type = null),
+            (GCloudStorage.Item.prototype._id = null),
+            (GCloudStorage.Item.prototype._file = null),
+            (GCloudStorage.Item.prototype._versionId = null),
+            (GCloudStorage.Item.prototype._token = null),
+            (GCloudStorage.Item.prototype._isAutoSave = null),
+            (GCloudStorage.Item.prototype.isRegistrable = function () {
                 return !!this.getId();
             }),
-            (b.Item.prototype.getId = function () {
+            (GCloudStorage.Item.prototype.getId = function () {
                 return this._id;
             }),
-            (b.Item.prototype.isVersionAutoSave = function () {
+            (GCloudStorage.Item.prototype.isVersionAutoSave = function () {
                 return this._isAutoSave;
             }),
-            (b.Item.prototype.getToken = function () {
+            (GCloudStorage.Item.prototype.getToken = function () {
                 return this._token;
             }),
-            (b.Item.prototype.getFullName = function () {
+            (GCloudStorage.Item.prototype.getFullName = function () {
                 return this._filename;
             }),
-            (b.Item.prototype.getName = function () {
+            (GCloudStorage.Item.prototype.getName = function () {
                 return GObject.GUtil.xss(this._filename);
             }),
-            (b.Item.prototype.getVersionId = function () {
+            (GCloudStorage.Item.prototype.getVersionId = function () {
                 return this._versionId || null;
             }),
-            (b.Item.prototype.setVersionId = function (e) {
-                this._versionId = e;
+            (GCloudStorage.Item.prototype.setVersionId = function (versionId) {
+                this._versionId = versionId;
             }),
-            (b.Item.prototype.storeFileFormatVersion = function (e) {
+            (GCloudStorage.Item.prototype.storeFileFormatVersion = function (fileFormatVersion) {
                 return (
-                    (this._fileFormatVersion = e),
+                    (this._fileFormatVersion = fileFormatVersion),
                     this.supportsSharing()
                         ? designerConfig.gApi.updateFileFormat(this.getId(), {
                               fileFormat: this._fileFormatVersion,
@@ -101,317 +101,317 @@ module.exports = function (module, exports, require) {
                         : Promise.resolve()
                 );
             }),
-            (b.Item.prototype.setCollaborativeFileStatus = async function (e) {
-                if (this._file.status !== e) {
-                    var t = this._file.status;
-                    ((this._file.status = e),
-                        gDesigner.hasEventListeners(r.default.FileStatusUpdate) &&
-                            gDesigner.trigger(new r.default.FileStatusUpdate(this, t, e)));
+            (GCloudStorage.Item.prototype.setCollaborativeFileStatus = async function (status) {
+                if (this._file.status !== status) {
+                    var oldStatus = this._file.status;
+                    ((this._file.status = status),
+                        gDesigner.hasEventListeners(GStorageEvent.default.FileStatusUpdate) &&
+                            gDesigner.trigger(new GStorageEvent.default.FileStatusUpdate(this, oldStatus, status)));
                 }
             }),
-            (b.Item.prototype.getCollaborativeFile = async function () {
+            (GCloudStorage.Item.prototype.getCollaborativeFile = async function () {
                 return this._file;
             }),
-            (b.Item.prototype.setFileName = function (e) {
-                this._filename = e;
+            (GCloudStorage.Item.prototype.setFileName = function (filename) {
+                this._filename = filename;
             }),
-            (b.Item.prototype.getOrCreateCollaborativeFile = async function () {
+            (GCloudStorage.Item.prototype.getOrCreateCollaborativeFile = async function () {
                 return gDesigner.getCloudCommunicationManager().getFileExtended(this.getId());
             }),
-            (b.Item.prototype.getExtension = function () {
-                return this._ext || f.ext.toUpperCase();
+            (GCloudStorage.Item.prototype.getExtension = function () {
+                return this._ext || defaultFileFormat.ext.toUpperCase();
             }),
-            (b.Item.prototype.getType = function () {
-                return this._type || f.type;
+            (GCloudStorage.Item.prototype.getType = function () {
+                return this._type || defaultFileFormat.type;
             }),
-            (b.Item.prototype.setFile = function (e) {
-                if (!e) throw new Error("File can not be null");
-                const t = this._file && this._file.status,
-                    n = new designerConfig.FileExtended(e);
-                ((this._file = GCommonNames.convertToCloudItem(e)),
-                    (this._id = e.id),
-                    (this._name = e.name),
-                    (this._versionId = e.version),
-                    (this._fileLastModifiedDate = new Date(e.updated)),
-                    (this._fileAutoSaveLastModifiedDate = new Date(e.autosave_updated)),
-                    (this._isAutoSave = !!n.isAutoSave()),
-                    this._file.status !== t &&
-                        null != t &&
-                        gDesigner.hasEventListeners(r.default.FileStatusUpdate) &&
-                        gDesigner.trigger(new r.default.FileStatusUpdate(this, t, this._file.status)));
+            (GCloudStorage.Item.prototype.setFile = function (file) {
+                if (!file) throw new Error("File can not be null");
+                const oldStatus = this._file && this._file.status,
+                    fileExtended = new designerConfig.FileExtended(file);
+                ((this._file = GCommonNames.convertToCloudItem(file)),
+                    (this._id = file.id),
+                    (this._name = file.name),
+                    (this._versionId = file.version),
+                    (this._fileLastModifiedDate = new Date(file.updated)),
+                    (this._fileAutoSaveLastModifiedDate = new Date(file.autosave_updated)),
+                    (this._isAutoSave = !!fileExtended.isAutoSave()),
+                    this._file.status !== oldStatus &&
+                        null != oldStatus &&
+                        gDesigner.hasEventListeners(GStorageEvent.default.FileStatusUpdate) &&
+                        gDesigner.trigger(new GStorageEvent.default.FileStatusUpdate(this, oldStatus, this._file.status)));
             }),
-            (b.Item.prototype.getFile = function () {
+            (GCloudStorage.Item.prototype.getFile = function () {
                 return this._file;
             }),
-            (b.Item.prototype.read = async function (e, t) {
+            (GCloudStorage.Item.prototype.read = async function (onSuccess, onError) {
                 if (!this._file.url) {
-                    const e = await GCommonNames.getFileDataForVersionOrAutoSave(this._id, this._versionId, this._isAutoSave);
-                    this._file.url = e.url;
+                    const fileData = await GCommonNames.getFileDataForVersionOrAutoSave(this._id, this._versionId, this._isAutoSave);
+                    this._file.url = fileData.url;
                 }
                 GCommonNames.loadDesignData(this._id, true, this._versionId, this._token, this._file, this._isAutoSave)
-                    .then((t) => {
-                        e(t.data);
+                    .then((result) => {
+                        onSuccess(result.data);
                     })
-                    .catch(t);
+                    .catch(onError);
             }),
-            (b.Item.prototype.supportsSharing = function () {
-                let e = true;
-                return (this._id || (e = false), e);
+            (GCloudStorage.Item.prototype.supportsSharing = function () {
+                let result = true;
+                return (this._id || (result = false), result);
             }),
-            (b.Item.prototype._canPerformExtensionSpecificWrite = function () {
+            (GCloudStorage.Item.prototype._canPerformExtensionSpecificWrite = function () {
                 return false;
             }),
-            (b.Item.prototype._performExtensionSpecificWrite = async function () {}),
-            (b.Item.prototype._syncPreviewThumbnailWithCloud = async function (e) {
-                if (e)
+            (GCloudStorage.Item.prototype._performExtensionSpecificWrite = async function () {}),
+            (GCloudStorage.Item.prototype._syncPreviewThumbnailWithCloud = async function (previewBlob) {
+                if (previewBlob)
                     try {
-                        const t = await c.default.fromBlob(e);
-                        await this._uploadThumbnail(t, false);
-                    } catch (e) {
-                        console.warn("GCloudStorage.Item.prototype._performDefaultWrite", "_uploadThumbnail", e);
+                        const thumbnail = await GThumbnail.default.fromBlob(previewBlob);
+                        await this._uploadThumbnail(thumbnail, false);
+                    } catch (error) {
+                        console.warn("GCloudStorage.Item.prototype._performDefaultWrite", "_uploadThumbnail", error);
                     }
             }),
-            (b.Item.prototype._performDefaultWrite = async function (e, t, n, o, i) {
-                e.updateStatus(h.Saving);
-                const s = (e) => {
-                    o && o(e);
+            (GCloudStorage.Item.prototype._performDefaultWrite = async function (doc, onSuccess, onError, onProgress, isAutoSave) {
+                doc.updateStatus(FileStatus.Saving);
+                const reportProgress = (progress) => {
+                    onProgress && onProgress(progress);
                 };
                 return GCommonNames
-                    .syncCloudImages(e, this._id, i, (e) => {
-                        s(d.default.calculateProgress(b.ProgressStages.Preparing, b.ProgressStages.SyncingImages, e));
+                    .syncCloudImages(doc, this._id, isAutoSave, (progress) => {
+                        reportProgress(GProgress.default.calculateProgress(GCloudStorage.ProgressStages.Preparing, GCloudStorage.ProgressStages.SyncingImages, progress));
                     })
-                    .then((o) => {
-                        let [c] = o;
+                    .then((result) => {
+                        let [scene] = result;
                         return (async () => {
-                            if (!c)
+                            if (!scene)
                                 return (
-                                    _({
+                                    reportErrorToServer({
                                         message: "[cloud] scene is null",
-                                        stack: "id: ".concat(this._id, "\nscene: ").concat(c),
+                                        stack: "id: ".concat(this._id, "\nscene: ").concat(scene),
                                     }),
                                     (this._writing = false),
-                                    n && n("scene is null")
+                                    onError && onError("scene is null")
                                 );
                             try {
-                                const u = PDFNodeStream.gzip(c, { level: 9 }),
-                                    p = u.hasOwnProperty("size") ? u.size : u.length;
-                                if (p <= 0)
+                                const compressedScene = pako.gzip(scene, { level: 9 }),
+                                    compressedSize = compressedScene.hasOwnProperty("size") ? compressedScene.size : compressedScene.length;
+                                if (compressedSize <= 0)
                                     return (
-                                        _({
+                                        reportErrorToServer({
                                             message: "[cloud] empty scene/blob",
-                                            stack: "id: ".concat(this._id, "\nscene: ").concat(c),
+                                            stack: "id: ".concat(this._id, "\nscene: ").concat(scene),
                                         }),
                                         (this._writing = false),
-                                        n && n("empty blob")
+                                        onError && onError("empty blob")
                                     );
-                                const g = PDFNodeStream.ungzip(u, { to: "string" });
-                                if ((this._verifyFileNotTooSmall(p, e), !g))
+                                const decompressedScene = pako.ungzip(compressedScene, { to: "string" });
+                                if ((this._verifyFileNotTooSmall(compressedSize, doc), !decompressedScene))
                                     return (
-                                        _({
+                                        reportErrorToServer({
                                             message: "[cloud] invalid Scene",
-                                            stack: "id: ".concat(this._id, "\nscene original: ").concat(c, "\nscene parsed: ").concat(g),
+                                            stack: "id: ".concat(this._id, "\nscene original: ").concat(scene, "\nscene parsed: ").concat(decompressedScene),
                                         }),
                                         (this._writing = false),
-                                        n &&
-                                            n(
+                                        onError &&
+                                            onError(
                                                 "Scene invalid, sending error, please try again or submit a bug issue on https://discuss.gravit.io"
                                             )
                                     );
-                                var o = y.base64(u);
-                                const m = await e.buildPreview().catch(() => null),
-                                    w = await designerConfig.gApi.signedPutUrls(this._id, {
-                                        type: f.type,
-                                        md5: o,
+                                var contentMd5 = Md5.base64(compressedScene);
+                                const previewBlob = await doc.buildPreview().catch(() => null),
+                                    putUrlResponse = await designerConfig.gApi.signedPutUrls(this._id, {
+                                        type: defaultFileFormat.type,
+                                        md5: contentMd5,
                                         commit: false,
                                     }),
-                                    C = await this._uploadWithProgress(w.url, {
+                                    uploadResponse = await this._uploadWithProgress(putUrlResponse.url, {
                                         method: "PUT",
                                         headers: {
-                                            "Content-Type": f.type,
+                                            "Content-Type": defaultFileFormat.type,
                                             "Content-Encoding": "gzip",
                                             "Cache-Control": "public,max-age=31536000",
-                                            "Content-MD5": o,
+                                            "Content-MD5": contentMd5,
                                         },
-                                        body: u,
-                                        onProgress: (e) => {
-                                            s(
-                                                d.default.calculateProgress(
-                                                    b.ProgressStages.SyncingImages,
-                                                    b.ProgressStages.UploadingFile,
-                                                    e
+                                        body: compressedScene,
+                                        onProgress: (progress) => {
+                                            reportProgress(
+                                                GProgress.default.calculateProgress(
+                                                    GCloudStorage.ProgressStages.SyncingImages,
+                                                    GCloudStorage.ProgressStages.UploadingFile,
+                                                    progress
                                                 )
                                             );
                                         },
                                     });
-                                if (C.status >= 400)
+                                if (uploadResponse.status >= 400)
                                     return (
-                                        e.updateStatus(h.SaveFailed),
+                                        doc.updateStatus(FileStatus.SaveFailed),
                                         (this._writing = false),
-                                        400 === C.status
-                                            ? n && n("Invalid response, probably corrupted upload: " + C.status)
-                                            : n && n("Invalid response status: " + C.status)
+                                        400 === uploadResponse.status
+                                            ? onError && onError("Invalid response, probably corrupted upload: " + uploadResponse.status)
+                                            : onError && onError("Invalid response status: " + uploadResponse.status)
                                     );
-                                await this._syncPreviewThumbnailWithCloud(m);
-                                const x = designerConfig.COMPUTE_SHA256_FOR_FILES ? await (0, Utils.getFileSHA256Digest)(u) : null;
+                                await this._syncPreviewThumbnailWithCloud(previewBlob);
+                                const sha256Digest = designerConfig.COMPUTE_SHA256_FOR_FILES ? await (0, Utils.getFileSHA256Digest)(compressedScene) : null;
                                 (await designerConfig.gApi.commitManualFileUpdate(this._id, [designerConfig.FileTypes.MainFile, designerConfig.FileTypes.ThumbnailPreview]),
-                                    await designerConfig.gApi.updateFile(this._id, { trashed: false, sha256: x }),
+                                    await designerConfig.gApi.updateFile(this._id, { trashed: false, sha256: sha256Digest }),
                                     this.setVersionId(null),
-                                    gDesigner.hasEventListeners(r.default) &&
-                                        gDesigner.trigger(new r.default(r.default.Type.VersionUpdate, this)),
-                                    e.updateStatus(h.Saved, i),
-                                    t && t(),
+                                    gDesigner.hasEventListeners(GStorageEvent.default) &&
+                                        gDesigner.trigger(new GStorageEvent.default(GStorageEvent.default.Type.VersionUpdate, this)),
+                                    doc.updateStatus(FileStatus.Saved, isAutoSave),
+                                    onSuccess && onSuccess(),
                                     (this._writing = false));
-                            } catch (t) {
-                                ((this._writing = false), e.updateStatus(h.SaveFailed), n && n(t));
+                            } catch (error) {
+                                ((this._writing = false), doc.updateStatus(FileStatus.SaveFailed), onError && onError(error));
                             }
                         })();
                     })
-                    .catch((e) => {
-                        (n(e), (this._writing = false));
+                    .catch((error) => {
+                        (onError(error), (this._writing = false));
                     });
             }),
-            (b.Item.prototype.write = async function (e, t, n, o, a) {
-                if ((gContainer.verifyEnoughMemoryToSave(e), !this._writing)) {
-                    if (!e.hasPagesWithInfiniteEmptyCanvas()) {
+            (GCloudStorage.Item.prototype.write = async function (doc, onSuccess, onError, onProgress, isAutoSave) {
+                if ((gContainer.verifyEnoughMemoryToSave(doc), !this._writing)) {
+                    if (!doc.hasPagesWithInfiniteEmptyCanvas()) {
                         this._writing = true;
                         try {
                             await this._checkUserQuotaLimit();
-                        } catch (e) {
-                            return (n && n(e), void (this._writing = false));
+                        } catch (error) {
+                            return (onError && onError(error), void (this._writing = false));
                         }
                         return this._canPerformExtensionSpecificWrite()
-                            ? this._performExtensionSpecificWrite(e, t, n, o, a)
-                            : this._performDefaultWrite(e, t, n, o, a);
+                            ? this._performExtensionSpecificWrite(doc, onSuccess, onError, onProgress, isAutoSave)
+                            : this._performDefaultWrite(doc, onSuccess, onError, onProgress, isAutoSave);
                     }
-                    n
-                        ? n({
+                    onError
+                        ? onError({
                               code: 507,
                               noFailCall: true,
                               message: GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.error-emtpy-infinite-canvas")),
                           })
-                        : s.default.alert(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.error-emtpy-infinite-canvas")));
+                        : GSystemDialog.default.alert(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.error-emtpy-infinite-canvas")));
                 }
             }),
-            (b.Item.prototype.createOrUpdateFileWithMetadata = async function (e, t) {
+            (GCloudStorage.Item.prototype.createOrUpdateFileWithMetadata = async function (fileData, options) {
                 if (!this._writing) {
                     this._writing = true;
                     try {
                         (await this._checkUserQuotaLimit(),
                             await this._createFileInCaseNew(),
-                            await this._uploadBinary(e),
-                            await this._uploadThumbnail(t.thumbnail),
-                            await this._makeFileVisibleUpdateInternalVersionAndHash(e),
+                            await this._uploadBinary(fileData),
+                            await this._uploadThumbnail(options.thumbnail),
+                            await this._makeFileVisibleUpdateInternalVersionAndHash(fileData),
                             await this._updateFileAfterSave());
                     } finally {
                         this._writing = false;
                     }
                 }
             }),
-            (b.Item.prototype._makeFileVisibleUpdateInternalVersionAndHash = async function (e) {
-                const t = designerConfig.COMPUTE_SHA256_FOR_FILES ? await (0, Utils.getFileSHA256Digest)(e) : null,
-                    n = { trashed: false };
-                t && (n.sha256 = t);
-                const o = await designerConfig.gApi.updateFile(this.getId(), n);
-                this.setVersionId(o.versionId);
+            (GCloudStorage.Item.prototype._makeFileVisibleUpdateInternalVersionAndHash = async function (fileData) {
+                const sha256Digest = designerConfig.COMPUTE_SHA256_FOR_FILES ? await (0, Utils.getFileSHA256Digest)(fileData) : null,
+                    updateParams = { trashed: false };
+                sha256Digest && (updateParams.sha256 = sha256Digest);
+                const updatedFile = await designerConfig.gApi.updateFile(this.getId(), updateParams);
+                this.setVersionId(updatedFile.versionId);
             }),
-            (b.Item.prototype._updateFileAfterSave = async function () {
-                const e = await designerConfig.gApi.getFile(this._id);
-                ((this._fileLastModifiedDate = new Date(e.updated)), (this._file = GCommonNames.convertToCloudItem(e)));
+            (GCloudStorage.Item.prototype._updateFileAfterSave = async function () {
+                const file = await designerConfig.gApi.getFile(this._id);
+                ((this._fileLastModifiedDate = new Date(file.updated)), (this._file = GCommonNames.convertToCloudItem(file)));
             }),
-            (b.Item.prototype._isNewFile = function () {
+            (GCloudStorage.Item.prototype._isNewFile = function () {
                 return !this.getId();
             }),
-            (b.Item.prototype._createFileInCaseNew = async function () {
+            (GCloudStorage.Item.prototype._createFileInCaseNew = async function () {
                 if (this._isNewFile()) {
-                    const e = await designerConfig.gApi.createFile({
+                    const createdFile = await designerConfig.gApi.createFile({
                             name: this.getName(),
                             parent: this._file.getParentId(),
                             type: this.getType(),
                             app: "designer",
                             trashed: null,
                         }),
-                        t = await designerConfig.gApi.getFile(e.id, true);
-                    ((this._id = this._file.id = e.id),
-                        (this._fileLastModifiedDate = new Date(t.updated || t.created)),
-                        this._file.setModificationTime(new Date(t.updated || t.created)));
+                        fileInfo = await designerConfig.gApi.getFile(createdFile.id, true);
+                    ((this._id = this._file.id = createdFile.id),
+                        (this._fileLastModifiedDate = new Date(fileInfo.updated || fileInfo.created)),
+                        this._file.setModificationTime(new Date(fileInfo.updated || fileInfo.created)));
                 }
             }),
-            (b.Item.prototype._uploadBinary = async function (e) {
-                let t = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
-                const n = y.base64(e),
-                    o = await designerConfig.gApi.signedPutUrls(this.getId(), {
+            (GCloudStorage.Item.prototype._uploadBinary = async function (fileData) {
+                let extraHeaders = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : {};
+                const contentMd5 = Md5.base64(fileData),
+                    putUrlResponse = await designerConfig.gApi.signedPutUrls(this.getId(), {
                         type: this.getType(),
-                        md5: n,
+                        md5: contentMd5,
                     }),
-                    i = await fetch(o.url, {
+                    response = await fetch(putUrlResponse.url, {
                         method: "PUT",
                         headers: Object.assign(
                             {
                                 "Content-Type": this.getType(),
                                 "Cache-Control": "public,max-age=31536000",
-                                "Content-MD5": n,
+                                "Content-MD5": contentMd5,
                             },
-                            t
+                            extraHeaders
                         ),
-                        body: e,
+                        body: fileData,
                     });
-                if (i.status >= 400) {
-                    if (400 === i.status) throw new Error("Invalid response, probably corrupted upload: " + i.status);
-                    throw new Error("Invalid response status: " + i.status);
+                if (response.status >= 400) {
+                    if (400 === response.status) throw new Error("Invalid response, probably corrupted upload: " + response.status);
+                    throw new Error("Invalid response status: " + response.status);
                 }
             }),
-            (b.Item.prototype._uploadThumbnail = async function (e, t) {
-                if (e) return GCommonNames.updateFileThumbnail(this.getId(), e.getImageAsBlob(), e.getMimeType(), t);
+            (GCloudStorage.Item.prototype._uploadThumbnail = async function (thumbnail, commit) {
+                if (thumbnail) return GCommonNames.updateFileThumbnail(this.getId(), thumbnail.getImageAsBlob(), thumbnail.getMimeType(), commit);
             }),
-            (b.Item.prototype._checkUserQuotaLimit = async function () {
+            (GCloudStorage.Item.prototype._checkUserQuotaLimit = async function () {
                 const { pro, free } = gDesigner.getLicense().getQuotas(),
-                    n = gDesigner.isEnabledProFeatures() ? pro : free;
-                if (n > 0) {
-                    if ((await designerConfig.gApi.quota()) > n) {
-                        const e = new Error(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.running-out-of-cloud-space")));
-                        throw ((e.code = 507), e);
+                    quotaLimit = gDesigner.isEnabledProFeatures() ? pro : free;
+                if (quotaLimit > 0) {
+                    if ((await designerConfig.gApi.quota()) > quotaLimit) {
+                        const quotaError = new Error(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.running-out-of-cloud-space")));
+                        throw ((quotaError.code = 507), quotaError);
                     }
                 }
             }),
-            require(1100)(b),
-            (b.Item.prototype.getUniqueId = function () {
+            require(1100)(GCloudStorage),
+            (GCloudStorage.Item.prototype.getUniqueId = function () {
                 return this._id;
             }),
-            (b.Item.prototype.hasUpdates = async function () {
+            (GCloudStorage.Item.prototype.hasUpdates = async function () {
                 if (!this.getUniqueId()) return false;
-                let e = await this.getLatestFileInfo();
-                const t = e.getModificationTime() || e.updated || e.created,
-                    n = this._file.getModificationTime() || this._file.updated || this._file.created;
-                ((this._fileLastModifiedDate && !isNaN(this._fileLastModifiedDate.getTime())) || (this._fileLastModifiedDate = new Date(n)),
+                let latestFileInfo = await this.getLatestFileInfo();
+                const latestModifiedTime = latestFileInfo.getModificationTime() || latestFileInfo.updated || latestFileInfo.created,
+                    localModifiedTime = this._file.getModificationTime() || this._file.updated || this._file.created;
+                ((this._fileLastModifiedDate && !isNaN(this._fileLastModifiedDate.getTime())) || (this._fileLastModifiedDate = new Date(localModifiedTime)),
                     (this._fileAutoSaveLastModifiedDate && !isNaN(this._fileAutoSaveLastModifiedDate.getTime())) ||
                         (this._fileAutoSaveLastModifiedDate = new Date(this._file.autosave_updated)));
                 return (
-                    (e.autosave ? Math.max(new Date(t).getTime(), new Date(e.autosave_updated).getTime()) : new Date(t).getTime()) >
+                    (latestFileInfo.autosave ? Math.max(new Date(latestModifiedTime).getTime(), new Date(latestFileInfo.autosave_updated).getTime()) : new Date(latestModifiedTime).getTime()) >
                     (this._file.autosave
                         ? Math.max(this._fileLastModifiedDate.getTime(), this._fileAutoSaveLastModifiedDate.getTime())
                         : this._fileLastModifiedDate.getTime())
                 );
             }),
-            (b.Item.prototype.getLatestFileInfo = async function () {
-                const e = await gDesigner.getCloudCommunicationManager().getFile(this._id);
-                return GCommonNames.convertToCloudItem(e);
+            (GCloudStorage.Item.prototype.getLatestFileInfo = async function () {
+                const file = await gDesigner.getCloudCommunicationManager().getFile(this._id);
+                return GCommonNames.convertToCloudItem(file);
             }),
-            (b.Item.prototype.exists = async function () {
+            (GCloudStorage.Item.prototype.exists = async function () {
                 return GCommonNames.fileExists(this._id);
             }),
-            (b.Item.prototype._uploadWithProgress = function (e, t) {
-                return new Promise((n, o) => {
-                    const i = new XMLHttpRequest();
-                    if ((i.open(t.method || "PUT", e), t.headers)) for (let e in t.headers) i.setRequestHeader(e, t.headers[e]);
-                    ((i.onload = () => n(i)),
-                        (i.onerror = () => o(i)),
-                        i.upload &&
-                            t.onProgress &&
-                            (i.upload.onprogress = (e) => {
-                                t.onProgress(e.loaded / e.total);
+            (GCloudStorage.Item.prototype._uploadWithProgress = function (url, options) {
+                return new Promise((resolve, reject) => {
+                    const xhr = new XMLHttpRequest();
+                    if ((xhr.open(options.method || "PUT", url), options.headers)) for (let headerName in options.headers) xhr.setRequestHeader(headerName, options.headers[headerName]);
+                    ((xhr.onload = () => resolve(xhr)),
+                        (xhr.onerror = () => reject(xhr)),
+                        xhr.upload &&
+                            options.onProgress &&
+                            (xhr.upload.onprogress = (progressEvent) => {
+                                options.onProgress(progressEvent.loaded / progressEvent.total);
                             }),
-                        i.send(t.body));
+                        xhr.send(options.body));
                 });
             }),
-            (module.exports = b));
+            (module.exports = GCloudStorage));
     };

@@ -3,84 +3,84 @@ module.exports = function (module, exports, require) {
         (require(19), require(8 /* Symbol */), require(4), require(41), require(32), require(97), require(33), require(26));
         const { GObject } = require(1 /* GObject */),
             { GPlatform } = require(15 /* GPlatform */),
-            a = require(1355),
-            r = require(1191),
+            GSimpleTree = require(1355),
+            GChildrenMixin = require(1191),
             GAnnotationRow = require(1356),
             GAnnotationReplyDocker = require(1357),
-            { handleCollabsData } = (require(536), require(882)),
-            d = require(1354),
-            u = require(434);
-        function p() {
-            for (var e = arguments.length, t = new Array(e), n = 0; n < e; n++) t[n] = arguments[n];
-            (a.call(this, ...t), r.call(this));
+            { handleCollabsData } = (require(536), require(882 /* collabApi */)),
+            GInvalidationOptions = require(1354),
+            Permissions = require(434);
+        function GAnnotationPanel() {
+            for (var argumentsLength = arguments.length, args = new Array(argumentsLength), n = 0; n < argumentsLength; n++) args[n] = arguments[n];
+            (GSimpleTree.call(this, ...args), GChildrenMixin.call(this));
         }
-        (GObject.inheritAndMix(p, a, [r]),
-            (p.prototype._checkTreeSanity = function () {
+        (GObject.inheritAndMix(GAnnotationPanel, GSimpleTree, [GChildrenMixin]),
+            (GAnnotationPanel.prototype._checkTreeSanity = function () {
                 return !!$(this._container).data("gannotationpanel");
             }),
-            (p.prototype.clean = function () {
-                (a.prototype.clean.call(this), this.clearChildren());
+            (GAnnotationPanel.prototype.clean = function () {
+                (GSimpleTree.prototype.clean.call(this), this.clearChildren());
             }),
-            (p.prototype._isInvalidationBlocked = function () {
+            (GAnnotationPanel.prototype._isInvalidationBlocked = function () {
                 return !!this.isEditingOrAddingContent();
             }),
-            (p.prototype.isEditingOrAddingContent = function () {
+            (GAnnotationPanel.prototype.isEditingOrAddingContent = function () {
                 return (
                     !!this.getChildren()
-                        .filter((e) => e instanceof GAnnotationReplyDocker)
-                        .some((e) => e.isVisible()) ||
+                        .filter((docker) => docker instanceof GAnnotationReplyDocker)
+                        .some((docker) => docker.isVisible()) ||
                     !!this.getChildren()
-                        .filter((e) => e instanceof GAnnotationRow)
-                        .some((e) => e.isEditMode())
+                        .filter((row) => row instanceof GAnnotationRow)
+                        .some((row) => row.isEditMode())
                 );
             }),
-            (p.prototype._hasResolveAccess = false),
-            (p.prototype._hasReopenAccess = false),
-            (p.prototype._mentionData = {}),
-            (p.prototype.hasResolveAccess = function () {
+            (GAnnotationPanel.prototype._hasResolveAccess = false),
+            (GAnnotationPanel.prototype._hasReopenAccess = false),
+            (GAnnotationPanel.prototype._mentionData = {}),
+            (GAnnotationPanel.prototype.hasResolveAccess = function () {
                 return this._hasResolveAccess;
             }),
-            (p.prototype.hasReopenAccess = function () {
+            (GAnnotationPanel.prototype.hasReopenAccess = function () {
                 return this._hasReopenAccess;
             }),
-            (p.prototype.getMentionData = function () {
+            (GAnnotationPanel.prototype.getMentionData = function () {
                 return this._mentionData || {};
             }),
-            (p.prototype.getCollaboratorsCache = function () {
+            (GAnnotationPanel.prototype.getCollaboratorsCache = function () {
                 return this._collaboratorsCache;
             }),
-            (p.prototype._beforeInvalidationStart = async function () {
-                let e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : new d();
+            (GAnnotationPanel.prototype._beforeInvalidationStart = async function () {
+                let invalidationOptions = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : new GInvalidationOptions();
                 this.clearChildren();
-                var t = gDesigner.getApplicationManager();
-                ((this._hasResolveAccess = await t.hasAccess(u.RESOLVE_COMMENT_ANNOTATION)),
-                    (this._hasReopenAccess = await t.hasAccess(u.REOPEN_COMMENT_ANNOTATION)));
-                const n = gDesigner.getActiveDocument(),
-                    o = gDesigner.getShareManager();
-                (e.collaboratorsCache && o.resetCollaboratorsCached(n),
-                    (this._collaboratorsCache = o.getCollaboratorsCached(n)),
+                var applicationManager = gDesigner.getApplicationManager();
+                ((this._hasResolveAccess = await applicationManager.hasAccess(Permissions.RESOLVE_COMMENT_ANNOTATION)),
+                    (this._hasReopenAccess = await applicationManager.hasAccess(Permissions.REOPEN_COMMENT_ANNOTATION)));
+                const activeDocument = gDesigner.getActiveDocument(),
+                    shareManager = gDesigner.getShareManager();
+                (invalidationOptions.collaboratorsCache && shareManager.resetCollaboratorsCached(activeDocument),
+                    (this._collaboratorsCache = shareManager.getCollaboratorsCached(activeDocument)),
                     (this._mentionData = await handleCollabsData(this._collaboratorsCache)));
             }),
-            (p.prototype._afterInvalidationEnd = function () {
+            (GAnnotationPanel.prototype._afterInvalidationEnd = function () {
                 (this.scrollIntoView(), this._updateCommentStats());
             }),
-            (p.prototype.scrollIntoView = function () {
+            (GAnnotationPanel.prototype.scrollIntoView = function () {
                 $(this._container).gAnnotationPanel("scrollIntoView");
             }),
-            (p.prototype._updateCommentStats = function () {
+            (GAnnotationPanel.prototype._updateCommentStats = function () {
                 let e = 0,
                     t = 0,
-                    n = this.getChildren(),
-                    o = $(this._container).data("gannotationpanel"),
-                    i = o && o.options;
-                (n &&
-                    n.forEach((n) => {
-                        n instanceof GAnnotationRow && !n.isParentAnnotationResolved() && (n.isRead() || t++, e++);
+                    children = this.getChildren(),
+                    panelData = $(this._container).data("gannotationpanel"),
+                    panelOptions = panelData && panelData.options;
+                (children &&
+                    children.forEach((child) => {
+                        child instanceof GAnnotationRow && !child.isParentAnnotationResolved() && (child.isRead() || t++, e++);
                     }),
-                    i && i.updateCommentCount && i.updateCommentCount(e, t));
+                    panelOptions && panelOptions.updateCommentCount && panelOptions.updateCommentCount(e, t));
             }),
-            (p.prototype.getCommentStats = function () {
+            (GAnnotationPanel.prototype.getCommentStats = function () {
                 return this._commentStats;
             }),
-            (module.exports = p));
+            (module.exports = GAnnotationPanel));
     };

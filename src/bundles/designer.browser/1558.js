@@ -6,12 +6,12 @@ module.exports = function (module, exports, require) {
             GCommonNames = require(119),
             GDocument = require(163);
         const { debounce } = require(40 /* Utils */),
-            l = designerConfig.FILE_FORMATS.find((e) => e.default);
-        var c = {},
-            d = null;
-        const u = designerConfig.CATEGORIES.filter((e) => e.active);
-        class p {
-            constructor(e) {
+            defaultFileFormat = designerConfig.FILE_FORMATS.find((format) => format.default);
+        var presetsCache = {},
+            onTemplateSelect = null;
+        const activeCategories = designerConfig.CATEGORIES.filter((category) => category.active);
+        class GTemplatesPanel {
+            constructor(selectCallback) {
                 ((this._templatesPanel = $("<div/>").addClass("g-templates-panel").appendTo($("body"))),
                     this._templatesPanel.gDialog({
                         closeTimeout: 0,
@@ -20,13 +20,13 @@ module.exports = function (module, exports, require) {
                         alwaysCloseable: true,
                     }),
                     this._templatesPanel.gDialog("open", true),
-                    (d = e),
+                    (onTemplateSelect = selectCallback),
                     (this._breadcrumbs = [
                         {
-                            key: p.DefaultBreadcrumbs.Welcome,
+                            key: GTemplatesPanel.DefaultBreadcrumbs.Welcome,
                             name: GObject.GLocale.getValue("GCloudTemplates", "text.welcome"),
-                            click: (e) => {
-                                (e.stopPropagation(), this._templatesPanel.gDialog("close"));
+                            click: (event) => {
+                                (event.stopPropagation(), this._templatesPanel.gDialog("close"));
                             },
                             tooltip: GObject.GLocale.getValue("GFilesPanel", "action.close-window"),
                         },
@@ -50,21 +50,21 @@ module.exports = function (module, exports, require) {
                         }.bind(this)
                     ));
             }
-            _openPreset(e) {
+            _openPreset(preset) {
                 return GCommonNames
-                    .loadDesignData(e.id)
-                    .then((t) => {
-                        var n = new GDocument();
+                    .loadDesignData(preset.id)
+                    .then((response) => {
+                        var newDocument = new GDocument();
                         return (
-                            gDesigner.addDocument(n),
-                            n.loadFromData(t.data),
-                            designerConfig.gApi.usage(e.id).catch((e) => {
-                                console.error("gApi.usage error", e);
+                            gDesigner.addDocument(newDocument),
+                            newDocument.loadFromData(response.data),
+                            designerConfig.gApi.usage(preset.id).catch((error) => {
+                                console.error("gApi.usage error", error);
                             })
                         );
                     })
-                    .catch((e) => {
-                        e && console.log(e);
+                    .catch((error) => {
+                        error && console.log(error);
                     })
                     .finally(() => {
                         this._templatesPanel.gDialog("close");
@@ -74,67 +74,67 @@ module.exports = function (module, exports, require) {
                 if (this._currentSubcategory || this._currentCategory)
                     return this._currentSubcategory ? this._currentSubcategory : this._currentCategory;
             }
-            _initLoadPage(e, t) {
-                ((c = {}),
-                    t === p.AssetType.Category
-                        ? ((this._currentCategory = e),
+            _initLoadPage(item, assetType) {
+                ((presetsCache = {}),
+                    assetType === GTemplatesPanel.AssetType.Category
+                        ? ((this._currentCategory = item),
                           this._breadcrumbs.push({
-                              key: p.DefaultBreadcrumbs.Templates,
+                              key: GTemplatesPanel.DefaultBreadcrumbs.Templates,
                               name: GObject.GLocale.getValue("GCloudTemplates", "text.templates"),
-                              click: (t) => {
-                                  (t.stopPropagation(),
-                                      gDesigner.stats("cloudtemplates_click_backbutton", e ? e.name : ""),
+                              click: (event) => {
+                                  (event.stopPropagation(),
+                                      gDesigner.stats("cloudtemplates_click_backbutton", item ? item.name : ""),
                                       this._initCategories());
                               },
                           }))
-                        : t === p.AssetType.Subcategory &&
-                          ((this._currentSubcategory = e),
+                        : assetType === GTemplatesPanel.AssetType.Subcategory &&
+                          ((this._currentSubcategory = item),
                           this._breadcrumbs.push({
                               key: this._currentCategory.key,
                               name: GObject.GLocale.getValue("GCommonNames", this._currentCategory.key),
-                              click: (t) => {
-                                  (t.stopPropagation(),
-                                      gDesigner.stats("cloudtemplates_click_backbutton", e ? e.name : ""),
-                                      (this._breadcrumbs = this._breadcrumbs.filter((e) => e.key !== this._currentCategory.key)),
+                              click: (event) => {
+                                  (event.stopPropagation(),
+                                      gDesigner.stats("cloudtemplates_click_backbutton", item ? item.name : ""),
+                                      (this._breadcrumbs = this._breadcrumbs.filter((breadcrumb) => breadcrumb.key !== this._currentCategory.key)),
                                       this._initSubcategories());
                               },
                           })),
                     this._loadBreadcrumbs(),
                     this._loadHeader(),
-                    t === p.AssetType.Category && this._currentCategory.subcategories
+                    assetType === GTemplatesPanel.AssetType.Category && this._currentCategory.subcategories
                         ? this._initSubcategories()
                         : ((this._presetsCount = 0), (this._presetsCurrentSkip = 0), (this._presetsLoadMore = true), this._loadPresets(false)));
             }
-            _loadPresets(e) {
-                (this._toggleLoadMoreButton(false), this._toggleLoading(true), this._doLoadPresets(e));
+            _loadPresets(isLoadMore) {
+                (this._toggleLoadMoreButton(false), this._toggleLoading(true), this._doLoadPresets(isLoadMore));
             }
-            async _doLoadPresets(e) {
-                var t = this;
+            async _doLoadPresets(isLoadMore) {
+                var self = this;
                 this._presetsLoadMore &&
-                    (async function (n) {
+                    (async function (done) {
                         try {
-                            var o = await designerConfig.gApi.listMarketV2({
-                                path: t._getActivePresetCategory().path,
-                                type: l.type,
+                            var result = await designerConfig.gApi.listMarketV2({
+                                path: self._getActivePresetCategory().path,
+                                type: defaultFileFormat.type,
                                 sort: "-usages",
                                 limit: designerConfig.PRESET_LIMIT,
-                                skip: t._presetsCurrentSkip,
+                                skip: self._presetsCurrentSkip,
                             });
-                            (c[t._getActivePresetCategory().key] || (c[t._getActivePresetCategory().key] = []),
-                                (c[t._getActivePresetCategory().key] = c[t._getActivePresetCategory().key].concat(o.data)),
-                                o.count && (t._presetsCount = o.count),
-                                c[t._getActivePresetCategory().key].length == t._presetsCount
-                                    ? (t._presetsLoadMore = false)
-                                    : (t._presetsCurrentSkip += designerConfig.PRESET_LIMIT),
-                                n(o.data, e));
-                        } catch (e) {
-                            (n(c[t._getActivePresetCategory().key], false), console.error(e));
+                            (presetsCache[self._getActivePresetCategory().key] || (presetsCache[self._getActivePresetCategory().key] = []),
+                                (presetsCache[self._getActivePresetCategory().key] = presetsCache[self._getActivePresetCategory().key].concat(result.data)),
+                                result.count && (self._presetsCount = result.count),
+                                presetsCache[self._getActivePresetCategory().key].length == self._presetsCount
+                                    ? (self._presetsLoadMore = false)
+                                    : (self._presetsCurrentSkip += designerConfig.PRESET_LIMIT),
+                                done(result.data, isLoadMore));
+                        } catch (error) {
+                            (done(presetsCache[self._getActivePresetCategory().key], false), console.error(error));
                         }
-                    })(function (e, n) {
-                        (n || t._contentPanel.empty(),
-                            t._initMasonryLayoutColumns(e, p.AssetType.Preset, n),
-                            t._loadMoreButton(),
-                            t._toggleLoading(false));
+                    })(function (presets, isLoadMore) {
+                        (isLoadMore || self._contentPanel.empty(),
+                            self._initMasonryLayoutColumns(presets, GTemplatesPanel.AssetType.Preset, isLoadMore),
+                            self._loadMoreButton(),
+                            self._toggleLoading(false));
                     });
             }
             _loadMoreButton() {
@@ -167,7 +167,7 @@ module.exports = function (module, exports, require) {
                     (this._currentSubcategory = null),
                     this._loadHeader(),
                     this._loadBreadcrumbs(),
-                    this._initMasonryLayoutColumns(this._currentCategory.subcategories, p.AssetType.Subcategory));
+                    this._initMasonryLayoutColumns(this._currentCategory.subcategories, GTemplatesPanel.AssetType.Subcategory));
             }
             _initCategories() {
                 (this._contentPanel.empty(),
@@ -175,75 +175,75 @@ module.exports = function (module, exports, require) {
                     (this._currentSubcategory = null),
                     this._loadHeader(),
                     this._loadBreadcrumbs(true),
-                    this._initMasonryLayoutColumns(u, p.AssetType.Category));
+                    this._initMasonryLayoutColumns(activeCategories, GTemplatesPanel.AssetType.Category));
             }
-            _initMasonryLayoutColumns(e, t, n, a) {
-                var r = this._contentPanel.find(".assets-wrapper");
+            _initMasonryLayoutColumns(items, assetType, isLoadMore, isResize) {
+                var wrapper = this._contentPanel.find(".assets-wrapper");
                 if (
-                    (0 === r.length && (r = $("<div/>").addClass("assets-wrapper")).appendTo(this._contentPanel),
-                    a && (e = r.find(".column").children()).unwrap(),
-                    0 === e.length)
+                    (0 === wrapper.length && (wrapper = $("<div/>").addClass("assets-wrapper")).appendTo(this._contentPanel),
+                    isResize && (items = wrapper.find(".column").children()).unwrap(),
+                    0 === items.length)
                 )
                     return;
-                this._wrapperWidth = r.css("width") ? parseInt(r.css("width").split("px")[0]) : 235;
-                var s,
-                    l = [],
-                    c = 1,
-                    u = null;
+                this._wrapperWidth = wrapper.css("width") ? parseInt(wrapper.css("width").split("px")[0]) : 235;
+                var columnWidth,
+                    columns = [],
+                    columnCount = 1,
+                    columnWidthCss = null;
                 if (
-                    ((c = Math.max(Math.ceil(this._wrapperWidth / 235), c)),
-                    (s = this._wrapperWidth / c - (32 / c) * (c - 1)),
-                    (u = 1 == c || c > 2 ? (s / this._wrapperWidth) * 100 + "%" : "calc(50% - 32px)"),
-                    n)
+                    ((columnCount = Math.max(Math.ceil(this._wrapperWidth / 235), columnCount)),
+                    (columnWidth = this._wrapperWidth / columnCount - (32 / columnCount) * (columnCount - 1)),
+                    (columnWidthCss = 1 == columnCount || columnCount > 2 ? (columnWidth / this._wrapperWidth) * 100 + "%" : "calc(50% - 32px)"),
+                    isLoadMore)
                 )
-                    l = r.find(".column").toArray();
+                    columns = wrapper.find(".column").toArray();
                 else
-                    for (var g = 0; g < c; g++) {
-                        var h = $("<div/>").addClass("column").css("width", u);
-                        (g > 0 && h.css({ "margin-left": "32px" }), l.push(h));
+                    for (var g = 0; g < columnCount; g++) {
+                        var h = $("<div/>").addClass("column").css("width", columnWidthCss);
+                        (g > 0 && h.css({ "margin-left": "32px" }), columns.push(h));
                     }
-                const f = l.map(this._getChildrenHeight.bind(this)),
-                    m = [];
-                for (var y = 0; y < e.length; y++) {
-                    var v;
-                    if (a) v = e[y];
-                    else if (t === p.AssetType.Preset) {
-                        let t = e[y];
+                const columnHeights = columns.map(this._getChildrenHeight.bind(this)),
+                    columnItems = [];
+                for (var y = 0; y < items.length; y++) {
+                    var assetContainer;
+                    if (isResize) assetContainer = items[y];
+                    else if (assetType === GTemplatesPanel.AssetType.Preset) {
+                        let preset = items[y];
                         var _ = $("<img/>")
                             .addClass("asset")
-                            .attr("src", t.url_t)
-                            .css("width", t.width || "235px")
+                            .attr("src", preset.url_t)
+                            .css("width", preset.width || "235px")
                             .on(
                                 "click",
                                 function () {
-                                    (d && d(),
+                                    (onTemplateSelect && onTemplateSelect(),
                                         gDesigner.stats(
                                             "cloudtemplates_add_" +
                                                 (this._getActivePresetCategory() ? this._getActivePresetCategory().name : "default"),
-                                            t.name
+                                            preset.name
                                         ),
                                         gDesigner.getAmplitudeHelper().logEvent(designerConfig.AmplitudeData.Events.DOCUMENT_CREATED, {
                                             DOCUMENT_CATEGORY: this._getActivePresetCategory().name,
-                                            DOCUMENT_TYPE: t.name,
-                                            DOCUMENT_TEMPLATE_ID: t.id,
+                                            DOCUMENT_TYPE: preset.name,
+                                            DOCUMENT_TEMPLATE_ID: preset.id,
                                         }),
-                                        designerConfig.IS_TRUNK && console.log("Template ID: ", t.id),
-                                        this._openPreset(t));
+                                        designerConfig.IS_TRUNK && console.log("Template ID: ", preset.id),
+                                        this._openPreset(preset));
                                 }.bind(this)
                             );
-                        (v = $("<div/>").addClass("asset-container preset-container").css("margin-bottom", "32px").data("asset", t)).append(
+                        (assetContainer = $("<div/>").addClass("asset-container preset-container").css("margin-bottom", "32px").data("asset", preset)).append(
                             _
                         );
                     } else {
-                        let n = e[y];
+                        let item = items[y];
                         _ = $("<div/>")
                             .addClass("asset")
-                            .css("width", n.width + "px")
+                            .css("width", item.width + "px")
                             .append(
                                 $("<img/>")
-                                    .attr("src", n.url)
+                                    .attr("src", item.url)
                                     .on("click", () => {
-                                        (gDesigner.stats("cloudtemplates_load_template", n.name), this._initLoadPage(n, t));
+                                        (gDesigner.stats("cloudtemplates_load_template", item.name), this._initLoadPage(item, assetType));
                                     })
                             )
                             .append(
@@ -252,52 +252,52 @@ module.exports = function (module, exports, require) {
                                     .append(
                                         $("<div/>")
                                             .addClass("template-name")
-                                            .html(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", n.key)))
+                                            .html(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", item.key)))
                                     )
                             );
-                        (v = $("<div/>")
+                        (assetContainer = $("<div/>")
                             .addClass("asset-container category-container")
                             .css("margin-bottom", "32px")
-                            .data("asset", n)).append(_);
+                            .data("asset", item)).append(_);
                     }
-                    const n = this._getSmallestColumnIndex(f),
-                        r = $(v).data("asset"),
-                        s = this._getThumbnailSize(r).getHeight();
-                    f[n] = (f[n] || 0) + s;
-                    const l = m[n] || [];
-                    (l.push(v), (m[n] = l));
+                    const columnIndex = this._getSmallestColumnIndex(columnHeights),
+                        asset = $(assetContainer).data("asset"),
+                        thumbnailHeight = this._getThumbnailSize(asset).getHeight();
+                    columnHeights[columnIndex] = (columnHeights[columnIndex] || 0) + thumbnailHeight;
+                    const columnBucket = columnItems[columnIndex] || [];
+                    (columnBucket.push(assetContainer), (columnItems[columnIndex] = columnBucket));
                 }
-                (l.forEach((e, t) => {
-                    $(e).append(m[t]);
+                (columns.forEach((column, index) => {
+                    $(column).append(columnItems[index]);
                 }),
-                    n || r.append(l),
+                    isLoadMore || wrapper.append(columns),
                     this._removeEmptyColumns());
             }
             _removeEmptyColumns() {
-                const e = this._contentPanel.find(".assets-wrapper").children(".column");
-                e.each((t, n) => {
-                    n.children.length || e[t].remove();
+                const columns = this._contentPanel.find(".assets-wrapper").children(".column");
+                columns.each((index, columnElement) => {
+                    columnElement.children.length || columns[index].remove();
                 });
             }
-            _getThumbnailSize(e) {
-                const t = 235 / e.width,
-                    n = parseInt(e.height * t) + 32;
-                return new GObject.GRect(0, 0, 235, n);
+            _getThumbnailSize(asset) {
+                const scale = 235 / asset.width,
+                    height = parseInt(asset.height * scale) + 32;
+                return new GObject.GRect(0, 0, 235, height);
             }
-            _getChildrenHeight(e) {
-                return $(e)
+            _getChildrenHeight(columnElement) {
+                return $(columnElement)
                     .children()
                     .toArray()
-                    .reduce((e, t) => e + $(t).height(), 0);
+                    .reduce((sum, child) => sum + $(child).height(), 0);
             }
-            _getSmallestColumnIndex(e) {
-                return e.indexOf(Math.min.apply(null, e)) || 0;
+            _getSmallestColumnIndex(heights) {
+                return heights.indexOf(Math.min.apply(null, heights)) || 0;
             }
             _loadHeader() {
-                const e = this._templatesPanel.find(".header");
-                (0 === e.length && $("<div/>").addClass("header").appendTo(this._templatesPanel),
-                    e.empty(),
-                    e.append(
+                const header = this._templatesPanel.find(".header");
+                (0 === header.length && $("<div/>").addClass("header").appendTo(this._templatesPanel),
+                    header.empty(),
+                    header.append(
                         $("<span/>")
                             .addClass("title")
                             .html(
@@ -307,7 +307,7 @@ module.exports = function (module, exports, require) {
                             )
                     ));
             }
-            _initTopBar(e) {
+            _initTopBar(container) {
                 ((this.topBar = $("<div />")
                     .addClass("top-bar")
                     .append($("<div />").addClass("breadcrumbs"))
@@ -320,33 +320,33 @@ module.exports = function (module, exports, require) {
                                     .addClass("cloud-button")
                                     .addClass("close-button")
                                     .attr("data-title", GObject.GLocale.get(new GObject.GLocaleKey("GFilesPanel", "action.close-window")))
-                                    .on("click", (e) => {
-                                        (e.stopPropagation(), this._templatesPanel.gDialog("close"));
+                                    .on("click", (event) => {
+                                        (event.stopPropagation(), this._templatesPanel.gDialog("close"));
                                     })
                                     .append($("<span/>").addClass("icon").addClass("gravit-icon-close"))
                             )
                     )
-                    .appendTo(e)),
+                    .appendTo(container)),
                     this._loadBreadcrumbs());
             }
-            _loadBreadcrumbs(e) {
-                e && (this._breadcrumbs = this._breadcrumbs.filter((e) => e.key == p.DefaultBreadcrumbs.Welcome));
-                const t = this.topBar.find(".breadcrumbs");
-                (t.empty(),
-                    this._breadcrumbs.forEach((e) => {
-                        var n;
-                        t.append(
+            _loadBreadcrumbs(resetToWelcome) {
+                resetToWelcome && (this._breadcrumbs = this._breadcrumbs.filter((breadcrumb) => breadcrumb.key == GTemplatesPanel.DefaultBreadcrumbs.Welcome));
+                const list = this.topBar.find(".breadcrumbs");
+                (list.empty(),
+                    this._breadcrumbs.forEach((breadcrumb) => {
+                        var tooltip;
+                        list.append(
                             $("<span/>")
                                 .addClass("g-breadcrumb")
                                 .append(
                                     $("<span/>")
                                         .addClass("breadcrumb-name")
-                                        .html(e.name)
-                                        .on("click", e.click)
+                                        .html(breadcrumb.name)
+                                        .on("click", breadcrumb.click)
                                         .attr(
                                             "data-title",
-                                            null !== (n = e.tooltip) && void 0 !== n
-                                                ? n
+                                            null !== (tooltip = breadcrumb.tooltip) && void 0 !== tooltip
+                                                ? tooltip
                                                 : GObject.GLocale.getValue("GFilesPanel", "action.back-tooltip")
                                         )
                                 )
@@ -354,19 +354,19 @@ module.exports = function (module, exports, require) {
                         );
                     }));
             }
-            _toggleLoading(e) {
-                this._templatesPanel.toggleClass("loading", e);
+            _toggleLoading(isLoading) {
+                this._templatesPanel.toggleClass("loading", isLoading);
             }
-            _toggleLoadMoreButton(e) {
-                let t = this._contentPanel.find(".button-wrapper");
-                t && t[e ? "removeClass" : "addClass"]("hidden");
+            _toggleLoadMoreButton(visible) {
+                let button = this._contentPanel.find(".button-wrapper");
+                button && button[visible ? "removeClass" : "addClass"]("hidden");
             }
         }
-        ((p.AssetType = {
+        ((GTemplatesPanel.AssetType = {
             Category: "CATEGORY",
             Subcategory: "SUBCATEGORY",
             Preset: "PRESET",
         }),
-            (p.DefaultBreadcrumbs = { Welcome: "welcome", Templates: "templates" }),
-            (module.exports = p));
+            (GTemplatesPanel.DefaultBreadcrumbs = { Welcome: "welcome", Templates: "templates" }),
+            (module.exports = GTemplatesPanel));
     };

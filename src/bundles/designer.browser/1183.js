@@ -4,86 +4,86 @@ module.exports = function (module, exports, require) {
         var GObject = require(1),
             GPlatform = require(15),
             GCategory = require(18),
-            r = require(31),
+            GAction = require(31),
             s = require(106);
-        function l() {}
-        (GObject.GObject.inherit(l, r),
-            (l.ID = "edit.paste.in-place"),
-            (l.TITLE = new GObject.GLocaleKey("GPasteInPlaceAction", "title")),
-            (l.prototype.getId = function () {
-                return l.ID;
+        function GPasteInPlaceAction() {}
+        (GObject.GObject.inherit(GPasteInPlaceAction, GAction),
+            (GPasteInPlaceAction.ID = "edit.paste.in-place"),
+            (GPasteInPlaceAction.TITLE = new GObject.GLocaleKey("GPasteInPlaceAction", "title")),
+            (GPasteInPlaceAction.prototype.getId = function () {
+                return GPasteInPlaceAction.ID;
             }),
-            (l.prototype.getTitle = function () {
-                return l.TITLE;
+            (GPasteInPlaceAction.prototype.getTitle = function () {
+                return GPasteInPlaceAction.TITLE;
             }),
-            (l.prototype.getCategory = function () {
+            (GPasteInPlaceAction.prototype.getCategory = function () {
                 return GCategory.CATEGORY_EDIT_PASTE;
             }),
-            (l.prototype.getGroup = function () {
+            (GPasteInPlaceAction.prototype.getGroup = function () {
                 return "ccp/paste";
             }),
-            (l.prototype.getShortcut = function () {
+            (GPasteInPlaceAction.prototype.getShortcut = function () {
                 return [GPlatform.GKey.Constant.SHIFT, GPlatform.GKey.Constant.META, "V"];
             }),
-            (l.prototype.isEnabled = function () {
+            (GPasteInPlaceAction.prototype.isEnabled = function () {
                 if (!s.prototype.isEnabled.call(this)) return false;
-                var e = gDesigner.getActiveDocument();
-                if (e && e.getEditor().getSelection()) {
+                var activeDocument = gDesigner.getActiveDocument();
+                if (activeDocument && activeDocument.getEditor().getSelection()) {
                     if (document.queryCommandSupported("paste")) return true;
-                    var t = gDesigner.getClipboardMimeTypes();
-                    if (t && t.indexOf(GObject.GNode.MIME_TYPE) >= 0) return !!gDesigner.getActiveDocument();
+                    var mimeTypes = gDesigner.getClipboardMimeTypes();
+                    if (mimeTypes && mimeTypes.indexOf(GObject.GNode.MIME_TYPE) >= 0) return !!gDesigner.getActiveDocument();
                 }
                 return false;
             }),
-            (l.prototype.execute = function () {
+            (GPasteInPlaceAction.prototype.execute = function () {
                 (gDesigner.getPaste().assignCallback(this._paste.bind(this)),
                     (!gDesigner.isTouchDevice() && document.execCommand("paste")) ||
                         (gDesigner.getPaste().assignCallback(null),
                         this._paste(GObject.GNode.deserialize(gDesigner.getClipboardContent(GObject.GNode.MIME_TYPE)))));
             }),
-            (l.prototype._paste = function (e, t) {
-                if (e && e.length > 0) {
-                    for (var n = [], i = 0; i < e.length; ++i) e[i] instanceof GObject.GElement && n.push(e[i]);
-                    if ((n = gDesigner.getActiveDocument().filterUnrestrictedCommercialFileElements(n)).length > 0) {
-                        var a = gDesigner.getActiveDocument().getEditor();
-                        n.forEach((e) => {
-                            e instanceof GObject.GText &&
-                                !e.getProperty("content") &&
-                                (a.insertElements([e], false, true, true), e.getParent().removeChild(e));
+            (GPasteInPlaceAction.prototype._paste = function (elements, useElementEditors) {
+                if (elements && elements.length > 0) {
+                    for (var pasteElements = [], i = 0; i < elements.length; ++i) elements[i] instanceof GObject.GElement && pasteElements.push(elements[i]);
+                    if ((pasteElements = gDesigner.getActiveDocument().filterUnrestrictedCommercialFileElements(pasteElements)).length > 0) {
+                        var editor = gDesigner.getActiveDocument().getEditor();
+                        pasteElements.forEach((element) => {
+                            element instanceof GObject.GText &&
+                                !element.getProperty("content") &&
+                                (editor.insertElements([element], false, true, true), element.getParent().removeChild(element));
                         });
-                        var r = null,
-                            s = null,
-                            l = a.getSelectionBBox(true);
-                        (l && ((r = l.getX()), (s = l.getY())), a.beginTransaction());
+                        var selectionX = null,
+                            selectionY = null,
+                            selectionBBox = editor.getSelectionBBox(true);
+                        (selectionBBox && ((selectionX = selectionBBox.getX()), (selectionY = selectionBBox.getY())), editor.beginTransaction());
                         try {
-                            a.insertElements(n, !t, true, true, true);
-                            var c = null;
-                            n.forEach((e) => {
-                                var t = e.getGeometryBBox();
-                                t && (c = c ? c.united(t) : t);
+                            editor.insertElements(pasteElements, !useElementEditors, true, true, true);
+                            var pastedBBox = null;
+                            pasteElements.forEach((element) => {
+                                var geometryBBox = element.getGeometryBBox();
+                                geometryBBox && (pastedBBox = pastedBBox ? pastedBBox.united(geometryBBox) : geometryBBox);
                             });
-                            var d = c ? c.getX() : null,
-                                u = c ? c.getY() : null,
-                                p = null;
+                            var pastedX = pastedBBox ? pastedBBox.getX() : null,
+                                pastedY = pastedBBox ? pastedBBox.getY() : null,
+                                transform = null;
                             if (
-                                (null === r ||
-                                    null === d ||
-                                    (GObject.GMath.isEqualEps(r, d) && GObject.GMath.isEqualEps(s, u)) ||
-                                    (p = new GObject.GTransform(1, 0, 0, 1, r - d, s - u)),
-                                p)
+                                (null === selectionX ||
+                                    null === pastedX ||
+                                    (GObject.GMath.isEqualEps(selectionX, pastedX) && GObject.GMath.isEqualEps(selectionY, pastedY)) ||
+                                    (transform = new GObject.GTransform(1, 0, 0, 1, selectionX - pastedX, selectionY - pastedY)),
+                                transform)
                             )
-                                for (i = 0; i < n.length; ++i) {
-                                    var g = n[i];
-                                    g.hasMixin(GObject.GElement.Transform) && g.transform(p, true);
+                                for (i = 0; i < pasteElements.length; ++i) {
+                                    var g = pasteElements[i];
+                                    g.hasMixin(GObject.GElement.Transform) && g.transform(transform, true);
                                 }
                         } finally {
-                            a.commitTransaction(GObject.GLocale.get(this.getTitle()));
+                            editor.commitTransaction(GObject.GLocale.get(this.getTitle()));
                         }
                     }
                 }
             }),
-            (l.prototype.toString = function () {
+            (GPasteInPlaceAction.prototype.toString = function () {
                 return "[Object GPasteInPlaceAction]";
             }),
-            (module.exports = l));
+            (module.exports = GPasteInPlaceAction));
     };

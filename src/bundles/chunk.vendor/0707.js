@@ -1,13 +1,13 @@
 module.exports = function (module, exports, require) {
             "use strict";
             (require(19), require(30 /* polyfill:Object */), require(57), require(8 /* Symbol */), require(20 /* polyfill:RegExp */), require(34), require(26));
-            const n = require(171),
-                r = require(373),
-                o = (e) => new Promise((t) => setTimeout(t, e)),
+            const jQuery = require(171),
+                dateUtil = require(373),
+                delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms)),
                 GOfferDialogV1 = require(526),
-                s = require(976),
-                l = require(354),
-                h = require(170);
+                PaywallPanelView = require(976),
+                campaigns = require(354),
+                i18n = require(170);
             module.exports = class {
                 static get __i18n__() {
                     return "GPaywallDialog";
@@ -40,82 +40,82 @@ module.exports = function (module, exports, require) {
                         }
                     };
                 }
-                constructor(e) {
-                    let t,
-                        { type: i = "reminder", impl, gApi, now, campaign } = e;
+                constructor(options) {
+                    let campaignOverride,
+                        { type: type = "reminder", impl, gApi, now, campaign } = options;
                     this._impl = impl;
-                    const u = () => campaign || t || l.StoreCampaign.TrialSeries;
-                    (h.setLanguage(this._impl.getLanguage()),
+                    const getCampaign = () => campaign || campaignOverride || campaigns.StoreCampaign.TrialSeries;
+                    (i18n.setLanguage(this._impl.getLanguage()),
                         gApi.setLanguage(this._impl.getLanguage()),
-                        (this._htmlElement = n("<div></div>").addClass("g-cloud-ui g-cloud-ui-paywall-dialog g-dialog")),
-                        (this._dialog = n("<div></div>")
+                        (this._htmlElement = jQuery("<div></div>").addClass("g-cloud-ui g-cloud-ui-paywall-dialog g-dialog")),
+                        (this._dialog = jQuery("<div></div>")
                             .addClass("g-cloud-ui-paywall-dialog-content g-dialog-content g-cloud-ui-loading")
                             .appendTo(this._htmlElement)));
-                    const d = "paywall/".concat(i);
-                    let g, f;
-                    "subscribe" === i &&
-                        ((g = [
-                            h.getValue("GPaywallDialog", "text.offerdialog-v1-subscribe-title-1"),
-                            h.getValue("GPaywallDialog", "text.offerdialog-v1-subscribe-title-2"),
+                    const pageId = "paywall/".concat(type);
+                    let title, content;
+                    "subscribe" === type &&
+                        ((title = [
+                            i18n.getValue("GPaywallDialog", "text.offerdialog-v1-subscribe-title-1"),
+                            i18n.getValue("GPaywallDialog", "text.offerdialog-v1-subscribe-title-2"),
                         ]),
-                        (f = GOfferDialogV1.DEFAULT_CONTENT),
-                        (t = l.Campaign.UpgradeIntermintent));
-                    let m = new s({
-                        campaign: u(),
-                        page: d,
-                        title: g,
-                        content: f,
+                        (content = GOfferDialogV1.DEFAULT_CONTENT),
+                        (campaignOverride = campaigns.Campaign.UpgradeIntermintent));
+                    let contentView = new PaywallPanelView({
+                        campaign: getCampaign(),
+                        page: pageId,
+                        title: title,
+                        content: content,
                         cmd: {
                             close: this.close.bind(this),
                         },
                     })
                         .getHTMLElement()
                         .appendTo(this._dialog);
-                    ((now = now || r.now()),
+                    ((now = now || dateUtil.now()),
                         Promise.all([this._impl.getLicense()])
-                            .then((e) => {
-                                let [n] = e;
+                            .then((results) => {
+                                let [license] = results;
                                 this._dialog.removeClass("g-cloud-ui-loading");
-                                let o = g,
-                                    A = f;
-                                if ("subscribe" !== i) {
-                                    let e = r.millisecondsToDays(r.diff(now, new Date(n.expire)));
+                                let displayTitle = title,
+                                    displayContent = content;
+                                if ("subscribe" !== type) {
+                                    let daysRemaining = dateUtil.millisecondsToDays(dateUtil.diff(now, new Date(license.expire)));
                                     if (
-                                        ((o = h
-                                            .getValue("GPaywallDialog", 1 === e ? "text.remaining-day" : "text.remaining-days")
-                                            .replace("%days", e)
-                                            .replace("%day", e)),
-                                        e >= 0)
+                                        ((displayTitle = i18n
+                                            .getValue("GPaywallDialog", 1 === daysRemaining ? "text.remaining-day" : "text.remaining-days")
+                                            .replace("%days", daysRemaining)
+                                            .replace("%day", daysRemaining)),
+                                        daysRemaining >= 0)
                                     )
-                                        (0 === e && (o = h.getValue("GPaywallDialog", "text.expires-today")),
-                                            (A = h.getValue("GPaywallDialog", "text.access-message1")),
-                                            (t = l.StoreCampaign.TrialSeries));
+                                        (0 === daysRemaining && (displayTitle = i18n.getValue("GPaywallDialog", "text.expires-today")),
+                                            (displayContent = i18n.getValue("GPaywallDialog", "text.access-message1")),
+                                            (campaignOverride = campaigns.StoreCampaign.TrialSeries));
                                     else {
-                                        o = h.getValue("GPaywallDialog", "text.pretrial-title");
-                                        const e = [
+                                        displayTitle = i18n.getValue("GPaywallDialog", "text.pretrial-title");
+                                        const messageVariants = [
                                                 () => {
-                                                    A = h.getValue("GPaywallDialog", "text.trial-message1");
+                                                    displayContent = i18n.getValue("GPaywallDialog", "text.trial-message1");
                                                 },
                                                 () => {
-                                                    A = h.getValue("GPaywallDialog", "text.trial-message2");
+                                                    displayContent = i18n.getValue("GPaywallDialog", "text.trial-message2");
                                                 },
                                                 () => {
-                                                    A = Object.assign({}, GOfferDialogV1.DEFAULT_CONTENT, {
-                                                        title: h.getValue("GPaywallDialog", "text.pretrial-subtitle"),
+                                                    displayContent = Object.assign({}, GOfferDialogV1.DEFAULT_CONTENT, {
+                                                        title: i18n.getValue("GPaywallDialog", "text.pretrial-subtitle"),
                                                     });
                                                 },
                                             ],
-                                            t = r.millisecondsToDays(r.diff(new Date(n.created), now)),
-                                            i = parseInt(((t - 1) / 15) % e.length) || 0;
-                                        e[Math.max(i, 0)].call(this);
+                                            daysSinceCreation = dateUtil.millisecondsToDays(dateUtil.diff(new Date(license.created), now)),
+                                            variantIndex = parseInt(((daysSinceCreation - 1) / 15) % messageVariants.length) || 0;
+                                        messageVariants[Math.max(variantIndex, 0)].call(this);
                                     }
                                 }
-                                m.replaceWith(
-                                    new s({
-                                        page: d,
-                                        title: o,
-                                        content: A,
-                                        campaign: u(),
+                                contentView.replaceWith(
+                                    new PaywallPanelView({
+                                        page: pageId,
+                                        title: displayTitle,
+                                        content: displayContent,
+                                        campaign: getCampaign(),
                                         cmd: {
                                             openPurchaseFlow: () => {
                                                 (this._impl.openPurchaseFlow({
@@ -134,20 +134,20 @@ module.exports = function (module, exports, require) {
                     return this._htmlElement;
                 }
                 async open() {
-                    n(".g-cloud-ui-paywall-dialog").length ||
+                    jQuery(".g-cloud-ui-paywall-dialog").length ||
                         (this._impl.open({
                             dialog: this,
                         }),
-                        await o(100),
+                        await delay(100),
                         this._htmlElement.addClass("slide-up"));
                 }
                 async close() {
-                    let { licenseHasBeenUpgraded: e = false } = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
+                    let { licenseHasBeenUpgraded: licenseHasBeenUpgraded = false } = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
                     (this._htmlElement.removeClass("slide-up"),
-                        await o(1e3),
+                        await delay(1e3),
                         this._impl.close({
                             dialog: this,
-                            licenseHasBeenUpgraded: e,
+                            licenseHasBeenUpgraded: licenseHasBeenUpgraded,
                         }));
                 }
                 toString() {

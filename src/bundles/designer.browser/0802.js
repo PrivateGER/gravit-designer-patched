@@ -17,378 +17,378 @@ module.exports = function (module, exports, require) {
             require(97),
             require(26));
         var GObject = require(1),
-            a = _interopRequireDefault(require(355)),
-            r = _interopRequireDefault(require(594)),
-            s = require(858);
-        const l = require(1240),
-            c = require(520),
+            AppError = _interopRequireDefault(require(355)),
+            GError = _interopRequireDefault(require(594)),
+            GFilesPanelConstants = require(858);
+        const GDriveSettings = require(1240),
+            DriveConstants = require(520),
             { FILE_FORMATS } = require(10 /* designerConfig */);
         exports.WINDOW_STATUS_BLOCKED = "window-blocked";
-        function u(e) {
-            ((this._settings = e),
+        function CloudDrive(settings) {
+            ((this._settings = settings),
                 this.setQueryLimit(10),
                 (this._currentFolder = null),
                 (this._folders = {}),
                 (this._actions = []),
                 (this._filterFileTypes = new Set()),
                 (this.PREVIOUS_SELECTED_FOLDER_PATH = []),
-                this.getPreviousSelectedFolder().then((e) => {
-                    e && this.setCurrentFolder(e);
+                this.getPreviousSelectedFolder().then((folder) => {
+                    folder && this.setCurrentFolder(folder);
                 }));
         }
-        (GObject.GObject.inheritAndMix(u, GObject.GObject, [GObject.GEventTarget]),
-            (u.DriveEvent = function (e, t) {
-                let n = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : null;
-                ((this.source = e), (this.type = t), (this.data = n));
+        (GObject.GObject.inheritAndMix(CloudDrive, GObject.GObject, [GObject.GEventTarget]),
+            (CloudDrive.DriveEvent = function (source, type) {
+                let data = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : null;
+                ((this.source = source), (this.type = type), (this.data = data));
             }),
-            GObject.GObject.inherit(u.DriveEvent, GObject.GEvent),
-            (u.DriveEvent.type = null),
-            (u.DriveEvent.source = null),
-            (u.DriveEvent.data = null),
-            (u.DriveEvent.Type = {
+            GObject.GObject.inherit(CloudDrive.DriveEvent, GObject.GEvent),
+            (CloudDrive.DriveEvent.type = null),
+            (CloudDrive.DriveEvent.source = null),
+            (CloudDrive.DriveEvent.data = null),
+            (CloudDrive.DriveEvent.Type = {
                 Added: 0,
                 UserUpdated: 1,
                 FolderSwitchRequired: 2,
                 FileDeleted: 3,
             }),
-            (u.ExceptionCode = { InvalidCredentials: 1 }));
-        class p extends r.default {
-            constructor(e, t) {
-                (super(e), (this.code = t), (this.__proto__ = p.prototype), (this.name = "CloudException"));
+            (CloudDrive.ExceptionCode = { InvalidCredentials: 1 }));
+        class CloudException extends GError.default {
+            constructor(message, code) {
+                (super(message), (this.code = code), (this.__proto__ = CloudException.prototype), (this.name = "CloudException"));
             }
             toString() {
                 return "[Object CloudException]";
             }
         }
-        function g(e) {
-            return e.type || e.mime;
+        function getMimeType(fileFormat) {
+            return fileFormat.type || fileFormat.mime;
         }
-        ((u.CloudException = p),
-            (u.prototype._driveSettings = null),
-            (u.prototype.setDriveSettings = function (e) {
-                this._driveSettings = l.from(e);
+        ((CloudDrive.CloudException = CloudException),
+            (CloudDrive.prototype._driveSettings = null),
+            (CloudDrive.prototype.setDriveSettings = function (settings) {
+                this._driveSettings = GDriveSettings.from(settings);
             }),
-            (u.prototype.shouldOnlyListOwnedFiles = function () {
+            (CloudDrive.prototype.shouldOnlyListOwnedFiles = function () {
                 return !!this._driveSettings && this._driveSettings.onlyListFilesOwnedByUser;
             }),
-            (u.prototype._queryLimit = null),
-            (u.prototype._currentFolder = null),
-            (u.prototype.SORT_TYPES = s.GFilesPanelSortTypes),
-            (u.prototype.FILTER_FILE_TYPES = s.GFilesPanelFileTypesFilter),
-            (u.prototype._sortType = u.prototype.SORT_TYPES.UPDATED),
-            (u.prototype._filterFileTypes = null),
-            (u.prototype._sortDirection = s.GFilesPanelSortDirections.DESCEND),
-            (u.prototype._folders = null),
-            (u.prototype._corporateStorage = null),
-            (u.prototype._actions = null),
-            (u.prototype._defaultEmpyMessage = null),
-            (u.prototype.CURRENT_FOLDER_PROP = "designer.filespanel.base-drive.current-folder"),
-            (u.prototype.getUser = function () {
+            (CloudDrive.prototype._queryLimit = null),
+            (CloudDrive.prototype._currentFolder = null),
+            (CloudDrive.prototype.SORT_TYPES = GFilesPanelConstants.GFilesPanelSortTypes),
+            (CloudDrive.prototype.FILTER_FILE_TYPES = GFilesPanelConstants.GFilesPanelFileTypesFilter),
+            (CloudDrive.prototype._sortType = CloudDrive.prototype.SORT_TYPES.UPDATED),
+            (CloudDrive.prototype._filterFileTypes = null),
+            (CloudDrive.prototype._sortDirection = GFilesPanelConstants.GFilesPanelSortDirections.DESCEND),
+            (CloudDrive.prototype._folders = null),
+            (CloudDrive.prototype._corporateStorage = null),
+            (CloudDrive.prototype._actions = null),
+            (CloudDrive.prototype._defaultEmpyMessage = null),
+            (CloudDrive.prototype.CURRENT_FOLDER_PROP = "designer.filespanel.base-drive.current-folder"),
+            (CloudDrive.prototype.getUser = function () {
                 throw Error("Not implemented!");
             }),
-            (u.prototype._driveInstalled = false),
-            (u.getInstance = function () {
+            (CloudDrive.prototype._driveInstalled = false),
+            (CloudDrive.getInstance = function () {
                 throw Error("Not implemented!");
             }),
-            (u.prototype.hasUserProfile = function () {
+            (CloudDrive.prototype.hasUserProfile = function () {
                 return false;
             }),
-            (u.prototype.getSortType = function () {
+            (CloudDrive.prototype.getSortType = function () {
                 return this._sortType;
             }),
-            (u.prototype.setSortType = function (e) {
-                Object.values(this.SORT_TYPES).includes(e) && (this._sortType = e);
+            (CloudDrive.prototype.setSortType = function (sortType) {
+                Object.values(this.SORT_TYPES).includes(sortType) && (this._sortType = sortType);
             }),
-            (u.prototype.getAvailableFileTypesFilter = function () {
+            (CloudDrive.prototype.getAvailableFileTypesFilter = function () {
                 return this._driveSettings && this._driveSettings.supportedFileFilters
                     ? this._driveSettings.supportedFileFilters
                     : this.FILTER_FILE_TYPES;
             }),
-            (u.prototype.getSelectedFilterForFileTypes = function () {
+            (CloudDrive.prototype.getSelectedFilterForFileTypes = function () {
                 return Array.from(this._filterFileTypes);
             }),
-            (u.prototype.addFileTypeToSelectedFilter = function (e) {
-                this._isFilterFileTypeSupported(e) && this._filterFileTypes.add(e);
+            (CloudDrive.prototype.addFileTypeToSelectedFilter = function (fileType) {
+                this._isFilterFileTypeSupported(fileType) && this._filterFileTypes.add(fileType);
             }),
-            (u.prototype.deleteFileTypeFromSelectedFilter = function (e) {
-                this._isFilterFileTypeSupported(e) && this._filterFileTypes.delete(e);
+            (CloudDrive.prototype.deleteFileTypeFromSelectedFilter = function (fileType) {
+                this._isFilterFileTypeSupported(fileType) && this._filterFileTypes.delete(fileType);
             }),
-            (u.prototype._isFilterFileTypeSupported = function (e) {
-                return this.getAvailableFileTypesFilter().some((t) => t.type === e);
+            (CloudDrive.prototype._isFilterFileTypeSupported = function (fileType) {
+                return this.getAvailableFileTypesFilter().some((filter) => filter.type === fileType);
             }),
-            (u.prototype.clearAllFileTypesFromSelectedFilter = function () {
+            (CloudDrive.prototype.clearAllFileTypesFromSelectedFilter = function () {
                 this._filterFileTypes = new Set();
             }),
-            (u.prototype.getSortDirection = function () {
+            (CloudDrive.prototype.getSortDirection = function () {
                 return this._sortDirection;
             }),
-            (u.prototype.setSortDirection = function (e) {
-                Object.values(s.GFilesPanelSortDirections).includes(e) && (this._sortDirection = e);
+            (CloudDrive.prototype.setSortDirection = function (direction) {
+                Object.values(GFilesPanelConstants.GFilesPanelSortDirections).includes(direction) && (this._sortDirection = direction);
             }),
-            (u.prototype.hasMoreItemsToLoad = function () {
+            (CloudDrive.prototype.hasMoreItemsToLoad = function () {
                 return false;
             }),
-            (u.prototype.setQueryLimit = function (e) {
-                return ((this._queryLimit = parseInt(e, 10)), this);
+            (CloudDrive.prototype.setQueryLimit = function (limit) {
+                return ((this._queryLimit = parseInt(limit, 10)), this);
             }),
-            (u.prototype.isInstalled = function () {
+            (CloudDrive.prototype.isInstalled = function () {
                 return this._driveInstalled;
             }),
-            (u.prototype.install = function (e) {
+            (CloudDrive.prototype.install = function (e) {
                 return ((this._driveInstalled = true), Promise.resolve());
             }),
-            (u.prototype.uninstall = function () {
+            (CloudDrive.prototype.uninstall = function () {
                 return ((this._driveInstalled = false), Promise.resolve());
             }),
-            (u.prototype.getQueryLimit = function () {
+            (CloudDrive.prototype.getQueryLimit = function () {
                 return this._queryLimit;
             }),
-            (u.prototype.setCurrentFolder = function (e) {
-                return ((this._currentFolder = e), gContainer.setProperty(this.CURRENT_FOLDER_PROP, JSON.stringify(e)), this);
+            (CloudDrive.prototype.setCurrentFolder = function (folder) {
+                return ((this._currentFolder = folder), gContainer.setProperty(this.CURRENT_FOLDER_PROP, JSON.stringify(folder)), this);
             }),
-            (u.prototype.isFolderSharedWithMeFolder = function (e) {
+            (CloudDrive.prototype.isFolderSharedWithMeFolder = function (folder) {
                 return false;
             }),
-            (u.prototype.getCurrentFolder = function () {
+            (CloudDrive.prototype.getCurrentFolder = function () {
                 return this._currentFolder;
             }),
-            (u.prototype.fetchFolders = function (e) {
+            (CloudDrive.prototype.fetchFolders = function (sortType) {
                 throw Error("Not implemented!");
             }),
-            (u.prototype.isLoadFoldersOnDemandSupported = function () {
+            (CloudDrive.prototype.isLoadFoldersOnDemandSupported = function () {
                 return false;
             }),
-            (u.prototype.hasFolders = async function () {
-                let e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : null;
-                return this.fetchFolders("name", e, 1).then((e) => !!e && e.length > 0);
+            (CloudDrive.prototype.hasFolders = async function () {
+                let folder = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : null;
+                return this.fetchFolders("name", folder, 1).then((folders) => !!folders && folders.length > 0);
             }),
-            (u.prototype.getFolders = function () {
+            (CloudDrive.prototype.getFolders = function () {
                 return this._folders;
             }),
-            (u.prototype.createFolder = function (e) {
+            (CloudDrive.prototype.createFolder = function (folderName) {
                 throw Error("Not implemented!");
             }),
-            (u.prototype.navigateToParentFolder = function () {
+            (CloudDrive.prototype.navigateToParentFolder = function () {
                 throw Error("Not implemented!");
             }),
-            (u.prototype.getFile = function (e) {
+            (CloudDrive.prototype.getFile = function (fileId) {
                 throw Error("Not implemented!");
             }),
-            (u.prototype.getFolder = function (e) {
+            (CloudDrive.prototype.getFolder = function (folderId) {
                 throw Error("Not implemented!");
             }),
-            (u.prototype.getRawFile = function (e, t, n) {
+            (CloudDrive.prototype.getRawFile = function (fileId, folder, options) {
                 throw Error("Not implemented!");
             }),
-            (u.prototype.openFile = async function (e, t) {
-                return new Promise((e, t) => {
-                    t("Not implemented!");
+            (CloudDrive.prototype.openFile = async function (file, options) {
+                return new Promise((resolve, reject) => {
+                    reject("Not implemented!");
                 });
             }),
-            (u.prototype.saveNewFile = function (e, t) {
+            (CloudDrive.prototype.saveNewFile = function (file, options) {
                 throw Error("Not implemented!");
             }),
-            (u.prototype.fetchFiles = function (e, t, n) {
+            (CloudDrive.prototype.fetchFiles = function (sortType, folder, limit) {
                 throw Error("Not implemented!");
             }),
-            (u.prototype.fetchRecentFiles = async function () {
+            (CloudDrive.prototype.fetchRecentFiles = async function () {
                 return [];
             }),
-            (u.prototype.filterSupportedFileFormats = function () {
-                let e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : [];
-                const t = this.getSupportedMIMETypes();
-                return e.filter((e) => t.includes(e.getMimeType()));
+            (CloudDrive.prototype.filterSupportedFileFormats = function () {
+                let files = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : [];
+                const supportedTypes = this.getSupportedMIMETypes();
+                return files.filter((file) => supportedTypes.includes(file.getMimeType()));
             }),
-            (u.prototype.renameItem = function (e, t) {
+            (CloudDrive.prototype.renameItem = function (item, newName) {
                 throw Error("Not implemented!");
             }),
-            (u.prototype.isItemAllowedToBeRendered = function (e) {
+            (CloudDrive.prototype.isItemAllowedToBeRendered = function (item) {
                 throw Error("Not implemented!");
             }),
-            (u.prototype.itemRequiresLazyUpdate = async function (e) {
+            (CloudDrive.prototype.itemRequiresLazyUpdate = async function (item) {
                 return false;
             }),
-            (u.prototype.getItemLazyUpdate = async function (e) {
-                return e;
+            (CloudDrive.prototype.getItemLazyUpdate = async function (item) {
+                return item;
             }),
-            (u.prototype.isFileAllowedToBeOpened = function (e) {
+            (CloudDrive.prototype.isFileAllowedToBeOpened = function (file) {
                 throw Error("Not implemented!");
             }),
-            (u.prototype.deleteItem = function (e) {
+            (CloudDrive.prototype.deleteItem = function (item) {
                 throw Error("Not implemented!");
             }),
-            (u.prototype.cutPaste = function (e) {
+            (CloudDrive.prototype.cutPaste = function (item) {
                 throw Error("Not implemented!");
             }),
-            (u.prototype.fileMove = function (e, t) {
+            (CloudDrive.prototype.fileMove = function (file, targetFolder) {
                 throw Error("Not implemented!");
             }),
-            (u.prototype.copyPaste = function (e) {
+            (CloudDrive.prototype.copyPaste = function (item) {
                 throw Error("Not implemented!");
             }),
-            (u.prototype.supportsCorporateStorage = function () {
+            (CloudDrive.prototype.supportsCorporateStorage = function () {
                 return false;
             }),
-            (u.prototype.setCorporateStorage = async function (e) {
-                this._corporateStorage = e;
+            (CloudDrive.prototype.setCorporateStorage = async function (storage) {
+                this._corporateStorage = storage;
             }),
-            (u.prototype.initLastCorporateStorage = function (e) {
-                let t = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : "id";
-                const n = this;
-                async function o(e) {
-                    if (!e) return null;
-                    const o = await n.getCorporateStorages();
-                    return o.length ? o.find((n) => n[t] === e) : null;
+            (CloudDrive.prototype.initLastCorporateStorage = function (storageIdProperty) {
+                let idProperty = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : "id";
+                const self = this;
+                async function resolveStorage(id) {
+                    if (!id) return null;
+                    const storages = await self.getCorporateStorages();
+                    return storages.length ? storages.find((storage) => storage[idProperty] === id) : null;
                 }
-                async function i(e) {
-                    n.setCorporateStorage(e);
-                    let t = await n.getPreviousSelectedFolder();
-                    n.setCurrentFolder(t || n.getRootFolder());
+                async function applyStorage(storage) {
+                    self.setCorporateStorage(storage);
+                    let previousFolder = await self.getPreviousSelectedFolder();
+                    self.setCurrentFolder(previousFolder || self.getRootFolder());
                 }
-                return e && this.supportsCorporateStorage() ? gContainer.getProperty(e).then(o).then(i) : i(null);
+                return storageIdProperty && this.supportsCorporateStorage() ? gContainer.getProperty(storageIdProperty).then(resolveStorage).then(applyStorage) : applyStorage(null);
             }),
-            (u.prototype.saveLastTeamDriveId = function (e, t) {
-                if (!e) throw new a.default("Invalid arguments for saving last team drive id");
-                return (gContainer.setProperty(e, t), this);
+            (CloudDrive.prototype.saveLastTeamDriveId = function (propertyName, driveId) {
+                if (!propertyName) throw new AppError.default("Invalid arguments for saving last team drive id");
+                return (gContainer.setProperty(propertyName, driveId), this);
             }),
-            (u.prototype.getCorporateStorage = function () {
+            (CloudDrive.prototype.getCorporateStorage = function () {
                 return this._corporateStorage;
             }),
-            (u.prototype.getCorporateStorages = async function () {
+            (CloudDrive.prototype.getCorporateStorages = async function () {
                 return [];
             }),
-            (u.prototype.isRootFolder = function (e) {
+            (CloudDrive.prototype.isRootFolder = function (folder) {
                 throw new Error("Not implemented!");
             }),
-            (u.prototype.getRootFolder = function () {
+            (CloudDrive.prototype.getRootFolder = function () {
                 throw new Error("Not implemented!");
             }),
-            (u.prototype.supportsSaveCollisionFlow = function () {
+            (CloudDrive.prototype.supportsSaveCollisionFlow = function () {
                 return false;
             }),
-            (u.prototype.requiresOverwriteCollisionHandling = function () {
+            (CloudDrive.prototype.requiresOverwriteCollisionHandling = function () {
                 return false;
             }),
-            (u.prototype.fileExists = async function (e, t, n) {
+            (CloudDrive.prototype.fileExists = async function (fileName, folder, options) {
                 throw new Error("Not implemented!");
             }),
-            (u.prototype.folderExists = function (e, t) {
+            (CloudDrive.prototype.folderExists = function (folderName, parentFolder) {
                 throw new Error("Not implemented!");
             }),
-            (u.prototype.getPreviousSelectedFolder = function () {
+            (CloudDrive.prototype.getPreviousSelectedFolder = function () {
                 return this.CURRENT_FOLDER_PROP
                     ? gContainer
                           .getProperty(this.CURRENT_FOLDER_PROP)
                           .then(JSON.parse)
-                          .catch((e) => {
-                              console.log("Current folder is not set", e.message);
+                          .catch((error) => {
+                              console.log("Current folder is not set", error.message);
                           })
                     : Promise.resolve(null);
             }),
-            (u.prototype.clearPreviousSelectedFolder = function () {
+            (CloudDrive.prototype.clearPreviousSelectedFolder = function () {
                 return gContainer.removeProperty(this.CURRENT_FOLDER_PROP);
             }),
-            (u.prototype.getSupportedExtensions = function () {
-                return this.getSupportedFileFormats().map((e) => {
-                    let { ext } = e;
+            (CloudDrive.prototype.getSupportedExtensions = function () {
+                return this.getSupportedFileFormats().map((fileFormat) => {
+                    let { ext } = fileFormat;
                     return ext.toLowerCase();
                 });
             }),
-            (u.prototype.getSupportedMIMETypes = function () {
-                return this.getSupportedFileFormats().map((e) => g(e));
+            (CloudDrive.prototype.getSupportedMIMETypes = function () {
+                return this.getSupportedFileFormats().map((fileFormat) => getMimeType(fileFormat));
             }),
-            (u.prototype.filterTypesWithSearchString = function (e, t) {
-                if (!t || !e) return e;
-                let n;
-                if (((t = t.toLowerCase()).startsWith(".") ? (n = t.slice(1)) : t.startsWith("*.") && (n = t.slice(2)), !n)) return e;
-                const o = this.getSupportedFileFormats(),
-                    i = o
-                        .filter((t) => e.includes(g(t)))
-                        .map((e) => e.ext)
-                        .filter((e) => e.startsWith(n));
-                if (i.length > 0) {
-                    return o.filter((e) => i.includes(e.ext)).map(g);
+            (CloudDrive.prototype.filterTypesWithSearchString = function (mimeTypes, searchString) {
+                if (!searchString || !mimeTypes) return mimeTypes;
+                let extension;
+                if (((searchString = searchString.toLowerCase()).startsWith(".") ? (extension = searchString.slice(1)) : searchString.startsWith("*.") && (extension = searchString.slice(2)), !extension)) return mimeTypes;
+                const formats = this.getSupportedFileFormats(),
+                    matchingExtensions = formats
+                        .filter((format) => mimeTypes.includes(getMimeType(format)))
+                        .map((format) => format.ext)
+                        .filter((ext) => ext.startsWith(extension));
+                if (matchingExtensions.length > 0) {
+                    return formats.filter((format) => matchingExtensions.includes(format.ext)).map(getMimeType);
                 }
                 return [];
             }),
-            (u.prototype.getSupportedFileFormats = function () {
+            (CloudDrive.prototype.getSupportedFileFormats = function () {
                 return this._driveSettings && this._driveSettings.supportedFileFormats ? this._driveSettings.supportedFileFormats : FILE_FORMATS;
             }),
-            (u.prototype.getDefaultFileFormat = function () {
-                return this.getSupportedFileFormats().find((e) => e.default);
+            (CloudDrive.prototype.getDefaultFileFormat = function () {
+                return this.getSupportedFileFormats().find((format) => format.default);
             }),
-            (u.prototype.findFileFormatByExtension = function (e) {
-                return this.getSupportedFileFormats().find((t) => {
-                    let { ext: n } = t;
-                    return !!n && n.toLowerCase() === e.toLowerCase();
+            (CloudDrive.prototype.findFileFormatByExtension = function (extension) {
+                return this.getSupportedFileFormats().find((format) => {
+                    let { ext: formatExt } = format;
+                    return !!formatExt && formatExt.toLowerCase() === extension.toLowerCase();
                 });
             }),
-            (u.prototype.lookupByMimeType = function (e) {
-                const t = e.toLowerCase();
-                return this.getSupportedFileFormats().find((e) => {
-                    const n = g(e);
-                    return !!n && n.toLowerCase() === t;
+            (CloudDrive.prototype.lookupByMimeType = function (mimeType) {
+                const normalizedMimeType = mimeType.toLowerCase();
+                return this.getSupportedFileFormats().find((format) => {
+                    const formatMimeType = getMimeType(format);
+                    return !!formatMimeType && formatMimeType.toLowerCase() === normalizedMimeType;
                 });
             }),
-            (u.prototype.getFileFormat = function (e) {
-                var t = this.findFileFormatByExtension(e.extension || e.ext);
-                return (t || (t = this.lookupByMimeType(e.type)), t);
+            (CloudDrive.prototype.getFileFormat = function (file) {
+                var format = this.findFileFormatByExtension(file.extension || file.ext);
+                return (format || (format = this.lookupByMimeType(file.type)), format);
             }),
-            (u.prototype.isFileSupported = function (e) {
+            (CloudDrive.prototype.isFileSupported = function (file) {
                 return !(
-                    !e ||
+                    !file ||
                     !(
-                        this.getSupportedMIMETypes().includes(e.type) ||
-                        this.getSupportedMIMETypes().includes(e.mimeType) ||
-                        (e.extension && this.getSupportedExtensions().includes(e.extension.toLowerCase()))
+                        this.getSupportedMIMETypes().includes(file.type) ||
+                        this.getSupportedMIMETypes().includes(file.mimeType) ||
+                        (file.extension && this.getSupportedExtensions().includes(file.extension.toLowerCase()))
                     )
                 );
             }),
-            (u.prototype.canAccessFile = async function () {
+            (CloudDrive.prototype.canAccessFile = async function () {
                 return true;
             }),
-            (u.prototype.addAction = function (e) {
-                this._actions.push(e);
+            (CloudDrive.prototype.addAction = function (action) {
+                this._actions.push(action);
             }),
-            (u.prototype.getActions = function () {
+            (CloudDrive.prototype.getActions = function () {
                 return this._actions;
             }),
-            (u.prototype.setDefaultEmptyMessage = function (e) {
-                this._defaultEmpyMessage = e;
+            (CloudDrive.prototype.setDefaultEmptyMessage = function (message) {
+                this._defaultEmpyMessage = message;
             }),
-            (u.prototype.getDefaultEmptyMessage = function () {
+            (CloudDrive.prototype.getDefaultEmptyMessage = function () {
                 return this._defaultEmpyMessage;
             }),
-            (u.prototype.generatePreviousSelectedFolderPath = function () {
+            (CloudDrive.prototype.generatePreviousSelectedFolderPath = function () {
                 throw new Error("Not implemented!");
             }),
-            (u.prototype.containsInPreviousPath = function (e) {
-                return this.PREVIOUS_SELECTED_FOLDER_PATH.find((t) => t === e.getId());
+            (CloudDrive.prototype.containsInPreviousPath = function (folder) {
+                return this.PREVIOUS_SELECTED_FOLDER_PATH.find((id) => id === folder.getId());
             }),
-            (u.prototype.resetPreviousSelectedFolderPath = function () {
+            (CloudDrive.prototype.resetPreviousSelectedFolderPath = function () {
                 this.PREVIOUS_SELECTED_FOLDER_PATH = [];
             }),
-            (u.prototype.removeLoadedFolderFromPreviousPath = function (e) {
-                this.PREVIOUS_SELECTED_FOLDER_PATH = this.PREVIOUS_SELECTED_FOLDER_PATH.filter((t) => t !== e.getId());
+            (CloudDrive.prototype.removeLoadedFolderFromPreviousPath = function (folder) {
+                this.PREVIOUS_SELECTED_FOLDER_PATH = this.PREVIOUS_SELECTED_FOLDER_PATH.filter((id) => id !== folder.getId());
             }),
-            (u.prototype.hasTitleValidation = function () {
+            (CloudDrive.prototype.hasTitleValidation = function () {
                 return false;
             }),
-            (u.prototype.getTitleValidator = function () {
+            (CloudDrive.prototype.getTitleValidator = function () {
                 throw Error("NOT IMPLEMENTED");
             }),
-            (u.prototype.loadExampleFiles = async function () {
+            (CloudDrive.prototype.loadExampleFiles = async function () {
                 return Promise.resolve([]);
             }),
-            (u.prototype.isAssetsSharedWithMeFolder = function () {
+            (CloudDrive.prototype.isAssetsSharedWithMeFolder = function () {
                 return false;
             }),
-            (u.prototype.getSharedFilesWithMeFolder = function () {
+            (CloudDrive.prototype.getSharedFilesWithMeFolder = function () {
                 return null;
             }),
-            (u.prototype.getDriveIdPropertyName = function () {
+            (CloudDrive.prototype.getDriveIdPropertyName = function () {
                 return "id";
             }),
-            (u.Provider = c.Provider));
-        exports.default = u;
+            (CloudDrive.Provider = DriveConstants.Provider));
+        exports.default = CloudDrive;
     };

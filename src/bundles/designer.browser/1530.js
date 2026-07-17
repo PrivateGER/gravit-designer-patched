@@ -1,84 +1,84 @@
 module.exports = function (module, exports, require) {
         "use strict";
         (require(58 /* polyfill:Array */), require(8 /* Symbol */));
-        const o = require(86),
-            i = require(78),
-            a = require(1531),
-            r = require(1532),
-            s = require(1533),
-            l = require(156),
-            c = require(790),
-            d = require(554);
-        function u(e) {
-            ((this._worker = e), (this._docs = []));
+        const documentStatus = require(86),
+            GDocumentEvent = require(78),
+            GravitAutoSaveHelper = require(1531),
+            GoogleDriveAutoSaveHelper = require(1532),
+            SharePointAutoSaveHelper = require(1533),
+            CloudFile = require(156),
+            DocumentMetadata = require(790),
+            Base64Image = require(554);
+        function AutoSaveQueue(worker) {
+            ((this._worker = worker), (this._docs = []));
         }
-        ((u.prototype._docs = null),
-            (u.prototype._worker = null),
-            (u.prototype.has = function (e) {
-                return this._docs.indexOf(e) >= 0;
+        ((AutoSaveQueue.prototype._docs = null),
+            (AutoSaveQueue.prototype._worker = null),
+            (AutoSaveQueue.prototype.has = function (document) {
+                return this._docs.indexOf(document) >= 0;
             }),
-            (u.prototype._addDocToQueue = function (e) {
-                this._docs.push(e);
+            (AutoSaveQueue.prototype._addDocToQueue = function (document) {
+                this._docs.push(document);
             }),
-            (u.prototype._removeDocFromQueue = function (e) {
-                this._docs.splice(this._docs.indexOf(e), 1);
+            (AutoSaveQueue.prototype._removeDocFromQueue = function (document) {
+                this._docs.splice(this._docs.indexOf(document), 1);
             }),
-            (u.prototype.isSaving = function () {
+            (AutoSaveQueue.prototype.isSaving = function () {
                 return this._docs.length > 0;
             }),
-            (u.prototype.save = async function (e) {
-                if (this.has(e)) return Promise.resolve(null);
-                this._addDocToQueue(e);
-                const t = e.getEditor(),
-                    n = t && t.markSavePoint();
+            (AutoSaveQueue.prototype.save = async function (document) {
+                if (this.has(document)) return Promise.resolve(null);
+                this._addDocToQueue(document);
+                const editor = document.getEditor(),
+                    savePoint = editor && editor.markSavePoint();
                 try {
-                    if (this._isDocAllowedToBeAutoSaved(e)) {
-                        gDesigner.trigger(new i(i.Type.AutoSaveSynchronizing, e));
-                        const t = this._getAutoSaveHelper(e.getStorageItem().getFile());
+                    if (this._isDocAllowedToBeAutoSaved(document)) {
+                        gDesigner.trigger(new GDocumentEvent(GDocumentEvent.Type.AutoSaveSynchronizing, document));
+                        const autoSaveHelper = this._getAutoSaveHelper(document.getStorageItem().getFile());
                         return (
-                            (function (t) {
-                                const n = e.getStorageItem();
-                                n.setVersionId && n.setVersionId(null);
-                                n.setFile(t);
+                            (function (file) {
+                                const storageItem = document.getStorageItem();
+                                storageItem.setVersionId && storageItem.setVersionId(null);
+                                storageItem.setFile(file);
                             })(
-                                await t.updateFileSceneAndMetadata(
-                                    e.getId(),
-                                    e.getStorageItem().getFile(),
-                                    e.getScene(),
-                                    await this._createDocumentMetadata(e)
+                                await autoSaveHelper.updateFileSceneAndMetadata(
+                                    document.getId(),
+                                    document.getStorageItem().getFile(),
+                                    document.getScene(),
+                                    await this._createDocumentMetadata(document)
                                 )
                             ),
-                            gDesigner.trigger(new i(i.Type.Modified, e)),
-                            gDesigner.trigger(new i(i.Type.AutoSaveSynchronized, e)),
+                            gDesigner.trigger(new GDocumentEvent(GDocumentEvent.Type.Modified, document)),
+                            gDesigner.trigger(new GDocumentEvent(GDocumentEvent.Type.AutoSaveSynchronized, document)),
                             true
                         );
                     }
                     return false;
-                } catch (t) {
-                    throw (gDesigner.trigger(new i(i.Type.AutoSaveSynchronizationFailed, e)), n && n.rollback(), t);
+                } catch (error) {
+                    throw (gDesigner.trigger(new GDocumentEvent(GDocumentEvent.Type.AutoSaveSynchronizationFailed, document)), savePoint && savePoint.rollback(), error);
                 } finally {
-                    this._removeDocFromQueue(e);
+                    this._removeDocFromQueue(document);
                 }
             }),
-            (u.prototype._isDocAllowedToBeAutoSaved = function (e) {
-                return ![o.Saving, o.Syncing].includes(e.getStatus()) && e.canSaveToCloud();
+            (AutoSaveQueue.prototype._isDocAllowedToBeAutoSaved = function (document) {
+                return ![documentStatus.Saving, documentStatus.Syncing].includes(document.getStatus()) && document.canSaveToCloud();
             }),
-            (u.prototype._createDocumentMetadata = async function (e) {
-                const t = new c();
-                return ((t.thumbnail = await d.fromBlob(await e.buildPreview())), t);
+            (AutoSaveQueue.prototype._createDocumentMetadata = async function (document) {
+                const metadata = new DocumentMetadata();
+                return ((metadata.thumbnail = await Base64Image.fromBlob(await document.buildPreview())), metadata);
             }),
-            (u.prototype._getAutoSaveHelper = function (e) {
-                let t = null;
-                const n = e.getStorage(),
-                    o = gDesigner.getSyncUser();
+            (AutoSaveQueue.prototype._getAutoSaveHelper = function (file) {
+                let helper = null;
+                const storageType = file.getStorage(),
+                    user = gDesigner.getSyncUser();
                 return (
-                    n === l.Storage.Gravit
-                        ? (t = new a(this._worker, o))
-                        : n === l.Storage.GoogleDrive
-                          ? (t = new r(this._worker, o))
-                          : (n !== l.Storage.SharePoint && n !== l.Storage.OneDriveBusiness) || (t = new s(this._worker, o)),
-                    t
+                    storageType === CloudFile.Storage.Gravit
+                        ? (helper = new GravitAutoSaveHelper(this._worker, user))
+                        : storageType === CloudFile.Storage.GoogleDrive
+                          ? (helper = new GoogleDriveAutoSaveHelper(this._worker, user))
+                          : (storageType !== CloudFile.Storage.SharePoint && storageType !== CloudFile.Storage.OneDriveBusiness) || (helper = new SharePointAutoSaveHelper(this._worker, user)),
+                    helper
                 );
             }),
-            (module.exports = u));
+            (module.exports = AutoSaveQueue));
     };

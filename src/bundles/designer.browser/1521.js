@@ -1,84 +1,84 @@
 module.exports = function (module, exports, require) {
         "use strict";
         (require(4), require(32), require(97), require(33));
-        const o = require(394),
-            i = require(78),
-            a = require(86),
-            r = require(217);
-        function s(e) {
-            this._htmlElement = e;
+        const GView = require(394),
+            GDocumentEvent = require(78),
+            documentStatus = require(86),
+            GDocumentStatusEvent = require(217);
+        function Footer(htmlElement) {
+            this._htmlElement = htmlElement;
         }
-        ((s.prototype._root = null),
-            (s.prototype._panels = []),
-            (s.prototype._activePanel = null),
-            (s.prototype.init = function () {
+        ((Footer.prototype._root = null),
+            (Footer.prototype._panels = []),
+            (Footer.prototype._activePanel = null),
+            (Footer.prototype.init = function () {
                 ((this._root = $("<div></div>").addClass("root").appendTo(this._htmlElement)),
-                    gravit.footer.forEach((e) => {
-                        let t = $("<div></div>").addClass("panel-container");
-                        (this._root.append(t),
-                            e.init(t),
-                            this._panels.push({ container: t, panel: e }),
-                            this._activePanel || this.setActivePanel(e.getId()),
-                            e.addEventListener(
-                                o.UpdateEvent,
+                    gravit.footer.forEach((panel) => {
+                        let container = $("<div></div>").addClass("panel-container");
+                        (this._root.append(container),
+                            panel.init(container),
+                            this._panels.push({ container: container, panel: panel }),
+                            this._activePanel || this.setActivePanel(panel.getId()),
+                            panel.addEventListener(
+                                GView.UpdateEvent,
                                 function () {
                                     (this._updateFooter(), gDesigner.relayout());
                                 }.bind(this)
                             ));
                     }),
                     this._updateFooter(),
-                    gDesigner.addEventListener(i, this._documentEvent, this));
+                    gDesigner.addEventListener(GDocumentEvent, this._documentEvent, this));
             }),
-            (s.prototype._documentEvent = function (e) {
-                const t = e.document;
-                switch (e.type) {
-                    case i.Type.Activated:
-                        (t.addEventListener(r, this._documentStatusChanged, this), (this._document = t));
+            (Footer.prototype._documentEvent = function (event) {
+                const document = event.document;
+                switch (event.type) {
+                    case GDocumentEvent.Type.Activated:
+                        (document.addEventListener(GDocumentStatusEvent, this._documentStatusChanged, this), (this._document = document));
                         break;
-                    case i.Type.Deactivated:
-                        (t.removeEventListener(r, this._documentStatusChanged, this), (this._document = null));
+                    case GDocumentEvent.Type.Deactivated:
+                        (document.removeEventListener(GDocumentStatusEvent, this._documentStatusChanged, this), (this._document = null));
                 }
             }),
-            (s.prototype._documentStatusChanged = function (e) {
+            (Footer.prototype._documentStatusChanged = function (event) {
                 if (!this._document || gDesigner.getActiveDocument() !== this._document) return;
-                const t = (e) => this._htmlElement.toggleClass("document-loading", e);
-                switch (e.status) {
-                    case a.Loading:
-                    case a.Saving:
-                    case a.Syncing:
-                    case a.Downloading:
-                        if ((this._document.isCloudFile() || this._document.isExternalFile()) && e.status === a.Saving) return;
-                        t(true);
+                const setLoading = (loading) => this._htmlElement.toggleClass("document-loading", loading);
+                switch (event.status) {
+                    case documentStatus.Loading:
+                    case documentStatus.Saving:
+                    case documentStatus.Syncing:
+                    case documentStatus.Downloading:
+                        if ((this._document.isCloudFile() || this._document.isExternalFile()) && event.status === documentStatus.Saving) return;
+                        setLoading(true);
                         break;
-                    case a.LoadCancelled:
-                    case a.DownloadCancelled:
-                    case a.SaveCancelled:
-                    case a.Saved:
-                    case a.SyncFailed:
-                    case a.Downloaded:
-                    case a.DownloadFailed:
-                    case a.Loaded:
-                    case a.LoadFailed:
-                        t(false);
+                    case documentStatus.LoadCancelled:
+                    case documentStatus.DownloadCancelled:
+                    case documentStatus.SaveCancelled:
+                    case documentStatus.Saved:
+                    case documentStatus.SyncFailed:
+                    case documentStatus.Downloaded:
+                    case documentStatus.DownloadFailed:
+                    case documentStatus.Loaded:
+                    case documentStatus.LoadFailed:
+                        setLoading(false);
                 }
             }),
-            (s.prototype._updateFooter = function () {
+            (Footer.prototype._updateFooter = function () {
                 const e = this._panels.some((e) => e.panel.isEnabled());
                 this._htmlElement.css("display", e ? "" : "none");
             }),
-            (s.prototype.setActivePanel = function (e) {
+            (Footer.prototype.setActivePanel = function (id) {
                 for (var t = 0; t < this._panels.length; ++t) {
                     var n = this._panels[t],
                         o = n.panel.getId();
-                    o === e
+                    o === id
                         ? (n.container.css("display", ""), n.panel.activate())
                         : (n.container.css("display", "none"), o === this._activePanel && n.panel.deactivate());
                 }
-                this._activePanel = e;
+                this._activePanel = id;
             }),
-            (s.prototype.relayout = function () {}),
-            (s.prototype.getHeight = function () {
+            (Footer.prototype.relayout = function () {}),
+            (Footer.prototype.getHeight = function () {
                 return this._htmlElement[0].clientHeight;
             }),
-            (module.exports = s));
+            (module.exports = Footer));
     };

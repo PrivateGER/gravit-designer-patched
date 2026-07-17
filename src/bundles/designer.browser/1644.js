@@ -15,30 +15,30 @@ module.exports = function (module, exports, require) {
                 this._dialog.gDialog("close");
             }
             _getTitle() {
-                const e = GObject.GLocale.getValue("GShortcutsDialog", "text.title");
-                return $("<div />").addClass("title").text(e);
+                const titleText = GObject.GLocale.getValue("GShortcutsDialog", "text.title");
+                return $("<div />").addClass("title").text(titleText);
             }
             _getContent() {
-                const e = $("<table/>"),
-                    t = $("<tbody/>").appendTo(e);
+                const table = $("<table/>"),
+                    tbody = $("<tbody/>").appendTo(table);
                 return (
-                    gDesigner.getActions().forEach((e) => {
-                        if (!e.isAvailable()) return;
-                        const n = e.getShortcutHint({ isWordMode: true });
-                        if (n) {
-                            const i = GObject.GLocale.get(e.getFullTitle());
-                            this._createTableRow(i, n).appendTo(t);
+                    gDesigner.getActions().forEach((action) => {
+                        if (!action.isAvailable()) return;
+                        const shortcutHint = action.getShortcutHint({ isWordMode: true });
+                        if (shortcutHint) {
+                            const title = GObject.GLocale.get(action.getFullTitle());
+                            this._createTableRow(title, shortcutHint).appendTo(tbody);
                         }
                     }),
-                    gravit.tools.forEach((e) => {
-                        if (e.key) {
-                            const n = GPlatform.GKey.shortcutToString(e.key);
-                            if (!n) return;
-                            const a = GObject.GLocale.get(e.richTooltipConfig.getConfig().title);
-                            this._createTableRow(a, n).appendTo(t);
+                    gravit.tools.forEach((tool) => {
+                        if (tool.key) {
+                            const shortcut = GPlatform.GKey.shortcutToString(tool.key);
+                            if (!shortcut) return;
+                            const toolTitle = GObject.GLocale.get(tool.richTooltipConfig.getConfig().title);
+                            this._createTableRow(toolTitle, shortcut).appendTo(tbody);
                         }
                     }),
-                    $("<div/>").addClass("wrapper").append(e)
+                    $("<div/>").addClass("wrapper").append(table)
                 );
             }
             _createDialog() {
@@ -48,12 +48,12 @@ module.exports = function (module, exports, require) {
                 });
             }
             _createCloseButton() {
-                const e = $("<span />").addClass("gravit-icon-close");
-                return $("<div />").addClass("g-btn-close").append(e).on("click", this.close.bind(this));
+                const closeIcon = $("<span />").addClass("gravit-icon-close");
+                return $("<div />").addClass("g-btn-close").append(closeIcon).on("click", this.close.bind(this));
             }
-            _createTableRow(e, t) {
-                const n = $("<tr/>");
-                return ($("<td/>").text(e).appendTo(n), $("<td/>").text(t).appendTo(n), n);
+            _createTableRow(label, shortcutText) {
+                const row = $("<tr/>");
+                return ($("<td/>").text(label).appendTo(row), $("<td/>").text(shortcutText).appendTo(row), row);
             }
         };
     };

@@ -37,7 +37,7 @@ module.exports = function (module, exports, require) {
             GDiagnostics = _interopRequireDefault(require(1468)),
             GMissingFontsTracker = _interopRequireDefault(require(1470)),
             GPendingFontsWaiter = _interopRequireDefault(require(1471)),
-            GUser = _interopRequireDefault(require(177)),
+            GUser = _interopRequireDefault(require(177 /* GUser */)),
             PDFNodeStream = require(165);
         const HeicParser = require(1472);
         var GExternalStorage = require(388),
@@ -66,7 +66,7 @@ module.exports = function (module, exports, require) {
             U = designerConfig.FILE_FORMATS.filter((format) => format.secondary),
             GCollaborationEvent = require(393),
             GCollaborativeFileMixin = require(436);
-        require(1152);
+        require(1152 /* GSharePointStorage */);
         function GDocumentController(storageItemOrScene) {
             ((this._storageItem = storageItemOrScene instanceof GStorage.Item ? storageItemOrScene : null),
                 (this._windows = []),

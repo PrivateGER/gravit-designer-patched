@@ -1,106 +1,106 @@
 module.exports = function (module, exports, require) {
         "use strict";
         var _interopRequireDefault = require(16);
-        (require(58 /* polyfill:Array */), require(30 /* polyfill:Object */), require(57), require(8 /* Symbol */), require(196 /* polyfill:Promise */), require(356), require(20 /* polyfill:RegExp */), require(3), require(34), require(4), require(41), require(13), require(97));
+        (require(58 /* polyfill:Array */), require(30 /* polyfill:Object */), require(57), require(8 /* Symbol */), require(196 /* polyfill:Promise */), require(356 /* polyfill:RegExp */), require(20 /* polyfill:RegExp */), require(3), require(34), require(4), require(41), require(13), require(97));
         var GObject = require(1),
             Utils = require(40),
-            r = _interopRequireDefault(require(847)),
-            s = _interopRequireDefault(require(848 /* GGoogleDriveClient */)),
-            l = _interopRequireDefault(require(44 /* GSystemDialog */)),
+            CDRSaveHelper = _interopRequireDefault(require(847)),
+            GGoogleDriveClient = _interopRequireDefault(require(848 /* GGoogleDriveClient */)),
+            GSystemDialog = _interopRequireDefault(require(44 /* GSystemDialog */)),
             designerConfig = require(10),
-            d = _interopRequireDefault(require(787)),
-            u = _interopRequireDefault(require(789)),
-            p = _interopRequireDefault(require(555));
-        const g = require(388),
+            GoogleToCloudRoleMap = _interopRequireDefault(require(787)),
+            CloudToGoogleRoleMap = _interopRequireDefault(require(789)),
+            ProgressCalculator = _interopRequireDefault(require(555));
+        const GExternalStorage = require(388),
             GCommonNames = require(119),
-            f = require(595),
-            m = require(336),
-            y = require(436),
-            v = require(78),
-            _ = require(156),
+            GAccessToken = require(595),
+            GStorageEvent = require(336),
+            GCollaborativeFileMixin = require(436),
+            GDocumentEvent = require(78),
+            CloudFile = require(156),
             GFileTypes = require(389),
-            w = require(86),
-            C = require(790),
-            x = require(554),
+            FileStatus = require(86),
+            DocumentMetadata = require(790),
+            ThumbnailImage = require(554),
             { FILE_FORMATS } = require(10 /* designerConfig */),
-            E = Object.values(FILE_FORMATS).find((e) => e.default),
-            A = 10,
-            T = 50,
-            G = 80,
-            P = 100;
-        function D() {}
-        (GObject.GObject.inherit(D, g),
-            (D.getSupportedFileFormats = function () {
-                return GFileTypes.getFileTypesArray().filter((e) => e.load);
+            defaultFileFormat = Object.values(FILE_FORMATS).find((fileFormat) => fileFormat.default),
+            PROGRESS_START = 10,
+            PROGRESS_SERIALIZED = 50,
+            PROGRESS_UPLOAD_END = 80,
+            PROGRESS_COMPLETE = 100;
+        function GGoogleDriveStorage() {}
+        (GObject.GObject.inherit(GGoogleDriveStorage, GExternalStorage),
+            (GGoogleDriveStorage.getSupportedFileFormats = function () {
+                return GFileTypes.getFileTypesArray().filter((fileType) => fileType.load);
             }),
-            (D.convertToCloudItem = function (e) {
-                var t = _.from(e);
+            (GGoogleDriveStorage.convertToCloudItem = function (googleFile) {
+                var cloudFile = CloudFile.from(googleFile);
                 if (
-                    ((t.updated = e.modifiedTime),
-                    (t.created = e.createdTime),
-                    (t.storage = _.Storage.GoogleDrive),
-                    !t.kind || (t.kind !== s.default.Kind.TeamDrive && t.kind !== s.default.Kind.Drive)
-                        ? t.mimeType === s.default.MimeType.Folder
-                            ? t.setItemType(_.Type.Folder)
-                            : (t.setItemType(_.Type.File), t.setVersion(e.version), t.setModificationTime(e.modifiedTime))
-                        : t.setItemType(_.Type.CorporateStorage),
-                    t.mimeType && (t.type = t.mimeType),
-                    t.fileExtension)
+                    ((cloudFile.updated = googleFile.modifiedTime),
+                    (cloudFile.created = googleFile.createdTime),
+                    (cloudFile.storage = CloudFile.Storage.GoogleDrive),
+                    !cloudFile.kind || (cloudFile.kind !== GGoogleDriveClient.default.Kind.TeamDrive && cloudFile.kind !== GGoogleDriveClient.default.Kind.Drive)
+                        ? cloudFile.mimeType === GGoogleDriveClient.default.MimeType.Folder
+                            ? cloudFile.setItemType(CloudFile.Type.Folder)
+                            : (cloudFile.setItemType(CloudFile.Type.File), cloudFile.setVersion(googleFile.version), cloudFile.setModificationTime(googleFile.modifiedTime))
+                        : cloudFile.setItemType(CloudFile.Type.CorporateStorage),
+                    cloudFile.mimeType && (cloudFile.type = cloudFile.mimeType),
+                    cloudFile.fileExtension)
                 ) {
-                    ((t.extension = t.fileExtension), (t.name = e.name.replace(new RegExp(".(".concat(t.extension, ")$"), "i"), "")));
-                    const n = D.getSupportedFileFormats().find((e) => e.ext.toLowerCase() === t.fileExtension.toLowerCase());
-                    n && ((t.type = n.type || n.mime), t.setMimeType(t.type));
+                    ((cloudFile.extension = cloudFile.fileExtension), (cloudFile.name = googleFile.name.replace(new RegExp(".(".concat(cloudFile.extension, ")$"), "i"), "")));
+                    const matchedFormat = GGoogleDriveStorage.getSupportedFileFormats().find((format) => format.ext.toLowerCase() === cloudFile.fileExtension.toLowerCase());
+                    matchedFormat && ((cloudFile.type = matchedFormat.type || matchedFormat.mime), cloudFile.setMimeType(cloudFile.type));
                 }
                 return (
-                    t.capabilities &&
-                        (t.capabilities.canDownload && (t.setPermission(_.Permission.Download), t.setPermission(_.Permission.Open)),
-                        t.capabilities.canEdit && t.setPermission(_.Permission.Editing)),
-                    t.parent || (t.parent = null),
-                    t.hasThumbnail && t.setPreviewURL(t.thumbnailLink),
-                    t.size && t.setSize(t.size),
-                    t
+                    cloudFile.capabilities &&
+                        (cloudFile.capabilities.canDownload && (cloudFile.setPermission(CloudFile.Permission.Download), cloudFile.setPermission(CloudFile.Permission.Open)),
+                        cloudFile.capabilities.canEdit && cloudFile.setPermission(CloudFile.Permission.Editing)),
+                    cloudFile.parent || (cloudFile.parent = null),
+                    cloudFile.hasThumbnail && cloudFile.setPreviewURL(cloudFile.thumbnailLink),
+                    cloudFile.size && cloudFile.setSize(cloudFile.size),
+                    cloudFile
                 );
             }),
-            (D.Item = function (e, t, n) {
-                let o = arguments.length > 3 && void 0 !== arguments[3] ? arguments[3] : null;
-                (g.Item.call(this, e, t),
-                    (this._rawData = n),
-                    (this._token = o),
-                    t && (this._setExtension(), t.version && (this._version = t.version)));
+            (GGoogleDriveStorage.Item = function (storage, file, rawData) {
+                let token = arguments.length > 3 && void 0 !== arguments[3] ? arguments[3] : null;
+                (GExternalStorage.Item.call(this, storage, file),
+                    (this._rawData = rawData),
+                    (this._token = token),
+                    file && (this._setExtension(), file.version && (this._version = file.version)));
             }),
-            GObject.GObject.inheritAndMix(D.Item, g.Item, [y]),
-            (D.Item.prototype._version = null),
-            (D.Item.prototype._writing = false),
-            (D.Item.prototype.setFile = function (e) {
-                if (!e) throw "File is incorrect";
-                e instanceof _ || (e = D.convertToCloudItem(e));
-                const t = this._getOrCreateClient(),
-                    n = t && t.getTokenIssuerSettings();
-                (!e.settings && n && (e = Object.assign(e, { settings: n })),
-                    g.Item.prototype.setFile.call(this, e),
+            GObject.GObject.inheritAndMix(GGoogleDriveStorage.Item, GExternalStorage.Item, [GCollaborativeFileMixin]),
+            (GGoogleDriveStorage.Item.prototype._version = null),
+            (GGoogleDriveStorage.Item.prototype._writing = false),
+            (GGoogleDriveStorage.Item.prototype.setFile = function (file) {
+                if (!file) throw "File is incorrect";
+                file instanceof CloudFile || (file = GGoogleDriveStorage.convertToCloudItem(file));
+                const client = this._getOrCreateClient(),
+                    tokenSettings = client && client.getTokenIssuerSettings();
+                (!file.settings && tokenSettings && (file = Object.assign(file, { settings: tokenSettings })),
+                    GExternalStorage.Item.prototype.setFile.call(this, file),
                     this._setExtension(),
-                    this._setVersion(e.version));
+                    this._setVersion(file.version));
             }),
-            (D.Item.prototype.isVersionNewerThan = function (e) {
-                if (e instanceof D.Item && this.getUniqueId() === e.getUniqueId()) {
-                    var t = this.getVersion() > e.getVersion(),
-                        n = e.getFile();
-                    const i = this.getFile();
-                    if (t && o(i.modifiedTime, n.modifiedTime)) return true;
-                    const a = i.getVersion() > n.getVersion(),
-                        r = o(i.getModificationTime(), n.getModificationTime());
-                    if (a && r) return true;
+            (GGoogleDriveStorage.Item.prototype.isVersionNewerThan = function (other) {
+                if (other instanceof GGoogleDriveStorage.Item && this.getUniqueId() === other.getUniqueId()) {
+                    var versionIsNewer = this.getVersion() > other.getVersion(),
+                        otherFile = other.getFile();
+                    const thisFile = this.getFile();
+                    if (versionIsNewer && isDateAfter(thisFile.modifiedTime, otherFile.modifiedTime)) return true;
+                    const fileVersionIsNewer = thisFile.getVersion() > otherFile.getVersion(),
+                        modificationTimeIsNewer = isDateAfter(thisFile.getModificationTime(), otherFile.getModificationTime());
+                    if (fileVersionIsNewer && modificationTimeIsNewer) return true;
                 }
                 return false;
-                function o(e, t) {
-                    return new Date(e).getTime() > new Date(t).getTime();
+                function isDateAfter(dateA, dateB) {
+                    return new Date(dateA).getTime() > new Date(dateB).getTime();
                 }
             }),
-            (D.Item.prototype.supportsShadowFile = function () {
-                const e = this._getOrCreateClient();
-                return !!e && e.isCorporate();
+            (GGoogleDriveStorage.Item.prototype.supportsShadowFile = function () {
+                const client = this._getOrCreateClient();
+                return !!client && client.isCorporate();
             }),
-            (D.Item.prototype.getCollaborativeFile = async function () {
+            (GGoogleDriveStorage.Item.prototype.getCollaborativeFile = async function () {
                 if (!this.supportsShadowFile()) throw "Not the collaborative mode";
                 return (
                     (this._collaborativeFile = await gDesigner
@@ -110,357 +110,357 @@ module.exports = function (module, exports, require) {
                     this._collaborativeFile
                 );
             }),
-            (D.Item.prototype.setCollaborativeFileStatus = async function (e) {
+            (GGoogleDriveStorage.Item.prototype.setCollaborativeFileStatus = async function (newStatus) {
                 if (!this.supportsShadowFile()) throw "Not the collaborative mode";
-                const t = this._collaborativeFile ? this._collaborativeFile : await this.getCollaborativeFile();
-                if (t && Number(t.status) !== Number(e)) {
-                    var n = t.status;
-                    ((t.status = e),
-                        gDesigner.hasEventListeners(m.FileStatusUpdate) && gDesigner.trigger(new m.FileStatusUpdate(this, n, e)));
+                const collaborativeFile = this._collaborativeFile ? this._collaborativeFile : await this.getCollaborativeFile();
+                if (collaborativeFile && Number(collaborativeFile.status) !== Number(newStatus)) {
+                    var oldStatus = collaborativeFile.status;
+                    ((collaborativeFile.status = newStatus),
+                        gDesigner.hasEventListeners(GStorageEvent.FileStatusUpdate) && gDesigner.trigger(new GStorageEvent.FileStatusUpdate(this, oldStatus, newStatus)));
                 }
             }),
-            (D.Item.prototype.getOrCreateCollaborativeFile = async function () {
+            (GGoogleDriveStorage.Item.prototype.getOrCreateCollaborativeFile = async function () {
                 if (!this.supportsShadowFile()) throw "Not the collaborative mode";
-                var e = await this.getCollaborativeFile();
-                return (e || (await this.createShadowFile(), (e = await this.getCollaborativeFile())), e);
+                var collaborativeFile = await this.getCollaborativeFile();
+                return (collaborativeFile || (await this.createShadowFile(), (collaborativeFile = await this.getCollaborativeFile())), collaborativeFile);
             }),
-            (D.Item.prototype._app = designerConfig.FILE_ID_PREFIX.GOOGLEDRIVE),
-            (D.Item.prototype.getId = function () {
-                const e = this._getGoogleId();
-                return e ? _.getCollaborativeFileId(e, _.Storage.GoogleDrive) : null;
+            (GGoogleDriveStorage.Item.prototype._app = designerConfig.FILE_ID_PREFIX.GOOGLEDRIVE),
+            (GGoogleDriveStorage.Item.prototype.getId = function () {
+                const googleId = this._getGoogleId();
+                return googleId ? CloudFile.getCollaborativeFileId(googleId, CloudFile.Storage.GoogleDrive) : null;
             }),
-            (D.Item.prototype._getGoogleId = function () {
+            (GGoogleDriveStorage.Item.prototype._getGoogleId = function () {
                 return this._id || null;
             }),
-            (D.Item.prototype._setExtension = function () {
-                const e = this.getFile();
-                e &&
-                    (e.fileExtension
-                        ? (this._ext = e.fileExtension)
-                        : ["application/vnd.corel-draw", "application/cdr"].includes(e.mimeType)
+            (GGoogleDriveStorage.Item.prototype._setExtension = function () {
+                const file = this.getFile();
+                file &&
+                    (file.fileExtension
+                        ? (this._ext = file.fileExtension)
+                        : ["application/vnd.corel-draw", "application/cdr"].includes(file.mimeType)
                           ? (this._ext = "CDR")
-                          : "application/des" === e.mimeType && (this._ext = "DES"));
+                          : "application/des" === file.mimeType && (this._ext = "DES"));
             }),
-            (D.Item.prototype._setFileSizeAfterSaved = async function () {
+            (GGoogleDriveStorage.Item.prototype._setFileSizeAfterSaved = async function () {
                 return this._getOrCreateClient()
                     .getFileDetails(this.getUniqueId())
-                    .then((e) => {
-                        this._fileSizeAfterSaved = e.Length;
+                    .then((fileDetails) => {
+                        this._fileSizeAfterSaved = fileDetails.Length;
                     });
             }),
-            (D.Item.prototype.write = async function (e, t, n, o, a) {
-                gContainer.verifyEnoughMemoryToSave(e);
+            (GGoogleDriveStorage.Item.prototype.write = async function (document, onSuccess, onError, onProgress, options) {
+                gContainer.verifyEnoughMemoryToSave(document);
                 try {
                     if (this._writing) return;
-                    if (e.hasPagesWithInfiniteEmptyCanvas())
-                        return void (n
-                            ? n({
+                    if (document.hasPagesWithInfiniteEmptyCanvas())
+                        return void (onError
+                            ? onError({
                                   code: 507,
                                   noFailCall: true,
                                   message: GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.error-emtpy-infinite-canvas")),
                               })
-                            : l.default.alert(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.error-emtpy-infinite-canvas"))));
+                            : GSystemDialog.default.alert(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.error-emtpy-infinite-canvas"))));
                     this._writing = true;
-                    const h = e.getEditor().markSavePoint(),
-                        f = (e) => {
-                            (h.rollback(), n && n(e));
+                    const savePoint = document.getEditor().markSavePoint(),
+                        rollbackAndFail = (error) => {
+                            (savePoint.rollback(), onError && onError(error));
                         };
                     try {
-                        const n = {};
-                        e.updateStatus(w.Saving, n);
-                        const l = o || n.progress,
-                            h = (e) => {
-                                l && l(e);
+                        const statusData = {};
+                        document.updateStatus(FileStatus.Saving, statusData);
+                        const progressCallback = onProgress || statusData.progress,
+                            reportProgress = (percent) => {
+                                progressCallback && progressCallback(percent);
                             };
-                        let m;
-                        var r = this.getExtension();
-                        const y = e.isNew();
-                        if ((h(A), GObject.GUtil.prepareForSaving(e.getScene(), r), "CDR" === r || "DES" === r)) {
-                            var c = { progress: o, ext: r.toLowerCase() };
-                            m = await this._exportDocumentToCDR(e, c, a);
+                        let fileBlob;
+                        var extension = this.getExtension();
+                        const isNewDocument = document.isNew();
+                        if ((reportProgress(PROGRESS_START), GObject.GUtil.prepareForSaving(document.getScene(), extension), "CDR" === extension || "DES" === extension)) {
+                            var cdrOptions = { progress: onProgress, ext: extension.toLowerCase() };
+                            fileBlob = await this._exportDocumentToCDR(document, cdrOptions, options);
                         } else {
-                            var d = e.getScene(),
-                                u = GObject.GNode.serialize(d, GObject.GUtil.extend({ save: true }, a));
-                            m = new Blob([u]);
+                            var scene = document.getScene(),
+                                serializedScene = GObject.GNode.serialize(scene, GObject.GUtil.extend({ save: true }, options));
+                            fileBlob = new Blob([serializedScene]);
                         }
-                        (h(T), this._verifyFileNotTooSmall(m.size, e), this._setFileSizeBeforeSaved(m.size));
-                        const _ = await this._buildGoogleMetadataForDoc(e),
-                            b = (e) => {
-                                h(p.default.calculateProgress(T, G, e));
+                        (reportProgress(PROGRESS_SERIALIZED), this._verifyFileNotTooSmall(fileBlob.size, document), this._setFileSizeBeforeSaved(fileBlob.size));
+                        const metadata = await this._buildGoogleMetadataForDoc(document),
+                            onUploadProgress = (uploadFraction) => {
+                                reportProgress(ProgressCalculator.default.calculateProgress(PROGRESS_SERIALIZED, PROGRESS_UPLOAD_END, uploadFraction));
                             };
-                        var g = this._id ? this._id : null;
+                        var googleFileId = this._id ? this._id : null;
                         await this._getOrCreateClient()
-                            .upload(g, m, _, s.default.DefaultUploadType, b)
-                            .then(async (n) => {
-                                this._updateInternalFileWithGoogleResponse(n);
+                            .upload(googleFileId, fileBlob, metadata, GGoogleDriveClient.default.DefaultUploadType, onUploadProgress)
+                            .then(async (uploadResponse) => {
+                                this._updateInternalFileWithGoogleResponse(uploadResponse);
                                 try {
                                     (await this._setFileSizeAfterSaved(), this._verifyFileSizeAfterSaved());
-                                } catch (e) {
-                                    console.error(e);
+                                } catch (error) {
+                                    console.error(error);
                                 }
-                                if ((e.updateStatus(w.Saved), y && this.supportsShadowFile()))
+                                if ((document.updateStatus(FileStatus.Saved), isNewDocument && this.supportsShadowFile()))
                                     return this.createShadowFile().then(() => {
-                                        (gDesigner.hasEventListeners(v) && gDesigner.trigger(new v(v.Type.StorageItemUpdated, e)),
-                                            t && t());
+                                        (gDesigner.hasEventListeners(GDocumentEvent) && gDesigner.trigger(new GDocumentEvent(GDocumentEvent.Type.StorageItemUpdated, document)),
+                                            onSuccess && onSuccess());
                                     });
-                                (gDesigner.hasEventListeners(v) && gDesigner.trigger(new v(v.Type.StorageItemUpdated, e)), h(P), t && t());
+                                (gDesigner.hasEventListeners(GDocumentEvent) && gDesigner.trigger(new GDocumentEvent(GDocumentEvent.Type.StorageItemUpdated, document)), reportProgress(PROGRESS_COMPLETE), onSuccess && onSuccess());
                             })
-                            .catch((t) => {
-                                (e.updateStatus(w.SaveFailed), f(t));
+                            .catch((error) => {
+                                (document.updateStatus(FileStatus.SaveFailed), rollbackAndFail(error));
                             })
                             .finally(() => {
                                 this._writing = false;
                             });
-                    } catch (e) {
-                        f(e);
+                    } catch (error) {
+                        rollbackAndFail(error);
                     }
-                } catch (t) {
-                    return (e.updateStatus(w.SaveFailed), (this._writing = false), n && n(t));
+                } catch (error) {
+                    return (document.updateStatus(FileStatus.SaveFailed), (this._writing = false), onError && onError(error));
                 }
             }),
-            (D.Item.prototype.createOrUpdateFileWithMetadata = async function (e, t) {
+            (GGoogleDriveStorage.Item.prototype.createOrUpdateFileWithMetadata = async function (fileData, docMetadata) {
                 try {
                     if (this._writing) return;
                     this._writing = true;
-                    const n = await this._buildGoogleMetadata(t),
-                        o = await this._getOrCreateClient().upload(this._getGoogleId(), new Blob([e]), n);
-                    this._updateInternalFileWithGoogleResponse(o);
+                    const googleMetadata = await this._buildGoogleMetadata(docMetadata),
+                        uploadResponse = await this._getOrCreateClient().upload(this._getGoogleId(), new Blob([fileData]), googleMetadata);
+                    this._updateInternalFileWithGoogleResponse(uploadResponse);
                 } finally {
                     this._writing = false;
                 }
             }),
-            (D.Item.prototype._updateInternalFileWithGoogleResponse = function (e) {
+            (GGoogleDriveStorage.Item.prototype._updateInternalFileWithGoogleResponse = function (googleResponse) {
                 this.setFile(
-                    Object.assign(D.convertToCloudItem(e), {
+                    Object.assign(GGoogleDriveStorage.convertToCloudItem(googleResponse), {
                         settings: this._getOrCreateClient().getTokenIssuerSettings(),
                     })
                 );
             }),
-            (D.Item.prototype._getOrCreateClient = function () {
-                let e = this.getCloudClient();
-                return (!e && this._file && ((e = new s.default(new f(this._file.settings))), this.setCloudClient(e)), e);
+            (GGoogleDriveStorage.Item.prototype._getOrCreateClient = function () {
+                let client = this.getCloudClient();
+                return (!client && this._file && ((client = new GGoogleDriveClient.default(new GAccessToken(this._file.settings))), this.setCloudClient(client)), client);
             }),
-            (D.Item.prototype._getClient = function () {
+            (GGoogleDriveStorage.Item.prototype._getClient = function () {
                 return this._getOrCreateClient();
             }),
-            (D.Item.prototype._exportDocumentToCDR = function (e, t) {
-                let n = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {};
-                return new Promise(async (o, i) => {
-                    r.default.prepareCDRforSaving(
-                        e,
-                        function (e) {
-                            return i(e);
+            (GGoogleDriveStorage.Item.prototype._exportDocumentToCDR = function (document, cdrOptions) {
+                let extraOptions = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {};
+                return new Promise(async (resolve, reject) => {
+                    CDRSaveHelper.default.prepareCDRforSaving(
+                        document,
+                        function (error) {
+                            return reject(error);
                         },
-                        t,
-                        n,
-                        function (e) {
-                            return o(new Blob([e]));
+                        cdrOptions,
+                        extraOptions,
+                        function (data) {
+                            return resolve(new Blob([data]));
                         }
                     );
                 });
             }),
-            (D.Item.prototype._setVersion = function (e) {
-                this._version = e;
+            (GGoogleDriveStorage.Item.prototype._setVersion = function (version) {
+                this._version = version;
             }),
-            (D.Item.prototype.getVersion = function () {
+            (GGoogleDriveStorage.Item.prototype.getVersion = function () {
                 return parseInt(this._version);
             }),
-            (D.Item.prototype.read = async function (e, t) {
+            (GGoogleDriveStorage.Item.prototype.read = async function (onData, onError) {
                 if (this._rawData) {
-                    var n = this._rawData;
-                    return ((this._rawData = null), e(n));
+                    var rawData = this._rawData;
+                    return ((this._rawData = null), onData(rawData));
                 }
                 await this._getOrCreateClient()
                     .getFile(this.getUniqueId(), this._getQuery())
-                    .then(async (t) => {
-                        const n = await this._getOrCreateClient().getFileDetails(this.getUniqueId(), this._getQuery());
-                        (this.setFile(n),
+                    .then(async (fileBlob) => {
+                        const fileDetails = await this._getOrCreateClient().getFileDetails(this.getUniqueId(), this._getQuery());
+                        (this.setFile(fileDetails),
                             this.supportsShadowFile() && (await this.syncShadowFile()),
-                            e(await GCommonNames.createUint8ArrayFromBlob(t)));
+                            onData(await GCommonNames.createUint8ArrayFromBlob(fileBlob)));
                     })
-                    .catch((e) => t(e));
+                    .catch((error) => onError(error));
             }),
-            (D.Item.prototype.getToken = function () {
+            (GGoogleDriveStorage.Item.prototype.getToken = function () {
                 return this._token;
             }),
-            (D.Item.prototype.getMimeType = function () {
+            (GGoogleDriveStorage.Item.prototype.getMimeType = function () {
                 return this.getFile().mimeType;
             }),
-            (D.Item.prototype.getPermissionsList = function () {
+            (GGoogleDriveStorage.Item.prototype.getPermissionsList = function () {
                 return this._getOrCreateClient().getFilePermissions(this.getUniqueId());
             }),
-            (D.Item.prototype.rolesMatch = function (e, t) {
-                return d.default[e] === t || u.default[t] === e;
+            (GGoogleDriveStorage.Item.prototype.rolesMatch = function (googleRole, cloudRole) {
+                return GoogleToCloudRoleMap.default[googleRole] === cloudRole || CloudToGoogleRoleMap.default[cloudRole] === googleRole;
             }),
-            (D.Item.prototype.getShareRole = async function (e) {
+            (GGoogleDriveStorage.Item.prototype.getShareRole = async function (targetEmail) {
                 return this._getOrCreateClient()
                     .getFilePermissions(this.getUniqueId())
-                    .then((t) => {
-                        let n = null;
+                    .then((permissionsResponse) => {
+                        let foundRole = null;
                         return (
-                            t &&
-                                t.permissions &&
-                                t.permissions.length &&
-                                t.permissions.some((t) => {
-                                    let { email, role } = t;
-                                    if (e === email) return ((n = role), true);
+                            permissionsResponse &&
+                                permissionsResponse.permissions &&
+                                permissionsResponse.permissions.length &&
+                                permissionsResponse.permissions.some((permission) => {
+                                    let { email, role } = permission;
+                                    if (targetEmail === email) return ((foundRole = role), true);
                                 }),
-                            n
+                            foundRole
                         );
                     });
             }),
-            (D.Item.prototype.requestExternalShare = function (e, t) {
-                let n = false;
+            (GGoogleDriveStorage.Item.prototype.requestExternalShare = function (email, shareRole) {
+                let isCorporate = false;
                 try {
-                    n = this._getOrCreateClient().isCorporate();
+                    isCorporate = this._getOrCreateClient().isCorporate();
                 } catch (e) {}
-                return n
-                    ? e
-                        ? this._shareWithUser(e, t.getRole())
-                        : this._shareWithDomain(t.getRole())
+                return isCorporate
+                    ? email
+                        ? this._shareWithUser(email, shareRole.getRole())
+                        : this._shareWithDomain(shareRole.getRole())
                     : Promise.reject(GObject.GLocale.get(new GObject.GLocaleKey("GGoogleDrive", "error.only-for-corporate")));
             }),
-            (D.Item.prototype.requestExternalUnShare = async function (e, t) {
-                let n = false;
+            (GGoogleDriveStorage.Item.prototype.requestExternalUnShare = async function (email, shareRole) {
+                let isCorporate = false;
                 try {
-                    n = this._getOrCreateClient().isCorporate();
+                    isCorporate = this._getOrCreateClient().isCorporate();
                 } catch (e) {}
-                if (!n) return Promise.reject(GObject.GLocale.get(new GObject.GLocaleKey("GGoogleDrive", "error.only-for-corporate")));
-                if (t && t.is(designerConfig.ShareRoles.NoAccess)) return Promise.resolve();
-                const o = await this._getOrCreateClient().getShareIdForEmail(this.getUniqueId(), e);
-                for (let e = 0, t = o.length; e < t; e++)
+                if (!isCorporate) return Promise.reject(GObject.GLocale.get(new GObject.GLocaleKey("GGoogleDrive", "error.only-for-corporate")));
+                if (shareRole && shareRole.is(designerConfig.ShareRoles.NoAccess)) return Promise.resolve();
+                const shareIds = await this._getOrCreateClient().getShareIdForEmail(this.getUniqueId(), email);
+                for (let e = 0, t = shareIds.length; e < t; e++)
                     try {
-                        const t = await this._getOrCreateClient().removeShare(this.getUniqueId(), o[e]);
-                        if (t.status !== designerConfig.gApi.HTTP_STATUS_CODES.OK && t.status !== designerConfig.gApi.HTTP_STATUS_CODES.NO_CONTENT) {
-                            const e =
-                                (t && t.error && t.error.message) ||
+                        const removeResult = await this._getOrCreateClient().removeShare(this.getUniqueId(), shareIds[e]);
+                        if (removeResult.status !== designerConfig.gApi.HTTP_STATUS_CODES.OK && removeResult.status !== designerConfig.gApi.HTTP_STATUS_CODES.NO_CONTENT) {
+                            const errorMessage =
+                                (removeResult && removeResult.error && removeResult.error.message) ||
                                 GObject.GLocale.get(new GObject.GLocaleKey("GGoogleDrive", "error.google-api-error"));
-                            return Promise.reject(e);
+                            return Promise.reject(errorMessage);
                         }
-                    } catch (e) {
-                        return Promise.reject(e);
+                    } catch (error) {
+                        return Promise.reject(error);
                     }
                 return Promise.resolve();
             }),
-            (D.Item.prototype._shareWithUser = async function (e, t) {
-                return this._getOrCreateClient().createOrUpdateUserShare(this.getUniqueId(), { role: t, emailAddress: e });
+            (GGoogleDriveStorage.Item.prototype._shareWithUser = async function (email, role) {
+                return this._getOrCreateClient().createOrUpdateUserShare(this.getUniqueId(), { role: role, emailAddress: email });
             }),
-            (D.Item.prototype.isEmailFromCorporateDomain = async function (e) {
-                const t = gDesigner.getSyncUser();
-                let n = true;
+            (GGoogleDriveStorage.Item.prototype.isEmailFromCorporateDomain = async function (email) {
+                const syncUser = gDesigner.getSyncUser();
+                let isCorporateDomain = true;
                 if (await this._getOrCreateClient().supportsEmailDomainCheck()) {
                     (await this._getOrCreateClient()
-                        .getAccountByEmail(e)
-                        .catch(() => false)) || (n = false);
-                } else designerConfig.gApi.sameDomain(t, { email: e }) || (n = false);
-                return n;
+                        .getAccountByEmail(email)
+                        .catch(() => false)) || (isCorporateDomain = false);
+                } else designerConfig.gApi.sameDomain(syncUser, { email: email }) || (isCorporateDomain = false);
+                return isCorporateDomain;
             }),
-            (D.Item.prototype._shareWithDomain = async function (e) {
-                const t = await gDesigner.getUser(),
-                    n = t && t.email.split("@")[1];
+            (GGoogleDriveStorage.Item.prototype._shareWithDomain = async function (role) {
+                const user = await gDesigner.getUser(),
+                    domain = user && user.email.split("@")[1];
                 return this._getOrCreateClient().createDomainShare(this.getUniqueId(), {
-                    role: e,
-                    domain: n,
+                    role: role,
+                    domain: domain,
                 });
             }),
-            (D.Item.prototype._setId = function (e) {
-                ((this._id = e), this._file && (this._file.id = e));
+            (GGoogleDriveStorage.Item.prototype._setId = function (id) {
+                ((this._id = id), this._file && (this._file.id = id));
             }),
-            (D.Item.prototype._buildGoogleMetadataForDoc = async function (e) {
-                const t = new C();
-                t.thumbnail = await x.fromBlob(await e.buildPreview());
-                const n = e.getScene();
-                t.unit = n.getProperty("ut");
-                const o = n.getActivePage(),
-                    i = o && o.getGeometryBBox();
-                return (i && ((t.width = i.getWidth()), (t.height = i.getHeight())), this._buildGoogleMetadata(t));
+            (GGoogleDriveStorage.Item.prototype._buildGoogleMetadataForDoc = async function (document) {
+                const metadata = new DocumentMetadata();
+                metadata.thumbnail = await ThumbnailImage.fromBlob(await document.buildPreview());
+                const scene = document.getScene();
+                metadata.unit = scene.getProperty("ut");
+                const activePage = scene.getActivePage(),
+                    bbox = activePage && activePage.getGeometryBBox();
+                return (bbox && ((metadata.width = bbox.getWidth()), (metadata.height = bbox.getHeight())), this._buildGoogleMetadata(metadata));
             }),
-            (D.Item.prototype._buildGoogleMetadata = async function (e) {
-                const t = this._file.getExtension() || E.ext.toUpperCase(),
-                    n =
+            (GGoogleDriveStorage.Item.prototype._buildGoogleMetadata = async function (metadata) {
+                const extension = this._file.getExtension() || defaultFileFormat.ext.toUpperCase(),
+                    mimeType =
                         this._file.getMimeType() ||
-                        ((o = t),
-                        Object.values(FILE_FORMATS).find((e) => {
-                            let { ext } = e;
-                            return !!ext && ext.toLowerCase() === o.toLowerCase();
-                        }) || E).type;
-                var o;
-                const i = e.thumbnail.getImageAsBlob(),
-                    a = await this._buildSafeEncodedBase64ForBlob(i),
-                    r = {
+                        ((lookupExtension = extension),
+                        Object.values(FILE_FORMATS).find((format) => {
+                            let { ext } = format;
+                            return !!ext && ext.toLowerCase() === lookupExtension.toLowerCase();
+                        }) || defaultFileFormat).type;
+                var lookupExtension;
+                const thumbnailBlob = metadata.thumbnail.getImageAsBlob(),
+                    thumbnailBase64 = await this._buildSafeEncodedBase64ForBlob(thumbnailBlob),
+                    requestBody = {
                         name: this._file.getNameWithExtension(),
-                        mimeType: n,
+                        mimeType: mimeType,
                         contentHints: {
-                            thumbnail: { mimeType: e.thumbnail.getMimeType(), image: a },
+                            thumbnail: { mimeType: metadata.thumbnail.getMimeType(), image: thumbnailBase64 },
                         },
                         appProperties: {
-                            type: n,
+                            type: mimeType,
                             app: "designer",
-                            unit: e.unit,
-                            width: e.width,
-                            height: e.height,
+                            unit: metadata.unit,
+                            width: metadata.width,
+                            height: metadata.height,
                             trashed: null,
                         },
                         viewedByMeTime: new Date().toISOString(),
                     };
                 return (
-                    this._file.parent && !this.getUniqueId() && (r.parents = [this._file.getParentId()]),
-                    this._isFromGSuite() && (r.driveId = this._getTeamDriveId()),
-                    r
+                    this._file.parent && !this.getUniqueId() && (requestBody.parents = [this._file.getParentId()]),
+                    this._isFromGSuite() && (requestBody.driveId = this._getTeamDriveId()),
+                    requestBody
                 );
             }),
-            (D.Item.prototype._buildSafeEncodedBase64ForBlob = function (e) {
-                return new Promise((t, n) => {
-                    const o = new FileReader();
-                    ((o.onload = (e) => {
-                        const n = e.target.result,
-                            o = n.substr(n.indexOf(",") + 1),
-                            i = (0, Utils.base64URLSafeEncode)(o);
-                        t(i);
+            (GGoogleDriveStorage.Item.prototype._buildSafeEncodedBase64ForBlob = function (blob) {
+                return new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    ((reader.onload = (event) => {
+                        const dataUrl = event.target.result,
+                            base64Data = dataUrl.substr(dataUrl.indexOf(",") + 1),
+                            encodedData = (0, Utils.base64URLSafeEncode)(base64Data);
+                        resolve(encodedData);
                     }),
-                        (o.onerror = function () {
-                            n(o.error);
+                        (reader.onerror = function () {
+                            reject(reader.error);
                         }),
-                        o.readAsDataURL(e));
+                        reader.readAsDataURL(blob));
                 });
             }),
-            (D.Item.prototype.hasVersionControl = function () {
+            (GGoogleDriveStorage.Item.prototype.hasVersionControl = function () {
                 return true;
             }),
-            (D.Item.prototype.hasUpdates = async function () {
+            (GGoogleDriveStorage.Item.prototype.hasUpdates = async function () {
                 if (!this.getUniqueId() || !this.getVersion()) return false;
-                const e = await this._getOrCreateClient().getFileDetails(this.getUniqueId(), this._getQuery());
-                return new D.Item(this.getStorage(), e).isVersionNewerThan(this);
+                const fileDetails = await this._getOrCreateClient().getFileDetails(this.getUniqueId(), this._getQuery());
+                return new GGoogleDriveStorage.Item(this.getStorage(), fileDetails).isVersionNewerThan(this);
             }),
-            (D.Item.prototype._getQuery = function () {
+            (GGoogleDriveStorage.Item.prototype._getQuery = function () {
                 return this._isFromGSuite() ? { supportsAllDrives: true } : {};
             }),
-            (D.Item.prototype._isFromGSuite = function () {
+            (GGoogleDriveStorage.Item.prototype._isFromGSuite = function () {
                 return !!this._getTeamDriveId();
             }),
-            (D.Item.prototype._getTeamDriveId = function () {
-                const e = this._file.driveId;
-                if (e) return e;
-                const t = this._file.parent && this._file.parent.driveId;
-                return t || null;
+            (GGoogleDriveStorage.Item.prototype._getTeamDriveId = function () {
+                const driveId = this._file.driveId;
+                if (driveId) return driveId;
+                const parentDriveId = this._file.parent && this._file.parent.driveId;
+                return parentDriveId || null;
             }),
-            (D.Item.prototype.getLatestFileVersion = async function () {
-                const e = this._getOrCreateClient(),
-                    t = await this.getLatestFileInfo(),
-                    n = await e.getFile(this.getUniqueId(), this._getQuery()),
-                    o = await GCommonNames.createUint8ArrayFromBlob(n),
-                    i = new D.Item(this._storage, t, o);
-                return (i.setCloudClient(e), i);
+            (GGoogleDriveStorage.Item.prototype.getLatestFileVersion = async function () {
+                const client = this._getOrCreateClient(),
+                    fileInfo = await this.getLatestFileInfo(),
+                    fileBlob = await client.getFile(this.getUniqueId(), this._getQuery()),
+                    fileData = await GCommonNames.createUint8ArrayFromBlob(fileBlob),
+                    item = new GGoogleDriveStorage.Item(this._storage, fileInfo, fileData);
+                return (item.setCloudClient(client), item);
             }),
-            (D.Item.prototype.getLatestFileInfo = async function () {
-                const e = await this._getOrCreateClient().getFileDetails(this.getUniqueId(), this._getQuery());
-                return D.convertToCloudItem(e);
+            (GGoogleDriveStorage.Item.prototype.getLatestFileInfo = async function () {
+                const fileDetails = await this._getOrCreateClient().getFileDetails(this.getUniqueId(), this._getQuery());
+                return GGoogleDriveStorage.convertToCloudItem(fileDetails);
             }),
-            (D.Item.prototype.exists = function () {
+            (GGoogleDriveStorage.Item.prototype.exists = function () {
                 return this._getOrCreateClient().fileExists(this.getUniqueId(), this._getQuery());
             }),
-            (D.Item.prototype.toString = function () {
+            (GGoogleDriveStorage.Item.prototype.toString = function () {
                 return "[Object GGoogleDriveStorage.Item]";
             }),
-            (module.exports = D));
+            (module.exports = GGoogleDriveStorage));
     };

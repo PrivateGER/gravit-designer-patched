@@ -7,12 +7,12 @@ module.exports = function (module, exports, require) {
             r = _interopRequireDefault(require(78));
         const GSystemDialog = require(44),
             l = require(863),
-            c = require(85),
+            GContainer = require(85),
             d = require(805),
             u = require(292),
             { bypassEmailVerification } = designerConfig.defaultUserSettings;
-        function g(e) {
-            this._htmlElement = e;
+        function g(htmlElement) {
+            this._htmlElement = htmlElement;
         }
         (GObject.GObject.inherit(g, GObject.GObject),
             (g.prototype._interval = null),
@@ -24,57 +24,57 @@ module.exports = function (module, exports, require) {
                     gDesigner.addEventListener(r.default, this._documentEvent, this));
             }),
             (g.prototype.update = async function () {
-                return gDesigner.getUser().then((e) => this._updateInfo(e));
+                return gDesigner.getUser().then((user) => this._updateInfo(user));
             }),
-            (g.prototype._userPropertiesChangedEvent = function (e) {
-                this._updateInfo(e.user);
+            (g.prototype._userPropertiesChangedEvent = function (event) {
+                this._updateInfo(event.user);
             }),
-            (g.prototype._togglePanel = function (e) {
-                "boolean" == typeof e && ((!e && !this._needToShow) || e) && gDesigner.setPartVisible(l.Info, e);
+            (g.prototype._togglePanel = function (visible) {
+                "boolean" == typeof visible && ((!visible && !this._needToShow) || visible) && gDesigner.setPartVisible(l.Info, visible);
             }),
-            (g.prototype._userLoggedEvent = function (e) {
-                this._updateInfo(e.user);
+            (g.prototype._userLoggedEvent = function (event) {
+                this._updateInfo(event.user);
             }),
-            (g.prototype._documentEvent = function (e) {
-                (this._togglePanel(false), this._updateSaveInfo(e), this._updateDocumentSubscription(e));
+            (g.prototype._documentEvent = function (event) {
+                (this._togglePanel(false), this._updateSaveInfo(event), this._updateDocumentSubscription(event));
             }),
             (g.prototype._updateSaveInfo = function () {}),
             (g.prototype._updateDocumentSubscription = function () {}),
-            (g.prototype._updateInfo = function (e) {
+            (g.prototype._updateInfo = function (user) {
                 if (
                     (this._togglePanel(false),
                     this._interval && clearInterval(this._interval),
                     !bypassEmailVerification &&
                         gDesigner.isEnabledSubscriptions() &&
                         !gDesigner.getLicense().isGuest() &&
-                        e &&
-                        !e.isEmailVerified() &&
-                        !e.isAnonymous())
+                        user &&
+                        !user.isEmailVerified() &&
+                        !user.isAnonymous())
                 ) {
                     ((this._interval = setInterval(this.update.bind(this), designerConfig.DateAPI.daysToMilliseconds(1))),
                         designerConfig.gApi.listen("/confirmation", () => this.update(), true));
-                    let t = new Date(e.created);
-                    e.email_expire && (t = new Date(e.email_expire));
-                    let n = GObject.GLocale.get(new GObject.GLocaleKey("GInfo", "text.title")).replace("%date", GObject.GLocale.toLocaleDate(t));
+                    let expireDate = new Date(user.created);
+                    user.email_expire && (expireDate = new Date(user.email_expire));
+                    let titleText = GObject.GLocale.get(new GObject.GLocaleKey("GInfo", "text.title")).replace("%date", GObject.GLocale.toLocaleDate(expireDate));
                     (this._htmlElement
                         .empty()
-                        .append($("<span></span>").text(n))
+                        .append($("<span></span>").text(titleText))
                         .append(
                             $("<span/>")
                                 .addClass("link")
                                 .text(GObject.GLocale.get(new GObject.GLocaleKey("GInfo", "text.resend-email")))
                                 .on("click", () => {
-                                    let t, n;
-                                    if (gContainer.getRuntime() === c.Runtime.Electron) {
-                                        const e = gContainer.getPlatform();
-                                        (("darwin" !== e && "win32" !== e) || (t = "designer://"), (n = gDesigner.getAssetsURL()));
-                                    } else n = location.origin;
+                                    let appUrl, webUrl;
+                                    if (gContainer.getRuntime() === GContainer.Runtime.Electron) {
+                                        const platform = gContainer.getPlatform();
+                                        (("darwin" !== platform && "win32" !== platform) || (appUrl = "designer://"), (webUrl = gDesigner.getAssetsURL()));
+                                    } else webUrl = location.origin;
                                     return (
                                         designerConfig.gApi
                                             .resendEmailConfirmation({
-                                                appUrl: t,
-                                                webUrl: n,
-                                                email: e.email,
+                                                appUrl: appUrl,
+                                                webUrl: webUrl,
+                                                email: user.email,
                                                 force: true,
                                                 origin: location.origin,
                                             })
@@ -85,10 +85,10 @@ module.exports = function (module, exports, require) {
                                                     icon: "ok",
                                                 });
                                             })
-                                            .catch((e) => {
+                                            .catch((error) => {
                                                 GSystemDialog.custom({
                                                     title: GObject.GLocale.get(new GObject.GLocaleKey("GInfo", "text.something-went-wrong")),
-                                                    subtitle: designerConfig.gApi.formatError(e),
+                                                    subtitle: designerConfig.gApi.formatError(error),
                                                 });
                                             }),
                                         false

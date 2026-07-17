@@ -3,66 +3,66 @@ module.exports = function (module, exports, require) {
         (require(19), require(30 /* polyfill:Object */), require(3), require(26), require(125), require(126 /* polyfill:URL */), require(114));
         var GObject = require(1),
             GPlatform = require(15),
-            a = require(797),
+            GExporters = require(797),
             Utils = require(40),
             GCategory = require(18),
-            l = require(31),
+            GAction = require(31),
             GLoginPanel = require(446),
-            d = require(219),
-            u = require(1610),
-            p = require(85);
+            GNoticeDialog = require(219),
+            GPrintStorage = require(1610),
+            GContainer = require(85);
         const GSystemDialog = require(44);
-        var h = null,
-            f = false,
-            m = false;
-        function y() {}
-        (GObject.GObject.inherit(y, l),
-            (y.ID = "file.print"),
-            (y.TITLE = new GObject.GLocaleKey("GPrintAction", "title")),
-            (y.prototype.getId = function () {
-                return y.ID;
+        var printFrame = null,
+            useSvgFallback = false,
+            printingDisabled = false;
+        function GPrintAction() {}
+        (GObject.GObject.inherit(GPrintAction, GAction),
+            (GPrintAction.ID = "file.print"),
+            (GPrintAction.TITLE = new GObject.GLocaleKey("GPrintAction", "title")),
+            (GPrintAction.prototype.getId = function () {
+                return GPrintAction.ID;
             }),
-            (y.prototype.getTitle = function () {
-                return y.TITLE;
+            (GPrintAction.prototype.getTitle = function () {
+                return GPrintAction.TITLE;
             }),
-            (y.prototype.getIcon = function () {
+            (GPrintAction.prototype.getIcon = function () {
                 return "gravit-icon-print";
             }),
-            (y.prototype.getCategory = function () {
+            (GPrintAction.prototype.getCategory = function () {
                 return GCategory.CATEGORY_FILE;
             }),
-            (y.prototype.getGroup = function () {
+            (GPrintAction.prototype.getGroup = function () {
                 return "print";
             }),
-            (y.prototype.isEnabled = function () {
+            (GPrintAction.prototype.isEnabled = function () {
                 if (!gDesigner.getApplicationManager().isExportEnabled()) return false;
-                const e = gDesigner.getActiveDocument();
-                return e && (!e.isNew() || e.isModified());
+                const activeDocument = gDesigner.getActiveDocument();
+                return activeDocument && (!activeDocument.isNew() || activeDocument.isModified());
             }),
-            (y.prototype.getShortcut = function () {
+            (GPrintAction.prototype.getShortcut = function () {
                 return [GPlatform.GKey.Constant.COMMAND, "P"];
             }),
-            (y.prototype.execute = function () {
-                var e = gDesigner.getActiveDocument(),
-                    t = e.getScene(),
-                    n = new u.Item("PDF"),
-                    i = {
+            (GPrintAction.prototype.execute = function () {
+                var activeDocument = gDesigner.getActiveDocument(),
+                    scene = activeDocument.getScene(),
+                    pdfItem = new GPrintStorage.Item("PDF"),
+                    exportOptions = {
                         suppressMessages: true,
                         dpi: gDesigner.isEnabledProFeatures() ? 300 : 150,
                         preserveEditingCapabilities: false,
                         jpegQuality: 100,
                         export: true,
                     },
-                    s = () => {
+                    handleNoData = () => {
                         console.log("NO DATA :(");
                     };
-                const l = () => {
+                const printViaSvg = () => {
                     -1 !== navigator.userAgent.indexOf("Firefox") ||
-                    (gContainer.getRuntime() === p.Runtime.Electron && a.GSVGExport.hasSupportedEffects(t))
+                    (gContainer.getRuntime() === GContainer.Runtime.Electron && GExporters.GSVGExport.hasSupportedEffects(scene))
                         ? GSystemDialog.confirm(
                               GObject.GLocale.get(new GObject.GLocaleKey("GPrintAction", "printing-warning")),
-                              (e) => {
-                                  e && y();
+                              (confirmed) => {
+                                  confirmed && printPagesAsSvg();
                               },
                               void 0,
                               void 0,
@@ -70,81 +70,81 @@ module.exports = function (module, exports, require) {
                               true,
                               true
                           )
-                        : y();
+                        : printPagesAsSvg();
                 };
-                var y = () => {
-                        Object.assign(i, { convertTextToPath: true });
-                        let n = [];
-                        t.iteratePages(function (e) {
-                            n.push(e);
+                var printPagesAsSvg = () => {
+                        Object.assign(exportOptions, { convertTextToPath: true });
+                        let pages = [];
+                        scene.iteratePages(function (page) {
+                            pages.push(page);
                         });
-                        let o = [],
-                            l = (t, c) => {
-                                if (t || !c) return s();
-                                if ((o.push(c), n.shift(), n.length)) return void a.GSVGExport.export(n[0], i, l);
-                                let d = "";
-                                for (var u = 0; u < o.length; u++) {
-                                    let e = "data:image/svg+xml;base64," + (0, Utils.stringToBase64String)(o[u]);
-                                    d = d.concat("<img style='height:100%;width:auto;max-width:100%;display:block;' src='" + e + "'/>");
+                        let svgPages = [],
+                            onSvgPageExported = (error, svgContent) => {
+                                if (error || !svgContent) return handleNoData();
+                                if ((svgPages.push(svgContent), pages.shift(), pages.length)) return void GExporters.GSVGExport.export(pages[0], exportOptions, onSvgPageExported);
+                                let printHtml = "";
+                                for (var u = 0; u < svgPages.length; u++) {
+                                    let dataUrl = "data:image/svg+xml;base64," + (0, Utils.stringToBase64String)(svgPages[u]);
+                                    printHtml = printHtml.concat("<img style='height:100%;width:auto;max-width:100%;display:block;' src='" + dataUrl + "'/>");
                                 }
-                                var p = h.contentDocument;
-                                ((p.head.innerHTML = "<style type='text/css' media='print'>@page { margin: 0mm; }</style>"),
-                                    (p.body.style.margin = "0"),
-                                    (p.body.style.height = "100%"),
-                                    (p.body.innerHTML = d),
-                                    (p.title = e.getTitle()),
-                                    $(h.contentWindow.document).ready(function () {
-                                        h.contentWindow.focus();
+                                var frameDocument = printFrame.contentDocument;
+                                ((frameDocument.head.innerHTML = "<style type='text/css' media='print'>@page { margin: 0mm; }</style>"),
+                                    (frameDocument.body.style.margin = "0"),
+                                    (frameDocument.body.style.height = "100%"),
+                                    (frameDocument.body.innerHTML = printHtml),
+                                    (frameDocument.title = activeDocument.getTitle()),
+                                    $(printFrame.contentWindow.document).ready(function () {
+                                        printFrame.contentWindow.focus();
                                         try {
-                                            h.contentWindow.print();
+                                            printFrame.contentWindow.print();
                                         } catch (e) {
-                                            ((m = true), v());
+                                            ((printingDisabled = true), showPrintDisabledNotice());
                                         }
                                     }));
                             };
-                        n.length && a.GSVGExport.export(n[0], i, l);
+                        pages.length && GExporters.GSVGExport.export(pages[0], exportOptions, onSvgPageExported);
                     },
-                    v = () => new d(GObject.GLocale.get(new GObject.GLocaleKey("GPrintAction", "printing-disabled"))).open(),
-                    _ = () => {
-                        if (h.src) {
-                            h.focus();
+                    showPrintDisabledNotice = () => new GNoticeDialog(GObject.GLocale.get(new GObject.GLocaleKey("GPrintAction", "printing-disabled"))).open(),
+                    printLoadedFrame = () => {
+                        if (printFrame.src) {
+                            printFrame.focus();
                             try {
-                                h.contentWindow.print();
+                                printFrame.contentWindow.print();
                             } catch (e) {
-                                ((f = true), (h.onload = l), (h.src = "about:blank"));
+                                ((useSvgFallback = true), (printFrame.onload = printViaSvg), (printFrame.src = "about:blank"));
                             }
                         }
                     },
-                    b = () => {
-                        n.read((e) => {
-                            let t = new window.Blob([e], { type: "application/pdf" }),
-                                n = window.URL.createObjectURL(t);
-                            h.setAttribute("src", n);
+                    loadPdfIntoFrame = () => {
+                        pdfItem.read((pdfData) => {
+                            let blob = new window.Blob([pdfData], { type: "application/pdf" }),
+                                blobUrl = window.URL.createObjectURL(blob);
+                            printFrame.setAttribute("src", blobUrl);
                         });
                     };
-                (h ||
-                    (((h = document.createElement("iframe")).style.visibility = "hidden"),
-                    (h.style.position = "fixed"),
-                    (h.style.right = "0"),
-                    (h.style.bottom = "0"),
-                    (h.style.zIndex = "-1"),
-                    document.body.appendChild(h),
-                    gContainer.getRuntime() === p.Runtime.Electron && (f = true)),
+                (printFrame ||
+                    (((printFrame = document.createElement("iframe")).style.visibility = "hidden"),
+                    (printFrame.style.position = "fixed"),
+                    (printFrame.style.right = "0"),
+                    (printFrame.style.bottom = "0"),
+                    (printFrame.style.zIndex = "-1"),
+                    document.body.appendChild(printFrame),
+                    gContainer.getRuntime() === GContainer.Runtime.Electron && (useSvgFallback = true)),
                     new GLoginPanel(
                         () => {
                             !(function () {
-                                if (m) v();
-                                else if (f) l();
+                                if (printingDisabled) showPrintDisabledNotice();
+                                else if (useSvgFallback) printViaSvg();
                                 else {
                                     var o = 0,
-                                        r = [300, 150, 72, 36, null];
-                                    gDesigner.isEnabledProFeatures() || r.shift();
-                                    for (var c = false; !a.GPDFExport.isSupported(t, true, r[o++] + "dpi"); )
-                                        if (null === r[o]) {
-                                            c = true;
+                                        dpiCandidates = [300, 150, 72, 36, null];
+                                    gDesigner.isEnabledProFeatures() || dpiCandidates.shift();
+                                    for (var dpiUnsupported = false; !GExporters.GPDFExport.isSupported(scene, true, dpiCandidates[o++] + "dpi"); )
+                                        if (null === dpiCandidates[o]) {
+                                            dpiUnsupported = true;
                                             break;
                                         }
-                                    c ? ((h.onload = null), y()) : ((i.dpi = r[o - 1]), (h.onload = _), e.store(n, b, s, i));
+                                    dpiUnsupported ? ((printFrame.onload = null), printPagesAsSvg()) : ((exportOptions.dpi = dpiCandidates[o - 1]), (printFrame.onload = printLoadedFrame), activeDocument.store(pdfItem, loadPdfIntoFrame, handleNoData, exportOptions));
                                 }
                             })();
                         },
@@ -153,8 +153,8 @@ module.exports = function (module, exports, require) {
                         }
                     ));
             }),
-            (y.prototype.toString = function () {
+            (GPrintAction.prototype.toString = function () {
                 return "[Object GPrintAction]";
             }),
-            (module.exports = y));
+            (module.exports = GPrintAction));
     };

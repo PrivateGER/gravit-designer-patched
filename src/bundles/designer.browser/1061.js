@@ -1,7 +1,7 @@
 module.exports = function (module, exports, require) {
         var o, i, a, r;
         module.exports =
-            ((r = require(55)),
+            ((r = require(55 /* lib:crypto-js */)),
             require(98),
             (i = (o = r).lib.CipherParams),
             (a = o.enc.Hex),

@@ -4,21 +4,21 @@ module.exports = function (module, exports, require) {
         (require(4), require(13));
         var GObject = require(1),
             GPlatform = require(15),
-            r = require(53),
-            s = _interopRequireDefault(require(18 /* GCategory */)),
-            l = _interopRequireDefault(require(31));
-        class c extends l.default {
+            GEditor = require(53),
+            GCategory = _interopRequireDefault(require(18 /* GCategory */)),
+            GAction = _interopRequireDefault(require(31 /* GAction */));
+        class GShowSelectionHandlesAction extends GAction.default {
             constructor() {
                 (super(), (this._lastIsCheckedValue = true));
             }
             getId() {
-                return c.ID;
+                return GShowSelectionHandlesAction.ID;
             }
             getTitle() {
-                return c.TITLE;
+                return GShowSelectionHandlesAction.TITLE;
             }
             getCategory() {
-                return s.default.CATEGORY_VIEW_CANVAS;
+                return GCategory.default.CATEGORY_VIEW_CANVAS;
             }
             isCheckable() {
                 return true;
@@ -27,34 +27,34 @@ module.exports = function (module, exports, require) {
                 return !!this._getSelection();
             }
             isChecked() {
-                const e = this._getSelection();
-                if (!e) return this._lastIsCheckedValue;
-                const t = !!e.find((e) => !r.GElementEditor.getEditor(e).hasFlag(r.GBaseEditor.Flag.HideEditor));
-                return ((this._lastIsCheckedValue = t), t);
+                const selection = this._getSelection();
+                if (!selection) return this._lastIsCheckedValue;
+                const hasVisibleElement = !!selection.find((element) => !GEditor.GElementEditor.getEditor(element).hasFlag(GEditor.GBaseEditor.Flag.HideEditor));
+                return ((this._lastIsCheckedValue = hasVisibleElement), hasVisibleElement);
             }
             getShortcut() {
                 return [GPlatform.GKey.Constant.SHIFT, GPlatform.GKey.Constant.META, "X"];
             }
             execute() {
-                const e = this._getEditor();
-                if (e) {
-                    this.isChecked() ? e.hideSelection() : e.resetHideSelection();
+                const editor = this._getEditor();
+                if (editor) {
+                    this.isChecked() ? editor.hideSelection() : editor.resetHideSelection();
                 }
             }
             _getEditor() {
-                const e = gDesigner.getActiveDocument();
-                return e && e.getEditor();
+                const activeDocument = gDesigner.getActiveDocument();
+                return activeDocument && activeDocument.getEditor();
             }
             _getSelection() {
-                const e = this._getEditor(),
-                    t = e && e.getSelection();
-                return t && t.length > 0 ? t : null;
+                const editor = this._getEditor(),
+                    selection = editor && editor.getSelection();
+                return selection && selection.length > 0 ? selection : null;
             }
             toString() {
                 return "[Object GShowSelectionHandlesAction]";
             }
         }
-        ((c.ID = "view.canvas.show-selection-handles"),
-            (c.TITLE = new GObject.GLocaleKey("GShowSelectionHandlesAction", "title")),
-            (module.exports = c));
+        ((GShowSelectionHandlesAction.ID = "view.canvas.show-selection-handles"),
+            (GShowSelectionHandlesAction.TITLE = new GObject.GLocaleKey("GShowSelectionHandlesAction", "title")),
+            (module.exports = GShowSelectionHandlesAction));
     };

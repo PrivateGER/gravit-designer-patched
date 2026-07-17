@@ -1,78 +1,78 @@
 module.exports = function (module, exports, require) {
         "use strict";
         (require(8 /* Symbol */), require(196 /* polyfill:Promise */), require(4), require(13), require(38));
-        const o = require(156);
-        function i(e, t, n) {
-            var o;
-            ((this._folder = e),
-                (this._isRootFolder = n),
-                (this._container = $("<div/>").addClass("g-container").data("node", e)),
-                (this._element = o =
+        const CloudFile = require(156);
+        function GFolderView(folder, parent, isRootFolder) {
+            var element;
+            ((this._folder = folder),
+                (this._isRootFolder = isRootFolder),
+                (this._container = $("<div/>").addClass("g-container").data("node", folder)),
+                (this._element = element =
                     $("<div/>")
                         .addClass("g-gravit-folder")
                         .addClass("g-cloud-element")
-                        .attr("data-title", e.name)
-                        .data("node", e)
+                        .attr("data-title", folder.name)
+                        .data("node", folder)
                         .appendTo(this._container)),
                 (this._childrenContainer = $("<div/>").addClass("g-children").appendTo(this._container)),
-                (this._folderContainer = $("<div/>").addClass("folder-container").appendTo(o)),
+                (this._folderContainer = $("<div/>").addClass("folder-container").appendTo(element)),
                 (this._folderState = $("<div />").addClass("folder-state-icon").appendTo(this._folderContainer)),
                 (this._folderIcon = $("<div />").addClass("folder-icon").appendTo(this._folderContainer)),
-                $("<div />").addClass("name").text(e.name).appendTo(this._folderContainer),
+                $("<div />").addClass("name").text(folder.name).appendTo(this._folderContainer),
                 $("<input />")
                     .attr("type", "text")
                     .css("display", "none")
                     .addClass("folder-name")
                     .css("width", this._folderContainer.find(".name").outerWidth())
-                    .val(e.name)
+                    .val(folder.name)
                     .appendTo(this._folderContainer),
-                (this._parent = t),
+                (this._parent = parent),
                 (this._folderContext = $("<div/>")
                     .addClass("folder-context")
                     .append(
                         $("<span />")
                             .addClass("icon")
                             .addClass("gravit-icon-w-kebab")
-                            .on("mouseover", function (e) {
-                                e.stopPropagation();
+                            .on("mouseover", function (event) {
+                                event.stopPropagation();
                             })
                     )
-                    .on("mouseover", function (e) {
-                        e.stopPropagation();
+                    .on("mouseover", function (event) {
+                        event.stopPropagation();
                     })
-                    .appendTo(o)),
+                    .appendTo(element)),
                 this._update());
         }
-        ((i.prototype._isRootFolder = false),
-            (i.prototype._parent = null),
-            (i.prototype._container = null),
-            (i.prototype._element = null),
-            (i.prototype._folderContainer = null),
-            (i.prototype._folderContext = null),
-            (i.prototype._folder = null),
-            (i.prototype._loading = false),
-            (i.prototype._children = null),
-            (i.prototype._isOpen = false),
-            (i.prototype._done = false),
-            (i.prototype.isRootFolder = function () {
+        ((GFolderView.prototype._isRootFolder = false),
+            (GFolderView.prototype._parent = null),
+            (GFolderView.prototype._container = null),
+            (GFolderView.prototype._element = null),
+            (GFolderView.prototype._folderContainer = null),
+            (GFolderView.prototype._folderContext = null),
+            (GFolderView.prototype._folder = null),
+            (GFolderView.prototype._loading = false),
+            (GFolderView.prototype._children = null),
+            (GFolderView.prototype._isOpen = false),
+            (GFolderView.prototype._done = false),
+            (GFolderView.prototype.isRootFolder = function () {
                 return this._isRootFolder;
             }),
-            (i.prototype.isLoading = function () {
+            (GFolderView.prototype.isLoading = function () {
                 return this._loading;
             }),
-            (i.prototype.getFolder = function () {
+            (GFolderView.prototype.getFolder = function () {
                 return this._folder;
             }),
-            (i.prototype.getParent = function () {
+            (GFolderView.prototype.getParent = function () {
                 return this._parent;
             }),
-            (i.prototype.setLoading = function (e) {
-                this._loading !== e && ((this._loading = e), this._update());
+            (GFolderView.prototype.setLoading = function (loading) {
+                this._loading !== loading && ((this._loading = loading), this._update());
             }),
-            (i.prototype.onToggle = function (e) {
-                return ((this._onToggle = e), this);
+            (GFolderView.prototype.onToggle = function (callback) {
+                return ((this._onToggle = callback), this);
             }),
-            (i.prototype.toggleState = function () {
+            (GFolderView.prototype.toggleState = function () {
                 (gDesigner.stats("filespanel_expand-collapse_cloudfolder"),
                     this._folderState.removeClass("open"),
                     this._folderState.removeClass("closed"),
@@ -80,37 +80,37 @@ module.exports = function (module, exports, require) {
                     this._update(),
                     this._onToggle && this._onToggle(this._isOpen));
             }),
-            (i.prototype.isStateOpen = function () {
+            (GFolderView.prototype.isStateOpen = function () {
                 return this._isOpen;
             }),
-            (i.prototype.update = function () {
+            (GFolderView.prototype.update = function () {
                 this._update();
             }),
-            (i.prototype.setRefreshHandler = function (e) {
-                return ((this._refreshCallback = e), this);
+            (GFolderView.prototype.setRefreshHandler = function (callback) {
+                return ((this._refreshCallback = callback), this);
             }),
-            (i.prototype.isDone = function () {
+            (GFolderView.prototype.isDone = function () {
                 return this._done;
             }),
-            (i.prototype.loadChildrenOnDemand = function (e) {
+            (GFolderView.prototype.loadChildrenOnDemand = function (loadMore) {
                 this.setLoading(true);
-                const t = (this._children || []).length;
-                return e(this._folder, 100, t)
-                    .then((e) => {
-                        ((this._done = e.length < 100),
-                            e.length &&
-                                (this._childrenContainer.append(e.map((e) => e.getHTMLContainer())),
-                                (this._children = this._children.concat(e))),
+                const offset = (this._children || []).length;
+                return loadMore(this._folder, 100, offset)
+                    .then((children) => {
+                        ((this._done = children.length < 100),
+                            children.length &&
+                                (this._childrenContainer.append(children.map((child) => child.getHTMLContainer())),
+                                (this._children = this._children.concat(children))),
                             this.update());
                     })
                     .finally(() => {
                         this.setLoading(false);
                     });
             }),
-            (i.prototype.refresh = function () {
+            (GFolderView.prototype.refresh = function () {
                 return (this.setChildren([]), this.update(), this._refreshCallback && this._refreshCallback(this));
             }),
-            (i.prototype._update = function () {
+            (GFolderView.prototype._update = function () {
                 (this._children && this._children.length
                     ? (this._folderState.addClass(this._isOpen ? "open" : "closed"),
                       this._isOpen ? this._childrenContainer.show() : this._childrenContainer.hide())
@@ -122,81 +122,81 @@ module.exports = function (module, exports, require) {
                             .addClass(this._loading ? "loading" : this._folder.getIcon() || "gravit-icon-w-folder")
                     ));
             }),
-            (i.prototype.onClick = function (e) {
+            (GFolderView.prototype.onClick = function (callback) {
                 return (
-                    this._folderContainer.on("click", (t) => {
-                        (t.stopPropagation(), e(this._folder, this.getHTMLElement()));
+                    this._folderContainer.on("click", (event) => {
+                        (event.stopPropagation(), callback(this._folder, this.getHTMLElement()));
                     }),
                     this
                 );
             }),
-            (i.prototype.onDoubleClick = function (e) {
+            (GFolderView.prototype.onDoubleClick = function (callback) {
                 return (
-                    this._folderContainer.on("dblclick", (t) => {
-                        (t.stopPropagation(), e(this._folder, this.getHTMLElement()));
+                    this._folderContainer.on("dblclick", (event) => {
+                        (event.stopPropagation(), callback(this._folder, this.getHTMLElement()));
                     }),
                     this
                 );
             }),
-            (i.prototype.onFolderStateClick = function (e) {
+            (GFolderView.prototype.onFolderStateClick = function (callback) {
                 return (
-                    this._folderState.on("click", (t) => {
-                        (t.stopPropagation(), e(this._folder, this.getHTMLElement()));
+                    this._folderState.on("click", (event) => {
+                        (event.stopPropagation(), callback(this._folder, this.getHTMLElement()));
                     }),
                     this
                 );
             }),
-            (i.prototype.onContext = function (e) {
+            (GFolderView.prototype.onContext = function (callback) {
                 return (
                     this._folderContext &&
-                        (this._element.on("contextmenu", (t) => {
-                            (t.stopPropagation(), e(this._folder, this.getHTMLElement(), t));
+                        (this._element.on("contextmenu", (event) => {
+                            (event.stopPropagation(), callback(this._folder, this.getHTMLElement(), event));
                         }),
-                        this._folderContext.on("click", (t) => {
-                            (t.stopPropagation(), e(this._folder, this.getHTMLElement(), t));
+                        this._folderContext.on("click", (event) => {
+                            (event.stopPropagation(), callback(this._folder, this.getHTMLElement(), event));
                         })),
                     this
                 );
             }),
-            (i.prototype.onFileDrop = function (e) {
-                let t = null,
-                    n = this;
+            (GFolderView.prototype.onFileDrop = function (callback) {
+                let timeoutId = null,
+                    self = this;
                 return (
                     this._element
-                        .on("drop", async function (t) {
+                        .on("drop", async function (event) {
                             $(this).removeClass("drag-over");
-                            const i = t.originalEvent.dataTransfer,
-                                a = JSON.parse(i.getData("text"));
-                            var r = o.from(a);
-                            e(r, n._folder);
+                            const dataTransfer = event.originalEvent.dataTransfer,
+                                fileData = JSON.parse(dataTransfer.getData("text"));
+                            var droppedFile = CloudFile.from(fileData);
+                            callback(droppedFile, self._folder);
                         })
-                        .on("dragover", function (e) {
+                        .on("dragover", function (event) {
                             ($(this).addClass("drag-over"),
-                                t ||
-                                    (t = setTimeout(() => {
-                                        n._isOpen || n._folderState.trigger("click");
+                                timeoutId ||
+                                    (timeoutId = setTimeout(() => {
+                                        self._isOpen || self._folderState.trigger("click");
                                     }, 1e3)));
                         })
-                        .on("dragleave", function (e) {
-                            ($(this).removeClass("drag-over"), t && clearTimeout(t), (t = null));
+                        .on("dragleave", function (event) {
+                            ($(this).removeClass("drag-over"), timeoutId && clearTimeout(timeoutId), (timeoutId = null));
                         }),
                     this
                 );
             }),
-            (i.prototype.getHTMLContainer = function () {
+            (GFolderView.prototype.getHTMLContainer = function () {
                 return this._container;
             }),
-            (i.prototype.setChildren = function (e) {
-                ((this._children = e),
+            (GFolderView.prototype.setChildren = function (children) {
+                ((this._children = children),
                     this._childrenContainer.empty(),
                     (this._children && this._children.length) || (this._isOpen = false),
-                    this._children && this._children.length && this._childrenContainer.append(e.map((e) => e.getHTMLContainer())));
+                    this._children && this._children.length && this._childrenContainer.append(children.map((child) => child.getHTMLContainer())));
             }),
-            (i.prototype.getChildren = function () {
+            (GFolderView.prototype.getChildren = function () {
                 return this._children;
             }),
-            (i.prototype.getHTMLElement = function () {
+            (GFolderView.prototype.getHTMLElement = function () {
                 return this._element;
             }),
-            (module.exports = i));
+            (module.exports = GFolderView));
     };

@@ -1,40 +1,40 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        function o() {
+        function GFontDBClient() {
             try {
                 this._createDB();
             } catch (e) {
-                ((this._failedStarting = true), console.log("Cannot createIndexedDB"), o._removeCallbacks());
+                ((this._failedStarting = true), console.log("Cannot createIndexedDB"), GFontDBClient._removeCallbacks());
             }
         }
-        ((o.getInstance = function (e) {
-            if (!o._instance || !o._instance._dataBase || o._instance._failedStarting)
+        ((GFontDBClient.getInstance = function (callback) {
+            if (!GFontDBClient._instance || !GFontDBClient._instance._dataBase || GFontDBClient._instance._failedStarting)
                 try {
-                    if ((e && o._cb.push(e), (o._instance && !o._instance._failedStarting) || (o._instance = new o()), e)) return null;
+                    if ((callback && GFontDBClient._cb.push(callback), (GFontDBClient._instance && !GFontDBClient._instance._failedStarting) || (GFontDBClient._instance = new GFontDBClient()), callback)) return null;
                 } catch (e) {
-                    return ((o._instance = null), void o._removeCallbacks());
+                    return ((GFontDBClient._instance = null), void GFontDBClient._removeCallbacks());
                 }
-            return (e && e(o._instance), o._instance);
+            return (callback && callback(GFontDBClient._instance), GFontDBClient._instance);
         }),
-            (o._removeCallbacks = function (e) {
-                if (o._cb.length) {
-                    for (var t = 0; t < o._cb.length; t++) o._cb[t](e || null);
-                    o._cb = [];
+            (GFontDBClient._removeCallbacks = function (instance) {
+                if (GFontDBClient._cb.length) {
+                    for (var t = 0; t < GFontDBClient._cb.length; t++) GFontDBClient._cb[t](instance || null);
+                    GFontDBClient._cb = [];
                 }
             }),
-            (o._instance = null),
-            (o._cb = []),
-            (o.FONT_LIST = "_gravit_font_list_"),
-            (o.NATIVE_FONT_LIST = "_gravit_native_font_list_"),
-            (o.NATIVE_FONT_LIST_DATE = "_gravit_native_font_list_date_"),
-            (o.NATIVE_FONT_LIST_V = "_gravit_native_font_list_v_"));
-        var i = "gravitFonts";
-        ((o.prototype._cb = null),
-            (o.prototype._dataBase = null),
-            (o.prototype._cachingService = null),
-            (o.prototype._cachingBroken = false),
-            (o.prototype._failedStarting = false),
-            (o.prototype._createDB = function () {
+            (GFontDBClient._instance = null),
+            (GFontDBClient._cb = []),
+            (GFontDBClient.FONT_LIST = "_gravit_font_list_"),
+            (GFontDBClient.NATIVE_FONT_LIST = "_gravit_native_font_list_"),
+            (GFontDBClient.NATIVE_FONT_LIST_DATE = "_gravit_native_font_list_date_"),
+            (GFontDBClient.NATIVE_FONT_LIST_V = "_gravit_native_font_list_v_"));
+        var STORE_NAME = "gravitFonts";
+        ((GFontDBClient.prototype._cb = null),
+            (GFontDBClient.prototype._dataBase = null),
+            (GFontDBClient.prototype._cachingService = null),
+            (GFontDBClient.prototype._cachingBroken = false),
+            (GFontDBClient.prototype._failedStarting = false),
+            (GFontDBClient.prototype._createDB = function () {
                 try {
                     ((window.indexedDB =
                         window.indexedDB || window.webkitIndexedDB || window.mozIndexedDB || window.OIndexedDB || window.msIndexedDB),
@@ -42,196 +42,196 @@ module.exports = function (module, exports, require) {
                             window.IDBTransaction || window.webkitIDBTransaction || window.OIDBTransaction || window.msIDBTransaction));
                 } catch (e) {}
                 if (window.indexedDB) {
-                    var e = indexedDB.open("gravitFontsDB", 1);
+                    var request = indexedDB.open("gravitFontsDB", 1);
                     if (
-                        (e.addEventListener("error", () => {
-                            ((this._failedStarting = true), o._removeCallbacks());
+                        (request.addEventListener("error", () => {
+                            ((this._failedStarting = true), GFontDBClient._removeCallbacks());
                         }),
-                        "done" === e.readyState)
+                        "done" === request.readyState)
                     ) {
-                        if (e.error) throw ((this._failedStarting = true), new Error("Failed starting GFontDBClient"));
-                        this._requestSuccess({ target: e });
+                        if (request.error) throw ((this._failedStarting = true), new Error("Failed starting GFontDBClient"));
+                        this._requestSuccess({ target: request });
                     } else
-                        ((e.onsuccess = this._requestSuccess.bind(this)),
-                            (e.onerror = function (e) {
+                        ((request.onsuccess = this._requestSuccess.bind(this)),
+                            (request.onerror = function (event) {
                                 0;
                             }));
-                    e.onupgradeneeded = this._createStore.bind(this);
-                } else o._removeCallbacks();
+                    request.onupgradeneeded = this._createStore.bind(this);
+                } else GFontDBClient._removeCallbacks();
             }),
-            (o.prototype._requestSuccess = function (e) {
-                if (this._dataBase) o._removeCallbacks(this);
-                else if (((this._dataBase = e.target.result), this._dataBase)) {
+            (GFontDBClient.prototype._requestSuccess = function (event) {
+                if (this._dataBase) GFontDBClient._removeCallbacks(this);
+                else if (((this._dataBase = event.target.result), this._dataBase)) {
                     if (
-                        ((this._dataBase.onerror = function (e) {
+                        ((this._dataBase.onerror = function (event) {
                             0;
                         }),
                         this._dataBase.setVersion)
                     )
                         if (1 != this._dataBase.version)
                             return void (this._dataBase.setVersion(1).onsuccess = function () {
-                                (this._createStore(), o._removeCallbacks(this));
+                                (this._createStore(), GFontDBClient._removeCallbacks(this));
                             }.bind(this));
-                    o._removeCallbacks(this);
+                    GFontDBClient._removeCallbacks(this);
                 }
             }),
-            (o.prototype._createStore = function (e) {
-                (this._dataBase || (this._dataBase = e.target.result), this._dataBase && this._dataBase.createObjectStore(i));
+            (GFontDBClient.prototype._createStore = function (event) {
+                (this._dataBase || (this._dataBase = event.target.result), this._dataBase && this._dataBase.createObjectStore(STORE_NAME));
             }),
-            (o.prototype.ready = function () {
+            (GFontDBClient.prototype.ready = function () {
                 return !!this._dataBase;
             }),
-            (o.prototype.clear = function () {
+            (GFontDBClient.prototype.clear = function () {
                 return $.Deferred(
-                    function (e) {
-                        this._dataBase || e.resolveWith(this, [true]);
+                    function (deferred) {
+                        this._dataBase || deferred.resolveWith(this, [true]);
                         try {
-                            var t = this._dataBase.transaction([i], "readwrite");
+                            var transaction = this._dataBase.transaction([STORE_NAME], "readwrite");
                             try {
-                                var n = t.objectStore(i).clear();
-                                ((n.onsuccess = function (t) {
-                                    e.resolveWith(this, [true]);
+                                var clearRequest = transaction.objectStore(STORE_NAME).clear();
+                                ((clearRequest.onsuccess = function (event) {
+                                    deferred.resolveWith(this, [true]);
                                 }.bind(this)),
-                                    (n.onerror = function (t) {
-                                        e.resolveWith(this, [false]);
+                                    (clearRequest.onerror = function (event) {
+                                        deferred.resolveWith(this, [false]);
                                     }.bind(this)));
                             } catch (t) {
-                                return void e.resolveWith(this, [false]);
+                                return void deferred.resolveWith(this, [false]);
                             }
                         } catch (t) {
-                            (0, e.resolveWith(this, [false]));
+                            (0, deferred.resolveWith(this, [false]));
                         }
                     }.bind(this)
                 );
             }),
-            (o.prototype.deleteItem = function (e) {
+            (GFontDBClient.prototype.deleteItem = function (key) {
                 return $.Deferred(
-                    function (t) {
-                        this._dataBase || t.resolveWith(this, [true]);
+                    function (deferred) {
+                        this._dataBase || deferred.resolveWith(this, [true]);
                         try {
-                            var n = this._dataBase.transaction([i], "readwrite");
+                            var transaction = this._dataBase.transaction([STORE_NAME], "readwrite");
                             try {
-                                var o = n.objectStore(i).delete(e);
-                                ((o.onsuccess = function (e) {
-                                    t.resolveWith(this, [true]);
+                                var deleteRequest = transaction.objectStore(STORE_NAME).delete(key);
+                                ((deleteRequest.onsuccess = function (event) {
+                                    deferred.resolveWith(this, [true]);
                                 }.bind(this)),
-                                    (o.onerror = function (e) {
-                                        t.resolveWith(this, [false]);
+                                    (deleteRequest.onerror = function (event) {
+                                        deferred.resolveWith(this, [false]);
                                     }.bind(this)));
                             } catch (e) {
-                                return void t.resolveWith(this, [false]);
+                                return void deferred.resolveWith(this, [false]);
                             }
                         } catch (e) {
-                            (0, t.resolveWith(this, [false]));
+                            (0, deferred.resolveWith(this, [false]));
                         }
                     }.bind(this)
                 );
             }),
-            (o.prototype.setItem = function (e, t) {
+            (GFontDBClient.prototype.setItem = function (key, value) {
                 return $.Deferred(
-                    function (n) {
-                        this._dataBase || n.resolveWith(this, [false]);
+                    function (deferred) {
+                        this._dataBase || deferred.resolveWith(this, [false]);
                         try {
-                            var o = this._dataBase.transaction([i], "readwrite");
+                            var transaction = this._dataBase.transaction([STORE_NAME], "readwrite");
                             try {
-                                var a = o.objectStore(i).put(t, e);
-                                ((a.onsuccess = function (e) {
-                                    n.resolveWith(this, [true]);
+                                var putRequest = transaction.objectStore(STORE_NAME).put(value, key);
+                                ((putRequest.onsuccess = function (event) {
+                                    deferred.resolveWith(this, [true]);
                                 }.bind(this)),
-                                    (a.onerror = function (e) {
-                                        n.resolveWith(this, [false]);
+                                    (putRequest.onerror = function (event) {
+                                        deferred.resolveWith(this, [false]);
                                     }.bind(this)));
                             } catch (e) {
-                                return void n.resolveWith(this, [false]);
+                                return void deferred.resolveWith(this, [false]);
                             }
                         } catch (e) {
-                            (0, n.resolveWith(this, [false]));
+                            (0, deferred.resolveWith(this, [false]));
                         }
                     }.bind(this)
                 );
             }),
-            (o.prototype.updateItem = function (e, t) {
+            (GFontDBClient.prototype.updateItem = function (key, value) {
                 return $.Deferred(
-                    function (n) {
-                        (this._dataBase || n.resolveWith(this, [false]),
-                            this.getItem(e).done((o, i) => {
+                    function (deferred) {
+                        (this._dataBase || deferred.resolveWith(this, [false]),
+                            this.getItem(key).done((existingValue, store) => {
                                 try {
-                                    var a = i.put(t, e);
-                                    ((a.onsuccess = function (e) {
-                                        n.resolveWith(this, [true]);
+                                    var putRequest = store.put(value, key);
+                                    ((putRequest.onsuccess = function (event) {
+                                        deferred.resolveWith(this, [true]);
                                     }.bind(this)),
-                                        (a.onerror = function (e) {
-                                            n.resolveWith(this, [false]);
+                                        (putRequest.onerror = function (event) {
+                                            deferred.resolveWith(this, [false]);
                                         }.bind(this)));
                                 } catch (e) {
-                                    return void n.resolveWith(this, [false]);
+                                    return void deferred.resolveWith(this, [false]);
                                 }
                             }));
                     }.bind(this)
                 );
             }),
-            (o.prototype.pushArray = function (e, t) {
+            (GFontDBClient.prototype.pushArray = function (key, value) {
                 return $.Deferred(
-                    function (n) {
-                        this._dataBase || n.resolveWith(this, [false]);
+                    function (deferred) {
+                        this._dataBase || deferred.resolveWith(this, [false]);
                         try {
-                            var o = this._dataBase.transaction([i], "readwrite");
-                            o.objectStore(i).count(e).onsuccess = function (a) {
-                                if ((console.log("number of fonts:" + e + " " + a.target.result), 0 === a.target.result)) {
+                            var transaction = this._dataBase.transaction([STORE_NAME], "readwrite");
+                            transaction.objectStore(STORE_NAME).count(key).onsuccess = function (event) {
+                                if ((console.log("number of fonts:" + key + " " + event.target.result), 0 === event.target.result)) {
                                     try {
-                                        o.objectStore(i).put(t, e);
+                                        transaction.objectStore(STORE_NAME).put(value, key);
                                     } catch (e) {
-                                        return void n.resolveWith(this, [false]);
+                                        return void deferred.resolveWith(this, [false]);
                                     }
-                                    n.resolveWith(this, [true]);
+                                    deferred.resolveWith(this, [true]);
                                 } else
-                                    1 === a.target.result &&
-                                        this.getItem(e).done(
-                                            function (e, o) {
-                                                if (e) {
-                                                    var i;
-                                                    e = e.concat(t);
+                                    1 === event.target.result &&
+                                        this.getItem(key).done(
+                                            function (existingValue, store) {
+                                                if (existingValue) {
+                                                    var putRequest;
+                                                    existingValue = existingValue.concat(value);
                                                     try {
-                                                        i = o.put(e);
+                                                        putRequest = store.put(existingValue);
                                                     } catch (e) {
-                                                        return void n.resolveWith(this, [false]);
+                                                        return void deferred.resolveWith(this, [false]);
                                                     }
-                                                    ((i.onsuccess = function (e) {
-                                                        n.resolveWith(this, [true]);
+                                                    ((putRequest.onsuccess = function (event) {
+                                                        deferred.resolveWith(this, [true]);
                                                     }),
-                                                        (i.error = function (e) {
-                                                            n.resolveWith(this, [false]);
+                                                        (putRequest.error = function (event) {
+                                                            deferred.resolveWith(this, [false]);
                                                         }));
                                                 }
                                             }.bind(this)
                                         );
                             };
                         } catch (e) {
-                            (0, n.resolveWith(this, [false]));
+                            (0, deferred.resolveWith(this, [false]));
                         }
                     }.bind(this)
                 );
             }),
-            (o.prototype.getItem = function (e) {
-                var t = this;
-                return $.Deferred(function (n) {
+            (GFontDBClient.prototype.getItem = function (key) {
+                var self = this;
+                return $.Deferred(function (deferred) {
                     try {
-                        var o = this;
-                        t._dataBase || n.resolveWith(o, [null]);
-                        var a = t._dataBase.transaction([i], "readwrite").objectStore(i),
-                            r = a.get(e);
-                        ((r.onsuccess = function (e) {
-                            var t = e.target.result;
-                            n.resolveWith(o, [t, a]);
+                        var resolveContext = this;
+                        self._dataBase || deferred.resolveWith(resolveContext, [null]);
+                        var store = self._dataBase.transaction([STORE_NAME], "readwrite").objectStore(STORE_NAME),
+                            request = store.get(key);
+                        ((request.onsuccess = function (event) {
+                            var result = event.target.result;
+                            deferred.resolveWith(resolveContext, [result, store]);
                         }),
-                            (r.onerror = function (e) {
-                                e.target.result;
-                                n.resolveWith(o, [null, a]);
+                            (request.onerror = function (event) {
+                                event.target.result;
+                                deferred.resolveWith(resolveContext, [null, store]);
                             }));
-                    } catch (e) {
-                        ((e.name = "exception"), n.resolveWith(this, [null, a]));
+                    } catch (error) {
+                        ((error.name = "exception"), deferred.resolveWith(this, [null, store]));
                     }
                 });
             }),
-            (module.exports = o));
+            (module.exports = GFontDBClient));
     };

@@ -3,68 +3,68 @@ module.exports = function (module, exports, require) {
         var _interopRequireDefault = require(16),
             GObject = require(1),
             GPlatform = require(15),
-            r = _interopRequireDefault(require(31)),
-            s = _interopRequireDefault(require(18 /* GCategory */)),
+            GAction = _interopRequireDefault(require(31 /* GAction */)),
+            GCategory = _interopRequireDefault(require(18 /* GCategory */)),
             SidebarsIds = require(198);
-        class c extends r.default {
-            constructor(e) {
-                (super(), (this._type = e), (this._title = new GObject.GLocaleKey("GChangeActivePageAction", "title.".concat(this._type))));
+        class ChangeActivePageAction extends GAction.default {
+            constructor(type) {
+                (super(), (this._type = type), (this._title = new GObject.GLocaleKey("GChangeActivePageAction", "title.".concat(this._type))));
             }
             getId() {
-                return "".concat(c.ID, ".").concat(this._type);
+                return "".concat(ChangeActivePageAction.ID, ".").concat(this._type);
             }
             getTitle() {
                 return this._title;
             }
             getCategory() {
-                return s.default.CATEGORY_VIEW;
+                return GCategory.default.CATEGORY_VIEW;
             }
             isVisible() {
                 return false;
             }
             getShortcut() {
-                const e = [GPlatform.GKey.Constant.META, GPlatform.GKey.Constant.OPTION];
+                const baseModifiers = [GPlatform.GKey.Constant.META, GPlatform.GKey.Constant.OPTION];
                 switch (this._type) {
-                    case c.Type.Next:
-                        return e.concat(GPlatform.GKey.Constant.DOWN);
-                    case c.Type.Previous:
-                        return e.concat(GPlatform.GKey.Constant.UP);
+                    case ChangeActivePageAction.Type.Next:
+                        return baseModifiers.concat(GPlatform.GKey.Constant.DOWN);
+                    case ChangeActivePageAction.Type.Previous:
+                        return baseModifiers.concat(GPlatform.GKey.Constant.UP);
                     default:
                         return null;
                 }
             }
             getAdditionalShortcuts() {
                 switch (this._type) {
-                    case c.Type.Next:
+                    case ChangeActivePageAction.Type.Next:
                         return [GPlatform.GKey.Constant.PAGE_DOWN];
-                    case c.Type.Previous:
+                    case ChangeActivePageAction.Type.Previous:
                         return [GPlatform.GKey.Constant.PAGE_UP];
                     default:
                         return null;
                 }
             }
             execute() {
-                const e = gDesigner.getLeftSidebars(),
-                    t = e && e.getSidebar(SidebarsIds.SidebarsIds.GOutlineSidebar),
-                    n = gDesigner.getActiveDocument(),
-                    o = n && n.getScene();
-                if (t && o) {
-                    const e = this.getNextPage(o);
-                    t.changeActivePage(e);
+                const leftSidebars = gDesigner.getLeftSidebars(),
+                    outlineSidebar = leftSidebars && leftSidebars.getSidebar(SidebarsIds.SidebarsIds.GOutlineSidebar),
+                    activeDocument = gDesigner.getActiveDocument(),
+                    scene = activeDocument && activeDocument.getScene();
+                if (outlineSidebar && scene) {
+                    const nextPage = this.getNextPage(scene);
+                    outlineSidebar.changeActivePage(nextPage);
                 }
             }
-            getNextPage(e) {
-                const t = e.getActivePage();
-                for (let e = this._getNextPageAccordingToType(t); null !== e; e = this._getNextPageAccordingToType(e))
-                    if (e instanceof GObject.GPage) return e;
+            getNextPage(scene) {
+                const activePage = scene.getActivePage();
+                for (let candidatePage = this._getNextPageAccordingToType(activePage); null !== candidatePage; candidatePage = this._getNextPageAccordingToType(candidatePage))
+                    if (candidatePage instanceof GObject.GPage) return candidatePage;
                 return null;
             }
-            _getNextPageAccordingToType(e) {
+            _getNextPageAccordingToType(page) {
                 switch (this._type) {
-                    case c.Type.Next:
-                        return e.getNext();
-                    case c.Type.Previous:
-                        return e.getPrevious();
+                    case ChangeActivePageAction.Type.Next:
+                        return page.getNext();
+                    case ChangeActivePageAction.Type.Previous:
+                        return page.getPrevious();
                     default:
                         return null;
                 }
@@ -73,5 +73,5 @@ module.exports = function (module, exports, require) {
                 return "[Object GChangeActivePageAction]";
             }
         }
-        ((c.ID = "view.change-active-page"), (c.Type = { Next: "next", Previous: "previous" }), (module.exports = c));
+        ((ChangeActivePageAction.ID = "view.change-active-page"), (ChangeActivePageAction.Type = { Next: "next", Previous: "previous" }), (module.exports = ChangeActivePageAction));
     };

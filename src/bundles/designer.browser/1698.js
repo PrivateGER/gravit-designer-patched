@@ -1,20 +1,20 @@
 module.exports = function (module, exports, require) {
         "use strict";
         (require(3), require(4), require(13));
-        var o = require(53),
+        var toolManagerModule = require(53),
             GObject = require(1),
             GPlatform = require(15);
-        const r = require(1699);
-        function s() {}
-        GObject.GObject.inheritAndMix(s, GObject.GObject);
-        var l = {
-            init: function (e) {
+        const DraggablePoint = require(1699);
+        function GEyeDropper() {}
+        GObject.GObject.inheritAndMix(GEyeDropper, GObject.GObject);
+        var methods = {
+            init: function (options) {
                 return (
-                    (e = $.extend({}, e)),
+                    (options = $.extend({}, options)),
                     this.each(function () {
-                        var t = this,
-                            n = $(this);
-                        n.addClass("g-button")
+                        var buttonElement = this,
+                            button = $(this);
+                        button.addClass("g-button")
                             .data("g-eye-dropper", {
                                 picker: null,
                                 documentMove: null,
@@ -24,181 +24,181 @@ module.exports = function (module, exports, require) {
                             })
                             .attr("data-title", GObject.GLocale.get(new GObject.GLocaleKey("GEyeDropper", "text.tooltip")))
                             .append($("<span></span>").addClass("gravit-icon-picker"))
-                            .on("click", function (o) {
-                                n.closest(".g-disabled").length ||
-                                    (e.onClick ? e.onClick.call(this) : gDesigner.stats("eyedropper_click_pick"),
-                                    o.stopPropagation(),
-                                    o.preventDefault(),
-                                    l.setActive.call(t, !l.isActive.call(t), o.pageX, o.pageY));
+                            .on("click", function (event) {
+                                button.closest(".g-disabled").length ||
+                                    (options.onClick ? options.onClick.call(this) : gDesigner.stats("eyedropper_click_pick"),
+                                    event.stopPropagation(),
+                                    event.preventDefault(),
+                                    methods.setActive.call(buttonElement, !methods.isActive.call(buttonElement), event.pageX, event.pageY));
                             });
                     })
                 );
             },
             isActive: function () {
-                var e = $(this).data("g-eye-dropper");
-                return !!e && !!e.picker;
+                var state = $(this).data("g-eye-dropper");
+                return !!state && !!state.picker;
             },
-            setValue: function (e) {
-                const t = $(this),
-                    n = "string" == typeof e ? e : GObject.GPattern.asCSSBackground(e);
-                t.find(".g-eye-dropper-preview-color-difference").find(".current").css({ background: n });
-                const o = t.data("g-eye-dropper") || {};
-                ((o.currentColor = n), t.data("g-eye-dropper", o));
+            setValue: function (value) {
+                const element = $(this),
+                    cssBackground = "string" == typeof value ? value : GObject.GPattern.asCSSBackground(value);
+                element.find(".g-eye-dropper-preview-color-difference").find(".current").css({ background: cssBackground });
+                const state = element.data("g-eye-dropper") || {};
+                ((state.currentColor = cssBackground), element.data("g-eye-dropper", state));
             },
-            setActive: function (e, t, n) {
-                if (e !== l.isActive.call(this)) {
-                    var s = $(this),
-                        c = s.data("g-eye-dropper"),
-                        d = function () {
-                            (gDesigner.getToolManager().removeEventListener(o.GToolManager.ToolChangedEvent, d, this),
+            setActive: function (active, pageX, pageY) {
+                if (active !== methods.isActive.call(this)) {
+                    var element = $(this),
+                        state = element.data("g-eye-dropper"),
+                        onToolChanged = function () {
+                            (gDesigner.getToolManager().removeEventListener(toolManagerModule.GToolManager.ToolChangedEvent, onToolChanged, this),
                                 $(".g-eye-dropper-picker").remove());
                         }.bind(this);
-                    if (e) {
-                        var u = gDesigner.getWindows().getActiveWindow();
-                        if (!u) return;
-                        s.addClass("g-active");
+                    if (active) {
+                        var activeWindow = gDesigner.getWindows().getActiveWindow();
+                        if (!activeWindow) return;
+                        element.addClass("g-active");
                         for (
-                            var p = u.getView().getSceneCanvas().getBitmap().getHTMLElement(true),
-                                g = GObject.GPaintCanvas.getScreenDPI(),
-                                h = $("<canvas></canvas>")
+                            var canvasElement = activeWindow.getView().getSceneCanvas().getBitmap().getHTMLElement(true),
+                                screenDPI = GObject.GPaintCanvas.getScreenDPI(),
+                                previewCanvas = $("<canvas></canvas>")
                                     .attr({ width: 135, height: 135 })
                                     .addClass("g-cursor-pixel g-eye-dropper-preview"),
-                                f = $("<span></span>").addClass("g-eye-dropper-preview-color"),
-                                m = $("<span/>")
+                                colorLabel = $("<span></span>").addClass("g-eye-dropper-preview-color"),
+                                colorDiff = $("<span/>")
                                     .addClass("g-eye-dropper-preview-color-difference")
-                                    .append($("<div/>").addClass("color-preview").addClass("current").css({ background: c.currentColor }))
+                                    .append($("<div/>").addClass("color-preview").addClass("current").css({ background: state.currentColor }))
                                     .append($("<div/>").addClass("color-preview").addClass("new")),
-                                y = $("<div/>").addClass("g-eye-dropper-color-pointer"),
-                                v = h[0].getContext("2d"),
-                                _ = ["imageSmoothingEnabled", "webkitImageSmoothingEnabled", "mozImageSmoothingEnabled"],
+                                colorPointer = $("<div/>").addClass("g-eye-dropper-color-pointer"),
+                                previewContext = previewCanvas[0].getContext("2d"),
+                                smoothingProps = ["imageSmoothingEnabled", "webkitImageSmoothingEnabled", "mozImageSmoothingEnabled"],
                                 b = 0;
-                            b < _.length;
+                            b < smoothingProps.length;
                             ++b
                         ) {
-                            var w = _[b];
+                            var w = smoothingProps[b];
                             if (CanvasRenderingContext2D.prototype.hasOwnProperty(w)) {
-                                v[w] = false;
+                                previewContext[w] = false;
                                 break;
                             }
                         }
-                        c.picker = $("<div></div>")
+                        state.picker = $("<div></div>")
                             .addClass("g-eye-dropper-picker g-cursor-pixel")
-                            .append(h)
-                            .append(f)
-                            .append(m)
-                            .append(y)
+                            .append(previewCanvas)
+                            .append(colorLabel)
+                            .append(colorDiff)
+                            .append(colorPointer)
                             .appendTo($("body"));
-                        var C = function (e) {
-                            return 1 == e.length ? "0" + e : e;
+                        var padHex = function (hexPart) {
+                            return 1 == hexPart.length ? "0" + hexPart : hexPart;
                         };
-                        function x(e, t) {
-                            if ((v.setTransform(1, 0, 0, 1, 0, 0), u.viewContainsMouse(e, t))) {
-                                var n = e * g,
-                                    o = t * g;
-                                ((n = Math.max(0, Math.min(n, p.width))), (o = Math.max(0, Math.min(o, p.height))));
-                                var a = p.getContext("2d").getImageData(n, o, 1, 1).data,
-                                    r = C(a[0].toString(16)) + C(a[1].toString(16)) + C(a[2].toString(16));
-                                ((r = r.toUpperCase()), (c.rgba = a));
-                                const i = gDesigner.isTouchEnabled() ? 10 : 5;
-                                (h.css("box-shadow", "0 0 0 ".concat(i, "px rgb(") + a[0] + "," + a[1] + "," + a[2] + ")"),
-                                    f.text("R:" + a[0] + " G:" + a[1] + " B:" + a[2] + " #" + r),
-                                    f.css({
+                        function updatePreview(screenX, screenY) {
+                            if ((previewContext.setTransform(1, 0, 0, 1, 0, 0), activeWindow.viewContainsMouse(screenX, screenY))) {
+                                var canvasX = screenX * screenDPI,
+                                    canvasY = screenY * screenDPI;
+                                ((canvasX = Math.max(0, Math.min(canvasX, canvasElement.width))), (canvasY = Math.max(0, Math.min(canvasY, canvasElement.height))));
+                                var pixelData = canvasElement.getContext("2d").getImageData(canvasX, canvasY, 1, 1).data,
+                                    hexColor = padHex(pixelData[0].toString(16)) + padHex(pixelData[1].toString(16)) + padHex(pixelData[2].toString(16));
+                                ((hexColor = hexColor.toUpperCase()), (state.rgba = pixelData));
+                                const ringSize = gDesigner.isTouchEnabled() ? 10 : 5;
+                                (previewCanvas.css("box-shadow", "0 0 0 ".concat(ringSize, "px rgb(") + pixelData[0] + "," + pixelData[1] + "," + pixelData[2] + ")"),
+                                    colorLabel.text("R:" + pixelData[0] + " G:" + pixelData[1] + " B:" + pixelData[2] + " #" + hexColor),
+                                    colorLabel.css({
                                         display: "block",
-                                        top: t + 5 + "px",
-                                        left: e - 55 + "px",
+                                        top: screenY + 5 + "px",
+                                        left: screenX - 55 + "px",
                                     }),
-                                    m.find(".new").css({ background: "#" + r }),
-                                    y.css({
+                                    colorDiff.find(".new").css({ background: "#" + hexColor }),
+                                    colorPointer.css({
                                         display: "block",
-                                        top: t - 5 + "px",
-                                        left: e - 5 + "px",
+                                        top: screenY - 5 + "px",
+                                        left: screenX - 5 + "px",
                                     }),
-                                    m.css({
+                                    colorDiff.css({
                                         display: "block",
-                                        top: t - 76 + "px",
-                                        left: e - 78 + "px",
+                                        top: screenY - 76 + "px",
+                                        left: screenX - 78 + "px",
                                     }),
-                                    v.clearRect(0, 0, 135, 135),
-                                    v.drawImage(p, e * g - 8, t * g - 8, 16, 16, 0, 0, 135, 135));
+                                    previewContext.clearRect(0, 0, 135, 135),
+                                    previewContext.drawImage(canvasElement, screenX * screenDPI - 8, screenY * screenDPI - 8, 16, 16, 0, 0, 135, 135));
                             } else
-                                ((c.rgba = null),
-                                    h.css("box-shadow", ""),
-                                    f.css({ display: "none" }),
-                                    m.css({ display: "none" }),
-                                    y.attr("style", "display: none !important"),
-                                    v.clearRect(0, 0, 135, 135),
-                                    (v.fillStyle = "rgba(0,0,0,0.75)"),
-                                    v.scale(0.9, 0.9),
-                                    v.fillText(GObject.GLocale.get(new GObject.GLocaleKey("GEyeDropper", "text.preview")), 10, 72, 135));
+                                ((state.rgba = null),
+                                    previewCanvas.css("box-shadow", ""),
+                                    colorLabel.css({ display: "none" }),
+                                    colorDiff.css({ display: "none" }),
+                                    colorPointer.attr("style", "display: none !important"),
+                                    previewContext.clearRect(0, 0, 135, 135),
+                                    (previewContext.fillStyle = "rgba(0,0,0,0.75)"),
+                                    previewContext.scale(0.9, 0.9),
+                                    previewContext.fillText(GObject.GLocale.get(new GObject.GLocaleKey("GEyeDropper", "text.preview")), 10, 72, 135));
                         }
                         (gDesigner.isTouchEnabled() &&
-                            (c.draggablePoint = new r(
-                                h.get(0),
-                                (e) => {
-                                    const t = h.get(0).getBoundingClientRect();
-                                    let n = e.pageX,
-                                        o = e.pageY;
-                                    ((n -= t.width - 8),
-                                        (o -= t.height - 30),
-                                        (n += 8),
-                                        (o += 8),
-                                        h.css({ left: n + "px", top: o + "px" }));
-                                    const i = h.get(0).getBoundingClientRect(),
-                                        a = i.left + i.width / 2,
-                                        r = i.top + i.height / 2;
-                                    x.call(this, a, r);
+                            (state.draggablePoint = new DraggablePoint(
+                                previewCanvas.get(0),
+                                (event) => {
+                                    const rect = previewCanvas.get(0).getBoundingClientRect();
+                                    let pageX = event.pageX,
+                                        pageY = event.pageY;
+                                    ((pageX -= rect.width - 8),
+                                        (pageY -= rect.height - 30),
+                                        (pageX += 8),
+                                        (pageY += 8),
+                                        previewCanvas.css({ left: pageX + "px", top: pageY + "px" }));
+                                    const centerRect = previewCanvas.get(0).getBoundingClientRect(),
+                                        centerX = centerRect.left + centerRect.width / 2,
+                                        centerY = centerRect.top + centerRect.height / 2;
+                                    updatePreview.call(this, centerX, centerY);
                                 },
                                 () => {
-                                    (l.setActive.call(this, false), c.rgba && s.trigger("colorchange", [c.rgba]));
+                                    (methods.setActive.call(this, false), state.rgba && element.trigger("colorchange", [state.rgba]));
                                 }
                             )),
-                            (c.documentMove = function (e) {
+                            (state.documentMove = function (event) {
                                 if (gDesigner.isTouchEnabled()) return;
-                                const t = e.pageX,
-                                    n = e.pageY,
-                                    o = h.get(0).getBoundingClientRect(),
-                                    i = t - o.width / 2 + 8,
-                                    a = n - o.height / 2 + 8;
-                                (h.css({ left: i + "px", top: a + "px" }), x.call(this, t, n));
+                                const pageX = event.pageX,
+                                    pageY = event.pageY,
+                                    rect = previewCanvas.get(0).getBoundingClientRect(),
+                                    left = pageX - rect.width / 2 + 8,
+                                    top = pageY - rect.height / 2 + 8;
+                                (previewCanvas.css({ left: left + "px", top: top + "px" }), updatePreview.call(this, pageX, pageY));
                             }.bind(this)),
-                            (c.documentMouseDown = function (e) {
+                            (state.documentMouseDown = function (event) {
                                 gDesigner.isTouchEnabled()
-                                    ? l.isActive.call(this)
-                                        ? l.setActive.call(this, false)
-                                        : l.setActive.call(this, true)
-                                    : (l.setActive.call(this, false), c.rgba && s.trigger("colorchange", [c.rgba]));
+                                    ? methods.isActive.call(this)
+                                        ? methods.setActive.call(this, false)
+                                        : methods.setActive.call(this, true)
+                                    : (methods.setActive.call(this, false), state.rgba && element.trigger("colorchange", [state.rgba]));
                             }.bind(this)),
-                            (c.documentKeyDown = function (e) {
-                                GPlatform.GKey.translateKey(e.keyCode) === GPlatform.GKey.Constant.ESC && l.setActive.call(this, false);
+                            (state.documentKeyDown = function (event) {
+                                GPlatform.GKey.translateKey(event.keyCode) === GPlatform.GKey.Constant.ESC && methods.setActive.call(this, false);
                             }.bind(this)),
-                            "number" == typeof t &&
-                                "number" == typeof n &&
-                                (gDesigner.isTouchEnabled() ? c.draggablePoint.moveTo(t, n, true) : c.documentMove({ pageX: t, pageY: n })),
-                            document.addEventListener("keydown", c.documentKeyDown),
-                            document.addEventListener("mousedown", c.documentMouseDown),
-                            document.addEventListener("mousemove", c.documentMove),
-                            gDesigner.getToolManager().addEventListener(o.GToolManager.ToolChangedEvent, d, this));
+                            "number" == typeof pageX &&
+                                "number" == typeof pageY &&
+                                (gDesigner.isTouchEnabled() ? state.draggablePoint.moveTo(pageX, pageY, true) : state.documentMove({ pageX: pageX, pageY: pageY })),
+                            document.addEventListener("keydown", state.documentKeyDown),
+                            document.addEventListener("mousedown", state.documentMouseDown),
+                            document.addEventListener("mousemove", state.documentMove),
+                            gDesigner.getToolManager().addEventListener(toolManagerModule.GToolManager.ToolChangedEvent, onToolChanged, this));
                     } else
-                        (document.removeEventListener("keydown", c.documentKeyDown),
-                            document.removeEventListener("mousedown", c.documentMouseDown),
-                            document.removeEventListener("mousemove", c.documentMove),
-                            gDesigner.getToolManager().removeEventListener(o.GToolManager.ToolChangedEvent, d, this),
-                            c.picker.remove(),
-                            (c.picker = null),
-                            (c.documentKeyDown = null),
-                            (c.documentMouseDown = null),
-                            (c.documentMove = null),
-                            c.draggablePoint && c.draggablePoint.unmount(),
-                            s.removeClass("g-active"));
+                        (document.removeEventListener("keydown", state.documentKeyDown),
+                            document.removeEventListener("mousedown", state.documentMouseDown),
+                            document.removeEventListener("mousemove", state.documentMove),
+                            gDesigner.getToolManager().removeEventListener(toolManagerModule.GToolManager.ToolChangedEvent, onToolChanged, this),
+                            state.picker.remove(),
+                            (state.picker = null),
+                            (state.documentKeyDown = null),
+                            (state.documentMouseDown = null),
+                            (state.documentMove = null),
+                            state.draggablePoint && state.draggablePoint.unmount(),
+                            element.removeClass("g-active"));
                 }
             },
         };
-        ((module.exports = s),
-            ($.fn.gEyeDropper = function (e) {
-                return l[e]
-                    ? l[e].apply(this, Array.prototype.slice.call(arguments, 1))
-                    : "object" != typeof e && e
-                      ? void $.error("Method " + e + " does not exist on jQuery.myPlugin")
-                      : l.init.apply(this, arguments);
+        ((module.exports = GEyeDropper),
+            ($.fn.gEyeDropper = function (methodName) {
+                return methods[methodName]
+                    ? methods[methodName].apply(this, Array.prototype.slice.call(arguments, 1))
+                    : "object" != typeof methodName && methodName
+                      ? void $.error("Method " + methodName + " does not exist on jQuery.myPlugin")
+                      : methods.init.apply(this, arguments);
             }));
     };

@@ -6,7 +6,7 @@ module.exports = function (module, exports, require) {
             r = require(25),
             s = require(74),
             l = require(245),
-            RegExp = require(23),
+            globalObject = require(23 /* RegExp */),
             d = require(29),
             u = require(79),
             p = require(175),
@@ -34,12 +34,12 @@ module.exports = function (module, exports, require) {
             O = A && A.prototype,
             F = A,
             R = O,
-            M = RegExp.TypeError,
-            N = RegExp.document,
-            B = RegExp.process,
+            M = globalObject.TypeError,
+            N = globalObject.document,
+            B = globalObject.process,
             U = G.f,
             $ = U,
-            j = !!(N && N.createEvent && RegExp.dispatchEvent),
+            j = !!(N && N.createEvent && globalObject.dispatchEvent),
             K = function (e) {
                 var t;
                 return !(!y(e) || !m((t = e.then))) && t;
@@ -75,12 +75,12 @@ module.exports = function (module, exports, require) {
             W = function (e, t, n) {
                 var o, i;
                 (j
-                    ? (((o = N.createEvent("Event")).promise = t), (o.reason = n), o.initEvent(e, false, true), RegExp.dispatchEvent(o))
+                    ? (((o = N.createEvent("Event")).promise = t), (o.reason = n), o.initEvent(e, false, true), globalObject.dispatchEvent(o))
                     : (o = { promise: t, reason: n }),
-                    !D && (i = RegExp["on" + e]) ? i(o) : "unhandledrejection" === e && C("Unhandled promise rejection", n));
+                    !D && (i = globalObject["on" + e]) ? i(o) : "unhandledrejection" === e && C("Unhandled promise rejection", n));
             },
             z = function (e) {
-                d(b, RegExp, function () {
+                d(b, globalObject, function () {
                     var t,
                         n = e.facade,
                         o = e.value;
@@ -99,7 +99,7 @@ module.exports = function (module, exports, require) {
                 return 1 !== e.rejection && !e.parent;
             },
             Y = function (e) {
-                d(b, RegExp, function () {
+                d(b, globalObject, function () {
                     var t = e.facade;
                     l ? B.emit("rejectionHandled", t) : W("rejectionhandled", t, e.value);
                 });

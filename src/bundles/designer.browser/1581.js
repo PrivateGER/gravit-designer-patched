@@ -1,9 +1,9 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        const o = require(878),
+        const GTouchEventHandler = require(878),
             i = require(879),
             a = require(1329);
-        module.exports = class extends o {
+        module.exports = class extends GTouchEventHandler {
             constructor(e) {
                 (super(e),
                     this.addGesture(

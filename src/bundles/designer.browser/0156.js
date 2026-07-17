@@ -3,130 +3,130 @@ module.exports = function (module, exports, require) {
         var _interopRequireDefault = require(16);
         (require(58 /* polyfill:Array */), require(30 /* polyfill:Object */), require(20 /* polyfill:RegExp */), require(271 /* polyfill:String */), require(71 /* polyfill:String */), require(151), require(34), require(91 /* polyfill:String */), require(4), require(32), require(33));
         var Utils = require(40),
-            a = _interopRequireDefault(require(263 /* GRegex */));
+            GRegex = _interopRequireDefault(require(263 /* GRegex */));
         const { FILE_ID_PREFIX } = require(10 /* designerConfig */);
-        function s() {
+        function CloudFile() {
             this._permissions = [];
         }
-        ((s.prototype.parent = null),
-            (s.prototype._previewURL = null),
-            (s.prototype.setPreviewURL = function (e) {
-                this._previewURL = e;
+        ((CloudFile.prototype.parent = null),
+            (CloudFile.prototype._previewURL = null),
+            (CloudFile.prototype.setPreviewURL = function (url) {
+                this._previewURL = url;
             }),
-            (s.prototype.getPreviewURL = function () {
+            (CloudFile.prototype.getPreviewURL = function () {
                 return this._previewURL;
             }),
-            (s.prototype.getParentId = function () {
-                const e = this.getParent();
-                return e instanceof s ? e.getId() : e;
+            (CloudFile.prototype.getParentId = function () {
+                const parent = this.getParent();
+                return parent instanceof CloudFile ? parent.getId() : parent;
             }),
-            (s.prototype.getParent = function () {
+            (CloudFile.prototype.getParent = function () {
                 return this.parent;
             }),
-            (s.prototype.getId = function () {
+            (CloudFile.prototype.getId = function () {
                 return this.id;
             }),
-            (s.prototype._permissions = null),
-            (s.prototype._itemType = null),
-            (s.prototype.storage = null),
-            (s.prototype.settings = null),
-            (s.prototype.autosave = null),
-            (s.prototype.getStorage = function () {
+            (CloudFile.prototype._permissions = null),
+            (CloudFile.prototype._itemType = null),
+            (CloudFile.prototype.storage = null),
+            (CloudFile.prototype.settings = null),
+            (CloudFile.prototype.autosave = null),
+            (CloudFile.prototype.getStorage = function () {
                 return this.storage;
             }),
-            (s.prototype.isAutoSavedVersion = function () {
+            (CloudFile.prototype.isAutoSavedVersion = function () {
                 return this.autosave;
             }),
-            (s.prototype.getExtension = function () {
-                const e = this.extension || this.ext;
-                return (e && e.toLowerCase()) || null;
+            (CloudFile.prototype.getExtension = function () {
+                const extension = this.extension || this.ext;
+                return (extension && extension.toLowerCase()) || null;
             }),
-            (s.prototype.getNameWithExtension = function () {
-                let e = this.getName();
-                e = s.normalizeMultipleDotsEnd(e);
-                const t = ".".concat(this.getExtension());
-                return (!e.toLowerCase().endsWith(t) ? (e += t) : (e = e.substr(0, e.lastIndexOf(".")) + t), e);
+            (CloudFile.prototype.getNameWithExtension = function () {
+                let name = this.getName();
+                name = CloudFile.normalizeMultipleDotsEnd(name);
+                const dotExtension = ".".concat(this.getExtension());
+                return (!name.toLowerCase().endsWith(dotExtension) ? (name += dotExtension) : (name = name.substr(0, name.lastIndexOf(".")) + dotExtension), name);
             }),
-            (s.prototype.getNameWithoutExtension = function () {
+            (CloudFile.prototype.getNameWithoutExtension = function () {
                 return (0, Utils.getFileNameWithoutExtension)(this.getName(), this.getExtension());
             }),
-            (s.prototype.getName = function () {
+            (CloudFile.prototype.getName = function () {
                 return (this.name && this.name.trim()) || this.name;
             }),
-            (s.prototype.setItemType = function (e) {
-                if (!Object.values(s.Type).includes(e)) throw Error("Invalid type!");
-                this._itemType = e;
+            (CloudFile.prototype.setItemType = function (type) {
+                if (!Object.values(CloudFile.Type).includes(type)) throw Error("Invalid type!");
+                this._itemType = type;
             }),
-            (s.prototype.getType = function () {
+            (CloudFile.prototype.getType = function () {
                 return this._itemType;
             }),
-            (s.prototype.getPermissions = function () {
+            (CloudFile.prototype.getPermissions = function () {
                 return this._permissions;
             }),
-            (s.prototype.revokePermissions = function () {
+            (CloudFile.prototype.revokePermissions = function () {
                 this._permissions = [];
             }),
-            (s.prototype.getIcon = function () {
+            (CloudFile.prototype.getIcon = function () {
                 return this.icon;
             }),
-            (s.prototype.setMimeType = function (e) {
-                this._mimetype = e;
+            (CloudFile.prototype.setMimeType = function (mimeType) {
+                this._mimetype = mimeType;
             }),
-            (s.prototype.getMimeType = function () {
+            (CloudFile.prototype.getMimeType = function () {
                 return this._mimetype || this.mimeType || this.type;
             }),
-            (s.prototype.setSize = function (e) {
-                this._size = e;
+            (CloudFile.prototype.setSize = function (size) {
+                this._size = size;
             }),
-            (s.prototype.getSize = function () {
+            (CloudFile.prototype.getSize = function () {
                 return this._size;
             }),
-            (s.prototype.hasPermission = function (e) {
-                return this._permissions.includes(e);
+            (CloudFile.prototype.hasPermission = function (permission) {
+                return this._permissions.includes(permission);
             }),
-            (s.prototype.setPermission = function (e) {
-                let t = !(arguments.length > 1 && void 0 !== arguments[1]) || arguments[1];
-                if (this._permissionSupported(e)) {
-                    if (t) this.hasPermission(e) || this._permissions.push(e);
-                    else if (this.hasPermission(e)) {
-                        var n = this._permissions.indexOf(e);
-                        this._permissions.splice(n, 1);
+            (CloudFile.prototype.setPermission = function (permission) {
+                let enabled = !(arguments.length > 1 && void 0 !== arguments[1]) || arguments[1];
+                if (this._permissionSupported(permission)) {
+                    if (enabled) this.hasPermission(permission) || this._permissions.push(permission);
+                    else if (this.hasPermission(permission)) {
+                        var index = this._permissions.indexOf(permission);
+                        this._permissions.splice(index, 1);
                     }
-                } else console.warn("Permission not supported: " + e);
+                } else console.warn("Permission not supported: " + permission);
             }),
-            (s.prototype.setVersion = function (e) {
-                this._version = e;
+            (CloudFile.prototype.setVersion = function (version) {
+                this._version = version;
             }),
-            (s.prototype.getVersion = function () {
+            (CloudFile.prototype.getVersion = function () {
                 return this._version;
             }),
-            (s.prototype.setModificationTime = function (e) {
-                this._modificationTime = e;
+            (CloudFile.prototype.setModificationTime = function (modificationTime) {
+                this._modificationTime = modificationTime;
             }),
-            (s.prototype.getModificationTime = function () {
+            (CloudFile.prototype.getModificationTime = function () {
                 return this._modificationTime;
             }),
-            (s.prototype.setPermissions = function (e) {
-                let t = !(arguments.length > 1 && void 0 !== arguments[1]) || arguments[1];
-                e.forEach((e) => this.setPermission(e, t));
+            (CloudFile.prototype.setPermissions = function (permissions) {
+                let enabled = !(arguments.length > 1 && void 0 !== arguments[1]) || arguments[1];
+                permissions.forEach((permission) => this.setPermission(permission, enabled));
             }),
-            (s.prototype._permissionSupported = function (e) {
-                return Object.values(s.Permission).includes(e);
+            (CloudFile.prototype._permissionSupported = function (permission) {
+                return Object.values(CloudFile.Permission).includes(permission);
             }),
-            (s.from = function (e) {
-                var t = new s();
-                return ((t = Object.assign(t, e)).settings && (t.settings = s.GCloudSettings.from(t.settings)), t);
+            (CloudFile.from = function (data) {
+                var file = new CloudFile();
+                return ((file = Object.assign(file, data)).settings && (file.settings = CloudFile.GCloudSettings.from(file.settings)), file);
             }),
-            (s.parseFromJSON = function (e, t) {
+            (CloudFile.parseFromJSON = function (json, defaultValue) {
                 try {
-                    const t = JSON.parse(e);
-                    return s.from(t);
-                } catch (e) {
-                    if (!t && void 0 === t) throw e;
-                    return t;
+                    const parsed = JSON.parse(json);
+                    return CloudFile.from(parsed);
+                } catch (error) {
+                    if (!defaultValue && void 0 === defaultValue) throw error;
+                    return defaultValue;
                 }
             }),
-            (s.Permission = {
+            (CloudFile.Permission = {
                 Open: "open",
                 Copy: "copy",
                 Editing: "editing",
@@ -136,67 +136,67 @@ module.exports = function (module, exports, require) {
                 Delete: "delete",
                 UnshareWithMe: "unshareWithMe",
             }),
-            (s.Storage = {
+            (CloudFile.Storage = {
                 GoogleDrive: "GOOGLE_DRIVE",
                 SharePoint: "SHAREPOINT",
                 OneDriveBusiness: "ONEDRIVE_BUSINESS",
                 Gravit: "GRAVIT_CLOUD",
             }),
-            (s.Type = {
+            (CloudFile.Type = {
                 Folder: "folder",
                 File: "file",
                 CorporateStorage: "corporate-storage",
             }),
-            (s.GCloudSettings = function () {}),
-            (s.GCloudSettings.from = function (e) {
-                let t = new s.GCloudSettings();
-                return ((t = Object.assign(t, e)), t);
+            (CloudFile.GCloudSettings = function () {}),
+            (CloudFile.GCloudSettings.from = function (data) {
+                let settings = new CloudFile.GCloudSettings();
+                return ((settings = Object.assign(settings, data)), settings);
             }),
-            (s.GCloudSettings.parseFromJSON = function (e, t) {
+            (CloudFile.GCloudSettings.parseFromJSON = function (json, defaultValue) {
                 try {
-                    const t = JSON.parse(e);
-                    return s.GCloudSettings.from(t);
-                } catch (e) {
-                    if (!t && void 0 === t) throw e;
-                    return t;
+                    const parsed = JSON.parse(json);
+                    return CloudFile.GCloudSettings.from(parsed);
+                } catch (error) {
+                    if (!defaultValue && void 0 === defaultValue) throw error;
+                    return defaultValue;
                 }
             }),
-            (s.getPrefixIdForStorage = function (e) {
-                switch (e) {
-                    case s.Storage.Gravit:
+            (CloudFile.getPrefixIdForStorage = function (storage) {
+                switch (storage) {
+                    case CloudFile.Storage.Gravit:
                         return "";
-                    case s.Storage.GoogleDrive:
+                    case CloudFile.Storage.GoogleDrive:
                         return FILE_ID_PREFIX.GOOGLEDRIVE;
-                    case s.Storage.SharePoint:
+                    case CloudFile.Storage.SharePoint:
                         return FILE_ID_PREFIX.SHAREPOINT;
-                    case s.Storage.OneDriveBusiness:
+                    case CloudFile.Storage.OneDriveBusiness:
                         return FILE_ID_PREFIX.ONEDRIVEBUSINESS;
                 }
                 throw new Error("Unsupported storage!");
             }),
-            (s.getFileStorageId = function (e) {
-                if (!e.id) return null;
-                const t = s.getPrefixIdForStorage(e.storage);
-                let n = e.id;
-                return (t && (n = n.replace("".concat(t, "_"), "")), n);
+            (CloudFile.getFileStorageId = function (file) {
+                if (!file.id) return null;
+                const prefix = CloudFile.getPrefixIdForStorage(file.storage);
+                let id = file.id;
+                return (prefix && (id = id.replace("".concat(prefix, "_"), "")), id);
             }),
-            (s.getCollaborativeFileId = function (e, t) {
-                const n = s.getPrefixIdForStorage(t);
-                return "".concat(n ? n + "_" : "").concat(e);
+            (CloudFile.getCollaborativeFileId = function (id, storage) {
+                const prefix = CloudFile.getPrefixIdForStorage(storage);
+                return "".concat(prefix ? prefix + "_" : "").concat(id);
             }),
-            (s.createOrReturnSelfInstance = function (e) {
-                return e instanceof s ? e : s.from(e);
+            (CloudFile.createOrReturnSelfInstance = function (data) {
+                return data instanceof CloudFile ? data : CloudFile.from(data);
             }),
-            (s.getExtensionFromName = function (e) {
-                const t = e.match(a.default.String.FileExtension);
-                return t ? t[0].slice(1) : null;
+            (CloudFile.getExtensionFromName = function (name) {
+                const match = name.match(GRegex.default.String.FileExtension);
+                return match ? match[0].slice(1) : null;
             }),
-            (s.normalizeMultipleDotsEnd = function (e) {
-                if (e.endsWith(".")) {
-                    const t = e.match(a.default.String.MultipleDotsEnd);
-                    if (t) return e.slice(0, t.index);
+            (CloudFile.normalizeMultipleDotsEnd = function (name) {
+                if (name.endsWith(".")) {
+                    const match = name.match(GRegex.default.String.MultipleDotsEnd);
+                    if (match) return name.slice(0, match.index);
                 }
-                return e;
+                return name;
             }),
-            (module.exports = s));
+            (module.exports = CloudFile));
     };

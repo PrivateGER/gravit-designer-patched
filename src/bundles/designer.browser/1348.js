@@ -1,27 +1,27 @@
 module.exports = function (module, exports, require) {
         "use strict";
         (require(8 /* Symbol */), require(196 /* polyfill:Promise */));
-        var o = require(53),
+        var GEditor = require(53),
             GObject = require(1);
         const { gApi } = require(10 /* designerConfig */),
-            r = require(393),
-            s = require(217),
-            l = require(86);
-        function c(e) {
-            ((this._document = e),
+            GCollaborationEvent = require(393),
+            GDocumentStatusEvent = require(217),
+            DocumentStatus = require(86);
+        function CollaborativeTextController(document) {
+            ((this._document = document),
                 (this._currentLock = null),
                 (this._openingInlineEditor = false),
                 (this._alreadyRequestedAccess = false),
-                this._document.addEventListener(r, this._collaborationEvent, this, null, true));
-            const t = this._document.getEditor();
-            t && t.addEventListener(o.GEditor.InlineEditorEvent, this._inlineEditorEvent, this, null, true);
+                this._document.addEventListener(GCollaborationEvent, this._collaborationEvent, this, null, true));
+            const editor = this._document.getEditor();
+            editor && editor.addEventListener(GEditor.GEditor.InlineEditorEvent, this._inlineEditorEvent, this, null, true);
         }
-        ((c.StatusChangedEvent = function (e) {
-            this.status = e;
+        ((CollaborativeTextController.StatusChangedEvent = function (status) {
+            this.status = status;
         }),
-            GObject.GObject.inherit(c.StatusChangedEvent, GObject.GEvent),
-            (c.StatusChangedEvent.prototype.status = null),
-            (c.Status = {
+            GObject.GObject.inherit(CollaborativeTextController.StatusChangedEvent, GObject.GEvent),
+            (CollaborativeTextController.StatusChangedEvent.prototype.status = null),
+            (CollaborativeTextController.Status = {
                 Initial: 0,
                 Editing: 1,
                 Finished: 2,
@@ -31,24 +31,24 @@ module.exports = function (module, exports, require) {
                 UpdateAvailable: 6,
                 Updating: 7,
             }),
-            (c.LockUpdateEvent = function (e) {
-                this.lock = e;
+            (CollaborativeTextController.LockUpdateEvent = function (lock) {
+                this.lock = lock;
             }),
-            GObject.GObject.inherit(c.LockUpdateEvent, GObject.GEvent),
-            (c.LockUpdateEvent.prototype.lock = null),
-            (c.prototype._status = c.Status.Initial),
-            (c.prototype._openingInlineEditor = false),
-            (c.prototype._currentLock = null),
-            (c.prototype._alreadyRequestedAccess = false),
-            (c.prototype.detach = function () {
-                this._document.removeEventListener(r, this._collaborationEvent, this);
-                const e = this._document.getEditor();
-                e && e.removeEventListener(o.GEditor.InlineEditorEvent, this._inlineEditorEvent, this);
+            GObject.GObject.inherit(CollaborativeTextController.LockUpdateEvent, GObject.GEvent),
+            (CollaborativeTextController.LockUpdateEvent.prototype.lock = null),
+            (CollaborativeTextController.prototype._status = CollaborativeTextController.Status.Initial),
+            (CollaborativeTextController.prototype._openingInlineEditor = false),
+            (CollaborativeTextController.prototype._currentLock = null),
+            (CollaborativeTextController.prototype._alreadyRequestedAccess = false),
+            (CollaborativeTextController.prototype.detach = function () {
+                this._document.removeEventListener(GCollaborationEvent, this._collaborationEvent, this);
+                const editor = this._document.getEditor();
+                editor && editor.removeEventListener(GEditor.GEditor.InlineEditorEvent, this._inlineEditorEvent, this);
             }),
-            (c.prototype.getStatus = function () {
+            (CollaborativeTextController.prototype.getStatus = function () {
                 return this._status;
             }),
-            (c.prototype.getCurrentLock = async function () {
+            (CollaborativeTextController.prototype.getCurrentLock = async function () {
                 return (
                     this._currentLock ||
                         ((this._currentLock = await gApi.lock.get(this._document.getId()).catch(() => null)),
@@ -56,7 +56,7 @@ module.exports = function (module, exports, require) {
                     this._currentLock
                 );
             }),
-            (c.prototype.acquireLock = async function () {
+            (CollaborativeTextController.prototype.acquireLock = async function () {
                 return (await this.canLock())
                     ? (this._currentLock ||
                           ((this._currentLock = await gApi.lock.acquire(this._document.getId()).catch(() => null)),
@@ -64,60 +64,60 @@ module.exports = function (module, exports, require) {
                       this._currentLock)
                     : null;
             }),
-            (c.prototype.releaseLock = function () {
+            (CollaborativeTextController.prototype.releaseLock = function () {
                 return gApi.lock.release(this._document.getId()).then(() => {
                     this._currentLock = null;
                 });
             }),
-            (c.prototype.canLock = async function () {
+            (CollaborativeTextController.prototype.canLock = async function () {
                 return !(await this.getCurrentLock()) || this.isLockedByMe();
             }),
-            (c.prototype.isLockedByMe = function () {
+            (CollaborativeTextController.prototype.isLockedByMe = function () {
                 if (!this._currentLock) return false;
-                const e = gDesigner.getSyncUser();
-                return this._currentLock.isLockedBy(e);
+                const user = gDesigner.getSyncUser();
+                return this._currentLock.isLockedBy(user);
             }),
-            (c.prototype.reloadDocument = async function () {
-                this._updateStatus(c.Status.Updating);
-                const e = (t) => {
-                    t.status !== l.Loading && (this._document.removeEventListener(s, e), this._document.unlock(), this.resetTextEditing());
+            (CollaborativeTextController.prototype.reloadDocument = async function () {
+                this._updateStatus(CollaborativeTextController.Status.Updating);
+                const onStatusEvent = (event) => {
+                    event.status !== DocumentStatus.Loading && (this._document.removeEventListener(GDocumentStatusEvent, onStatusEvent), this._document.unlock(), this.resetTextEditing());
                 };
-                (await this.releaseLock(), this._document.addEventListener(s, e), this._document.lock(), this._document.reload());
+                (await this.releaseLock(), this._document.addEventListener(GDocumentStatusEvent, onStatusEvent), this._document.lock(), this._document.reload());
             }),
-            (c.prototype.resetTextEditing = function () {
-                this._updateStatus(c.Status.Initial);
+            (CollaborativeTextController.prototype.resetTextEditing = function () {
+                this._updateStatus(CollaborativeTextController.Status.Initial);
             }),
-            (c.prototype.finishTextEditing = async function () {
-                (this._closeInlineEditor(), this._updateStatus(c.Status.Finished));
+            (CollaborativeTextController.prototype.finishTextEditing = async function () {
+                (this._closeInlineEditor(), this._updateStatus(CollaborativeTextController.Status.Finished));
             }),
-            (c.prototype.backToTextEditing = async function () {
-                (this._closeInlineEditor(), this._updateStatus(c.Status.Editing));
+            (CollaborativeTextController.prototype.backToTextEditing = async function () {
+                (this._closeInlineEditor(), this._updateStatus(CollaborativeTextController.Status.Editing));
             }),
-            (c.prototype.sendChanges = async function () {
+            (CollaborativeTextController.prototype.sendChanges = async function () {
                 return (
                     this._closeInlineEditor(),
                     this._document.lock(),
-                    this._updateStatus(c.Status.Sending),
-                    new Promise(async (e, t) => {
+                    this._updateStatus(CollaborativeTextController.Status.Sending),
+                    new Promise(async (resolve, reject) => {
                         this._document.storeToCloud(
                             this._document.getScene(),
                             async () => {
-                                (await this.releaseLock().catch((e) => console.error(e)), e());
+                                (await this.releaseLock().catch((error) => console.error(error)), resolve());
                             },
-                            t,
+                            reject,
                             true,
                             { collabTextUpdate: true, sendEmail: true }
                         );
                     })
                         .then(async () => {
-                            (await gDesigner.updateCollabTextPreviews().catch((e) => console.error(e)), this.resetTextEditing());
+                            (await gDesigner.updateCollabTextPreviews().catch((error) => console.error(error)), this.resetTextEditing());
                         })
-                        .catch((e) => {
+                        .catch((error) => {
                             throw (
                                 this.finishTextEditing(),
-                                this._document.updateStatus(l.SaveCancelled),
-                                this._document.updateStatus(l.Ready),
-                                e
+                                this._document.updateStatus(DocumentStatus.SaveCancelled),
+                                this._document.updateStatus(DocumentStatus.Ready),
+                                error
                             );
                         })
                         .finally(() => {
@@ -125,15 +125,15 @@ module.exports = function (module, exports, require) {
                         })
                 );
             }),
-            (c.prototype.previewChanges = async function () {
+            (CollaborativeTextController.prototype.previewChanges = async function () {
                 return (
                     this._closeInlineEditor(),
-                    this._updateStatus(c.Status.Previewing),
+                    this._updateStatus(CollaborativeTextController.Status.Previewing),
                     this._document.lock(),
                     gDesigner
                         .updateCollabTextPreviews()
                         .then(() => {
-                            this._updateStatus(c.Status.Previewed);
+                            this._updateStatus(CollaborativeTextController.Status.Previewed);
                         })
                         .catch(() => {
                             this.finishTextEditing();
@@ -143,56 +143,56 @@ module.exports = function (module, exports, require) {
                         })
                 );
             }),
-            (c.prototype.requestAccess = async function () {
+            (CollaborativeTextController.prototype.requestAccess = async function () {
                 return gApi.lock.request(this._document.getId()).then(() => (this._alreadyRequestedAccess = true));
             }),
-            (c.prototype.hasAlreadyRequestedAccess = function () {
+            (CollaborativeTextController.prototype.hasAlreadyRequestedAccess = function () {
                 return this._alreadyRequestedAccess;
             }),
-            (c.prototype._updateStatus = function (e) {
-                e !== this._status &&
-                    ((this._status = e),
-                    this._document.hasEventListeners(c.StatusChangedEvent) &&
-                        this._document.trigger(new c.StatusChangedEvent(this._status)));
+            (CollaborativeTextController.prototype._updateStatus = function (status) {
+                status !== this._status &&
+                    ((this._status = status),
+                    this._document.hasEventListeners(CollaborativeTextController.StatusChangedEvent) &&
+                        this._document.trigger(new CollaborativeTextController.StatusChangedEvent(this._status)));
             }),
-            (c.prototype._closeInlineEditor = function () {
-                const e = this._document.getEditor();
-                e && (e.closeInlineEditor(), e.clearSelection());
+            (CollaborativeTextController.prototype._closeInlineEditor = function () {
+                const editor = this._document.getEditor();
+                editor && (editor.closeInlineEditor(), editor.clearSelection());
             }),
-            (c.prototype._inlineEditorEvent = function (e) {
-                switch (e.type) {
-                    case o.GEditor.InlineEditorEvent.Type.TryOpen:
-                        this._tryOpenInlineEditor(e);
+            (CollaborativeTextController.prototype._inlineEditorEvent = function (event) {
+                switch (event.type) {
+                    case GEditor.GEditor.InlineEditorEvent.Type.TryOpen:
+                        this._tryOpenInlineEditor(event);
                 }
             }),
-            (c.prototype._tryOpenInlineEditor = async function (e) {
+            (CollaborativeTextController.prototype._tryOpenInlineEditor = async function (event) {
                 if (!this._openingInlineEditor && this._document.isCollaborativeTextEditing())
-                    if ((e.editor.disableInlineEditingSupport(), e.editor instanceof o.GCollabTextEditor)) {
+                    if ((event.editor.disableInlineEditingSupport(), event.editor instanceof GEditor.GCollabTextEditor)) {
                         this._openingInlineEditor = true;
                         try {
                             gDesigner.toggleLoading(true);
                             if (!(await this.acquireLock())) return void this._closeInlineEditor();
-                            e.editor.enableInlineEditingSupport();
-                            const t = this._document.getEditor();
-                            if (t) {
-                                const n = this._document.getActiveWindow(),
-                                    o = n && n.getView();
-                                o && t.openInlineEditor(e.editor.getElement(), o) && this._updateStatus(c.Status.Editing);
+                            event.editor.enableInlineEditingSupport();
+                            const editor = this._document.getEditor();
+                            if (editor) {
+                                const activeWindow = this._document.getActiveWindow(),
+                                    view = activeWindow && activeWindow.getView();
+                                view && editor.openInlineEditor(event.editor.getElement(), view) && this._updateStatus(CollaborativeTextController.Status.Editing);
                             }
                         } finally {
                             ((this._openingInlineEditor = false), gDesigner.toggleLoading(false));
                         }
                     } else this._closeInlineEditor();
             }),
-            (c.prototype._fireLockUpdateEvent = function () {
-                this._document.hasEventListeners(c.LockUpdateEvent) && this._document.trigger(new c.LockUpdateEvent(this._currentLock));
+            (CollaborativeTextController.prototype._fireLockUpdateEvent = function () {
+                this._document.hasEventListeners(CollaborativeTextController.LockUpdateEvent) && this._document.trigger(new CollaborativeTextController.LockUpdateEvent(this._currentLock));
             }),
-            (c.prototype._collaborationEvent = function (e) {
-                if (e.type === r.Type.LockUpdated) ((this._currentLock = e.data), this._fireLockUpdateEvent());
-                else if (e.type === r.Type.FileUpdate) {
-                    if (e.data && e.data.from === gDesigner.getSyncUser().id) return;
-                    this._updateStatus(c.Status.UpdateAvailable);
+            (CollaborativeTextController.prototype._collaborationEvent = function (event) {
+                if (event.type === GCollaborationEvent.Type.LockUpdated) ((this._currentLock = event.data), this._fireLockUpdateEvent());
+                else if (event.type === GCollaborationEvent.Type.FileUpdate) {
+                    if (event.data && event.data.from === gDesigner.getSyncUser().id) return;
+                    this._updateStatus(CollaborativeTextController.Status.UpdateAvailable);
                 }
             }),
-            (module.exports = c));
+            (module.exports = CollaborativeTextController));
     };

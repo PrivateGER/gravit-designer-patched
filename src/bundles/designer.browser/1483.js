@@ -27,7 +27,7 @@ module.exports = function (module, exports, require) {
             GObject = require(1),
             GPlatform = require(15),
             Utils = require(40),
-            richTooltipModule = require(67),
+            richTooltipModule = require(67 /* GRichTooltipConfig */),
             GMSTeamsAppLoader = _interopRequireDefault(require(1484)),
             teamsHelper = _interopRequireDefault(require(443)),
             gtmInit = _interopRequireDefault(require(1485)),
@@ -37,8 +37,8 @@ module.exports = function (module, exports, require) {
             buildFlags = require(231 /* IS_TRUNK */),
             canSelfUpdate = !storeVendor,
             runtimeDetector = require(859);
-        require(1488);
-        require(1489);
+        require(1488 /* lib:drag-drop-touch */);
+        require(1489 /* lib:abortcontroller-polyfill */);
         const GMaintenanceStatus = require(1490);
         var GDesigner = require(1491),
             GDocument = require(163),
@@ -136,7 +136,7 @@ module.exports = function (module, exports, require) {
             GToggleFullscreenAction = require(1335),
             GGravitCloudAction = require(448),
             GVersionsHistoryAction = require(1256),
-            GLanguageAction = require(1620),
+            GSwitchLanguageAction = require(1620),
             GOpenLinkAction = require(1621),
             GOpenQuickHelpScreenAction = require(1336),
             GNewFromTemplateAction = require(1623),
@@ -161,7 +161,7 @@ module.exports = function (module, exports, require) {
         var GOpenSharedFileAction = require(1254),
             GTranslationToolAction = require(1639),
             GSwitchWebcdrAction = require(1641);
-        require(1642);
+        require(1642 /* GTogglePaintLayersVisibilityAction */);
         const GShowShortcutsAction = require(1643),
             GEyeDropperAction = require(1645),
             GShowSelectionHandlesAction = require(1646),
@@ -202,7 +202,7 @@ module.exports = function (module, exports, require) {
             GTextProperties = require(1273),
             GDimensionProperties = require(1294),
             GTransformProperties = require(1660),
-            GAlignProperties = require(1274),
+            AlignProperties = require(1274),
             GSymbolsSidebar = require(1661),
             GLibrarySidebar = require(1662),
             GSoftwareUpdatePanel = require(1665),
@@ -212,11 +212,11 @@ module.exports = function (module, exports, require) {
             GPluginManager = require(1670),
             GContainer = require(85),
             GInAppLinkHandler = require(1672),
-            GRichTooltipController = (require(237 /* GStorage */), require(1673)),
+            GRichTooltipController = (require(237 /* GStorage */), require(1673 /* GTooltip */)),
             GCommonNames = require(119),
             GPluginError = require(1674),
             GSystemDialog = require(44),
-            GEmbeddedLoginDialog = require(860),
+            GEmbeddedLogin = require(860),
             GMaintenanceDialog = require(1675),
             licenseManager = require(337),
             reminderManager = require(1325),
@@ -227,14 +227,14 @@ module.exports = function (module, exports, require) {
         const defaultFileExt = designerConfig.FILE_FORMATS.find((format) => format.default).ext,
             secondaryFileExts = designerConfig.FILE_FORMATS.filter((format) => format.secondary).map((format) => format.ext);
         var inAppPurchaseFactory = require(1678);
-        const translationManager = new (require(1343))();
+        const translationManager = new (require(1343 /* GTranslationManager */))();
         translationManager.init();
         const GWindowsStoreAnnouncement = require(1684),
             GBetaFlow = require(1686),
             GMemoryManager = require(1687),
             GOpenFileHandler = require(1255),
             { isExecutingOnMSTeams, isExecutingOnMSTeamsSync, isTeamsChannel, getTeamsLocale } = teamsHelper.default;
-        (require(18 /* GCategory */), require(1688), require(1154), require(1689), require(1690), require(1691), require(1693), require(1694));
+        (require(18 /* GCategory */), require(1688), require(1154), require(1689), require(1690), require(1691), require(1693 /* GLongPressEvent */), require(1694));
         var globalWindow = window;
         const isTrunkBuild = !!/^trunk/.test("production") && !isBeta;
         ((globalWindow.gApi = require(10 /* designerConfig */).gApi), (globalWindow.gApi.webcdr = null));
@@ -619,7 +619,7 @@ module.exports = function (module, exports, require) {
                                 new GExampleFilesAction(),
                                 new GOpenQuickHelpScreenAction()
                             )
-                            .concat(...(isExecutingOnMSTeamsSync() ? [] : GContainer.GravitLanguages.map((language) => new GLanguageAction(language, translationManager.getTranslationRealName(language)))))
+                            .concat(...(isExecutingOnMSTeamsSync() ? [] : GContainer.GravitLanguages.map((language) => new GSwitchLanguageAction(language, translationManager.getTranslationRealName(language)))))
                             .concat([
                                 ...(isCorel ? [new GSwitchWebcdrAction("STAGING", isTrunkBuild), new GSwitchWebcdrAction("BETA", isBeta)] : []),
                                 new GOpenWelcomeScreenAction(),
@@ -939,7 +939,7 @@ module.exports = function (module, exports, require) {
                         ],
                         properties: [
                             new GDimensionProperties(),
-                            new GAlignProperties(),
+                            new AlignProperties(),
                             new GTransformProperties(),
                             new GPageProperties(),
                             new GSceneProperties(),
@@ -1115,7 +1115,7 @@ module.exports = function (module, exports, require) {
                         (await gContainer.preLogin().catch((error) => {
                             console.warn("gContainer preLogin error", error);
                         }),
-                            new GEmbeddedLoginDialog(initGravitApp).open({ flow: deepLinkFlow, signup: signupData, version: "PlasmaTrap-patched" }),
+                            new GEmbeddedLogin(initGravitApp).open({ flow: deepLinkFlow, signup: signupData, version: "PlasmaTrap-patched" }),
                             GInAppLinkHandler.setupInAppLinkReloadAppForOnce(),
                             urlParams &&
                                 urlParams.has(GContainer.DeepLinking.PWADialog) &&

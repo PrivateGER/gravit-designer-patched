@@ -1,19 +1,19 @@
 module.exports = function (module, exports, require) {
         var o;
         module.exports =
-            ((o = require(55)),
+            ((o = require(55 /* lib:crypto-js */)),
             require(382),
             require(1044),
             require(1045),
             require(272),
-            require(273),
+            require(273 /* lib:crypto-js */),
             require(537),
             require(736),
             require(1046),
-            require(737),
+            require(737 /* lib:crypto-js */),
             require(1047),
-            require(1048),
-            require(1049),
+            require(1048 /* lib:crypto-js */),
+            require(1049 /* lib:crypto-js */),
             require(538),
             require(1050),
             require(234),
@@ -29,10 +29,10 @@ module.exports = function (module, exports, require) {
             require(1059),
             require(1060),
             require(1061),
-            require(1062),
+            require(1062 /* lib:crypto-js */),
             require(1063 /* lib:crypto-js */),
             require(1064),
-            require(1065),
-            require(1066),
+            require(1065 /* lib:crypto-js */),
+            require(1066 /* lib:crypto-js */),
             o);
     };

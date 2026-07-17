@@ -2,14 +2,14 @@ module.exports = function (module, exports, require) {
         "use strict";
         (require(290), require(4), require(41), require(13), require(38));
         const { watchDog } = require(40 /* Utils */),
-            i = require(433),
-            a = {
-                init: function (e) {
+            GShareRoleFactory = require(433),
+            methods = {
+                init: function (options) {
                     return (
-                        (e = $.extend({ defaultRole: null, buttons: [] }, e)),
+                        (options = $.extend({ defaultRole: null, buttons: [] }, options)),
                         this.each(function () {
-                            const t = i.ROLES.ALL.filter((e) => e.isAssignable()),
-                                n = $("<div/>")
+                            const assignableRoles = GShareRoleFactory.ROLES.ALL.filter((role) => role.isAssignable()),
+                                overlay = $("<div/>")
                                     .gOverlay({
                                         padding: false,
                                         clazz: "g-role-selector-overlay",
@@ -20,45 +20,45 @@ module.exports = function (module, exports, require) {
                                         $("<div/>")
                                             .addClass("g-role-selector-roles")
                                             .append(
-                                                t.map((e) =>
+                                                assignableRoles.map((role) =>
                                                     $("<div/>")
-                                                        .attr("role-id", e.id)
+                                                        .attr("role-id", role.id)
                                                         .addClass("g-role-selector-role")
                                                         .append($("<span/>").addClass("icon").addClass("gravit-icon-role-checked"))
                                                         .append(
                                                             $("<div/>")
                                                                 .addClass("g-role-selector-role-container")
                                                                 .append(
-                                                                    $("<span/>").addClass("name").text(e.name).gPro({
-                                                                        pro: !!e.pro,
+                                                                    $("<span/>").addClass("name").text(role.name).gPro({
+                                                                        pro: !!role.pro,
                                                                         badgeAlwaysVisible: true,
                                                                     })
                                                                 )
-                                                                .append($("<span/>").addClass("text").text(e.description))
+                                                                .append($("<span/>").addClass("text").text(role.description))
                                                         )
                                                         .on(
                                                             "click",
                                                             watchDog.trap(
                                                                 () => {
-                                                                    (a.role.call(this, e),
-                                                                        $(this).trigger("rolechange", e),
-                                                                        n.gOverlay("close"));
+                                                                    (methods.role.call(this, role),
+                                                                        $(this).trigger("rolechange", role),
+                                                                        overlay.gOverlay("close"));
                                                                 },
-                                                                () => !e.pro
+                                                                () => !role.pro
                                                             )
                                                         )
                                                 )
                                             )
                                     );
-                            e.buttons &&
-                                e.buttons.length &&
-                                (n.append($("<hr/>")),
-                                n.append(
+                            options.buttons &&
+                                options.buttons.length &&
+                                (overlay.append($("<hr/>")),
+                                overlay.append(
                                     $("<div/>")
                                         .addClass("g-role-selector-buttons")
                                         .append(
-                                            e.buttons.map((e) => {
-                                                let { icon, label, click, closeOnClick } = e;
+                                            options.buttons.map((button) => {
+                                                let { icon, label, click, closeOnClick } = button;
                                                 return $("<div/>")
                                                     .addClass("g-role-selector-button")
                                                     .append(
@@ -68,50 +68,50 @@ module.exports = function (module, exports, require) {
                                                     )
                                                     .append($("<span/>").addClass("label").text(label))
                                                     .on("click", () => {
-                                                        (click(), closeOnClick && n.gOverlay("close"));
+                                                        (click(), closeOnClick && overlay.gOverlay("close"));
                                                     });
                                             })
                                         )
                                 ));
-                            const r = $(this)
-                                    .data("options", e)
-                                    .data("overlay", n)
+                            const element = $(this)
+                                    .data("options", options)
+                                    .data("overlay", overlay)
                                     .addClass("g-role-selector")
                                     .append($("<label/>"))
                                     .append($("<span/>").addClass("gravit-icon-down"))
-                                    .on("click", (e) => {
-                                        n.gOverlay("open", $(e.target).closest(".g-role-selector"));
+                                    .on("click", (event) => {
+                                        overlay.gOverlay("open", $(event.target).closest(".g-role-selector"));
                                     }),
-                                s = e.defaultRole || t[0];
-                            return (a.role.call(this, s), r);
+                                selectedRole = options.defaultRole || assignableRoles[0];
+                            return (methods.role.call(this, selectedRole), element);
                         })
                     );
                 },
-                role: function (e) {
-                    let t = !(arguments.length > 1 && void 0 !== arguments[1]) || arguments[1];
+                role: function (role) {
+                    let savePreviousRole = !(arguments.length > 1 && void 0 !== arguments[1]) || arguments[1];
                     if (arguments.length > 0) {
-                        const n = $(this);
-                        let o = t && n.data("options") ? n.data("options").role : null;
-                        ((n.data("options").previousRole = o), (n.data("options").role = e), n.find("label").text(e.name));
-                        const i = n.data("overlay");
+                        const element = $(this);
+                        let previousRole = savePreviousRole && element.data("options") ? element.data("options").role : null;
+                        ((element.data("options").previousRole = previousRole), (element.data("options").role = role), element.find("label").text(role.name));
+                        const overlay = element.data("overlay");
                         return (
-                            i.find(".g-role-selector-role.g-selected").removeClass("g-selected"),
-                            i.find('[role-id="'.concat(e.id, '"]')).addClass("g-selected"),
+                            overlay.find(".g-role-selector-role.g-selected").removeClass("g-selected"),
+                            overlay.find('[role-id="'.concat(role.id, '"]')).addClass("g-selected"),
                             this
                         );
                     }
                     return $(this).data("options").role;
                 },
                 restoreRole: function () {
-                    const e = $(this);
-                    e.data("options").previousRole && a.role.call(this, e.data("options").previousRole, false);
+                    const element = $(this);
+                    element.data("options").previousRole && methods.role.call(this, element.data("options").previousRole, false);
                 },
             };
-        $.fn.gRoleSelector = function (e) {
-            return a[e]
-                ? a[e].apply(this, Array.prototype.slice.call(arguments, 1))
-                : "object" != typeof e && e
-                  ? void $.error("Method " + e + " does not exist on jQuery.gRoleSelector")
-                  : a.init.apply(this, arguments);
+        $.fn.gRoleSelector = function (method) {
+            return methods[method]
+                ? methods[method].apply(this, Array.prototype.slice.call(arguments, 1))
+                : "object" != typeof method && method
+                  ? void $.error("Method " + method + " does not exist on jQuery.gRoleSelector")
+                  : methods.init.apply(this, arguments);
         };
     };

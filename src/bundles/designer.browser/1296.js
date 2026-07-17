@@ -4,9 +4,9 @@ module.exports = function (module, exports, require) {
         var GObject = require(1),
             GPlatform = require(15),
             GCategory = require(18),
-            r = require(31);
+            GAction = require(31);
         function s() {}
-        (GObject.GObject.inherit(s, r),
+        (GObject.GObject.inherit(s, GAction),
             (s.ID = "view.clone"),
             (s.TITLE = new GObject.GLocaleKey("GNewWindowAction", "title")),
             (s.prototype.getId = function () {

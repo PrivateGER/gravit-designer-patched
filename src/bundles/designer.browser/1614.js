@@ -4,10 +4,10 @@ module.exports = function (module, exports, require) {
         var GObject = require(1),
             GPlatform = require(15),
             GCategory = require(18),
-            r = require(31),
+            GAction = require(31),
             s = require(1169);
         function l() {}
-        (GObject.GObject.inherit(l, r),
+        (GObject.GObject.inherit(l, GAction),
             (l.ID = "view.canvas.show-rulers"),
             (l.TITLE = new GObject.GLocaleKey("GShowRulersAction", "title")),
             (l.prototype.getId = function () {

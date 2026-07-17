@@ -2,11 +2,11 @@ module.exports = function (module, exports, require) {
         "use strict";
         require(3);
         var GObject = require(1);
-        const i = require(31),
+        const GAction = require(31),
             GCategory = require(18),
             GOfflineDialog = require(256);
         function s() {}
-        (GObject.GObject.inherit(s, i),
+        (GObject.GObject.inherit(s, GAction),
             (s.ID = "example-files"),
             (s.TITLE = new GObject.GLocaleKey("GExampleFilesAction", "title")),
             (s.prototype.getId = function () {

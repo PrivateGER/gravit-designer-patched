@@ -12,69 +12,69 @@ module.exports = function (module, exports, require) {
                 FILE_UPDATE_EVENT,
                 FILE_AUTO_SAVE_EVENT,
             } = designerConfig.gApi.COLLABORATION_EVENTS,
-            p = require(393),
-            g = require(78);
-        function h() {
-            ((this._documents = new Map()), gDesigner.addEventListener(g, this._documentEvent, this));
+            GCollaborationEvent = require(393),
+            GDocumentEvent = require(78);
+        function GRealtimeManager() {
+            ((this._documents = new Map()), gDesigner.addEventListener(GDocumentEvent, this._documentEvent, this));
         }
-        ((h.prototype._documents = null),
-            (h.prototype._documentEvent = function (e) {
-                const t = e.document;
-                switch (e.type) {
-                    case g.Type.Added:
-                    case g.Type.Activated:
-                    case g.Type.StorageItemUpdated:
-                        ((!t.isLockedByVersionHistory() && t.isCloudFile()) ||
-                            (t.getId() && t.getStorageItem() && t.getStorageItem().supportsShadowFile())) &&
-                            this.attachDocument(t);
+        ((GRealtimeManager.prototype._documents = null),
+            (GRealtimeManager.prototype._documentEvent = function (event) {
+                const document = event.document;
+                switch (event.type) {
+                    case GDocumentEvent.Type.Added:
+                    case GDocumentEvent.Type.Activated:
+                    case GDocumentEvent.Type.StorageItemUpdated:
+                        ((!document.isLockedByVersionHistory() && document.isCloudFile()) ||
+                            (document.getId() && document.getStorageItem() && document.getStorageItem().supportsShadowFile())) &&
+                            this.attachDocument(document);
                         break;
-                    case g.Type.Removed:
-                        this.detachDocument(t);
+                    case GDocumentEvent.Type.Removed:
+                        this.detachDocument(document);
                 }
             }),
-            (h.prototype.attachDocument = function (e) {
+            (GRealtimeManager.prototype.attachDocument = function (document) {
                 if (!designerConfig.ENABLE_COLLABORATION) return;
-                if (this._documents.has(e)) return;
-                const t = new designerConfig.gApi.WebSocketClient();
-                (t.setToken(e.getToken()),
-                    t.connect("/v2/realtime/" + e.getId()),
+                if (this._documents.has(document)) return;
+                const socket = new designerConfig.gApi.WebSocketClient();
+                (socket.setToken(document.getToken()),
+                    socket.connect("/v2/realtime/" + document.getId()),
                     designerConfig.ENABLE_COLLABORATION &&
-                        (t.on(ANNOTATION_EVENT, (t) => {
-                            this._trigger(e, p.Type.AnnotationsUpdate, t.data);
+                        (socket.on(ANNOTATION_EVENT, (message) => {
+                            this._trigger(document, GCollaborationEvent.Type.AnnotationsUpdate, message.data);
                         }),
-                        t.on(USER_EVENT, (t) => {
-                            this._trigger(e, p.Type.UserUpdate, t.data);
+                        socket.on(USER_EVENT, (message) => {
+                            this._trigger(document, GCollaborationEvent.Type.UserUpdate, message.data);
                         }),
-                        t.on(REVIEW_STATUS_CHANGED, (t) => {
-                            this._trigger(e, p.Type.ReviewStatusChanged, t.data);
+                        socket.on(REVIEW_STATUS_CHANGED, (message) => {
+                            this._trigger(document, GCollaborationEvent.Type.ReviewStatusChanged, message.data);
                         }),
-                        t.on(LOCK_REQUEST_EVENT, (t) => {
-                            this._trigger(e, p.Type.LockRequest, t.data);
+                        socket.on(LOCK_REQUEST_EVENT, (message) => {
+                            this._trigger(document, GCollaborationEvent.Type.LockRequest, message.data);
                         }),
-                        t.on(LOCK_UPDATE_EVENT, (t) => {
-                            const n = t.data && t.data.lock ? new designerConfig.Lock(t.data.lock) : null;
-                            this._trigger(e, p.Type.LockUpdated, n);
+                        socket.on(LOCK_UPDATE_EVENT, (message) => {
+                            const lock = message.data && message.data.lock ? new designerConfig.Lock(message.data.lock) : null;
+                            this._trigger(document, GCollaborationEvent.Type.LockUpdated, lock);
                         }),
-                        t.on(FILE_UPDATE_EVENT, (t) => {
-                            this._trigger(e, p.Type.FileUpdate, t.data);
+                        socket.on(FILE_UPDATE_EVENT, (message) => {
+                            this._trigger(document, GCollaborationEvent.Type.FileUpdate, message.data);
                         })),
                     designerConfig.SHARE_ENGINE &&
-                        t.on(SHARE_EVENT, (t) => {
-                            this._trigger(e, p.Type.ShareUpdate, t.data);
+                        socket.on(SHARE_EVENT, (message) => {
+                            this._trigger(document, GCollaborationEvent.Type.ShareUpdate, message.data);
                         }),
                     designerConfig.AUTO_SAVE_ENABLED &&
-                        t.on(FILE_AUTO_SAVE_EVENT, (t) => {
-                            this._trigger(e, p.Type.FileAutoSave, t.data);
+                        socket.on(FILE_AUTO_SAVE_EVENT, (message) => {
+                            this._trigger(document, GCollaborationEvent.Type.FileAutoSave, message.data);
                         }),
-                    this._documents.set(e, { doc: e, ws: t }));
+                    this._documents.set(document, { doc: document, ws: socket }));
             }),
-            (h.prototype.detachDocument = function (e) {
-                const t = this._documents.get(e);
-                t && (t.ws.close(), this._documents.delete(e));
+            (GRealtimeManager.prototype.detachDocument = function (document) {
+                const entry = this._documents.get(document);
+                entry && (entry.ws.close(), this._documents.delete(document));
             }),
-            (h.prototype._trigger = function (e, t, n) {
-                const o = new p(t, n);
-                e.hasEventListeners(o) && e.trigger(o);
+            (GRealtimeManager.prototype._trigger = function (document, type, data) {
+                const event = new GCollaborationEvent(type, data);
+                document.hasEventListeners(event) && document.trigger(event);
             }),
-            (module.exports = h));
+            (module.exports = GRealtimeManager));
     };

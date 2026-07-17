@@ -2187,5 +2187,5 @@ module.exports = function (module, exports, require) {
                         return "[GText]";
                     }),
                     (module.exports = N));
-            }).call(this, require(183));
+            }).call(this, require(183 /* lib:process */));
         };

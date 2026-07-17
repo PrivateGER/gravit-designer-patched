@@ -4,11 +4,11 @@ module.exports = function (module, exports, require) {
         (require(30 /* polyfill:Object */), require(8 /* Symbol */));
         var i = _interopRequireDefault(require(11));
         require(1322 /* GShareManager */);
-        const a = require(808),
-            r = require(1570),
-            s = require(392),
-            l = require(1323),
-            c = require(441),
+        const GApplicationStatusEvent = require(808),
+            GApplicationState = require(1570),
+            GApplicationStateChangedEvent = require(392),
+            GShareStateChangedEvent = require(1323),
+            GLicenseChangedEvent = require(441),
             {
                 SHARE_ENGINE,
                 HAS_ANNOTATIONS,
@@ -17,18 +17,18 @@ module.exports = function (module, exports, require) {
                 FILE_REVIEW_ENABLED,
                 LEGACY_SHARE_DIALOG,
             } = require(10 /* designerConfig */);
-        function m(e) {
-            ((this._state = new r()),
-                SHARE_ENGINE && gDesigner.addEventListener(l, this._shareStateChangedEvent, this),
-                gDesigner.addEventListener(a, this._applicationStatusEvent, this),
-                gDesigner.addEventListener(c, this._licenseChangedEvent, this),
-                this._init(e));
+        function GApplicationManager(callback) {
+            ((this._state = new GApplicationState()),
+                SHARE_ENGINE && gDesigner.addEventListener(GShareStateChangedEvent, this._shareStateChangedEvent, this),
+                gDesigner.addEventListener(GApplicationStatusEvent, this._applicationStatusEvent, this),
+                gDesigner.addEventListener(GLicenseChangedEvent, this._licenseChangedEvent, this),
+                this._init(callback));
         }
-        ((m.prototype._init = async function (e) {
-            e && e();
+        ((GApplicationManager.prototype._init = async function (callback) {
+            callback && callback();
         }),
-            (m.prototype._shareStateChangedEvent = function (e) {
-                const t = new r(Object.assign({}, this._state)),
+            (GApplicationManager.prototype._shareStateChangedEvent = function (event) {
+                const newState = new GApplicationState(Object.assign({}, this._state)),
                     {
                         owner,
                         share,
@@ -39,10 +39,10 @@ module.exports = function (module, exports, require) {
                         comment,
                         isPrivate,
                         role,
-                        realtimeCollaborators: g = [],
-                    } = e.state;
+                        realtimeCollaborators: realtimeCollaborators = [],
+                    } = event.state;
                 (owner
-                    ? Object.assign(t, {
+                    ? Object.assign(newState, {
                           edit: true,
                           saveAs: true,
                           export: true,
@@ -50,7 +50,7 @@ module.exports = function (module, exports, require) {
                           copyPaste: true,
                           comment: !!HAS_ANNOTATIONS,
                       })
-                    : Object.assign(t, {
+                    : Object.assign(newState, {
                           edit: edit,
                           saveAs: copy,
                           export: copy,
@@ -58,120 +58,120 @@ module.exports = function (module, exports, require) {
                           inspect: inspect,
                           comment: comment,
                       }),
-                    Object.assign(t, {
+                    Object.assign(newState, {
                         isShareEnabled: share,
                         isSharing: sharing,
                         isPrivateSharing: isPrivate,
                         role: role,
-                        realtimeCollaborators: g,
+                        realtimeCollaborators: realtimeCollaborators,
                     }),
-                    this._setState(t, e.document));
+                    this._setState(newState, event.document));
             }),
-            (m.prototype._setState = function (e, t) {
-                i.default.equals(e, this._state, true) || ((this._state = e), this._triggerAppStateEvent(t, e));
+            (GApplicationManager.prototype._setState = function (newState, document) {
+                i.default.equals(newState, this._state, true) || ((this._state = newState), this._triggerAppStateEvent(document, newState));
             }),
-            (m.prototype._triggerAppStateEvent = function (e, t) {
-                gDesigner.hasEventListeners(s) && gDesigner.trigger(new s(e, t));
+            (GApplicationManager.prototype._triggerAppStateEvent = function (document, state) {
+                gDesigner.hasEventListeners(GApplicationStateChangedEvent) && gDesigner.trigger(new GApplicationStateChangedEvent(document, state));
             }),
-            (m.prototype._applicationStatusEvent = function (e) {
-                e.status === a.Status.Ready && gDesigner.isAnonymous() && gDesigner.addNotification({ anonymous: true });
+            (GApplicationManager.prototype._applicationStatusEvent = function (event) {
+                event.status === GApplicationStatusEvent.Status.Ready && gDesigner.isAnonymous() && gDesigner.addNotification({ anonymous: true });
             }),
-            (m.prototype._licenseChangedEvent = function (e) {}),
-            (m.prototype.isShareEnabled = function () {
+            (GApplicationManager.prototype._licenseChangedEvent = function (event) {}),
+            (GApplicationManager.prototype.isShareEnabled = function () {
                 return !!this._state.isShareEnabled && SHARE_ENGINE;
             }),
-            (m.prototype.isShareEngineEnabled = function () {
+            (GApplicationManager.prototype.isShareEngineEnabled = function () {
                 return SHARE_ENGINE;
             }),
-            (m.prototype.isSharing = function () {
+            (GApplicationManager.prototype.isSharing = function () {
                 return !!this._state.isSharing && SHARE_ENGINE;
             }),
-            (m.prototype.isPrivateSharing = function () {
+            (GApplicationManager.prototype.isPrivateSharing = function () {
                 return this._state.isPrivateSharing && !!SHARE_ENGINE;
             }),
-            (m.prototype.getRealtimeCollaborators = function () {
+            (GApplicationManager.prototype.getRealtimeCollaborators = function () {
                 return (SHARE_ENGINE && this._state.realtimeCollaborators) || [];
             }),
-            (m.prototype.isEditingEnabled = function () {
+            (GApplicationManager.prototype.isEditingEnabled = function () {
                 return !gDesigner.getLicense().isGuest() && (this._state.edit || (!!LEGACY_SHARE_DIALOG && this._state.inspect));
             }),
-            (m.prototype.isSavingAsEnabled = function () {
+            (GApplicationManager.prototype.isSavingAsEnabled = function () {
                 return !gDesigner.getLicense().isGuest() && this._state.saveAs;
             }),
-            (m.prototype.isSavingToCloudEnabled = function () {
+            (GApplicationManager.prototype.isSavingToCloudEnabled = function () {
                 return !gDesigner.getLicense().isGuest() && this._state.edit;
             }),
-            (m.prototype.isExportEnabled = function () {
+            (GApplicationManager.prototype.isExportEnabled = function () {
                 return !gDesigner.getLicense().isGuest() && this._state.export;
             }),
-            (m.prototype.isInspectEnabled = function () {
+            (GApplicationManager.prototype.isInspectEnabled = function () {
                 return this._state.inspect || this._state.edit;
             }),
-            (m.prototype.isPagesInspectEnabled = function () {
+            (GApplicationManager.prototype.isPagesInspectEnabled = function () {
                 return this.isInspectEnabled();
             }),
-            (m.prototype.isCommentingEnabled = function () {
+            (GApplicationManager.prototype.isCommentingEnabled = function () {
                 return this._state.comment && HAS_ANNOTATIONS;
             }),
-            (m.prototype.isCommentingEditingEnabled = function () {
+            (GApplicationManager.prototype.isCommentingEditingEnabled = function () {
                 if (!this.isCommentingEnabled()) return false;
                 if (FILE_REVIEW_ENABLED) {
-                    var e = true,
-                        t = gDesigner.getActiveDocument(),
-                        n = t && t.getStorageItem(),
-                        o = n && n.getFile();
-                    return (o && o.status === APPROVED && (e = false), e);
+                    var isEditingAllowed = true,
+                        activeDocument = gDesigner.getActiveDocument(),
+                        storageItem = activeDocument && activeDocument.getStorageItem(),
+                        file = storageItem && storageItem.getFile();
+                    return (file && file.status === APPROVED && (isEditingAllowed = false), isEditingAllowed);
                 }
                 return true;
             }),
-            (m.prototype.isCopyPasteEnabled = function () {
+            (GApplicationManager.prototype.isCopyPasteEnabled = function () {
                 return this._state.copyPaste;
             }),
-            (m.prototype.hasAccess = async function (e) {
-                let t = arguments.length > 1 && void 0 !== arguments[1] && arguments[1];
-                const n = gDesigner.getShareManager().getRole();
-                return !(!n || !((!t && n.is(ShareRoles.Owner)) || (await n.can(e))));
+            (GApplicationManager.prototype.hasAccess = async function (permission) {
+                let ignoreOwner = arguments.length > 1 && void 0 !== arguments[1] && arguments[1];
+                const role = gDesigner.getShareManager().getRole();
+                return !(!role || !((!ignoreOwner && role.is(ShareRoles.Owner)) || (await role.can(permission))));
             }),
-            (m.prototype.hasPermission = function (e, t) {
-                const n = gDesigner.getShareManager().getRole(e);
-                return !(!n || !n.hasPermission(t));
+            (GApplicationManager.prototype.hasPermission = function (document, permission) {
+                const role = gDesigner.getShareManager().getRole(document);
+                return !(!role || !role.hasPermission(permission));
             }),
-            (m.prototype.hasRole = function (e) {
-                const t = gDesigner.getShareManager().getRole();
-                return !!t && t.is(e);
+            (GApplicationManager.prototype.hasRole = function (role) {
+                const currentRole = gDesigner.getShareManager().getRole();
+                return !!currentRole && currentRole.is(role);
             }),
-            (m.prototype.isFileFormatEnabledForSaveAs = function (e) {
+            (GApplicationManager.prototype.isFileFormatEnabledForSaveAs = function (e) {
                 return this._state.saveAs;
             }),
-            (m.prototype.isCreatingNewDocumentEnabled = function () {
+            (GApplicationManager.prototype.isCreatingNewDocumentEnabled = function () {
                 return !gDesigner.getLicense().isGuest();
             }),
-            (m.prototype.isOpenFromCloudEnabled = function () {
+            (GApplicationManager.prototype.isOpenFromCloudEnabled = function () {
                 return !gDesigner.getLicense().isGuest();
             }),
-            (m.prototype.isOnlyFileOpenFromCloudEnabled = function () {
+            (GApplicationManager.prototype.isOnlyFileOpenFromCloudEnabled = function () {
                 return false;
             }),
-            (m.prototype.isOpenFromRecentFilesEnabled = function () {
+            (GApplicationManager.prototype.isOpenFromRecentFilesEnabled = function () {
                 return true;
             }),
-            (m.prototype.isDocumentTabManagementEnabled = function () {
+            (GApplicationManager.prototype.isDocumentTabManagementEnabled = function () {
                 return this._state.isDocumentTabManagementEnabled;
             }),
-            (m.prototype.isOpenFilesFromLocalEnabled = function () {
+            (GApplicationManager.prototype.isOpenFilesFromLocalEnabled = function () {
                 return !gDesigner.getLicense().isGuest();
             }),
-            (m.prototype.isReminderManagerEnabled = function (e) {
+            (GApplicationManager.prototype.isReminderManagerEnabled = function (e) {
                 return true;
             }),
-            (m.prototype.isInAppPurchaseAvailable = function (e) {
+            (GApplicationManager.prototype.isInAppPurchaseAvailable = function (e) {
                 return true;
             }),
-            (m.prototype.isLicenseUpgradeable = function (e) {
-                return (e = e || gDesigner.getLicense()).canUpgrade();
+            (GApplicationManager.prototype.isLicenseUpgradeable = function (license) {
+                return (license = license || gDesigner.getLicense()).canUpgrade();
             }),
-            (m.prototype.isImportResourcesEnabled = function () {
+            (GApplicationManager.prototype.isImportResourcesEnabled = function () {
                 return this.isOpenFilesFromLocalEnabled();
             }),
-            (module.exports = m));
+            (module.exports = GApplicationManager));
     };

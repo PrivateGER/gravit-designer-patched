@@ -2,7 +2,7 @@ module.exports = function (module, exports, require) {
         "use strict";
         (require(19), require(557), require(26));
         var _interopRequireDefault = require(16);
-        (require(96 /* polyfill:JSON */), require(8 /* Symbol */), require(356), require(20 /* polyfill:RegExp */), require(107 /* polyfill:RegExp */), require(3), require(271 /* polyfill:String */), require(34), require(851), require(91 /* polyfill:String */), require(4), require(322), require(13), require(32), require(33));
+        (require(96 /* polyfill:JSON */), require(8 /* Symbol */), require(356 /* polyfill:RegExp */), require(20 /* polyfill:RegExp */), require(107 /* polyfill:RegExp */), require(3), require(271 /* polyfill:String */), require(34), require(851), require(91 /* polyfill:String */), require(4), require(322), require(13), require(32), require(33));
         var GObject = require(1),
             GPlatform = require(15),
             FilesPanelViewBase = _interopRequireDefault(require(1300 /* GFilesPanelViewBase */)),
@@ -34,7 +34,7 @@ module.exports = function (module, exports, require) {
                 })(e, t);
             })(require(862 /* GCloudDrive */)),
             GFilesPanelConstants = require(858);
-        const GDriveItem = require(156),
+        const CloudFile = require(156),
             { CLOUD_DIALOG } = require(10 /* designerConfig */),
             { GPlatform: platform } = require(15 /* GPlatform */),
             GContainer = require(85),
@@ -251,7 +251,7 @@ module.exports = function (module, exports, require) {
                       ? this.panel.find(".g-example-files-list")
                       : this.panel.find(".g-files-list");
                 var fileElement = $("<div/>")
-                    .attr("draggable", file.hasPermission(GDriveItem.Permission.CutPaste))
+                    .attr("draggable", file.hasPermission(CloudFile.Permission.CutPaste))
                     .attr("id", file.id)
                     .addClass("g-gravit-file")
                     .addClass("g-cloud-element")
@@ -311,7 +311,7 @@ module.exports = function (module, exports, require) {
                       (dateLabel = GObject.GLocale.get(new GObject.GLocaleKey("GFilesPanel", "text.created"))))
                     : ((dateText = (0, dateUtils.dateToFilePreviewFormat)(file.updated ? file.updated : file.created)),
                       (dateLabel = GObject.GLocale.get(new GObject.GLocaleKey("GFilesPanel", "text.updated"))));
-                var fileSize = file instanceof GDriveItem && file.getSize(),
+                var fileSize = file instanceof CloudFile && file.getSize(),
                     sizeText = "";
                 if (fileSize && CLOUD_DIALOG.SHOW_FILE_SIZE_INFO) {
                     var sizeInfo = (0, Utils.getSizeInfo)(fileSize);
@@ -324,7 +324,7 @@ module.exports = function (module, exports, require) {
                             : (sizeText += (sizeText ? "" : " ") + "< 1 KB");
                 }
                 var previewUrl = null;
-                (file instanceof GDriveItem && (previewUrl = file.getPreviewURL()),
+                (file instanceof CloudFile && (previewUrl = file.getPreviewURL()),
                     previewUrl || (previewUrl = file.url_t || file.url_s),
                     previewUrl ? imageContainer.css("background-image", 'url("'.concat(previewUrl, '")')) : imageContainer.addClass("default-preview"));
                 var nameContainer = $("<div/>").addClass("name-container").appendTo(fileElement);
@@ -383,7 +383,7 @@ module.exports = function (module, exports, require) {
                                 event.stopPropagation();
                             })
                             .appendTo(fileTopTile),
-                    file.hasPermission(GDriveItem.Permission.Open) &&
+                    file.hasPermission(CloudFile.Permission.Open) &&
                         !this.filesPanel.isSaveMode() &&
                         $("<button />")
                             .addClass("open-design-button g-button cloud-button")
@@ -464,7 +464,7 @@ module.exports = function (module, exports, require) {
             }),
             (GFilesPanelViewNative.prototype._checkItemPermission = function (items, permission) {
                 return (items instanceof Array ? items : [items]).every((item) =>
-                    item instanceof GDriveItem ? item.hasPermission(permission) : (console.error("Wrong check for file permission", item), true)
+                    item instanceof CloudFile ? item.hasPermission(permission) : (console.error("Wrong check for file permission", item), true)
                 );
             }),
             (GFilesPanelViewNative.prototype._openContextMenuForEventPosition = function (event) {
@@ -493,7 +493,7 @@ module.exports = function (module, exports, require) {
                     let message;
                     return (
                         (message =
-                            file.getType() === GDriveItem.Type.File
+                            file.getType() === CloudFile.Type.File
                                 ? GObject.GLocale.get(new GObject.GLocaleKey("GFilesPanel", "text.file-already-exists-on-current-location")).replace(
                                       "%filename",
                                       '"'.concat(candidateName, '"')
@@ -512,7 +512,7 @@ module.exports = function (module, exports, require) {
                         (input.hide(), nameLabel.show());
                         let newName,
                             inputValue = input.val();
-                        if (file.getType() === GDriveItem.Type.File && !self._isUserInputValidFileName(inputValue))
+                        if (file.getType() === CloudFile.Type.File && !self._isUserInputValidFileName(inputValue))
                             return (
                                 GSystemDialog.default.alert(GObject.GLocale.get(new GObject.GLocaleKey("GFilesPanel", "text.new-file-name-invalid"))),
                                 void input.val(originalValue)
@@ -523,7 +523,7 @@ module.exports = function (module, exports, require) {
                                 let i = 0;
                                 const extension = file.ext || file.extension;
                                 if (self.filesPanel.drive.supportsSaveCollisionFlow())
-                                    if (file.getType() === GDriveItem.Type.File) {
+                                    if (file.getType() === CloudFile.Type.File) {
                                         if (
                                             (await self.filesPanel.drive.fileExists(inputValue, extension, file.parent || self.filesPanel.drive.getRootFolder())) &&
                                             !(await confirmOverwrite(inputValue))
@@ -580,7 +580,7 @@ module.exports = function (module, exports, require) {
                                     $(element).find("div.name").text(newName),
                                     self._updateFileNamePreview(element, file));
                             };
-                            (file.getType() === GDriveItem.Type.Folder
+                            (file.getType() === CloudFile.Type.Folder
                                 ? updateFileElement(element)
                                 : $.each(self._rightSide.find(".".concat(file.id)), (index, element) => {
                                       updateFileElement(element);
@@ -615,7 +615,7 @@ module.exports = function (module, exports, require) {
             }),
             (GFilesPanelViewNative.prototype._isFolderSelected = function () {
                 var selection = this.filesPanel.getSelection();
-                return 1 === selection.length && selection[0].getType() === GDriveItem.Type.Folder;
+                return 1 === selection.length && selection[0].getType() === CloudFile.Type.Folder;
             }),
             (GFilesPanelViewNative.prototype._getNativeMenuItems = function () {
                 return [
@@ -640,7 +640,7 @@ module.exports = function (module, exports, require) {
                             (event.sender.setEnabled(1 === selection.length),
                                 event.sender.setVisible(
                                     !(0, driveUtils.hasRootFolderInSelections)(this.filesPanel.drive, selection) &&
-                                        this._checkItemPermission(selection, GDriveItem.Permission.Open)
+                                        this._checkItemPermission(selection, CloudFile.Permission.Open)
                                 ));
                         },
                     },
@@ -657,7 +657,7 @@ module.exports = function (module, exports, require) {
                             (event.sender.setEnabled(1 === selection.length),
                                 event.sender.setVisible(
                                     !(0, driveUtils.hasRootFolderInSelections)(this.filesPanel.drive, selection) &&
-                                        this._checkItemPermission(selection, GDriveItem.Permission.Rename)
+                                        this._checkItemPermission(selection, CloudFile.Permission.Rename)
                                 ));
                         },
                     },
@@ -671,7 +671,7 @@ module.exports = function (module, exports, require) {
                             const isClipboardActive = this.filesPanel.isClipboardModeCut() || this.filesPanel.isClipboardModeCopy();
                             (event.sender.setEnabled(isClipboardActive),
                                 event.sender.setVisible(
-                                    this._checkItemPermission(selection, GDriveItem.Permission.CutPaste) ||
+                                    this._checkItemPermission(selection, CloudFile.Permission.CutPaste) ||
                                         (0, driveUtils.hasRootFolderInSelections)(this.filesPanel.drive, selection)
                                 ));
                         },
@@ -687,7 +687,7 @@ module.exports = function (module, exports, require) {
                                 event.sender.setEnabled(selection.length > 0),
                                 event.sender.setVisible(
                                     !(0, driveUtils.hasRootFolderInSelections)(this.filesPanel.drive, selection) &&
-                                        this._checkItemPermission(selection, GDriveItem.Permission.Copy)
+                                        this._checkItemPermission(selection, CloudFile.Permission.Copy)
                                 ));
                         },
                     },
@@ -702,7 +702,7 @@ module.exports = function (module, exports, require) {
                                 event.sender.setEnabled(selection.length > 0),
                                 event.sender.setVisible(
                                     !(0, driveUtils.hasRootFolderInSelections)(this.filesPanel.drive, selection) &&
-                                        this._checkItemPermission(selection, GDriveItem.Permission.CutPaste)
+                                        this._checkItemPermission(selection, CloudFile.Permission.CutPaste)
                                 ));
                         },
                     },
@@ -717,7 +717,7 @@ module.exports = function (module, exports, require) {
                                 event.sender.setEnabled(selection.length > 0),
                                 event.sender.setVisible(
                                     !(0, driveUtils.hasRootFolderInSelections)(this.filesPanel.drive, selection) &&
-                                        this._checkItemPermission(selection, GDriveItem.Permission.Delete)
+                                        this._checkItemPermission(selection, CloudFile.Permission.Delete)
                                 ));
                         },
                     },
@@ -742,7 +742,7 @@ module.exports = function (module, exports, require) {
                                 event.sender.setEnabled(selection.length > 0),
                                 event.sender.setVisible(
                                     !(0, driveUtils.hasRootFolderInSelections)(this.filesPanel.drive, selection) &&
-                                        this._checkItemPermission(selection, GDriveItem.Permission.UnshareWithMe)
+                                        this._checkItemPermission(selection, CloudFile.Permission.UnshareWithMe)
                                 ));
                         },
                     },
@@ -770,7 +770,7 @@ module.exports = function (module, exports, require) {
                             event.sender.setEnabled(selection.length > 0),
                             event.sender.setVisible(
                                 !(0, driveUtils.hasRootFolderInSelections)(this.filesPanel.drive, selection) &&
-                                    this._checkItemPermission(selection, GDriveItem.Permission.Download) &&
+                                    this._checkItemPermission(selection, CloudFile.Permission.Download) &&
                                     !this._isFolderSelected()
                             ));
                     });

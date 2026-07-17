@@ -1,7 +1,7 @@
 module.exports = function (module, exports, require) {
         "use strict";
         (Object.defineProperty(exports, "__esModule", { value: true }), (exports.default = exports.TOOLTIP_AREA = exports.GRichTooltipConfig = void 0), require(290), require(3));
-        const o = (exports.GRichTooltipConfig = function (e) {
+        const GRichTooltipConfig = (exports.GRichTooltipConfig = function (config) {
             let {
                 title,
                 description,
@@ -17,7 +17,7 @@ module.exports = function (module, exports, require) {
                 upgradeToProStatsValue,
                 forceShow,
                 flipHorizontal,
-            } = e;
+            } = config;
             if (!title) throw new Error("");
             ((this._title = title),
                 (this._description = description),
@@ -34,55 +34,55 @@ module.exports = function (module, exports, require) {
                 (this._forceShow = forceShow),
                 (this._flipHorizontal = flipHorizontal));
         });
-        ((o.from = function (e) {
-            return new o(e);
+        ((GRichTooltipConfig.from = function (config) {
+            return new GRichTooltipConfig(config);
         }),
-            (o.prototype._title = null),
-            (o.prototype._description = null),
-            (o.prototype._video = null),
-            (o.prototype._pic = null),
-            (o.prototype._isPro = null),
-            (o.prototype._middle = null),
-            (o.prototype._marginLeft = null),
-            (o.prototype._shortcut = null),
-            (o.prototype._videoTimeout = null),
-            (o.prototype._side = null),
-            (o.prototype._learnMore = null),
-            (o.prototype._upgradeToProStatsValue = null),
-            (o.prototype._forceShow = false),
-            (o.prototype._flipHorizontal = false),
-            (o.prototype.setConfig = function (e) {
+            (GRichTooltipConfig.prototype._title = null),
+            (GRichTooltipConfig.prototype._description = null),
+            (GRichTooltipConfig.prototype._video = null),
+            (GRichTooltipConfig.prototype._pic = null),
+            (GRichTooltipConfig.prototype._isPro = null),
+            (GRichTooltipConfig.prototype._middle = null),
+            (GRichTooltipConfig.prototype._marginLeft = null),
+            (GRichTooltipConfig.prototype._shortcut = null),
+            (GRichTooltipConfig.prototype._videoTimeout = null),
+            (GRichTooltipConfig.prototype._side = null),
+            (GRichTooltipConfig.prototype._learnMore = null),
+            (GRichTooltipConfig.prototype._upgradeToProStatsValue = null),
+            (GRichTooltipConfig.prototype._forceShow = false),
+            (GRichTooltipConfig.prototype._flipHorizontal = false),
+            (GRichTooltipConfig.prototype.setConfig = function (config) {
                 let {
-                    title: t,
-                    description: n,
-                    video: o,
-                    pic: i,
-                    isPro: a,
-                    middle: r,
-                    shortcut: s,
-                    videoTimeout: l,
-                    marginLeft: c,
-                    side: d,
-                    learnMore: u,
-                    upgradeToProStatsValue: p,
-                } = e;
-                if ((void 0 !== t && (this._title = t), !this._title)) throw new Error("");
+                    title: newTitle,
+                    description: newDescription,
+                    video: newVideo,
+                    pic: newPic,
+                    isPro: newIsPro,
+                    middle: newMiddle,
+                    shortcut: newShortcut,
+                    videoTimeout: newVideoTimeout,
+                    marginLeft: newMarginLeft,
+                    side: newSide,
+                    learnMore: newLearnMore,
+                    upgradeToProStatsValue: newUpgradeToProStatsValue,
+                } = config;
+                if ((void 0 !== newTitle && (this._title = newTitle), !this._title)) throw new Error("");
                 return (
-                    void 0 !== n && (this._description = n),
-                    void 0 !== o && (this._video = o),
-                    void 0 !== i && (this._pic = i),
-                    void 0 !== a && (this._isPro = a),
-                    void 0 !== r && (this._middle = r),
-                    void 0 !== s && (this._shortcut = s),
-                    void 0 !== l && (this._videoTimeout = l),
-                    void 0 !== c && (this._marginLeft = c),
-                    void 0 !== d && (this._side = d),
-                    void 0 !== u && (this._learnMore = u),
-                    void 0 !== p && (this._upgradeToProStatsValue = p),
+                    void 0 !== newDescription && (this._description = newDescription),
+                    void 0 !== newVideo && (this._video = newVideo),
+                    void 0 !== newPic && (this._pic = newPic),
+                    void 0 !== newIsPro && (this._isPro = newIsPro),
+                    void 0 !== newMiddle && (this._middle = newMiddle),
+                    void 0 !== newShortcut && (this._shortcut = newShortcut),
+                    void 0 !== newVideoTimeout && (this._videoTimeout = newVideoTimeout),
+                    void 0 !== newMarginLeft && (this._marginLeft = newMarginLeft),
+                    void 0 !== newSide && (this._side = newSide),
+                    void 0 !== newLearnMore && (this._learnMore = newLearnMore),
+                    void 0 !== newUpgradeToProStatsValue && (this._upgradeToProStatsValue = newUpgradeToProStatsValue),
                     this
                 );
             }),
-            (o.prototype.getConfig = function () {
+            (GRichTooltipConfig.prototype.getConfig = function () {
                 return {
                     title: this._title,
                     description: this._description,
@@ -100,7 +100,7 @@ module.exports = function (module, exports, require) {
                     flipHorizontal: this._flipHorizontal,
                 };
             }),
-            (o.prototype.toString = function () {
+            (GRichTooltipConfig.prototype.toString = function () {
                 return "[Object GRichTooltipConfig]";
             }));
         exports.TOOLTIP_AREA = {
@@ -111,5 +111,5 @@ module.exports = function (module, exports, require) {
                 TRY_EXP_PDF_ADVANCED_SETTING: "TRY_EXP_PDF_ADVANCED_SETTING",
             },
         };
-        exports.default = o;
+        exports.default = GRichTooltipConfig;
     };

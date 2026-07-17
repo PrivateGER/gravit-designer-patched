@@ -3,7 +3,7 @@ module.exports = function (module, exports, require) {
         var _interopRequireDefault = require(16),
             GObject = require(1),
             GPlatform = require(15),
-            r = _interopRequireDefault(require(31)),
+            r = _interopRequireDefault(require(31 /* GAction */)),
             s = _interopRequireDefault(require(18 /* GCategory */));
         class l extends r.default {
             getId() {

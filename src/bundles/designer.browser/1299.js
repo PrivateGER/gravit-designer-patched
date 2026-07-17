@@ -3,7 +3,7 @@ module.exports = function (module, exports, require) {
         var _interopRequireDefault = require(16),
             GObject = require(1),
             GPlatform = require(15),
-            r = _interopRequireDefault(require(813));
+            r = _interopRequireDefault(require(813 /* GOpenAction */));
         function s() {}
         (GObject.GObject.inherit(s, r.default),
             (s.ID = "".concat(r.default.ID, ".safari")),

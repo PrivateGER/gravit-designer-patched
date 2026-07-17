@@ -3,11 +3,11 @@ module.exports = function (module, exports, require) {
         require(3);
         var GObject = require(1),
             GPlatform = require(15),
-            a = require(31),
+            GAction = require(31),
             GCategory = require(18),
-            s = require(85);
+            GContainer = require(85);
         function l() {}
-        (GObject.GObject.inherit(l, a),
+        (GObject.GObject.inherit(l, GAction),
             (l.ID = "file.quit"),
             (l.TITLE = new GObject.GLocaleKey("GQuitAction", "title")),
             (l.prototype.getId = function () {
@@ -23,13 +23,13 @@ module.exports = function (module, exports, require) {
                 return "file-quit";
             }),
             (l.prototype.isEnabled = function () {
-                return gContainer.getRuntime() !== s.Runtime.Browser && gContainer.getRuntime() !== s.Runtime.PWA;
+                return gContainer.getRuntime() !== GContainer.Runtime.Browser && gContainer.getRuntime() !== GContainer.Runtime.PWA;
             }),
             (l.prototype.getShortcut = function () {
                 return [GPlatform.GKey.Constant.META, "Q"];
             }),
             (l.prototype.isAvailable = function () {
-                return gContainer.getRuntime() !== s.Runtime.Browser && gContainer.getRuntime() !== s.Runtime.PWA;
+                return gContainer.getRuntime() !== GContainer.Runtime.Browser && gContainer.getRuntime() !== GContainer.Runtime.PWA;
             }),
             (l.prototype.execute = function () {
                 gContainer.triggerClose();

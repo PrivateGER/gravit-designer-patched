@@ -1,30 +1,30 @@
 module.exports = function (module, exports, require) {
         "use strict";
         (require(290), require(8 /* Symbol */), require(20 /* polyfill:RegExp */), require(34), require(4), require(13), require(32), require(38), require(33));
-        var o = require(357),
+        var appConfig = require(357),
             GObject = require(1),
             Utils = require(40);
         const { gApi, LINKS, DESIGNER: { TITLE } = {}, SubscriptionStatus } = require(10 /* designerConfig */),
-            d = (require(173), require(337)),
-            u = ["number", "name", "price", "date"];
-        function p(e, t) {
-            let n = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {};
-            ((this._user = e),
-                (this._options = n),
+            licenseManager = (require(173), require(337)),
+            orderByFields = ["number", "name", "price", "date"];
+        function GPurchasePanel(user, messageHandler) {
+            let options = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {};
+            ((this._user = user),
+                (this._options = options),
                 (this._query = { skip: 0, name: "", issued: "true" }),
-                (this._messageHandler = t),
+                (this._messageHandler = messageHandler),
                 (this._typing = false),
                 this._init(),
                 (this._allowReactivateSubscriptions = false),
                 this._load());
         }
-        (GObject.GObject.inherit(p, GObject.GObject),
-            (p.prototype._init = function () {
+        (GObject.GObject.inherit(GPurchasePanel, GObject.GObject),
+            (GPurchasePanel.prototype._init = function () {
                 this._container = $("<div></div>").addClass("g-purchase-panel");
-                let e = void 0;
-                const t = () => this._showInfoIfAny(),
+                let debounceTimer = void 0;
+                const deferredShowInfo = () => this._showInfoIfAny(),
                     n = (n) => {
-                        (e && clearTimeout(e), (e = setTimeout(t, 500)), this._search($(n.target).closest("input").val()));
+                        (debounceTimer && clearTimeout(debounceTimer), (debounceTimer = setTimeout(deferredShowInfo, 500)), this._search($(n.target).closest("input").val()));
                     };
                 ($("<div></div>")
                     .addClass("search-panel")
@@ -34,8 +34,8 @@ module.exports = function (module, exports, require) {
                             .attr("data-property", "search")
                             .attr("placeholder", GObject.GLocale.get(new GObject.GLocaleKey("GPurchasePanel", "text.search-label")))
                             .on("input", (0, Utils.debounce)((0, Utils.throttle)(n, 500), 500))
-                            .on("keyup", (e) => {
-                                13 === e.which && (gDesigner.stats("profile-dialog_purchase-panel_search"), n(e));
+                            .on("keyup", (event) => {
+                                13 === event.which && (gDesigner.stats("profile-dialog_purchase-panel_search"), n(event));
                             })
                     )
                     .append(
@@ -45,14 +45,14 @@ module.exports = function (module, exports, require) {
                                 $("<select></select>")
                                     .attr("data-property", "orderby")
                                     .append(
-                                        u.map((e) =>
+                                        orderByFields.map((field) =>
                                             $("<option></option>")
-                                                .attr("value", e)
-                                                .text(GObject.GLocale.get(new GObject.GLocaleKey("GPurchasePanel", "text.orderby-" + e)))
+                                                .attr("value", field)
+                                                .text(GObject.GLocale.get(new GObject.GLocaleKey("GPurchasePanel", "text.orderby-" + field)))
                                         )
                                     )
-                                    .on("change", (e) => {
-                                        (gDesigner.stats("profile-dialog_purchase-panel_order-by", e.target.value),
+                                    .on("change", (event) => {
+                                        (gDesigner.stats("profile-dialog_purchase-panel_order-by", event.target.value),
                                             this._orderBy.bind(this));
                                     })
                             )
@@ -61,14 +61,14 @@ module.exports = function (module, exports, require) {
                                     .data("direction", "")
                                     .attr("data-property", "direction")
                                     .addClass("gravit-icon-sort-asc")
-                                    .on("click", (e) => {
-                                        let t = $(e.target).closest("span"),
-                                            n = t.data("direction"),
-                                            o = "asc";
-                                        ("-" === n ? ((n = ""), (o = "asc")) : ((n = "-"), (o = "desc")),
-                                            t.data("direction", n),
-                                            t.toggleClass("gravit-icon-sort-asc gravit-icon-sort-desc"),
-                                            gDesigner.stats("profile-dialog_purchase-panel_sort", o),
+                                    .on("click", (event) => {
+                                        let directionSpan = $(event.target).closest("span"),
+                                            direction = directionSpan.data("direction"),
+                                            sortLabel = "asc";
+                                        ("-" === direction ? ((direction = ""), (sortLabel = "asc")) : ((direction = "-"), (sortLabel = "desc")),
+                                            directionSpan.data("direction", direction),
+                                            directionSpan.toggleClass("gravit-icon-sort-asc gravit-icon-sort-desc"),
+                                            gDesigner.stats("profile-dialog_purchase-panel_sort", sortLabel),
                                             this._orderBy());
                                     })
                             )
@@ -93,177 +93,177 @@ module.exports = function (module, exports, require) {
                             )
                         )
                         .appendTo(this._container),
-                    this._container.find(".cb-link").on("click", (e) => {
+                    this._container.find(".cb-link").on("click", (event) => {
                         (gDesigner.stats("profile-dialog_purchase-panel_cleverbridge-link"),
-                            gContainer.openExternalLink(e, LINKS.CLEVERBRIDGE_SUPPORT_URL));
+                            gContainer.openExternalLink(event, LINKS.CLEVERBRIDGE_SUPPORT_URL));
                     }),
-                    $(this._purchaseList).scroll((e) => {
-                        let t = $(e.currentTarget);
-                        t[0].scrollHeight - t.scrollTop() === t.outerHeight() &&
+                    $(this._purchaseList).scroll((event) => {
+                        let scrollTarget = $(event.currentTarget);
+                        scrollTarget[0].scrollHeight - scrollTarget.scrollTop() === scrollTarget.outerHeight() &&
                             $(this._purchaseList).children().length > 0 &&
                             this._load();
                     }));
             }),
-            (p.prototype._search = async function (e) {
+            (GPurchasePanel.prototype._search = async function (searchTerm) {
                 (this._messageHandler(void 0),
                     (this._query.skip = 0),
-                    (this._query.name = e),
+                    (this._query.name = searchTerm),
                     (this._query.by = this._container.find('select[data-property="orderby"] > option:selected').attr("value")),
                     (this._query.direction = this._container.find('span[data-property="direction"]').data("direction")),
                     await this._load(true));
             }),
-            (p.prototype._orderBy = function () {
+            (GPurchasePanel.prototype._orderBy = function () {
                 (this._search(this._container.find('input[data-property="search"]').val()), this._showInfoIfAny());
             }),
-            (p.prototype._showInfoIfAny = function () {
+            (GPurchasePanel.prototype._showInfoIfAny = function () {
                 this._purchaseList[0].hasChildNodes() ||
                     this._messageHandler(GObject.GLocale.get(new GObject.GLocaleKey("GPurchasePanel", "text.empty-search")), "info");
             }),
-            (p.prototype._load = async function (e) {
+            (GPurchasePanel.prototype._load = async function (clearExisting) {
                 if (-1 !== this._query.skip) {
                     this._toggleLoading(true);
                     try {
-                        let t = await gApi.listPurchasedProducts(this._query),
-                            n = t.length;
-                        ((this._query.skip = n > 0 ? (n < 10 ? -1 : this._query.skip + n) : -1),
-                            e && this._purchaseList.empty(),
-                            t.forEach((e) => this._addOrUpdateItem(e)));
-                    } catch (e) {
-                        this._handleError(e);
+                        let purchases = await gApi.listPurchasedProducts(this._query),
+                            count = purchases.length;
+                        ((this._query.skip = count > 0 ? (count < 10 ? -1 : this._query.skip + count) : -1),
+                            clearExisting && this._purchaseList.empty(),
+                            purchases.forEach((purchase) => this._addOrUpdateItem(purchase)));
+                    } catch (error) {
+                        this._handleError(error);
                     } finally {
                         this._toggleLoading(false);
                     }
                 }
             }),
-            (p.prototype._addOrUpdateItem = function (e, t) {
-                const n = e.issued_coupon && e.issued_coupon.lifetime;
-                (t =
-                    t ||
+            (GPurchasePanel.prototype._addOrUpdateItem = function (purchase, itemElement) {
+                const isLifetimeCoupon = purchase.issued_coupon && purchase.issued_coupon.lifetime;
+                (itemElement =
+                    itemElement ||
                     $("<div></div>")
                         .addClass("purchase-item")
-                        .data("purchase", e)
-                        .on("click", (e) => {
+                        .data("purchase", purchase)
+                        .on("click", (event) => {
                             (this._purchaseList.find(".purchase-item.g-active").removeClass("g-active"),
-                                $(e.target).closest(".purchase-item").addClass("g-active"));
+                                $(event.target).closest(".purchase-item").addClass("g-active"));
                         })
                         .appendTo(this._purchaseList)).empty();
-                let a = false,
-                    s = false;
+                let isSelected = false,
+                    allowReinstate = false;
                 (this._options &&
                     this._options.subscription &&
-                    e.purchase_id == this._options.subscription.purchase &&
-                    ((a = true), (s = !!this._options.subscription.reinstate), (this._options = null)),
-                    a && t.addClass("g-selected"));
-                const u =
-                    e.name ||
-                    (n
+                    purchase.purchase_id == this._options.subscription.purchase &&
+                    ((isSelected = true), (allowReinstate = !!this._options.subscription.reinstate), (this._options = null)),
+                    isSelected && itemElement.addClass("g-selected"));
+                const title =
+                    purchase.name ||
+                    (isLifetimeCoupon
                         ? GObject.GLocale.get(new GObject.GLocaleKey("GPurchasePanel", "text.pro-subscription-lifetime")).replace("%app", TITLE)
                         : GObject.GLocale.get(new GObject.GLocaleKey("GPurchasePanel", "text.pro-subscription")).replace("%app", TITLE));
-                $("<div></div>").addClass("header").append($("<label></label>").addClass("title").text(u)).appendTo(t);
-                (e.invoice &&
+                $("<div></div>").addClass("header").append($("<label></label>").addClass("title").text(title)).appendTo(itemElement);
+                (purchase.invoice &&
                     $("<div></div>")
                         .addClass("orderno")
                         .append(
                             $("<a></a>")
-                                .attr("href", e.invoice)
+                                .attr("href", purchase.invoice)
                                 .attr("target", "_blank")
                                 .append(
                                     $("<span></span>").text(
                                         ""
                                             .concat(GObject.GLocale.get(new GObject.GLocaleKey("GPurchasePanel", "text.orderno")), " ")
-                                            .concat(e.purchase_id)
+                                            .concat(purchase.purchase_id)
                                     )
                                 )
                         )
-                        .appendTo(t),
-                    o.PURCHASEPANEL.HAS_PRODUCT_DESCRIPTION &&
-                        $("<div></div>").addClass("description").append($("<label></label>").text(e.description)).appendTo(t));
-                let p = ""
+                        .appendTo(itemElement),
+                    appConfig.PURCHASEPANEL.HAS_PRODUCT_DESCRIPTION &&
+                        $("<div></div>").addClass("description").append($("<label></label>").text(purchase.description)).appendTo(itemElement));
+                let purchasedLabel = ""
                     .concat(GObject.GLocale.get(new GObject.GLocaleKey("GPurchasePanel", "text.purchased")), " ")
-                    .concat(e.created ? GObject.GLocale.toLocaleDate(new Date(e.created)) : "");
-                !n &&
-                    e.issued_coupon &&
-                    e.issued_coupon.expires &&
-                    (p += ", ".concat(
+                    .concat(purchase.created ? GObject.GLocale.toLocaleDate(new Date(purchase.created)) : "");
+                !isLifetimeCoupon &&
+                    purchase.issued_coupon &&
+                    purchase.issued_coupon.expires &&
+                    (purchasedLabel += ", ".concat(
                         GObject.GLocale.get(new GObject.GLocaleKey("GPurchasePanel", "text.purchased-expires")).replace(
                             "%date",
-                            GObject.GLocale.toLocaleDate(new Date(e.issued_coupon.expires))
+                            GObject.GLocale.toLocaleDate(new Date(purchase.issued_coupon.expires))
                         )
                     ));
-                let g = $("<span></span>").text(p + ".");
-                if (e.subscription && !e.refunded) {
-                    let a = p;
-                    (g.text(p + "..."),
+                let statusLabel = $("<span></span>").text(purchasedLabel + ".");
+                if (purchase.subscription && !purchase.refunded) {
+                    let baseLabel = purchasedLabel;
+                    (statusLabel.text(purchasedLabel + "..."),
                         gApi
-                            .getSubscriptionByPurchase(e.purchase_id, e.provider)
-                            .then((u) => {
-                                const p = (e, n, o, a, r) => {
-                                    let s = $("<div></div>")
+                            .getSubscriptionByPurchase(purchase.purchase_id, purchase.provider)
+                            .then((subscription) => {
+                                const createPrompt = (promptTitle, promptMessage, buttonLabel, onConfirm, highlight) => {
+                                    let promptElement = $("<div></div>")
                                         .addClass("prompt")
                                         .append(
                                             $("<div></div>")
-                                                .append($("<span></span>").addClass("title").text(e))
+                                                .append($("<span></span>").addClass("title").text(promptTitle))
                                                 .append(
                                                     $("<div></div>")
                                                         .append(
                                                             $("<button></button>")
                                                                 .text(GObject.GLocale.get(new GObject.GLocaleKey("GLocale", "yes")))
-                                                                .on("click", () => a(s))
+                                                                .on("click", () => onConfirm(promptElement))
                                                         )
                                                         .append(
                                                             $("<button></button>")
                                                                 .text(GObject.GLocale.get(new GObject.GLocaleKey("GLocale", "no")))
-                                                                .on("click", () => s.removeClass("show"))
+                                                                .on("click", () => promptElement.removeClass("show"))
                                                         )
                                                 )
                                         )
                                         .append(
                                             $("<div></div>").append(
-                                                $("<div></div>").addClass("subtitle").append($("<span></span>").html(n))
+                                                $("<div></div>").addClass("subtitle").append($("<span></span>").html(promptMessage))
                                             )
                                         )
-                                        .insertAfter(t);
+                                        .insertAfter(itemElement);
                                     return (
                                         $("<div></div>")
                                             .addClass("subscription")
                                             .append($("<label></label>").html("&nbsp;"))
                                             .append(
                                                 $("<button></button>")
-                                                    .toggleClass("highlight", !!r)
-                                                    .text(o)
-                                                    .on("click", () => s.addClass("show"))
+                                                    .toggleClass("highlight", !!highlight)
+                                                    .text(buttonLabel)
+                                                    .on("click", () => promptElement.addClass("show"))
                                             )
-                                            .appendTo(t),
-                                        s
+                                            .appendTo(itemElement),
+                                        promptElement
                                     );
                                 };
-                                if (u.status === SubscriptionStatus.Active)
-                                    (n
-                                        ? g.text(a + ".")
-                                        : g.text(
+                                if (subscription.status === SubscriptionStatus.Active)
+                                    (isLifetimeCoupon
+                                        ? statusLabel.text(baseLabel + ".")
+                                        : statusLabel.text(
                                               ""
-                                                  .concat(a, ", ")
+                                                  .concat(baseLabel, ", ")
                                                   .concat(GObject.GLocale.get(new GObject.GLocaleKey("GPurchasePanel", "text.purchased-renews")), " ")
-                                                  .concat(GObject.GLocale.toLocaleDate(new Date(u.endDate)), ".")
+                                                  .concat(GObject.GLocale.toLocaleDate(new Date(subscription.endDate)), ".")
                                           ),
-                                        p(
+                                        createPrompt(
                                             GObject.GLocale.get(new GObject.GLocaleKey("GPurchasePanel", "text.prompt-cancel-title")),
                                             GObject.GLocale.get(new GObject.GLocaleKey("GPurchasePanel", "text.prompt-cancel-info"))
                                                 .replace("%app", TITLE)
-                                                .replace("%date", GObject.GLocale.toLocaleDate(new Date(u.endDate))),
+                                                .replace("%date", GObject.GLocale.toLocaleDate(new Date(subscription.endDate))),
                                             GObject.GLocale.get(new GObject.GLocaleKey("GLocale", "cancel")),
-                                            async (n) => {
+                                            async (prompt) => {
                                                 this._toggleLoading(true);
                                                 try {
                                                     (await gApi
-                                                        .deactivateSubscription(u.id, e.provider)
+                                                        .deactivateSubscription(subscription.id, purchase.provider)
                                                         .then(() => {
                                                             (gDesigner.stats("profile-dialog_purchase-panel_cancel-subscription"),
-                                                                n.remove(),
-                                                                this._addOrUpdateItem(e, t));
+                                                                prompt.remove(),
+                                                                this._addOrUpdateItem(purchase, itemElement));
                                                         })
-                                                        .catch((e) => this._handleError(e)),
-                                                        await d.checkLicense());
+                                                        .catch((error) => this._handleError(error)),
+                                                        await licenseManager.checkLicense());
                                                 } finally {
                                                     this._toggleLoading(false);
                                                 }
@@ -271,13 +271,13 @@ module.exports = function (module, exports, require) {
                                         ));
                                 else {
                                     if (
-                                        (g.text(
+                                        (statusLabel.text(
                                             ""
-                                                .concat(a, ", ")
+                                                .concat(baseLabel, ", ")
                                                 .concat(
                                                     GObject.GLocale.get(new GObject.GLocaleKey("GPurchasePanel", "text.subscription-ends")).replace(
                                                         "%date",
-                                                        GObject.GLocale.toLocaleDate(new Date(u.endDate))
+                                                        GObject.GLocale.toLocaleDate(new Date(subscription.endDate))
                                                     ),
                                                     "."
                                                 )
@@ -285,48 +285,48 @@ module.exports = function (module, exports, require) {
                                         !this._allowReactivateSubscriptions)
                                     )
                                         return;
-                                    if (u.repurchase) return;
-                                    let n = p(
+                                    if (subscription.repurchase) return;
+                                    let activatePrompt = createPrompt(
                                         GObject.GLocale.get(new GObject.GLocaleKey("GPurchasePanel", "text.prompt-activate-title")),
                                         GObject.GLocale.get(new GObject.GLocaleKey("GPurchasePanel", "text.prompt-activate-info")).replace(
                                             "%date",
-                                            GObject.GLocale.toLocaleDate(new Date(u.nextBillingDate))
+                                            GObject.GLocale.toLocaleDate(new Date(subscription.nextBillingDate))
                                         ),
                                         GObject.GLocale.get(new GObject.GLocaleKey("GPurchasePanel", "text.prompt-activate-label")),
-                                        async (n) => {
+                                        async (prompt) => {
                                             this._toggleLoading(true);
                                             try {
                                                 (await gApi
-                                                    .activateSubscription(u.id, e.provider)
+                                                    .activateSubscription(subscription.id, purchase.provider)
                                                     .then(() => {
                                                         (gDesigner.stats("profile-dialog_purchase-panel_activate-subscription"),
-                                                            n.remove(),
-                                                            this._addOrUpdateItem(e, t));
+                                                            prompt.remove(),
+                                                            this._addOrUpdateItem(purchase, itemElement));
                                                     })
-                                                    .catch((e) => this._handleError(e)),
-                                                    await d.checkLicense());
+                                                    .catch((error) => this._handleError(error)),
+                                                    await licenseManager.checkLicense());
                                             } finally {
                                                 this._toggleLoading(false);
                                             }
                                         },
-                                        o.PURCHASEPANEL.HAS_HIGHLIGHT
+                                        appConfig.PURCHASEPANEL.HAS_HIGHLIGHT
                                     );
-                                    s && n.addClass("show");
+                                    allowReinstate && activatePrompt.addClass("show");
                                 }
                             })
-                            .catch(() => g.text(a + ".")));
+                            .catch(() => statusLabel.text(baseLabel + ".")));
                 }
-                return ($("<div></div>").addClass("purchased").append($("<label></label>").append(g)).appendTo(t), t);
+                return ($("<div></div>").addClass("purchased").append($("<label></label>").append(statusLabel)).appendTo(itemElement), itemElement);
             }),
-            (p.prototype._handleError = function (e) {
-                let t = GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.something-wrong"));
-                (e && e.message ? (t = e.message) : e && e.errors && (t = e.errors.map((e) => e[1]).join("<br>")), this._messageHandler(t));
+            (GPurchasePanel.prototype._handleError = function (error) {
+                let message = GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.something-wrong"));
+                (error && error.message ? (message = error.message) : error && error.errors && (message = error.errors.map((errorEntry) => errorEntry[1]).join("<br>")), this._messageHandler(message));
             }),
-            (p.prototype._toggleLoading = function (e) {
-                e ? this._container.addClass("g-loading") : this._container.removeClass("g-loading");
+            (GPurchasePanel.prototype._toggleLoading = function (isLoading) {
+                isLoading ? this._container.addClass("g-loading") : this._container.removeClass("g-loading");
             }),
-            (p.prototype.getHTMLElement = function () {
+            (GPurchasePanel.prototype.getHTMLElement = function () {
                 return this._container;
             }),
-            (module.exports = p));
+            (module.exports = GPurchasePanel));
     };

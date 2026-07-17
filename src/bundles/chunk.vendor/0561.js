@@ -37,7 +37,7 @@ module.exports = function (module, exports, require) {
                     "pattern/sketchRadialGradient",
                     "pattern/sketchTexturePattern",
                 ].forEach(function (e) {
-                    var t = require(1400)("./" + e.toLowerCase()),
+                    var t = require(1400 /* sketchModuleContext */)("./" + e.toLowerCase()),
                         o = e.split("sketch")[1],
                         a = o[0].toLowerCase() + o.slice(1);
                     ((r._nodeClassToNameMap[IsFiniteNonNegativeNumber.getTypeId(t)] = a), (r._nameToNodeClassMap[a] = t));

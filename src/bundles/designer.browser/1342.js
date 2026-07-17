@@ -4,7 +4,7 @@ module.exports = function (module, exports, require) {
         require(3);
         var GObject = require(1),
             a = _interopRequireDefault(require(18 /* GCategory */)),
-            r = _interopRequireDefault(require(31));
+            r = _interopRequireDefault(require(31 /* GAction */));
         const s = "designer.settings.enhanced-tooltips.enabled";
         let l = true;
         function c() {

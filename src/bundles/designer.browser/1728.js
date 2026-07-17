@@ -2,21 +2,21 @@ module.exports = function (module, exports, require) {
         "use strict";
         var _interopRequireDefault = require(16);
         (require(290), require(57), require(4), require(13));
-        var i,
-            a,
-            r,
+        var hideTimeout,
+            showTimeout,
+            openTooltip,
             GPlatform = require(15),
             GObject = require(1),
-            c = _interopRequireDefault(require(11)),
+            UuidUtils = _interopRequireDefault(require(11)),
             designerConfig = require(10),
-            u = require(67),
-            p = _interopRequireDefault(require(1342)),
-            g = {
-                init: function (e) {
-                    if (e) {
-                        if (!(e instanceof u.GRichTooltipConfig)) throw new Error("Not a Tooltip Config");
+            GRichTooltipConfig = require(67),
+            EnhancedTooltipsAction = _interopRequireDefault(require(1342)),
+            plugin = {
+                init: function (config) {
+                    if (config) {
+                        if (!(config instanceof GRichTooltipConfig.GRichTooltipConfig)) throw new Error("Not a Tooltip Config");
                         return (
-                            (e = $.extend(
+                            (config = $.extend(
                                 {
                                     title: "No title",
                                     isPro: false,
@@ -33,88 +33,88 @@ module.exports = function (module, exports, require) {
                                     forceShow: false,
                                     flipHorizontal: false,
                                 },
-                                e.getConfig()
+                                config.getConfig()
                             )),
-                            designerConfig.IS_COREL && !e.forceShow
+                            designerConfig.IS_COREL && !config.forceShow
                                 ? this
                                 : this.each(function () {
-                                      const t = $(this);
-                                      ((e._id = c.default.uuid(7)),
-                                          t.data("g-rich-tooltip", e),
-                                          t.on("mouseover", function (e) {
-                                              (i && (clearTimeout(i), (i = null)), a && (clearTimeout(a), (a = null)));
-                                              var n = function () {
-                                                  (t.data("g-rich-tooltip-container-hovered", true), g.showTooltip.call(t, e));
+                                      const element = $(this);
+                                      ((config._id = UuidUtils.default.uuid(7)),
+                                          element.data("g-rich-tooltip", config),
+                                          element.on("mouseover", function (event) {
+                                              (hideTimeout && (clearTimeout(hideTimeout), (hideTimeout = null)), showTimeout && (clearTimeout(showTimeout), (showTimeout = null)));
+                                              var showTooltipFn = function () {
+                                                  (element.data("g-rich-tooltip-container-hovered", true), plugin.showTooltip.call(element, event));
                                               };
-                                              r ? n() : (a = setTimeout(n, 500));
+                                              openTooltip ? showTooltipFn() : (showTimeout = setTimeout(showTooltipFn, 500));
                                           }),
-                                          t.on("mouseout", function (e) {
-                                              (a && (clearTimeout(a), (a = null)),
-                                                  t.data("g-rich-tooltip-container-hovered", false),
-                                                  g.hideTooltip.call(t, e));
+                                          element.on("mouseout", function (event) {
+                                              (showTimeout && (clearTimeout(showTimeout), (showTimeout = null)),
+                                                  element.data("g-rich-tooltip-container-hovered", false),
+                                                  plugin.hideTooltip.call(element, event));
                                           }),
-                                          t.on("mousedown", function () {
-                                              a && (clearTimeout(a), (a = null));
+                                          element.on("mousedown", function () {
+                                              showTimeout && (clearTimeout(showTimeout), (showTimeout = null));
                                           }));
                                   })
                         );
                     }
                 },
                 showTooltip: function () {
-                    const e = $(this),
-                        t = e.data("g-rich-tooltip");
-                    if (r) {
-                        if (r.data("g-rich-tooltip-id") === t._id) return;
-                        g.close.call(e);
+                    const element = $(this),
+                        config = element.data("g-rich-tooltip");
+                    if (openTooltip) {
+                        if (openTooltip.data("g-rich-tooltip-id") === config._id) return;
+                        plugin.close.call(element);
                     }
-                    gContainer.getProperty(p.default.StoragePropertyName).then((n) => {
-                        ((t.enhanced = "boolean" != typeof n || n),
-                            (r = g.createTooltip(t)).on("mouseover", function () {
-                                (i && (clearTimeout(i), (i = null)), e.data("g-rich-tooltip-self-tooltip-hovered", true));
+                    gContainer.getProperty(EnhancedTooltipsAction.default.StoragePropertyName).then((enhanced) => {
+                        ((config.enhanced = "boolean" != typeof enhanced || enhanced),
+                            (openTooltip = plugin.createTooltip(config)).on("mouseover", function () {
+                                (hideTimeout && (clearTimeout(hideTimeout), (hideTimeout = null)), element.data("g-rich-tooltip-self-tooltip-hovered", true));
                             }),
-                            r.on("mouseout", function () {
-                                (e.data("g-rich-tooltip-self-tooltip-hovered", false), g.hideTooltip.call(e));
+                            openTooltip.on("mouseout", function () {
+                                (element.data("g-rich-tooltip-self-tooltip-hovered", false), plugin.hideTooltip.call(element));
                             }),
-                            r.on("click", function () {
-                                g.close.call(e);
+                            openTooltip.on("click", function () {
+                                plugin.close.call(element);
                             }),
-                            r.gOverlay("open", e));
+                            openTooltip.gOverlay("open", element));
                     });
                 },
                 hideTooltip: function () {
-                    const e = $(this);
-                    i = setTimeout(() => {
-                        e.data("g-rich-tooltip-container-hovered") || e.data("g-rich-tooltip-self-tooltip-hovered") || g.close.call(e);
+                    const element = $(this);
+                    hideTimeout = setTimeout(() => {
+                        element.data("g-rich-tooltip-container-hovered") || element.data("g-rich-tooltip-self-tooltip-hovered") || plugin.close.call(element);
                     }, 100);
                 },
-                createTooltip: function (e) {
-                    var t = 0,
-                        n = 4;
+                createTooltip: function (config) {
+                    var offsetX = 0,
+                        offsetY = 4;
                     return (
-                        e.side ? ((t = 0), (n = -6)) : e.middle && (t = -13),
-                        e.marginLeft && (t += parseInt(e.marginLeft)),
-                        e.flipHorizontal && (t = 0 - t),
+                        config.side ? ((offsetX = 0), (offsetY = -6)) : config.middle && (offsetX = -13),
+                        config.marginLeft && (offsetX += parseInt(config.marginLeft)),
+                        config.flipHorizontal && (offsetX = 0 - offsetX),
                         $("<div />")
                             .addClass("g-rich-tooltip-container")
-                            .data("g-rich-tooltip-id", e._id)
-                            .append(g.createTooltipContent(e))
+                            .data("g-rich-tooltip-id", config._id)
+                            .append(plugin.createTooltipContent(config))
                             .gOverlay({
                                 padding: true,
                                 releaseOnClose: true,
                                 bottomClazz: "from-bottom",
                                 rightClazz: "from-right",
-                                offsetY: n,
-                                offsetX: t,
+                                offsetY: offsetY,
+                                offsetX: offsetX,
                                 bottomOffsetY: 6,
-                                clazz: "g-tooltip-content-overlay " + (e.flipHorizontal ? "flip-horizontal" : ""),
+                                clazz: "g-tooltip-content-overlay " + (config.flipHorizontal ? "flip-horizontal" : ""),
                                 disableDarkShadow: true,
-                                middle: e.middle,
-                                side: e.side,
-                                flipHorizontal: e.flipHorizontal,
+                                middle: config.middle,
+                                side: config.side,
+                                flipHorizontal: config.flipHorizontal,
                             })
                     );
                 },
-                createTooltipContent: function (e) {
+                createTooltipContent: function (config) {
                     const {
                         title,
                         isPro,
@@ -126,17 +126,17 @@ module.exports = function (module, exports, require) {
                         enhanced,
                         learnMore,
                         upgradeToProStatsValue,
-                    } = e;
-                    let g = description;
-                    const h = gDesigner.getLicense(),
-                        f = (h.isPro() || h.isTrial()) && h.isExpired(),
-                        m = learnMore
+                    } = config;
+                    let descriptionHtml = description;
+                    const license = gDesigner.getLicense(),
+                        isExpiredLicense = (license.isPro() || license.isTrial()) && license.isExpired(),
+                        learnMoreLink = learnMore
                             ? '<a href="'
                                   .concat(learnMore, '" target="_blank">')
                                   .concat(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.learn-more")), "</a>")
                             : "";
-                    g = g ? "".concat(g, " ").concat(m) : m;
-                    const y = $("<div />")
+                    descriptionHtml = descriptionHtml ? "".concat(descriptionHtml, " ").concat(learnMoreLink) : learnMoreLink;
+                    const wrapper = $("<div />")
                         .addClass("g-tooltip-content-wrapper")
                         .toggleClass("g-pro", isPro)
                         .append(
@@ -155,7 +155,7 @@ module.exports = function (module, exports, require) {
                                         .text(title)
                                 )
                         )
-                        .append(enhanced && g ? $("<div />").addClass("g-tooltip-content-description").html(g) : "")
+                        .append(enhanced && descriptionHtml ? $("<div />").addClass("g-tooltip-content-description").html(descriptionHtml) : "")
                         .append(enhanced && video && video.length ? $("<div />").addClass("g-tooltip-content-video loading") : "")
                         .append(
                             enhanced && pic && pic.length
@@ -165,7 +165,7 @@ module.exports = function (module, exports, require) {
                                 : ""
                         )
                         .append(
-                            enhanced && isPro && f
+                            enhanced && isPro && isExpiredLicense
                                 ? $("<div />")
                                       .addClass("g-tooltip-content-footer")
                                       .append(
@@ -190,32 +190,32 @@ module.exports = function (module, exports, require) {
                         enhanced &&
                             video &&
                             setTimeout(() => {
-                                const e = y.find(".g-tooltip-content-video");
-                                if (e.length) {
-                                    const t = $("<video />")
+                                const videoContainer = wrapper.find(".g-tooltip-content-video");
+                                if (videoContainer.length) {
+                                    const videoElement = $("<video />")
                                         .attr("width", 298)
                                         .attr("height", 160)
                                         .attr("src", video)
                                         .attr("autoplay", true)
                                         .attr("loop", true);
-                                    (t.on("loadeddata", function () {
-                                        e.removeClass("loading");
+                                    (videoElement.on("loadeddata", function () {
+                                        videoContainer.removeClass("loading");
                                     }),
-                                        e.append(t));
+                                        videoContainer.append(videoElement));
                                 }
                             }, videoTimeout),
-                        y
+                        wrapper
                     );
                 },
                 close: function () {
-                    r && (r.gOverlay("close"), (r = void 0));
+                    openTooltip && (openTooltip.gOverlay("close"), (openTooltip = void 0));
                 },
             };
-        $.fn.gRichTooltip = function (e) {
-            return g[e]
-                ? g[e].apply(this, Array.prototype.slice.call(arguments, 1))
-                : "object" != typeof e && e
-                  ? void $.error("Method " + e + " does not exist on jQuery.myPlugin")
-                  : g.init.apply(this, arguments);
+        $.fn.gRichTooltip = function (methodOrConfig) {
+            return plugin[methodOrConfig]
+                ? plugin[methodOrConfig].apply(this, Array.prototype.slice.call(arguments, 1))
+                : "object" != typeof methodOrConfig && methodOrConfig
+                  ? void $.error("Method " + methodOrConfig + " does not exist on jQuery.myPlugin")
+                  : plugin.init.apply(this, arguments);
         };
     };

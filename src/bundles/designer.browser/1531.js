@@ -3,87 +3,87 @@ module.exports = function (module, exports, require) {
         (require(8 /* Symbol */), require(4), require(13), require(38));
         var GObject = require(1);
         const { FILE_FORMATS, gApi } = require(10 /* designerConfig */),
-            r = FILE_FORMATS.find((e) => e.default),
+            r = FILE_FORMATS.find((format) => format.default),
             { COMMAND_SAVE, COMMAND_SYNC_IMAGES } = require(591 /* COMMAND_SAVE */),
             c = require(1164);
         module.exports = class extends c {
-            constructor(e, t) {
-                super(e, t);
+            constructor(worker, user) {
+                super(worker, user);
             }
-            async updateFileSceneAndMetadata(e, t, n, o) {
-                await this._syncSceneImages(e, n);
-                const { sceneSnapshot, urls } = await this._saveScene(e, t, n);
+            async updateFileSceneAndMetadata(documentId, file, scene, metadata) {
+                await this._syncSceneImages(documentId, scene);
+                const { sceneSnapshot, urls } = await this._saveScene(documentId, file, scene);
                 return (
-                    console.log({ documentId: e, file: t, sceneSnapshot: sceneSnapshot, urls: urls }),
-                    await this._saveThumbnail(o.thumbnail.getImageAsBlob(), urls.url_t),
-                    await gApi.commitAutoSaveFileUpdate(t.id),
-                    gApi.getFile(e + "?edit")
+                    console.log({ documentId: documentId, file: file, sceneSnapshot: sceneSnapshot, urls: urls }),
+                    await this._saveThumbnail(metadata.thumbnail.getImageAsBlob(), urls.url_t),
+                    await gApi.commitAutoSaveFileUpdate(file.id),
+                    gApi.getFile(documentId + "?edit")
                 );
             }
-            _syncSceneImages(e, t) {
-                return new Promise((n) => {
-                    let i = t.getDictionary().getEntries(),
-                        r = [];
-                    ((i = i.map((e) => (e.hasOwnProperty("cachedCanvas") && (e.cachedCanvas = null), e))),
-                        t.acceptChildren((e) => {
-                            e instanceof GObject.GImage &&
-                                r.push({
-                                    name: e.getProperty("name"),
-                                    url: e.getProperty("url"),
+            _syncSceneImages(documentId, scene) {
+                return new Promise((resolve) => {
+                    let entries = scene.getDictionary().getEntries(),
+                        images = [];
+                    ((entries = entries.map((entry) => (entry.hasOwnProperty("cachedCanvas") && (entry.cachedCanvas = null), entry))),
+                        scene.acceptChildren((child) => {
+                            child instanceof GObject.GImage &&
+                                images.push({
+                                    name: child.getProperty("name"),
+                                    url: child.getProperty("url"),
                                 });
                         }));
-                    const s = Object.create(t),
-                        c = this._request(COMMAND_SYNC_IMAGES.REQUEST, {
-                            id: e,
-                            images: r,
-                            entries: i,
+                    const sceneCopy = Object.create(scene),
+                        requestId = this._request(COMMAND_SYNC_IMAGES.REQUEST, {
+                            id: documentId,
+                            images: images,
+                            entries: entries,
                             cloudURL: gApi.url,
                         });
                     this._worker.addEventListener(
                         "message",
-                        function (e) {
-                            const { cmd, id, data } = e.data;
-                            if (cmd !== COMMAND_SYNC_IMAGES.SUCCESS || id !== c) return false;
-                            let r = s.getDictionary();
-                            s.setCloudSynchronization(null);
-                            let d = new GObject.GDictionary();
-                            return (d.deserialize(data), r.merge(d), n(), true);
+                        function (event) {
+                            const { cmd, id, data } = event.data;
+                            if (cmd !== COMMAND_SYNC_IMAGES.SUCCESS || id !== requestId) return false;
+                            let dictionary = sceneCopy.getDictionary();
+                            sceneCopy.setCloudSynchronization(null);
+                            let newDictionary = new GObject.GDictionary();
+                            return (newDictionary.deserialize(data), dictionary.merge(newDictionary), resolve(), true);
                         }.bind(this),
                         { once: true }
                     );
                 });
             }
-            _saveScene(e, t, n) {
-                return new Promise((i, a) => {
-                    let l = GObject.GNode.serialize(n, { save: true });
-                    const c = Object.create(n),
-                        d = this._request(COMMAND_SAVE.REQUEST, {
-                            id: e,
-                            file: t,
-                            scene: l,
+            _saveScene(documentId, file, scene) {
+                return new Promise((resolve, reject) => {
+                    let serializedScene = GObject.GNode.serialize(scene, { save: true });
+                    const sceneCopy = Object.create(scene),
+                        requestId = this._request(COMMAND_SAVE.REQUEST, {
+                            id: documentId,
+                            file: file,
+                            scene: serializedScene,
                             type: r.type,
                         });
                     this._worker.addEventListener(
                         "message",
-                        function (e) {
-                            const { cmd: t, id: n, data: o } = e.data;
-                            if ((t !== COMMAND_SAVE.SUCCESS && t !== COMMAND_SAVE.FAILED) || n !== d) return false;
-                            t === COMMAND_SAVE.SUCCESS ? i({ sceneSnapshot: c, urls: o.urls }) : t === COMMAND_SAVE.FAILED && a();
+                        function (event) {
+                            const { cmd: cmd, id: id, data: data } = event.data;
+                            if ((cmd !== COMMAND_SAVE.SUCCESS && cmd !== COMMAND_SAVE.FAILED) || id !== requestId) return false;
+                            cmd === COMMAND_SAVE.SUCCESS ? resolve({ sceneSnapshot: sceneCopy, urls: data.urls }) : cmd === COMMAND_SAVE.FAILED && reject();
                             return true;
                         }.bind(this),
                         { once: true }
                     );
                 });
             }
-            _saveThumbnail(e, t) {
-                const n = new XMLHttpRequest();
-                n.open("PUT", t);
-                const o = {
+            _saveThumbnail(imageBlob, uploadUrl) {
+                const request = new XMLHttpRequest();
+                request.open("PUT", uploadUrl);
+                const headers = {
                     "Content-Type": "image/jpeg",
                     "Cache-Control": "public,max-age=31600000",
                 };
-                for (var i in o) n.setRequestHeader(i, o[i]);
-                n.send(e);
+                for (var i in headers) request.setRequestHeader(i, headers[i]);
+                request.send(imageBlob);
             }
         };
     };

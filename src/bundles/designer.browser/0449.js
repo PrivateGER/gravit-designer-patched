@@ -3,62 +3,62 @@ module.exports = function (module, exports, require) {
         require(3);
         var GObject = require(1),
             GPlatform = require(15),
-            a = require(67),
+            GRichTooltipConfig = require(67),
             GCategory = require(18),
-            s = require(31);
-        function l() {
-            l.TOOLTIP_CONFIG = {
-                [a.TOOLTIP_AREA.TOOLBAR]: a.GRichTooltipConfig.from({
+            GAction = require(31);
+        function GFitAllAction() {
+            GFitAllAction.TOOLTIP_CONFIG = {
+                [GRichTooltipConfig.TOOLTIP_AREA.TOOLBAR]: GRichTooltipConfig.GRichTooltipConfig.from({
                     title: GObject.GLocale.get(new GObject.GLocaleKey("GFitAllAction", "tooltip-title")),
                     description: GObject.GLocale.get(new GObject.GLocaleKey("GFitAllAction", "tooltip-description")),
-                    shortcut: l.SHORTCUT,
+                    shortcut: GFitAllAction.SHORTCUT,
                 }),
             };
         }
-        (GObject.GObject.inherit(l, s),
-            (l.ID = "view.zoom.fit.all"),
-            (l.TITLE = new GObject.GLocaleKey("GFitAllAction", "title")),
-            (l.SHORTCUT = [GPlatform.GKey.Constant.OPTION, GPlatform.GKey.Constant.META, "0"]),
-            (l.TOOLTIP_CONFIG = null),
-            (l.prototype.getId = function () {
-                return l.ID;
+        (GObject.GObject.inherit(GFitAllAction, GAction),
+            (GFitAllAction.ID = "view.zoom.fit.all"),
+            (GFitAllAction.TITLE = new GObject.GLocaleKey("GFitAllAction", "title")),
+            (GFitAllAction.SHORTCUT = [GPlatform.GKey.Constant.OPTION, GPlatform.GKey.Constant.META, "0"]),
+            (GFitAllAction.TOOLTIP_CONFIG = null),
+            (GFitAllAction.prototype.getId = function () {
+                return GFitAllAction.ID;
             }),
-            (l.prototype.getTitle = function () {
-                return l.TITLE;
+            (GFitAllAction.prototype.getTitle = function () {
+                return GFitAllAction.TITLE;
             }),
-            (l.prototype.getCategory = function () {
+            (GFitAllAction.prototype.getCategory = function () {
                 return GCategory.CATEGORY_VIEW;
             }),
-            (l.prototype.getIcon = function () {
+            (GFitAllAction.prototype.getIcon = function () {
                 return gDesigner.isTouchEnabled() ? "gravit-icon-fit-all" : null;
             }),
-            (l.prototype.getGroup = function () {
+            (GFitAllAction.prototype.getGroup = function () {
                 return "zoom";
             }),
-            (l.prototype.getShortcut = function () {
-                return l.SHORTCUT;
+            (GFitAllAction.prototype.getShortcut = function () {
+                return GFitAllAction.SHORTCUT;
             }),
-            (l.prototype.isEnabled = function () {
-                var e = gDesigner.getActiveDocument(),
-                    t = (e && e.getScene() && e.getScene().getPaintBBox()) || null;
-                return t && !t.isEmpty();
+            (GFitAllAction.prototype.isEnabled = function () {
+                var activeDocument = gDesigner.getActiveDocument(),
+                    paintBBox = (activeDocument && activeDocument.getScene() && activeDocument.getScene().getPaintBBox()) || null;
+                return paintBBox && !paintBBox.isEmpty();
             }),
-            (l.prototype.execute = function () {
-                var e,
-                    t = gDesigner.getActiveDocument(),
-                    n = t.getScene(),
-                    i = t.getActiveWindow().getView().getViewConfiguration().multiPageView;
-                if (n.isFixedSized() && !i) {
-                    var a = n.getActivePage();
-                    e = new GObject.GRect(0, 0, a.getProperty("w"), a.getProperty("h"));
-                } else e = n.getPaintBBox(i);
-                e && !e.isEmpty() && t.getActiveWindow().getView().zoomAll(e, false);
+            (GFitAllAction.prototype.execute = function () {
+                var boundingBox,
+                    activeDocument = gDesigner.getActiveDocument(),
+                    scene = activeDocument.getScene(),
+                    multiPageView = activeDocument.getActiveWindow().getView().getViewConfiguration().multiPageView;
+                if (scene.isFixedSized() && !multiPageView) {
+                    var activePage = scene.getActivePage();
+                    boundingBox = new GObject.GRect(0, 0, activePage.getProperty("w"), activePage.getProperty("h"));
+                } else boundingBox = scene.getPaintBBox(multiPageView);
+                boundingBox && !boundingBox.isEmpty() && activeDocument.getActiveWindow().getView().zoomAll(boundingBox, false);
             }),
-            (l.prototype.getTooltipConfig = function (e) {
-                return (e && l.TOOLTIP_CONFIG[e]) || null;
+            (GFitAllAction.prototype.getTooltipConfig = function (area) {
+                return (area && GFitAllAction.TOOLTIP_CONFIG[area]) || null;
             }),
-            (l.prototype.toString = function () {
+            (GFitAllAction.prototype.toString = function () {
                 return "[Object GFitAllAction]";
             }),
-            (module.exports = l));
+            (module.exports = GFitAllAction));
     };

@@ -5,8 +5,8 @@ module.exports = function (module, exports, require) {
             GObject = require(1),
             r = _interopRequireDefault(require(18 /* GCategory */)),
             SidebarsIds = require(198);
-        const l = require(31);
-        class c extends l {
+        const GAction = require(31);
+        class c extends GAction {
             getId() {
                 return c.ID;
             }

@@ -1,71 +1,71 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        const o = require(1583),
-            i = require(1189);
+        const TouchEvent = require(1583),
+            TouchState = require(1189);
         module.exports = class {
             constructor() {
                 ((this._gestures = []),
-                    (this._state = new i()),
+                    (this._state = new TouchState()),
                     (this._delayedTouchEventsEnabled = true),
                     (this._suppressClickEnabled = false),
                     (this._swiping = false));
             }
-            addGesture(e) {
-                this._gestures.push(e);
+            addGesture(gesture) {
+                this._gestures.push(gesture);
             }
-            setDelayedTouchEventsEnabled(e) {
-                this._delayedTouchEventsEnabled = e;
+            setDelayedTouchEventsEnabled(enabled) {
+                this._delayedTouchEventsEnabled = enabled;
             }
-            setClickSuppressionEnabled(e) {
-                this._suppressClickEnabled = e;
+            setClickSuppressionEnabled(enabled) {
+                this._suppressClickEnabled = enabled;
             }
-            touchStart(e) {
-                ((this._swiping = false), this._state.update(e), this._handleDelayedTouchStartEvent(e));
-                const t = new o(e);
-                this._delayedTouchEventsEnabled && !t.areThereMultipleTouchPoints()
-                    ? ((this._delayedTouchEvent = e),
+            touchStart(event) {
+                ((this._swiping = false), this._state.update(event), this._handleDelayedTouchStartEvent(event));
+                const touchEvent = new TouchEvent(event);
+                this._delayedTouchEventsEnabled && !touchEvent.areThereMultipleTouchPoints()
+                    ? ((this._delayedTouchEvent = event),
                       (this._delayedTouchEventTimeout = setTimeout(this._triggerDelayedTouchEvent.bind(this), 50)))
-                    : this._execute("start", e);
+                    : this._execute("start", event);
             }
-            touchMove(e) {
-                ((this._swiping = true), this._state.update(e), this._handleDelayedTouchStartEvent(e), this._execute("move", e));
+            touchMove(event) {
+                ((this._swiping = true), this._state.update(event), this._handleDelayedTouchStartEvent(event), this._execute("move", event));
             }
-            touchEnd(e) {
-                (this._state.update(e), this._handleDelayedTouchStartEvent(e), this._execute("end", e));
+            touchEnd(event) {
+                (this._state.update(event), this._handleDelayedTouchStartEvent(event), this._execute("end", event));
             }
-            touchCancel(e) {
-                (this._state.update(e), this._execute("cancel", e));
+            touchCancel(event) {
+                (this._state.update(event), this._execute("cancel", event));
             }
-            gestureStart(e) {
-                (this._dropDelayedTouchEvent(), this._execute("gesture", e));
+            gestureStart(event) {
+                (this._dropDelayedTouchEvent(), this._execute("gesture", event));
             }
-            scroll(e) {
+            scroll(event) {
                 this._swiping = true;
             }
-            _execute(e, t) {
+            _execute(phase, rawEvent) {
                 this._state.setSwiping(this._isSwiping());
-                const n = new o(t),
-                    i = this._gestures.length;
-                let a = false;
-                for (let t = 0; t < i; t++) {
-                    const o = this._gestures[t];
+                const touchEvent = new TouchEvent(rawEvent),
+                    gestureCount = this._gestures.length;
+                let handled = false;
+                for (let t = 0; t < gestureCount; t++) {
+                    const gesture = this._gestures[t];
                     try {
-                        if (a) {
-                            o.deactivate(n, this._state);
+                        if (handled) {
+                            gesture.deactivate(touchEvent, this._state);
                             continue;
                         }
                         if (
-                            ("start" === e && (o.canActivate(n, this._state) ? o.activate(n, this._state) : o.deactivate(n, this._state)),
-                            !o.isActive())
+                            ("start" === phase && (gesture.canActivate(touchEvent, this._state) ? gesture.activate(touchEvent, this._state) : gesture.deactivate(touchEvent, this._state)),
+                            !gesture.isActive())
                         )
                             continue;
-                        a = o[e](n, this._state);
-                    } catch (e) {
-                        console.error("GGestureHelper", e);
+                        handled = gesture[phase](touchEvent, this._state);
+                    } catch (error) {
+                        console.error("GGestureHelper", error);
                         try {
-                            o.deactivate(n, this._state);
-                        } catch (e) {
-                            console.warn("GGestureHelper deactivation", e);
+                            gesture.deactivate(touchEvent, this._state);
+                        } catch (error) {
+                            console.warn("GGestureHelper deactivation", error);
                         }
                     }
                 }
@@ -73,8 +73,8 @@ module.exports = function (module, exports, require) {
             _isSwiping() {
                 return !!this._suppressClickEnabled && this._swiping;
             }
-            _handleDelayedTouchStartEvent(e) {
-                this._delayedTouchEventTimeout && new o(e).areThereMultipleTouchPointsOnTheTarget()
+            _handleDelayedTouchStartEvent(event) {
+                this._delayedTouchEventTimeout && new TouchEvent(event).areThereMultipleTouchPointsOnTheTarget()
                     ? this._dropDelayedTouchEvent()
                     : this._triggerDelayedTouchEvent();
             }

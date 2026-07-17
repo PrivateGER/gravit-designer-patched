@@ -1,8 +1,8 @@
 module.exports = function (module, exports, require) {
         "use strict";
         require(30 /* polyfill:Object */);
-        const o = require(177);
-        class i extends o {
+        const GUser = require(177);
+        class UserMention extends GUser {
             constructor() {
                 let {
                     id,
@@ -12,10 +12,10 @@ module.exports = function (module, exports, require) {
                     showText,
                     avatar,
                     role,
-                    fontWeight: s = "normal",
-                    type: l = "contact",
-                    trigger: c = "@",
-                    additional: d = false,
+                    fontWeight: fontWeight = "normal",
+                    type: mentionType = "contact",
+                    trigger: trigger = "@",
+                    additional: isAdditional = false,
                 } = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
                 (super({
                     id: id,
@@ -24,36 +24,36 @@ module.exports = function (module, exports, require) {
                     email: email,
                     showText: showText,
                     avatar: avatar,
-                    fontWeight: s,
-                    type: l,
-                    trigger: c,
+                    fontWeight: fontWeight,
+                    type: mentionType,
+                    trigger: trigger,
                 }),
                     (this.value = ""),
                     (this._role = role),
-                    (this._additional = d));
+                    (this._additional = isAdditional));
             }
-            setValue(e) {
-                this.value = e;
+            setValue(value) {
+                this.value = value;
             }
             getFullUserName() {
                 return this._additional ? this.name : super.getFullUserName();
             }
-            static createUserMention(e, t) {
-                let n = e.getFirstName();
-                return new i({
-                    id: e.getUID(),
-                    name: n,
-                    last_name: e.getLastName(),
-                    showText: "@" + e.getFullUserName(),
-                    avatar: t ? t.avatar : "assets/icon/notification-icon.svg",
-                    role: e.getRole(),
-                    email: e.getEmail(),
+            static createUserMention(user, options) {
+                let firstName = user.getFirstName();
+                return new UserMention({
+                    id: user.getUID(),
+                    name: firstName,
+                    last_name: user.getLastName(),
+                    showText: "@" + user.getFullUserName(),
+                    avatar: options ? options.avatar : "assets/icon/notification-icon.svg",
+                    role: user.getRole(),
+                    email: user.getEmail(),
                 });
             }
-            static clone(e) {
-                const t = new i();
-                return (Object.assign(t, e), t);
+            static clone(source) {
+                const clonedInstance = new UserMention();
+                return (Object.assign(clonedInstance, source), clonedInstance);
             }
         }
-        module.exports = i;
+        module.exports = UserMention;
     };

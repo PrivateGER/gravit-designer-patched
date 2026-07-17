@@ -2,7 +2,7 @@ module.exports = function (module, exports, require) {
         "use strict";
         var _interopRequireDefault = require(16);
         require(3);
-        var i = _interopRequireDefault(require(1195));
+        var i = _interopRequireDefault(require(1195 /* GBrowserStorage */));
         function a(e, t, n, o) {
             (i.default.Item.call(this, e, t, n), (this._fileId = o));
         }

@@ -1,7 +1,7 @@
 module.exports = function (module, exports, require) {
         "use strict";
         var GObject = require(1);
-        const i = [
+        const tooltipConfigs = [
             {
                 selector: "#toolbar > .section > .menubar-toolbar-button",
                 i18n: "text.menu",
@@ -208,13 +208,13 @@ module.exports = function (module, exports, require) {
             }
             open() {
                 this._panel && this._panel.remove();
-                const e = $("body").addClass("g-quick-help");
+                const body = $("body").addClass("g-quick-help");
                 ((this._panel = $("<div/>")
                     .addClass("g-quick-help-screen")
                     .addClass(GObject.GLocale.getLocaleTagISO6391())
                     .addClass("hidden")
                     .on("click", () => this.close())
-                    .appendTo(e)),
+                    .appendTo(body)),
                     gDesigner.getRightSidebars().disableContextSensitive(),
                     this._update(),
                     this._panel.removeClass("hidden"),
@@ -231,7 +231,7 @@ module.exports = function (module, exports, require) {
                 this._panel && (this._panel.empty(), this._update());
             }
             _update() {
-                (this._createStaticTooltips(), i.forEach((e) => this._createDynamicTooltip(e)));
+                (this._createStaticTooltips(), tooltipConfigs.forEach((config) => this._createDynamicTooltip(config)));
             }
             _createStaticTooltips() {
                 $("<div/>")
@@ -271,57 +271,57 @@ module.exports = function (module, exports, require) {
                     )
                     .appendTo(this._panel);
             }
-            _createDynamicTooltip(e) {
-                const t = $(e.selector),
-                    n = t.offset();
-                if (!n || !t.is(":visible")) return;
-                const i = this._createTooltip(e).appendTo(this._panel),
-                    a = new GObject.GRect(n.left, n.top, t.outerWidth(), t.outerHeight()),
-                    r = new GObject.GRect(0, 0, i.outerWidth(), i.outerHeight()),
-                    s = this._calculatePosition(r, a, e);
-                i.css({ top: s.getY(), left: s.getX() });
+            _createDynamicTooltip(config) {
+                const target = $(config.selector),
+                    targetOffset = target.offset();
+                if (!targetOffset || !target.is(":visible")) return;
+                const tooltip = this._createTooltip(config).appendTo(this._panel),
+                    targetRect = new GObject.GRect(targetOffset.left, targetOffset.top, target.outerWidth(), target.outerHeight()),
+                    tooltipRect = new GObject.GRect(0, 0, tooltip.outerWidth(), tooltip.outerHeight()),
+                    position = this._calculatePosition(tooltipRect, targetRect, config);
+                tooltip.css({ top: position.getY(), left: position.getX() });
             }
-            _calculatePosition(e, t, n) {
-                const i = n.side || GObject.GRect.Side.BOTTOM_CENTER,
-                    a = t.getSide(i);
-                switch (i) {
+            _calculatePosition(tooltipRect, targetRect, config) {
+                const side = config.side || GObject.GRect.Side.BOTTOM_CENTER,
+                    anchorPoint = targetRect.getSide(side);
+                switch (side) {
                     case GObject.GRect.Side.TOP_CENTER: {
-                        const t = e.getSide(GObject.GRect.Side.CENTER).getX();
-                        return new GObject.GPoint(a.getX() - t + (n.offsetX || 0), a.getY() - e.getHeight() + (n.offsetY || 0));
+                        const tooltipCenterX = tooltipRect.getSide(GObject.GRect.Side.CENTER).getX();
+                        return new GObject.GPoint(anchorPoint.getX() - tooltipCenterX + (config.offsetX || 0), anchorPoint.getY() - tooltipRect.getHeight() + (config.offsetY || 0));
                     }
                     case GObject.GRect.Side.BOTTOM_CENTER: {
-                        const t = e.getSide(GObject.GRect.Side.CENTER).getX();
-                        return new GObject.GPoint(a.getX() - t + (n.offsetX || 0), a.getY() + (n.offsetY || 0));
+                        const tooltipCenterX = tooltipRect.getSide(GObject.GRect.Side.CENTER).getX();
+                        return new GObject.GPoint(anchorPoint.getX() - tooltipCenterX + (config.offsetX || 0), anchorPoint.getY() + (config.offsetY || 0));
                     }
                     case GObject.GRect.Side.LEFT_CENTER: {
-                        const t = e.getSide(GObject.GRect.Side.CENTER).getY();
-                        return new GObject.GPoint(a.getX() - e.getWidth() + (n.offsetX || 0), a.getY() - t + (n.offsetY || 0));
+                        const tooltipCenterY = tooltipRect.getSide(GObject.GRect.Side.CENTER).getY();
+                        return new GObject.GPoint(anchorPoint.getX() - tooltipRect.getWidth() + (config.offsetX || 0), anchorPoint.getY() - tooltipCenterY + (config.offsetY || 0));
                     }
                     case GObject.GRect.Side.RIGHT_CENTER: {
-                        const t = e.getSide(GObject.GRect.Side.CENTER).getY();
-                        return new GObject.GPoint(a.getX() + (n.offsetX || 0), a.getY() - t + (n.offsetY || 0));
+                        const tooltipCenterY = tooltipRect.getSide(GObject.GRect.Side.CENTER).getY();
+                        return new GObject.GPoint(anchorPoint.getX() + (config.offsetX || 0), anchorPoint.getY() - tooltipCenterY + (config.offsetY || 0));
                     }
                     default:
                         throw "Unsupported side";
                 }
             }
-            _createTooltip(e) {
-                const t = $("<div>")
+            _createTooltip(config) {
+                const content = $("<div>")
                     .addClass("content")
-                    .append($("<span/>").text(GObject.GLocale.get(new GObject.GLocaleKey("GQuickHelpScreen", e.i18n))));
+                    .append($("<span/>").text(GObject.GLocale.get(new GObject.GLocaleKey("GQuickHelpScreen", config.i18n))));
                 return $("<div/>")
-                    .addClass("tooltip" + (e.className ? " " + e.className : ""))
-                    .addClass("side-" + (e.side || GObject.GRect.Side.BOTTOM_CENTER))
-                    .toggleClass("further-away", !!e.furtherAway)
+                    .addClass("tooltip" + (config.className ? " " + config.className : ""))
+                    .addClass("side-" + (config.side || GObject.GRect.Side.BOTTOM_CENTER))
+                    .toggleClass("further-away", !!config.furtherAway)
                     .append(
                         $("<div/>")
                             .addClass("container")
                             .append(
                                 $("<div>")
                                     .addClass("connector")
-                                    .css("display", e.disconnected ? "none" : "")
+                                    .css("display", config.disconnected ? "none" : "")
                             )
-                            .append(t)
+                            .append(content)
                     );
             }
         })();

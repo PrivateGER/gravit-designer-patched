@@ -3,21 +3,21 @@ module.exports = function (module, exports, require) {
         (Object.defineProperty(exports, "__esModule", { value: true }), (exports.default = void 0), require(8 /* Symbol */), require(20 /* polyfill:RegExp */), require(271 /* polyfill:String */), require(34), require(134 /* polyfill:String */), require(38));
         const { isBeta } = require(803);
         var gaEventPaths = require(1495);
-        let a = 0,
-            r = 0;
-        const s = {
-            pageStats: (e, t, n, l, c) => {
+        let lastStatTime = 0,
+            lastGaCallTime = 0;
+        const Analytics = {
+            pageStats: (event, value, user, skipGaTracking, forceLog) => {
                 if (
-                    (l ||
-                        (function (e, t, n) {
-                            const o = (e) => "string" == typeof e;
-                            function a(e) {
-                                return (e || "")
+                    (skipGaTracking ||
+                        (function (event, value, n) {
+                            const isString = (value) => "string" == typeof value;
+                            function sanitizeIdentifier(text) {
+                                return (text || "")
                                     .split("/")
-                                    .map(function (e) {
-                                        return (function (e) {
-                                            if (!e) return "";
-                                            let t = String(e)
+                                    .map(function (segment) {
+                                        return (function (segment) {
+                                            if (!segment) return "";
+                                            let sanitized = String(segment)
                                                 .replace(
                                                     /^(?:[\0-\/:-@\[-`\{-\uD7FF\uE000-\uFFFF]|[\uD800-\uDBFF][\uDC00-\uDFFF]|[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?:[^\uD800-\uDBFF]|^)[\uDC00-\uDFFF])*|(?:[\0-\/:-@\[-`\{-\uD7FF\uE000-\uFFFF]|[\uD800-\uDBFF][\uDC00-\uDFFF]|[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?:[^\uD800-\uDBFF]|^)[\uDC00-\uDFFF])*$/g,
                                                     "$"
@@ -26,88 +26,88 @@ module.exports = function (module, exports, require) {
                                                     /(?:[\0-\/:-@\[-`\{-\uD7FF\uE000-\uFFFF]|[\uD800-\uDBFF][\uDC00-\uDFFF]|[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?:[^\uD800-\uDBFF]|^)[\uDC00-\uDFFF])+/g,
                                                     "$"
                                                 )
-                                                .replace(/([a-z])([A-Z])/g, function (e, t, n) {
-                                                    return t + "$" + n;
+                                                .replace(/([a-z])([A-Z])/g, function (match, lower, upper) {
+                                                    return lower + "$" + upper;
                                                 })
                                                 .toLowerCase()
-                                                .replace(/(\$)([0-9A-Z_a-z]?)/g, function (e, t, n) {
-                                                    return n.toUpperCase();
+                                                .replace(/(\$)([0-9A-Z_a-z]?)/g, function (match, dollarSign, char) {
+                                                    return char.toUpperCase();
                                                 });
-                                            return (e.startsWith("!") && (t = "!" + t), t);
-                                        })(e);
+                                            return (segment.startsWith("!") && (sanitized = "!" + sanitized), sanitized);
+                                        })(segment);
                                     })
                                     .join("/");
                             }
                             if ("undefined" == typeof _GLOBAL_GA_EVENTS) return;
-                            if (!n && Date.now() - r <= 100) return;
-                            var l = e.split("_"),
-                                c = l[0],
-                                d = l[1],
-                                u = (l[2] || "") + ("string" == typeof t || "number" == typeof t || t instanceof String ? ":" + t : "");
+                            if (!n && Date.now() - lastGaCallTime <= 100) return;
+                            var eventParts = event.split("_"),
+                                eventName = eventParts[0],
+                                category = eventParts[1],
+                                actionValue = (eventParts[2] || "") + ("string" == typeof value || "number" == typeof value || value instanceof String ? ":" + value : "");
                             if ("undefined" != typeof dataLayer) {
-                                var p = (function (e, t, n) {
-                                    var r = n ? n.split(":") : "",
-                                        s = e,
-                                        l = t,
-                                        c = r[0] || "",
-                                        d = r[1] || "";
-                                    if (!s) return null;
-                                    var u = "";
-                                    if (o(gaEventPaths[s])) u = gaEventPaths[s];
-                                    else if (l && o(gaEventPaths[s][l])) u = gaEventPaths[s][l];
-                                    else if (l && c && o(gaEventPaths[s][l][c])) u = gaEventPaths[s][l][c];
+                                var gaPath = (function (rawEventName, rawCategory, rawActionValue) {
+                                    var actionValueParts = rawActionValue ? rawActionValue.split(":") : "",
+                                        eventName = rawEventName,
+                                        category = rawCategory,
+                                        action = actionValueParts[0] || "",
+                                        value = actionValueParts[1] || "";
+                                    if (!eventName) return null;
+                                    var path = "";
+                                    if (isString(gaEventPaths[eventName])) path = gaEventPaths[eventName];
+                                    else if (category && isString(gaEventPaths[eventName][category])) path = gaEventPaths[eventName][category];
+                                    else if (category && action && isString(gaEventPaths[eventName][category][action])) path = gaEventPaths[eventName][category][action];
                                     else {
-                                        if (!(l && c && d && o(gaEventPaths[s][l][c][d]))) return null;
-                                        u = gaEventPaths[s][l][c][d];
+                                        if (!(category && action && value && isString(gaEventPaths[eventName][category][action][value]))) return null;
+                                        path = gaEventPaths[eventName][category][action][value];
                                     }
                                     return (
-                                        (u = (u = (u = (u = u.replace("$EVENTNAME", a(s))).replace("$CATEGORY", a(l))).replace(
+                                        (path = (path = (path = (path = path.replace("$EVENTNAME", sanitizeIdentifier(eventName))).replace("$CATEGORY", sanitizeIdentifier(category))).replace(
                                             "$ACTION",
-                                            a(c)
-                                        )).replace("$VALUE", a(d))) &&
-                                            !u.startsWith("/") &&
-                                            (u = "/" + u),
-                                        u
+                                            sanitizeIdentifier(action)
+                                        )).replace("$VALUE", sanitizeIdentifier(value))) &&
+                                            !path.startsWith("/") &&
+                                            (path = "/" + path),
+                                        path
                                     );
-                                })(c, d, u);
-                                (p && s.pageTracking(p), (r = Date.now()));
+                                })(eventName, category, actionValue);
+                                (gaPath && Analytics.pageTracking(gaPath), (lastGaCallTime = Date.now()));
                             }
-                        })(e, t),
-                    n &&
-                        (("function" == typeof gdb_loaddesign || isBeta) && console.log("updating stats:" + e + " value: " + (t || "null")),
+                        })(event, value),
+                    user &&
+                        (("function" == typeof gdb_loaddesign || isBeta) && console.log("updating stats:" + event + " value: " + (value || "null")),
                         "undefined" != typeof _GLOBAL_GA_EVENTS && "undefined" != typeof ga))
                 ) {
-                    var d = n;
-                    if ((!d && n.isAnonymous() && (d = {}), d)) {
-                        var u = t ? e + "_" + t : e;
-                        if ((d.hasOwnProperty(u) && "number" == typeof d[u] ? d[u]++ : (d[u] = 1), c || Date.now() - a > 100)) {
-                            var p = e.split("_"),
-                                g =
-                                    (p[2] || "unknown") +
-                                    ("string" == typeof t || "number" == typeof t || t instanceof String ? ":" + t : "");
-                            (ga(_GLOBAL_GA_EVENTS, "event", p[0], p[1] || "unknown", g), (a = Date.now()));
+                    var userEventCounts = user;
+                    if ((!userEventCounts && user.isAnonymous() && (userEventCounts = {}), userEventCounts)) {
+                        var eventKey = value ? event + "_" + value : event;
+                        if ((userEventCounts.hasOwnProperty(eventKey) && "number" == typeof userEventCounts[eventKey] ? userEventCounts[eventKey]++ : (userEventCounts[eventKey] = 1), forceLog || Date.now() - lastStatTime > 100)) {
+                            var statEventParts = event.split("_"),
+                                gaLabel =
+                                    (statEventParts[2] || "unknown") +
+                                    ("string" == typeof value || "number" == typeof value || value instanceof String ? ":" + value : "");
+                            (ga(_GLOBAL_GA_EVENTS, "event", statEventParts[0], statEventParts[1] || "unknown", gaLabel), (lastStatTime = Date.now()));
                         }
                     }
                 }
             },
-            pageTracking: async function (e, t) {
+            pageTracking: async function (path, subPath) {
                 "undefined" != typeof _GLOBAL_GA_EVENTS &&
-                    (Date.now() - r <= 100 ||
-                        (e.startsWith("/") || (e = "/" + e),
-                        e.endsWith("/") && (e = e.slice(0, e.length - 1)),
-                        t && (t.startsWith("/") ? (e += t) : (e = e + "/" + t)),
-                        (e = s.modifyPageStatsForUserLicense(e)),
-                        (e = await s.modifyPageStatsForAppMode(e)),
-                        ("function" == typeof gdb_loaddesign || isBeta) && console.log("pagestats: " + e),
-                        window.ga(_GLOBAL_GA_EVENTS, "pageview", e),
-                        (r = Date.now())));
+                    (Date.now() - lastGaCallTime <= 100 ||
+                        (path.startsWith("/") || (path = "/" + path),
+                        path.endsWith("/") && (path = path.slice(0, path.length - 1)),
+                        subPath && (subPath.startsWith("/") ? (path += subPath) : (path = path + "/" + subPath)),
+                        (path = Analytics.modifyPageStatsForUserLicense(path)),
+                        (path = await Analytics.modifyPageStatsForAppMode(path)),
+                        ("function" == typeof gdb_loaddesign || isBeta) && console.log("pagestats: " + path),
+                        window.ga(_GLOBAL_GA_EVENTS, "pageview", path),
+                        (lastGaCallTime = Date.now())));
             },
-            modifyPageStatsForUserLicense: function (e) {
-                return e;
+            modifyPageStatsForUserLicense: function (path) {
+                return path;
             },
-            modifyPageStatsForAppMode: function (e) {
-                return e;
+            modifyPageStatsForAppMode: function (path) {
+                return path;
             },
         };
-        exports.default = s;
+        exports.default = Analytics;
     };

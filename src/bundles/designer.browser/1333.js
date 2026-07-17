@@ -4,30 +4,30 @@ module.exports = function (module, exports, require) {
         var GObject = require(1),
             GPlatform = require(15),
             GCategory = require(18),
-            r = require(31);
-        function s() {}
-        (GObject.GObject.inherit(s, r),
-            (s.ID = "edit.select-all"),
-            (s.TITLE = new GObject.GLocaleKey("GSelectAllAction", "title")),
-            (s.prototype.getId = function () {
-                return s.ID;
+            GAction = require(31);
+        function GSelectAllAction() {}
+        (GObject.GObject.inherit(GSelectAllAction, GAction),
+            (GSelectAllAction.ID = "edit.select-all"),
+            (GSelectAllAction.TITLE = new GObject.GLocaleKey("GSelectAllAction", "title")),
+            (GSelectAllAction.prototype.getId = function () {
+                return GSelectAllAction.ID;
             }),
-            (s.prototype.getTitle = function () {
-                return s.TITLE;
+            (GSelectAllAction.prototype.getTitle = function () {
+                return GSelectAllAction.TITLE;
             }),
-            (s.prototype.getCategory = function () {
+            (GSelectAllAction.prototype.getCategory = function () {
                 return GCategory.CATEGORY_EDIT;
             }),
-            (s.prototype.getGroup = function () {
+            (GSelectAllAction.prototype.getGroup = function () {
                 return "select";
             }),
-            (s.prototype.getShortcut = function () {
+            (GSelectAllAction.prototype.getShortcut = function () {
                 return [GPlatform.GKey.Constant.META, "A"];
             }),
-            (s.prototype.isEnabled = function () {
+            (GSelectAllAction.prototype.isEnabled = function () {
                 return !(!document.activeElement || !$(document.activeElement).is(":editable")) || !!gDesigner.getActiveDocument();
             }),
-            (s.prototype.execute = function () {
+            (GSelectAllAction.prototype.execute = function () {
                 if (
                     document.activeElement &&
                     $(document.activeElement).is(":editable") &&
@@ -36,38 +36,38 @@ module.exports = function (module, exports, require) {
                 )
                     document.execCommand("selectAll");
                 else {
-                    var e = gDesigner.getActiveDocument().getEditor(),
-                        t = gDesigner.getActiveDocument().getScene(),
-                        n = t.getActivePage(),
-                        i = gDesigner.getActiveDocument().getActiveWindow().getView().getViewConfiguration().multiPageView,
-                        a = [];
-                    (t.accept(function (e) {
+                    var editor = gDesigner.getActiveDocument().getEditor(),
+                        scene = gDesigner.getActiveDocument().getScene(),
+                        activePage = scene.getActivePage(),
+                        isMultiPageView = gDesigner.getActiveDocument().getActiveWindow().getView().getViewConfiguration().multiPageView,
+                        selection = [];
+                    (scene.accept(function (element) {
                         if (
-                            e instanceof GObject.GItem &&
-                            !e.hasMixin(GObject.GAnnotation) &&
-                            !(e.getParent() instanceof GObject.GItem) &&
-                            (e.getPage() === n || i) &&
-                            !e.isLocked()
+                            element instanceof GObject.GItem &&
+                            !element.hasMixin(GObject.GAnnotation) &&
+                            !(element.getParent() instanceof GObject.GItem) &&
+                            (element.getPage() === activePage || isMultiPageView) &&
+                            !element.isLocked()
                         ) {
-                            var t =
-                                    !e.getProperty("vis") ||
-                                    e.findParent(function (e) {
-                                        return e instanceof GObject.GBlock && !e.getProperty("vis");
+                            var isHidden =
+                                    !element.getProperty("vis") ||
+                                    element.findParent(function (ancestor) {
+                                        return ancestor instanceof GObject.GBlock && !ancestor.getProperty("vis");
                                     }),
-                                r = e.getProperty("plkt"),
-                                s =
-                                    r & GObject.GBlock.ProgramLck.NoEdit &&
-                                    r & GObject.GBlock.ProgramLck.NoSizeChanges &&
-                                    r & GObject.GBlock.ProgramLck.NoMove &&
-                                    r & GObject.GBlock.ProgramLck.NoDelete;
-                            t || s || a.push(e);
+                                lockFlags = element.getProperty("plkt"),
+                                isFullyLocked =
+                                    lockFlags & GObject.GBlock.ProgramLck.NoEdit &&
+                                    lockFlags & GObject.GBlock.ProgramLck.NoSizeChanges &&
+                                    lockFlags & GObject.GBlock.ProgramLck.NoMove &&
+                                    lockFlags & GObject.GBlock.ProgramLck.NoDelete;
+                            isHidden || isFullyLocked || selection.push(element);
                         }
                     }),
-                        e.updateSelection(false, a));
+                        editor.updateSelection(false, selection));
                 }
             }),
-            (s.prototype.toString = function () {
+            (GSelectAllAction.prototype.toString = function () {
                 return "[Object GSelectAllAction]";
             }),
-            (module.exports = s));
+            (module.exports = GSelectAllAction));
     };

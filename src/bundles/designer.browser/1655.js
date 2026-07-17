@@ -2,16 +2,16 @@ module.exports = function (module, exports, require) {
         "use strict";
         (require(3), require(4), require(13));
         var GObject = require(1),
-            i = require(123);
-        function a() {
+            GProperties = require(123);
+        function GGroupFrameProperties() {
             this._items = [];
         }
-        (GObject.GObject.inherit(a, i),
-            (a.prototype._panel = null),
-            (a.prototype._document = null),
-            (a.prototype._items = null),
-            (a.prototype.init = function (e) {
-                ((this._panel = e),
+        (GObject.GObject.inherit(GGroupFrameProperties, GProperties),
+            (GGroupFrameProperties.prototype._panel = null),
+            (GGroupFrameProperties.prototype._document = null),
+            (GGroupFrameProperties.prototype._items = null),
+            (GGroupFrameProperties.prototype.init = function (panel) {
+                ((this._panel = panel),
                     this._panel.addClass("group-frame-property-panel"),
                     $("<div></div>")
                         .addClass("group-frame-row")
@@ -24,13 +24,13 @@ module.exports = function (module, exports, require) {
                                         .attr("data-item-property", "frm")
                                         .on(
                                             "change",
-                                            function (e) {
-                                                var t = "1" == $(e.target).val();
-                                                (gDesigner.stats("groupframeproperties_toggle_frame", t ? "enable" : "disable"),
+                                            function (event) {
+                                                var isFrame = "1" == $(event.target).val();
+                                                (gDesigner.stats("groupframeproperties_toggle_frame", isFrame ? "enable" : "disable"),
                                                     this._assignProperty(
                                                         "frm",
-                                                        t,
-                                                        t
+                                                        isFrame,
+                                                        isFrame
                                                             ? GObject.GLocale.get(new GObject.GLocaleKey("GGroupFrameProperties", "text.switch-frame"))
                                                             : GObject.GLocale.get(new GObject.GLocaleKey("GGroupFrameProperties", "text.switch-group"))
                                                     ));
@@ -51,20 +51,20 @@ module.exports = function (module, exports, require) {
                         })
                         .appendTo(this._panel));
             }),
-            (a.prototype.update = function (e, t) {
+            (GGroupFrameProperties.prototype.update = function (document, items) {
                 if (
                     (this._document &&
                         (this._document.getScene().removeEventListener(GObject.GNode.AfterPropertiesChangeEvent, this._afterPropertiesChange),
                         (this._document = null)),
                     (this._items = []),
-                    e)
+                    document)
                 ) {
-                    for (var n = 0; n < t.length; ++n) {
-                        t[n] instanceof GObject.GGroup && this._items.push(t[n]);
+                    for (var n = 0; n < items.length; ++n) {
+                        items[n] instanceof GObject.GGroup && this._items.push(items[n]);
                     }
-                    if (this._items.length && this._items.length === t.length)
+                    if (this._items.length && this._items.length === items.length)
                         return (
-                            (this._document = e),
+                            (this._document = document),
                             this._document
                                 .getScene()
                                 .addEventListener(GObject.GNode.AfterPropertiesChangeEvent, this._afterPropertiesChange, this),
@@ -74,33 +74,33 @@ module.exports = function (module, exports, require) {
                 }
                 return false;
             }),
-            (a.prototype._afterPropertiesChange = function (e) {
-                !e.temporary && this._items.length > 0 && this._items[0] === e.node && this._updateProperties();
+            (GGroupFrameProperties.prototype._afterPropertiesChange = function (event) {
+                !event.temporary && this._items.length > 0 && this._items[0] === event.node && this._updateProperties();
             }),
-            (a.prototype._updateProperties = function () {
-                var e = this._items[0];
+            (GGroupFrameProperties.prototype._updateProperties = function () {
+                var item = this._items[0];
                 (this._panel.find("[major-item-only]").css("display", ""),
                     this._panel
                         .find('[data-item-property="frm"]')
                         .prop("disabled", false)
-                        .prop("value", e.getProperty("frm") ? "1" : "0"));
+                        .prop("value", item.getProperty("frm") ? "1" : "0"));
             }),
-            (a.prototype._assignProperty = function (e, t, n) {
-                if ("frm" == e) {
-                    var o = this._document.getEditor();
-                    o.beginTransaction();
+            (GGroupFrameProperties.prototype._assignProperty = function (propertyName, value, actionName) {
+                if ("frm" == propertyName) {
+                    var editor = this._document.getEditor();
+                    editor.beginTransaction();
                     try {
                         for (var i = 0; i < this._items.length; ++i) {
                             var a = this._items[i];
-                            a.setFrame && a.setFrame(t);
+                            a.setFrame && a.setFrame(value);
                         }
                     } finally {
-                        o.commitTransaction(n);
+                        editor.commitTransaction(actionName);
                     }
                 }
             }),
-            (a.prototype.toString = function () {
+            (GGroupFrameProperties.prototype.toString = function () {
                 return "[Object GGroupFrameProperties]";
             }),
-            (module.exports = a));
+            (module.exports = GGroupFrameProperties));
     };

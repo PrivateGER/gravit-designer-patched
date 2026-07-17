@@ -1,30 +1,30 @@
 module.exports = function (module, exports, require) {
         "use strict";
         var _interopRequireDefault = require(16);
-        (require(19), require(57), require(8 /* Symbol */), require(356), require(20 /* polyfill:RegExp */), require(107 /* polyfill:RegExp */), require(3), require(151), require(34), require(91 /* polyfill:String */), require(4), require(41), require(13), require(26));
+        (require(19), require(57), require(8 /* Symbol */), require(356 /* polyfill:RegExp */), require(20 /* polyfill:RegExp */), require(107 /* polyfill:RegExp */), require(3), require(151), require(34), require(91 /* polyfill:String */), require(4), require(41), require(13), require(26));
         var GObject = require(1),
             GPlatform = require(15),
             designerConfig = require(10),
             brandingConfig = require(357),
-            GMenu = _interopRequireDefault(require(238)),
-            GMenuItem = _interopRequireDefault(require(339)),
+            GMenu = _interopRequireDefault(require(238 /* GMenu */)),
+            GMenuItem = _interopRequireDefault(require(339 /* GMenuItem */)),
             GMenuBar = _interopRequireDefault(require(1501)),
             GPersonaBar = _interopRequireDefault(require(1502)),
-            GWindows = _interopRequireDefault(require(603)),
+            GWindows = _interopRequireDefault(require(603 /* GWindows */)),
             GDocumentEvent = _interopRequireDefault(require(78)),
             GDocumentStatusEvent = _interopRequireDefault(require(217)),
             DocumentStatus = _interopRequireDefault(require(86)),
             GCommonNames = _interopRequireDefault(require(119 /* GCommonNames */)),
             GSaveAction = _interopRequireDefault(require(447 /* GSaveAction */)),
-            GGravitCloudAction = _interopRequireDefault(require(448)),
+            GGravitCloudAction = _interopRequireDefault(require(448 /* GGravitCloudAction */)),
             GExportAction = _interopRequireDefault(require(861 /* GExportAction */)),
             GOpenSharedFileAction = _interopRequireDefault(require(1254 /* GOpenSharedFileAction */)),
             GVersionsHistoryAction = _interopRequireDefault(require(1256 /* GVersionsHistoryAction */)),
-            GExternalStorage = _interopRequireDefault(require(388)),
+            GExternalStorage = _interopRequireDefault(require(388 /* GExternalStorage */)),
             GCloudStorage = _interopRequireDefault(require(220 /* GCloudStorage */)),
             GSystemDialog = _interopRequireDefault(require(44 /* GSystemDialog */)),
             GCloudDriveStorage = _interopRequireDefault(require(862 /* GCloudDrive */)),
-            GDriveItem = _interopRequireDefault(require(156)),
+            GDriveItem = _interopRequireDefault(require(156 /* CloudFile */)),
             GDocument = _interopRequireDefault(require(163 /* GDocument */)),
             GRegex = require(263),
             tabsRearrangeUtil = require(1517);

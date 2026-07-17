@@ -3,59 +3,59 @@ module.exports = function (module, exports, require) {
         var _interopRequireDefault = require(16);
         require(3);
         var GObject = require(1),
-            a = _interopRequireDefault(require(1339 /* GPageProperties */)),
-            r = _interopRequireDefault(require(31)),
-            s = _interopRequireDefault(require(18 /* GCategory */));
-        function l() {}
-        (GObject.GObject.inherit(l, r.default),
-            (l.ID = "view.fast-view"),
-            (l.TITLE = new GObject.GLocaleKey("GFastViewAction", "title")),
-            (l.GroupID = "view"),
-            (l.prototype.getId = function () {
-                return l.ID;
+            GPageProperties = _interopRequireDefault(require(1339 /* GPageProperties */)),
+            GAction = _interopRequireDefault(require(31 /* GAction */)),
+            GCategory = _interopRequireDefault(require(18 /* GCategory */));
+        function GFastViewAction() {}
+        (GObject.GObject.inherit(GFastViewAction, GAction.default),
+            (GFastViewAction.ID = "view.fast-view"),
+            (GFastViewAction.TITLE = new GObject.GLocaleKey("GFastViewAction", "title")),
+            (GFastViewAction.GroupID = "view"),
+            (GFastViewAction.prototype.getId = function () {
+                return GFastViewAction.ID;
             }),
-            (l.prototype.getTitle = function () {
-                return GObject.GLocale.get(l.TITLE);
+            (GFastViewAction.prototype.getTitle = function () {
+                return GObject.GLocale.get(GFastViewAction.TITLE);
             }),
-            (l.prototype.getCategory = function () {
-                return s.default.CATEGORY_VIEW;
+            (GFastViewAction.prototype.getCategory = function () {
+                return GCategory.default.CATEGORY_VIEW;
             }),
-            (l.prototype.getGroup = function () {
-                return l.GroupID;
+            (GFastViewAction.prototype.getGroup = function () {
+                return GFastViewAction.GroupID;
             }),
-            (l.prototype.isEnabled = function () {
+            (GFastViewAction.prototype.isEnabled = function () {
                 return !!gDesigner.getWindows().getActiveWindow();
             }),
-            (l.prototype.isCheckable = function () {
+            (GFastViewAction.prototype.isCheckable = function () {
                 return true;
             }),
-            (l.prototype.isChecked = function () {
-                const e = gDesigner.getActiveDocument(),
-                    t = e && e.getActiveWindow();
-                if (t) {
-                    var n = t.getView().getViewConfiguration();
-                    return !!n && n.paintMode === GObject.GScenePaintConfiguration.PaintMode.Fast;
+            (GFastViewAction.prototype.isChecked = function () {
+                const activeDocument = gDesigner.getActiveDocument(),
+                    activeWindow = activeDocument && activeDocument.getActiveWindow();
+                if (activeWindow) {
+                    var viewConfiguration = activeWindow.getView().getViewConfiguration();
+                    return !!viewConfiguration && viewConfiguration.paintMode === GObject.GScenePaintConfiguration.PaintMode.Fast;
                 }
                 return false;
             }),
-            (l.prototype.execute = function () {
-                var e,
-                    t = gDesigner.getActiveDocument().getActiveWindow().getView().getViewConfiguration();
-                if (t.paintMode === GObject.GScenePaintConfiguration.PaintMode.Fast) {
-                    var n = gDesigner.getActiveDocument().getScene().getActivePage();
-                    if (((t.defaultEffectDetailLevel = null), n && !n.isFixedSized())) e = GObject.GScenePaintConfiguration.PaintMode.Full;
+            (GFastViewAction.prototype.execute = function () {
+                var paintMode,
+                    viewConfiguration = gDesigner.getActiveDocument().getActiveWindow().getView().getViewConfiguration();
+                if (viewConfiguration.paintMode === GObject.GScenePaintConfiguration.PaintMode.Fast) {
+                    var activePage = gDesigner.getActiveDocument().getScene().getActivePage();
+                    if (((viewConfiguration.defaultEffectDetailLevel = null), activePage && !activePage.isFixedSized())) paintMode = GObject.GScenePaintConfiguration.PaintMode.Full;
                     else
-                        e =
-                            (n.getProperty(a.default.CLIP_PROPERTY_NAME, true) || a.default.CLIP_CONTENT_ENABLED) ===
-                            a.default.CLIP_CONTENT_ENABLED
+                        paintMode =
+                            (activePage.getProperty(GPageProperties.default.CLIP_PROPERTY_NAME, true) || GPageProperties.default.CLIP_CONTENT_ENABLED) ===
+                            GPageProperties.default.CLIP_CONTENT_ENABLED
                                 ? GObject.GScenePaintConfiguration.PaintMode.Output
                                 : GObject.GScenePaintConfiguration.PaintMode.Full;
                 } else
-                    ((t.defaultEffectDetailLevel = 0.5 / GObject.GPaintCanvas.getScreenDPI()), (e = GObject.GScenePaintConfiguration.PaintMode.Fast));
-                (gDesigner.setPaintMode(e), gDesigner.updateGEditorSceneConfigurationPaintMode(e));
+                    ((viewConfiguration.defaultEffectDetailLevel = 0.5 / GObject.GPaintCanvas.getScreenDPI()), (paintMode = GObject.GScenePaintConfiguration.PaintMode.Fast));
+                (gDesigner.setPaintMode(paintMode), gDesigner.updateGEditorSceneConfigurationPaintMode(paintMode));
             }),
-            (l.prototype.toString = function () {
+            (GFastViewAction.prototype.toString = function () {
                 return "[GAction GFastViewAction]";
             }),
-            (module.exports = l));
+            (module.exports = GFastViewAction));
     };

@@ -3,10 +3,10 @@ module.exports = function (module, exports, require) {
         var _interopRequireDefault = require(16);
         (require(20 /* polyfill:RegExp */), require(34), require(91 /* polyfill:String */), require(4), require(13));
         var GObject = require(1),
-            a = _interopRequireDefault(require(44 /* GSystemDialog */));
-        function r(e, t, n, o) {
-            let r = arguments.length > 4 && void 0 !== arguments[4] ? arguments[4] : {};
-            var s = this;
+            GSystemDialog = _interopRequireDefault(require(44 /* GSystemDialog */));
+        function GNewFilePromptDialog(createCallback, closeCallback, buttonClass, defaultName) {
+            let validator = arguments.length > 4 && void 0 !== arguments[4] ? arguments[4] : {};
+            var self = this;
             ((this._dialog = $("<div></div>")),
                 $("<div/>")
                     .css("display", "grid")
@@ -20,46 +20,46 @@ module.exports = function (module, exports, require) {
                             .attr("type", "text")
                             .css("margin-top", "10px")
                             .css("width", "100%")
-                            .val(o || "")
+                            .val(defaultName || "")
                             .addClass("name")
                     )
                     .appendTo(this._dialog));
-            var l = function (e) {
-                    13 === e.which && (gDesigner.stats("newfile_enter_save"), c(), e.stopPropagation());
+            var onKeypress = function (event) {
+                    13 === event.which && (gDesigner.stats("newfile_enter_save"), save(), event.stopPropagation());
                 },
-                c = function () {
-                    if ($(s._dialog).find(".name").val().trim()) {
-                        var t = $(s._dialog).find(".name").val();
-                        r && r.fn && !r.fn(t)
-                            ? a.default.alert(r.errorMessage.replace("%fileName%", '"'.concat(t, '"')))
-                            : (e(t), s.close());
+                save = function () {
+                    if ($(self._dialog).find(".name").val().trim()) {
+                        var value = $(self._dialog).find(".name").val();
+                        validator && validator.fn && !validator.fn(value)
+                            ? GSystemDialog.default.alert(validator.errorMessage.replace("%fileName%", '"'.concat(value, '"')))
+                            : (createCallback(value), self.close());
                     }
                 };
-            ($(s._dialog).find(".name").keypress(l),
+            ($(self._dialog).find(".name").keypress(onKeypress),
                 this._dialog.gDialog({
                     className: "g-new-file-prompt-dialog",
                     releaseOnClose: false,
-                    closeCallback: t,
+                    closeCallback: closeCallback,
                     buttons: [
                         $(
                             "<button"
-                                .concat(n ? ' class="'.concat(n, '"') : "", ">")
+                                .concat(buttonClass ? ' class="'.concat(buttonClass, '"') : "", ">")
                                 .concat(GObject.GLocale.get(new GObject.GLocaleKey("GNewFilePrompt", "action.create")), "</button>")
                         ).on("click", function () {
-                            (gDesigner.stats("newfile_click_save"), c());
+                            (gDesigner.stats("newfile_click_save"), save());
                         }),
                         $("<button>" + GObject.GLocale.get(new GObject.GLocaleKey("GLocale", "cancel")) + "</button>").on("click", function () {
-                            (gDesigner.stats("newfile_click_close"), s.close());
+                            (gDesigner.stats("newfile_click_close"), self.close());
                         }),
                     ],
                 }));
         }
-        (GObject.GObject.inherit(r, GObject.GObject),
-            (r.prototype.open = function () {
+        (GObject.GObject.inherit(GNewFilePromptDialog, GObject.GObject),
+            (GNewFilePromptDialog.prototype.open = function () {
                 (this._dialog.gDialog("open", true), $(this._dialog).find(".name").focus());
             }),
-            (r.prototype.close = function () {
+            (GNewFilePromptDialog.prototype.close = function () {
                 this._dialog.gDialog("close");
             }),
-            (module.exports = r));
+            (module.exports = GNewFilePromptDialog));
     };

@@ -3,9 +3,9 @@ module.exports = function (module, exports, require) {
         (Object.defineProperty(exports, "__esModule", { value: true }), (exports.GCloudUser = r), (exports.default = void 0), require(58 /* polyfill:Array */), require(3), require(71 /* polyfill:String */));
         var o = require(1241);
         const IsFiniteNonNegativeNumber = require(0),
-            a = require(177);
+            GUser = require(177);
         function r() {}
-        (IsFiniteNonNegativeNumber.inherit(r, a),
+        (IsFiniteNonNegativeNumber.inherit(r, GUser),
             (r.ValidRoles = [
                 o.GCloudRole.Type.Viewer,
                 o.GCloudRole.Type.Coauthor,

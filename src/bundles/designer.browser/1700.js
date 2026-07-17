@@ -3,21 +3,21 @@ module.exports = function (module, exports, require) {
         (require(8 /* Symbol */), require(4), require(13));
         var GObject = require(1),
             Utils = require(40),
-            a = require(255),
-            r = require(1118),
-            s = require(1199),
-            l = require(85),
+            FontsProviderManager = require(255),
+            GImportedFontsProvider = require(1118),
+            GLocalFontsProvider = require(1199),
+            GContainer = require(85),
             GSystemDialog = require(44);
         const { GPlatform } = require(15 /* GPlatform */);
-        function u() {}
-        (GObject.GObject.inheritAndMix(u, GObject.GObject),
-            (u.DISABLE_LOCAL_FONTS_ACCESS_WARING = "disable-local-fonts-access-warning"),
-            (u._showLocalFontsAccessDialog = async function () {
-                if (gDesigner.getSetting(u.DISABLE_LOCAL_FONTS_ACCESS_WARING, false)) return false;
+        function GLocalFontsAccess() {}
+        (GObject.GObject.inheritAndMix(GLocalFontsAccess, GObject.GObject),
+            (GLocalFontsAccess.DISABLE_LOCAL_FONTS_ACCESS_WARING = "disable-local-fonts-access-warning"),
+            (GLocalFontsAccess._showLocalFontsAccessDialog = async function () {
+                if (gDesigner.getSetting(GLocalFontsAccess.DISABLE_LOCAL_FONTS_ACCESS_WARING, false)) return false;
                 if (!window.queryLocalFonts)
                     return (GSystemDialog.alert(GObject.GLocale.get(new GObject.GLocaleKey("GLocalFontsProvider", "text.current-browser-unsupported"))), false);
                 if ("denied" === (await navigator.permissions.query({ name: "local-fonts" })).state) {
-                    const e = [
+                    const buttons = [
                         {
                             label: GObject.GLocale.get(new GObject.GLocaleKey("GLocale", "close")),
                             highlighted: true,
@@ -25,239 +25,239 @@ module.exports = function (module, exports, require) {
                             closeOnClick: true,
                         },
                     ];
-                    let t = GObject.GLocale.get(new GObject.GLocaleKey("GLocalFontsProvider", "text.permission-required-subtitle-others"));
+                    let subtitle = GObject.GLocale.get(new GObject.GLocaleKey("GLocalFontsProvider", "text.permission-required-subtitle-others"));
                     (GPlatform.webBrowser === GPlatform.constructor.WebBrowser.Edge &&
-                        (t = GObject.GLocale.get(new GObject.GLocaleKey("GLocalFontsProvider", "text.permission-required-subtitle-edge"))),
+                        (subtitle = GObject.GLocale.get(new GObject.GLocaleKey("GLocalFontsProvider", "text.permission-required-subtitle-edge"))),
                         GSystemDialog.custom({
                             icon: "error",
                             className: "g-local-fonts-warning-dialog",
                             closeable: true,
                             title: GObject.GLocale.get(new GObject.GLocaleKey("GLocalFontsProvider", "text.permission-required-title")),
-                            subtitle: t,
-                            buttons: e,
-                            dontShowAgainCb: (e) => {
-                                gDesigner.setSetting(u.DISABLE_LOCAL_FONTS_ACCESS_WARING, !!e);
+                            subtitle: subtitle,
+                            buttons: buttons,
+                            dontShowAgainCb: (dontShowAgain) => {
+                                gDesigner.setSetting(GLocalFontsAccess.DISABLE_LOCAL_FONTS_ACCESS_WARING, !!dontShowAgain);
                             },
                         }));
                 }
                 return false;
             }));
-        var p = function () {
+        var isNativeRuntime = function () {
                 return (
-                    gContainer.getRuntime() !== l.Runtime.Browser &&
-                    gContainer.getRuntime() !== l.Runtime.Chrome &&
-                    gContainer.getRuntime() !== l.Runtime.PWA
+                    gContainer.getRuntime() !== GContainer.Runtime.Browser &&
+                    gContainer.getRuntime() !== GContainer.Runtime.Chrome &&
+                    gContainer.getRuntime() !== GContainer.Runtime.PWA
                 );
             },
-            g = function (e, t) {
-                let n = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : null;
-                var r = $("<a></a>")
-                        .data("provider", t)
+            createProviderTab = function (labelKey, providerClass) {
+                let proFeature = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : null;
+                var tabLink = $("<a></a>")
+                        .data("provider", providerClass)
                         .addClass("tablinks")
-                        .append(GObject.GLocale.get(e))
+                        .append(GObject.GLocale.get(labelKey))
                         .on(
                             "click",
                             Utils.watchDog.trap(
-                                function (t) {
-                                    n
-                                        ? gDesigner.stats("fonts_click_protab", GObject.GLocale.get(e, void 0, GObject.GLocaleLanguage.English))
-                                        : gDesigner.stats("fonts_click_tab", GObject.GLocale.get(e, void 0, GObject.GLocaleLanguage.English));
-                                    var i = $(t.target),
-                                        r = i.closest(".tab");
-                                    (r.find(".tablinks").removeClass("active"), i.addClass("active"));
-                                    var l = i.data("provider");
-                                    if (l) (l == s && u._showLocalFontsAccessDialog(), a.enableProviders([l]));
+                                function (event) {
+                                    proFeature
+                                        ? gDesigner.stats("fonts_click_protab", GObject.GLocale.get(labelKey, void 0, GObject.GLocaleLanguage.English))
+                                        : gDesigner.stats("fonts_click_tab", GObject.GLocale.get(labelKey, void 0, GObject.GLocaleLanguage.English));
+                                    var $target = $(event.target),
+                                        tabContainer = $target.closest(".tab");
+                                    (tabContainer.find(".tablinks").removeClass("active"), $target.addClass("active"));
+                                    var provider = $target.data("provider");
+                                    if (provider) (provider == GLocalFontsProvider && GLocalFontsAccess._showLocalFontsAccessDialog(), FontsProviderManager.enableProviders([provider]));
                                     else {
-                                        var c = [];
+                                        var disabledProviders = [];
                                         if (
-                                            (r.find(".tablinks:not(.active)").each(function () {
-                                                var e = $(this).data("provider");
-                                                e && c.push(e);
+                                            (tabContainer.find(".tablinks:not(.active)").each(function () {
+                                                var tabProvider = $(this).data("provider");
+                                                tabProvider && disabledProviders.push(tabProvider);
                                             }),
-                                            !p())
+                                            !isNativeRuntime())
                                         ) {
-                                            var d = gContainer.getSystemFontsProvider();
-                                            d || c.push(d);
+                                            var systemFontsProvider = gContainer.getSystemFontsProvider();
+                                            systemFontsProvider || disabledProviders.push(systemFontsProvider);
                                         }
-                                        c.length && a.disableProviders(c);
+                                        disabledProviders.length && FontsProviderManager.disableProviders(disabledProviders);
                                     }
                                 },
-                                () => !n,
-                                (t) => {
-                                    gDesigner.stats("fonts_nonprotriespro_protab", GObject.GLocale.get(e));
+                                () => !proFeature,
+                                (event) => {
+                                    gDesigner.stats("fonts_nonprotriespro_protab", GObject.GLocale.get(labelKey));
                                 },
-                                n
+                                proFeature
                             )
                         ),
-                    l = $("<li></li>").addClass("tablink").gPro({ pro: !!n, feature: n }).append(r);
-                return l;
+                    tabListItem = $("<li></li>").addClass("tablink").gPro({ pro: !!proFeature, feature: proFeature }).append(tabLink);
+                return tabListItem;
             },
-            h = function (e, t) {
-                if (e) {
-                    var n = e.data("gfontsbutton");
-                    n && n.fontList && n.fontList.gFontsPanel("search", t, e.val());
+            searchFontList = function (inputElement, query) {
+                if (inputElement) {
+                    var buttonState = inputElement.data("gfontsbutton");
+                    buttonState && buttonState.fontList && buttonState.fontList.gFontsPanel("search", query, inputElement.val());
                 }
             };
-        const f = function () {
-            const e = $(this).data("gfontsbutton");
-            e &&
-                (e.fontListContainer && e.fontListContainer.gOverlay("close", this),
-                e.options && e.options.closeCallback && e.options.closeCallback.call(this));
+        const closeFontsOverlay = function () {
+            const buttonState = $(this).data("gfontsbutton");
+            buttonState &&
+                (buttonState.fontListContainer && buttonState.fontListContainer.gOverlay("close", this),
+                buttonState.options && buttonState.options.closeCallback && buttonState.options.closeCallback.call(this));
         };
-        var m = function (e) {
-                var t = $(e),
-                    n = t.data("gfontsbutton");
-                if (!n.fontList) {
-                    var i = $("<div></div>").addClass("header");
-                    n.fontList = $("<div></div>")
-                        .on("mousedown", function (e) {
-                            n.mouseMoved = false;
+        var buildFontList = function (element) {
+                var $button = $(element),
+                    buttonState = $button.data("gfontsbutton");
+                if (!buttonState.fontList) {
+                    var previewHeader = $("<div></div>").addClass("header");
+                    buttonState.fontList = $("<div></div>")
+                        .on("mousedown", function (event) {
+                            buttonState.mouseMoved = false;
                         })
-                        .on("mousemove", function (e) {
-                            n.mouseMoved || (n.mouseMoved = true);
+                        .on("mousemove", function (event) {
+                            buttonState.mouseMoved || (buttonState.mouseMoved = true);
                         })
-                        .on("mouseup", function (t) {
-                            "_SPECIAL_" === t.target.name || "g-fonts-panel" === t.target.className || n.mouseMoved
-                                ? (n.mouseMoved = false)
-                                : gDesigner.isTouchEnabled() || f.call(e);
+                        .on("mouseup", function (event) {
+                            "_SPECIAL_" === event.target.name || "g-fonts-panel" === event.target.className || buttonState.mouseMoved
+                                ? (buttonState.mouseMoved = false)
+                                : gDesigner.isTouchEnabled() || closeFontsOverlay.call(element);
                         })
                         .gFontsPanel({
-                            preview: i,
-                            changeCallback: function (n) {
-                                t.val(n.displayName || n.family);
-                                var o = t.data("gfontsbutton");
-                                ((o.tempFontFamily = n.displayName || n.family),
-                                    o.options.assignFontCallback("" === n.family ? null : n.family, t),
+                            preview: previewHeader,
+                            changeCallback: function (selectedFont) {
+                                $button.val(selectedFont.displayName || selectedFont.family);
+                                var buttonState = $button.data("gfontsbutton");
+                                ((buttonState.tempFontFamily = selectedFont.displayName || selectedFont.family),
+                                    buttonState.options.assignFontCallback("" === selectedFont.family ? null : selectedFont.family, $button),
                                     setTimeout(function () {
-                                        e.select();
+                                        element.select();
                                     }, 1),
-                                    gDesigner.isTouchEnabled() && f.call(e));
+                                    gDesigner.isTouchEnabled() && closeFontsOverlay.call(element));
                             },
                         });
-                    var l = $("<div></div>")
+                    var fontsPanelBody = $("<div></div>")
                         .addClass("g-fonts-panel")
                         .addClass("no-overflow")
                         .append(
                             (function (e) {
-                                var t = $("<ul></ul>")
+                                var tabList = $("<ul></ul>")
                                     .addClass("tab")
-                                    .append(g(new GObject.GLocaleKey("GFontsButton", "text.web-fonts")));
+                                    .append(createProviderTab(new GObject.GLocaleKey("GFontsButton", "text.web-fonts")));
                                 if (
-                                    (t.append(g(new GObject.GLocaleKey("GFontsButton", "text.imported-fonts"), r, "font.import")),
+                                    (tabList.append(createProviderTab(new GObject.GLocaleKey("GFontsButton", "text.imported-fonts"), GImportedFontsProvider, "font.import")),
                                     gContainer.supportsLocalFonts() &&
-                                        t.append(g(new GObject.GLocaleKey("GFontsButton", "text.system-fonts"), s)),
-                                    p())
+                                        tabList.append(createProviderTab(new GObject.GLocaleKey("GFontsButton", "text.system-fonts"), GLocalFontsProvider)),
+                                    isNativeRuntime())
                                 ) {
-                                    var n = gContainer.getSystemFontsProvider();
-                                    n && t.append(g(new GObject.GLocaleKey("GFontsButton", "text.system-fonts"), n));
+                                    var systemFontsProvider = gContainer.getSystemFontsProvider();
+                                    systemFontsProvider && tabList.append(createProviderTab(new GObject.GLocaleKey("GFontsButton", "text.system-fonts"), systemFontsProvider));
                                 }
-                                return (t.find(".tablinks:first").trigger("click"), t);
+                                return (tabList.find(".tablinks:first").trigger("click"), tabList);
                             })()
                         );
-                    ((n.fontListContainer = $("<div></div>")), n.fontListContainer.append(l));
-                    n.fontListContainer
-                        .append(n.fontList)
+                    ((buttonState.fontListContainer = $("<div></div>")), buttonState.fontListContainer.append(fontsPanelBody));
+                    buttonState.fontListContainer
+                        .append(buttonState.fontList)
                         .gOverlay({
                             releaseOnClose: false,
                             padding: false,
-                            enterCallback: function (e) {
-                                $(".g-fonts-panel").trigger("keydown", [e.which || e.keyCode]);
+                            enterCallback: function (event) {
+                                $(".g-fonts-panel").trigger("keydown", [event.which || event.keyCode]);
                             },
                             clazz: "g-font-list-overlay",
                         })
                         .on(
                             "close",
-                            function (e, t, n) {
-                                a.getInstance() && a.getInstance().getLock() && t();
-                            }.bind(e)
+                            function (e, preventClose, n) {
+                                FontsProviderManager.getInstance() && FontsProviderManager.getInstance().getLock() && preventClose();
+                            }.bind(element)
                         );
                 }
             },
-            y = {
+            gFontsButtonMethods = {
                 getFontList: function () {
-                    var e = $(this).data("gfontsbutton");
-                    return e ? (e.fontList || m(this), e.fontList) : null;
+                    var buttonState = $(this).data("gfontsbutton");
+                    return buttonState ? (buttonState.fontList || buildFontList(this), buttonState.fontList) : null;
                 },
-                init: function (e) {
+                init: function (options) {
                     return (
                         this.each(function () {
-                            var t = this,
-                                n = $(this);
-                            ((e = $.extend(
+                            var buttonElement = this,
+                                $button = $(this);
+                            ((options = $.extend(
                                 {
                                     closeCallback: function () {},
                                     assignFontCallback: function () {},
                                 },
-                                e
+                                options
                             )),
-                                n
+                                $button
                                     .data("gfontsbutton", {
-                                        options: e,
+                                        options: options,
                                         tempFontName: void 0,
                                         tempFontFamily: void 0,
                                         fontList: void 0,
                                         fontContainer: void 0,
                                         mouseMoved: false,
                                     })
-                                    .on("focusin", function (e) {
-                                        n.attr("type", "text");
+                                    .on("focusin", function (event) {
+                                        $button.attr("type", "text");
                                     })
-                                    .on("focusout", function (e) {
-                                        n.attr("type", "button");
-                                        var t = n.data("gfontsbutton").tempFontName;
-                                        t && t.length && !n.val().length && n.val(t);
+                                    .on("focusout", function (event) {
+                                        $button.attr("type", "button");
+                                        var tempFontName = $button.data("gfontsbutton").tempFontName;
+                                        tempFontName && tempFontName.length && !$button.val().length && $button.val(tempFontName);
                                     })
-                                    .on("input", function (e) {
-                                        h(n, n.val());
+                                    .on("input", function (event) {
+                                        searchFontList($button, $button.val());
                                     })
-                                    .on("keydown", function (e) {
-                                        var o = n.data("gfontsbutton");
-                                        if (o && o.fontList) {
-                                            var i = o.fontList,
-                                                a = o.fontListContainer,
-                                                r = e.which || e.keyCode;
-                                            40 === r
-                                                ? i.gFontsPanel("selectLower")
-                                                : 38 === r
-                                                  ? i.gFontsPanel("selectUpper")
-                                                  : 13 === r &&
-                                                    a &&
-                                                    (a.gOverlay("close", t), n.data("gfontsbutton").options.closeCallback.call(t));
+                                    .on("keydown", function (event) {
+                                        var buttonState = $button.data("gfontsbutton");
+                                        if (buttonState && buttonState.fontList) {
+                                            var fontList = buttonState.fontList,
+                                                fontListContainer = buttonState.fontListContainer,
+                                                keyCode = event.which || event.keyCode;
+                                            40 === keyCode
+                                                ? fontList.gFontsPanel("selectLower")
+                                                : 38 === keyCode
+                                                  ? fontList.gFontsPanel("selectUpper")
+                                                  : 13 === keyCode &&
+                                                    fontListContainer &&
+                                                    (fontListContainer.gOverlay("close", buttonElement), $button.data("gfontsbutton").options.closeCallback.call(buttonElement));
                                         }
                                     })
-                                    .on("click", function (e) {
+                                    .on("click", function (event) {
                                         (gDesigner.stats("fonts_expand_textfield"),
-                                            h(n, ""),
-                                            "text" !== n.attr("type") && (n.attr("type", "text"), t.select()),
-                                            (n.data("gfontsbutton").tempFontFamily = n.val()));
-                                        var o = n.data("gfontsbutton").fontList,
-                                            i = n.data("gfontsbutton").fontListContainer;
-                                        o
-                                            ? (i.gOverlay("open", t, t), o.gFontsPanel("refresh", true))
-                                            : (m(this),
-                                              (o = n.data("gfontsbutton").fontList),
-                                              (i = n.data("gfontsbutton").fontListContainer).gOverlay("open", t, t),
-                                              o.gFontsPanel("refresh"));
-                                        var a = function () {
-                                            (o.gFontsPanel("selection", n.val()), o.gFontsPanel("focusCurrent"), n.select());
+                                            searchFontList($button, ""),
+                                            "text" !== $button.attr("type") && ($button.attr("type", "text"), buttonElement.select()),
+                                            ($button.data("gfontsbutton").tempFontFamily = $button.val()));
+                                        var fontList = $button.data("gfontsbutton").fontList,
+                                            fontListContainer = $button.data("gfontsbutton").fontListContainer;
+                                        fontList
+                                            ? (fontListContainer.gOverlay("open", buttonElement, buttonElement), fontList.gFontsPanel("refresh", true))
+                                            : (buildFontList(this),
+                                              (fontList = $button.data("gfontsbutton").fontList),
+                                              (fontListContainer = $button.data("gfontsbutton").fontListContainer).gOverlay("open", buttonElement, buttonElement),
+                                              fontList.gFontsPanel("refresh"));
+                                        var selectCurrentFont = function () {
+                                            (fontList.gFontsPanel("selection", $button.val()), fontList.gFontsPanel("focusCurrent"), $button.select());
                                         };
-                                        0 === o.gFontsPanel("fontsLength")
+                                        0 === fontList.gFontsPanel("fontsLength")
                                             ? setTimeout(function () {
-                                                  a();
+                                                  selectCurrentFont();
                                               }, 100)
-                                            : a();
+                                            : selectCurrentFont();
                                     }));
                         }),
                         this
                     );
                 },
             };
-        ((module.exports = u),
-            ($.fn.gFontsButton = function (e) {
-                return y[e]
-                    ? y[e].apply(this, Array.prototype.slice.call(arguments, 1))
-                    : "object" != typeof e && e
-                      ? void $.error("Method " + e + " does not exist on jQuery.myPlugin")
-                      : y.init.apply(this, arguments);
+        ((module.exports = GLocalFontsAccess),
+            ($.fn.gFontsButton = function (methodName) {
+                return gFontsButtonMethods[methodName]
+                    ? gFontsButtonMethods[methodName].apply(this, Array.prototype.slice.call(arguments, 1))
+                    : "object" != typeof methodName && methodName
+                      ? void $.error("Method " + methodName + " does not exist on jQuery.myPlugin")
+                      : gFontsButtonMethods.init.apply(this, arguments);
             }));
     };

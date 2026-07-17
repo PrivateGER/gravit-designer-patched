@@ -3,9 +3,9 @@ module.exports = function (module, exports, require) {
         require(8 /* Symbol */);
         var GObject = require(1),
             designerConfig = require(10);
-        const a = {
-            init: function (e) {
-                e = $.extend(
+        const methods = {
+            init: function (options) {
+                options = $.extend(
                     {
                         clazz: null,
                         defaultText: GObject.GLocale.get(new GObject.GLocaleKey("GUnshareButton", "text.unshare-with-me")),
@@ -13,48 +13,48 @@ module.exports = function (module, exports, require) {
                         restrictedStats: "filespanel-view_infoPanel_nonprotriespro-unshare",
                         unshareCallback: null,
                     },
-                    e
+                    options
                 );
-                let t = $(this);
+                let element = $(this);
                 return (
-                    t.data("gunsharebutton", { options: e }),
+                    element.data("gunsharebutton", { options: options }),
                     this.addClass("unshare-button")
                         .addClass("g-highlight-button")
                         .addClass("highlighted")
-                        .addClass(e.clazz || "")
+                        .addClass(options.clazz || "")
                         .append($("<span/>").addClass("icon"))
-                        .append($("<span/>").addClass("label").text(e.defaultText))
+                        .append($("<span/>").addClass("label").text(options.defaultText))
                         .on("click", () => {
-                            if (t.hasClass("g-disabled")) return;
+                            if (element.hasClass("g-disabled")) return;
                             gDesigner.getShareManager().isShareProRestricted()
-                                ? (gDesigner.stats(e.restrictedStats), gDesigner.handleShareFilePROFeatureInterruption())
-                                : (gDesigner.stats(e.stats),
-                                  gDesigner.getUser().then(async (n) => {
-                                      if (!n) return;
-                                      const o = t.data("gunsharebutton").storeItem.getId(),
-                                          a = n.getUID();
-                                      (console.log("About to call unshare with item id: %s and user id: %s", o, a),
-                                          await designerConfig.gApi.unshareWithUser(o, a),
-                                          "function" == typeof e.unshareCallback && e.unshareCallback());
+                                ? (gDesigner.stats(options.restrictedStats), gDesigner.handleShareFilePROFeatureInterruption())
+                                : (gDesigner.stats(options.stats),
+                                  gDesigner.getUser().then(async (user) => {
+                                      if (!user) return;
+                                      const itemId = element.data("gunsharebutton").storeItem.getId(),
+                                          userId = user.getUID();
+                                      (console.log("About to call unshare with item id: %s and user id: %s", itemId, userId),
+                                          await designerConfig.gApi.unshareWithUser(itemId, userId),
+                                          "function" == typeof options.unshareCallback && options.unshareCallback());
                                   }));
                         }),
                     this
                 );
             },
-            update: function (e) {
-                const { disabled, hidden } = e,
-                    o = $(this);
-                (disabled ? o.addClass("g-disabled") : o.removeClass("g-disabled"), hidden ? o.hide() : o.show());
-                gDesigner.getShareManager().isShareProRestricted() && o.gPro();
-                const i = o.data("gunsharebutton");
-                return ((i.storeItem = e.storeItem), e.unshareCallback && (i.options.unshareCallback = e.unshareCallback), this);
+            update: function (options) {
+                const { disabled, hidden } = options,
+                    element = $(this);
+                (disabled ? element.addClass("g-disabled") : element.removeClass("g-disabled"), hidden ? element.hide() : element.show());
+                gDesigner.getShareManager().isShareProRestricted() && element.gPro();
+                const pluginData = element.data("gunsharebutton");
+                return ((pluginData.storeItem = options.storeItem), options.unshareCallback && (pluginData.options.unshareCallback = options.unshareCallback), this);
             },
         };
-        $.fn.gUnshareButton = function (e) {
-            return a[e]
-                ? a[e].apply(this, Array.prototype.slice.call(arguments, 1))
-                : "object" != typeof e && e
-                  ? void $.error("Method " + e + " does not exist on jQuery.gUnshareButton")
-                  : a.init.apply(this, arguments);
+        $.fn.gUnshareButton = function (method) {
+            return methods[method]
+                ? methods[method].apply(this, Array.prototype.slice.call(arguments, 1))
+                : "object" != typeof method && method
+                  ? void $.error("Method " + method + " does not exist on jQuery.gUnshareButton")
+                  : methods.init.apply(this, arguments);
         };
     };

@@ -2,7 +2,7 @@ module.exports = function (module, exports, require) {
         "use strict";
         var _interopRequireDefault = require(16),
             GPlatform = require(15),
-            a = _interopRequireDefault(require(85));
+            a = _interopRequireDefault(require(85 /* GContainer */));
         class r {
             static isSupported() {
                 return r.isRuntimeSupported() && r.isWebBrowserSupported() && r.isPWAEventSupported();

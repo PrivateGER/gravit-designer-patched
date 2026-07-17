@@ -1,55 +1,55 @@
 module.exports = function (module, exports, require) {
         "use strict";
         require(3);
-        var o = require(53),
+        var GEditor = require(53),
             GPlatform = require(15),
             GObject = require(1),
             GCategory = require(18),
-            s = require(31);
-        function l(e) {
-            ((this._category = e), (this._title = new GObject.GLocaleKey("GSnapUnitAction", "title." + e)));
+            GAction = require(31);
+        function GSnapUnitAction(category) {
+            ((this._category = category), (this._title = new GObject.GLocaleKey("GSnapUnitAction", "title." + category)));
         }
-        (GObject.GObject.inherit(l, s),
-            (l.Type = { FullUnit: "full", HalfUnit: "half" }),
-            (l.ID = "arrange.snap-unit"),
-            (l.prototype._category = null),
-            (l.prototype._title = null),
-            (l.prototype.getId = function () {
-                return l.ID + "." + this._category;
+        (GObject.GObject.inherit(GSnapUnitAction, GAction),
+            (GSnapUnitAction.Type = { FullUnit: "full", HalfUnit: "half" }),
+            (GSnapUnitAction.ID = "arrange.snap-unit"),
+            (GSnapUnitAction.prototype._category = null),
+            (GSnapUnitAction.prototype._title = null),
+            (GSnapUnitAction.prototype.getId = function () {
+                return GSnapUnitAction.ID + "." + this._category;
             }),
-            (l.prototype.getTitle = function () {
+            (GSnapUnitAction.prototype.getTitle = function () {
                 return this._title;
             }),
-            (l.prototype.getCategory = function () {
+            (GSnapUnitAction.prototype.getCategory = function () {
                 return GCategory.CATEGORY_MODIFY_ALIGN;
             }),
-            (l.prototype.getGroup = function () {
+            (GSnapUnitAction.prototype.getGroup = function () {
                 return "arrange/snap-unit";
             }),
-            (l.prototype.getShortcut = function () {
+            (GSnapUnitAction.prototype.getShortcut = function () {
                 switch (this._category) {
-                    case l.Type.FullUnit:
+                    case GSnapUnitAction.Type.FullUnit:
                         return [GPlatform.GKey.Constant.SHIFT, GPlatform.GKey.Constant.META, "U"];
                     default:
                         return null;
                 }
             }),
-            (l.prototype.isEnabled = function (e) {
+            (GSnapUnitAction.prototype.isEnabled = function (selection) {
                 return (
-                    (e =
-                        e || (gDesigner.getActiveDocument() ? gDesigner.getActiveDocument().getEditor().getIndividualSelection() : null)) &&
-                    e.length > 0
+                    (selection =
+                        selection || (gDesigner.getActiveDocument() ? gDesigner.getActiveDocument().getEditor().getIndividualSelection() : null)) &&
+                    selection.length > 0
                 );
             }),
-            (l.prototype.execute = function (e) {
-                var t = gDesigner.getActiveDocument(),
-                    n = t.getScene();
-                (e || (e = t.getEditor().getIndividualSelection()),
-                    o.GEditor.tryRunTransaction(
-                        n,
+            (GSnapUnitAction.prototype.execute = function (selection) {
+                var activeDocument = gDesigner.getActiveDocument(),
+                    scene = activeDocument.getScene();
+                (selection || (selection = activeDocument.getEditor().getIndividualSelection()),
+                    GEditor.GEditor.tryRunTransaction(
+                        scene,
                         function () {
-                            for (var t = 0; t < e.length; ++t) {
-                                var n = e[t];
+                            for (var t = 0; t < selection.length; ++t) {
+                                var n = selection[t];
                                 if (n.hasMixin(GObject.GElement.Transform)) {
                                     var o = n.getGeometryBBox();
                                     if (o && o.getWidth() + o.getHeight() !== 0) {
@@ -57,7 +57,7 @@ module.exports = function (module, exports, require) {
                                             r = GObject.GMath.round(o.getY(), true),
                                             s = GObject.GMath.round(o.getWidth(), true),
                                             c = GObject.GMath.round(o.getHeight(), true);
-                                        this._category === l.Type.HalfUnit && ((i += 0.5), (r += 0.5), (s += 0.5), (c += 0.5));
+                                        this._category === GSnapUnitAction.Type.HalfUnit && ((i += 0.5), (r += 0.5), (s += 0.5), (c += 0.5));
                                         var d = new GObject.GTransform()
                                             .translated(-o.getX(), -o.getY())
                                             .scaled(s / (o.getWidth() || 1), c / (o.getHeight() || 1))
@@ -71,8 +71,8 @@ module.exports = function (module, exports, require) {
                         GObject.GLocale.get(this.getTitle())
                     ));
             }),
-            (l.prototype.toString = function () {
+            (GSnapUnitAction.prototype.toString = function () {
                 return "[Object GSnapUnitAction]";
             }),
-            (module.exports = l));
+            (module.exports = GSnapUnitAction));
     };

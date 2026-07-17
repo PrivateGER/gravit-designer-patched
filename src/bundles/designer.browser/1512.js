@@ -1,249 +1,249 @@
 module.exports = function (module, exports, require) {
         "use strict";
         (require(1196 /* polyfill:Array */), require(19), require(1197), require(180), require(181 /* polyfill:ArrayBuffer */), require(8 /* Symbol */), require(134 /* polyfill:String */), require(218), require(189), require(190), require(191), require(192), require(4), require(32), require(38), require(33));
-        var o = require(176),
+        var GSystem = require(176),
             IsFiniteNonNegativeNumber = require(0);
         require(10 /* designerConfig */);
         var GStorage = require(237),
-            r = require(1117).saveAs,
-            s = null,
-            l = null;
-        function c() {
+            saveAs = require(1117 /* lib:file-saver */).saveAs,
+            legacySaveFilePickerType = null,
+            legacyDirectoryPickerType = null;
+        function FileSystemAccessStorage() {
             ((this._fileInput = null), (this._fileInputCallback = null));
         }
-        function d(e) {
-            return e
+        function ensureWriteAccess(handle) {
+            return handle
                 .queryPermission({ writable: true })
-                .then((t) => ("granted" !== t ? e.requestPermission({ writable: true }) : t))
-                .then((e) => {
-                    if ("granted" !== e) throw new Error("Cannot get write access");
+                .then((permission) => ("granted" !== permission ? handle.requestPermission({ writable: true }) : permission))
+                .then((finalPermission) => {
+                    if ("granted" !== finalPermission) throw new Error("Cannot get write access");
                 });
         }
-        (IsFiniteNonNegativeNumber.inherit(c, GStorage),
-            (c.Directory = function (e, t) {
-                (GStorage.Directory.call(this, e), (this._dirHandle = t), (this._id = null));
+        (IsFiniteNonNegativeNumber.inherit(FileSystemAccessStorage, GStorage),
+            (FileSystemAccessStorage.Directory = function (storage, dirHandle) {
+                (GStorage.Directory.call(this, storage), (this._dirHandle = dirHandle), (this._id = null));
             }),
-            IsFiniteNonNegativeNumber.inherit(c.Directory, GStorage.Directory),
-            (c.Directory.prototype._dirHandle = null),
-            (c.Directory.prototype._id = null),
-            (c.Directory.prototype.getUniqueId = function () {
+            IsFiniteNonNegativeNumber.inherit(FileSystemAccessStorage.Directory, GStorage.Directory),
+            (FileSystemAccessStorage.Directory.prototype._dirHandle = null),
+            (FileSystemAccessStorage.Directory.prototype._id = null),
+            (FileSystemAccessStorage.Directory.prototype.getUniqueId = function () {
                 return null;
             }),
-            (c.Directory.prototype.addDirectory = async function (e) {
-                let t = null;
+            (FileSystemAccessStorage.Directory.prototype.addDirectory = async function (name) {
+                let dirHandle = null;
                 try {
-                    return ((t = await this._dirHandle.getDirectory(e, { create: true })), await d(t), new c.Directory(this._storage, t));
+                    return ((dirHandle = await this._dirHandle.getDirectory(name, { create: true })), await ensureWriteAccess(dirHandle), new FileSystemAccessStorage.Directory(this._storage, dirHandle));
                 } catch (t) {
-                    throw new Error("Cannot create a directory: " + e);
+                    throw new Error("Cannot create a directory: " + name);
                 }
             }),
-            (c.Directory.prototype.addFile = async function (e) {
-                let t = null;
+            (FileSystemAccessStorage.Directory.prototype.addFile = async function (name) {
+                let fileHandle = null;
                 try {
-                    return ((t = await this._dirHandle.getFile(e, { create: true })), await d(t), new c.Item(this._storage, null, t.name, t));
+                    return ((fileHandle = await this._dirHandle.getFile(name, { create: true })), await ensureWriteAccess(fileHandle), new FileSystemAccessStorage.Item(this._storage, null, fileHandle.name, fileHandle));
                 } catch (e) {
                     throw new Error("Cannot create a file");
                 }
             }),
-            (c.Item = function (e, t, n, o) {
-                (GStorage.Item.call(this, e), (this._data = t), (this._filename = n), (this._fileHandle = o));
+            (FileSystemAccessStorage.Item = function (storage, data, filename, fileHandle) {
+                (GStorage.Item.call(this, storage), (this._data = data), (this._filename = filename), (this._fileHandle = fileHandle));
             }),
-            IsFiniteNonNegativeNumber.inherit(c.Item, GStorage.Item),
-            (c.Item.prototype._data = null),
-            (c.Item.prototype._filename = null),
-            (c.Item.prototype._fileHandle = null),
-            (c.Item.prototype.getFullName = function () {
+            IsFiniteNonNegativeNumber.inherit(FileSystemAccessStorage.Item, GStorage.Item),
+            (FileSystemAccessStorage.Item.prototype._data = null),
+            (FileSystemAccessStorage.Item.prototype._filename = null),
+            (FileSystemAccessStorage.Item.prototype._fileHandle = null),
+            (FileSystemAccessStorage.Item.prototype.getFullName = function () {
                 return this._filename;
             }),
-            (c.Item.prototype.setFileName = function (e) {
-                this._filename = e;
+            (FileSystemAccessStorage.Item.prototype.setFileName = function (filename) {
+                this._filename = filename;
             }),
-            (c.Item.prototype.read = function (e) {
-                if (this._data || !this._fileHandle) return e(this._data);
+            (FileSystemAccessStorage.Item.prototype.read = function (callback) {
+                if (this._data || !this._fileHandle) return callback(this._data);
                 this._fileHandle
                     .getFile()
-                    .then((e) => e.arrayBuffer())
-                    .then((t) => {
-                        ((this._data = t), e(this._data));
+                    .then((file) => file.arrayBuffer())
+                    .then((buffer) => {
+                        ((this._data = buffer), callback(this._data));
                     });
             }),
-            (c.Item.prototype.write = function (e, t, n, o, i) {
-                if ((this._verifyFileNotTooSmall(e.length, i), this._fileHandle)) {
-                    let o = null;
+            (FileSystemAccessStorage.Item.prototype.write = function (data, callback, quotaErrorCallback, progress, document) {
+                if ((this._verifyFileNotTooSmall(data.length, document), this._fileHandle)) {
+                    let writable = null;
                     this._fileHandle
                         .createWritable()
-                        .then((e) => ((o = e), o.truncate(0)))
-                        .then(() => o.write(e))
-                        .then(() => o.close())
+                        .then((stream) => ((writable = stream), writable.truncate(0)))
+                        .then(() => writable.write(data))
+                        .then(() => writable.close())
                         .then(() => {
-                            t && t();
+                            callback && callback();
                         })
-                        .catch((o) => {
-                            if (o instanceof DOMException && o.code === DOMException.QUOTA_EXCEEDED_ERR)
-                                return (this.notEnoughDiskSpace(), void (n ? n() : t && t()));
-                            (r(new Blob([e]), this._filename), t && t());
+                        .catch((error) => {
+                            if (error instanceof DOMException && error.code === DOMException.QUOTA_EXCEEDED_ERR)
+                                return (this.notEnoughDiskSpace(), void (quotaErrorCallback ? quotaErrorCallback() : callback && callback()));
+                            (saveAs(new Blob([data]), this._filename), callback && callback());
                         });
-                } else (r(new Blob([e]), this._filename), t && t());
+                } else (saveAs(new Blob([data]), this._filename), callback && callback());
             }),
-            (c.prototype._isFileAPIAvailable = function () {
+            (FileSystemAccessStorage.prototype._isFileAPIAvailable = function () {
                 return false;
             }),
-            (c.prototype._hasDirectoryWriteAPI = function () {
+            (FileSystemAccessStorage.prototype._hasDirectoryWriteAPI = function () {
                 return "function" == typeof window.chooseFileSystemEntries;
             }),
-            (c.prototype.canChooseDirectory = function () {
+            (FileSystemAccessStorage.prototype.canChooseDirectory = function () {
                 return this._hasDirectoryWriteAPI() && true;
             }),
-            (c.prototype.canPromptOpen = function () {
+            (FileSystemAccessStorage.prototype.canPromptOpen = function () {
                 return true;
             }),
-            (c.prototype.canPromptSave = function () {
+            (FileSystemAccessStorage.prototype.canPromptSave = function () {
                 return this._isFileAPIAvailable();
             }),
-            (c.prototype.canSave = function () {
+            (FileSystemAccessStorage.prototype.canSave = function () {
                 return this._isFileAPIAvailable();
             }),
-            (c.prototype.canDownload = function () {
+            (FileSystemAccessStorage.prototype.canDownload = function () {
                 return !this._isFileAPIAvailable();
             }),
-            (c.prototype.chooseDirectory = function (e, t, n) {
+            (FileSystemAccessStorage.prototype.chooseDirectory = function (successCallback, errorCallback, securityErrorCallback) {
                 if (!this._isFileAPIAvailable() || !this.canChooseDirectory()) return;
-                var o = { type: l || "open-directory" };
-                let i = null;
-                var a = false;
+                var options = { type: legacyDirectoryPickerType || "open-directory" };
+                let dirHandle = null;
+                var succeeded = false;
                 window
-                    .chooseFileSystemEntries(o)
-                    .then((e) => ((i = e), d(e)))
+                    .chooseFileSystemEntries(options)
+                    .then((pickedHandle) => ((dirHandle = pickedHandle), ensureWriteAccess(pickedHandle)))
                     .then(() => {
-                        let t = e(new c.Directory(this, i));
-                        return ((a = true), t);
+                        let result = successCallback(new FileSystemAccessStorage.Directory(this, dirHandle));
+                        return ((succeeded = true), result);
                     })
-                    .catch((e) => {
-                        if (e instanceof DOMException && "SecurityError" === e.name) {
-                            if ((console.warn("Bugged!"), n)) return void n();
-                        } else !a && !l && e instanceof TypeError && (l = "openDirectory");
-                        t && t();
+                    .catch((error) => {
+                        if (error instanceof DOMException && "SecurityError" === error.name) {
+                            if ((console.warn("Bugged!"), securityErrorCallback)) return void securityErrorCallback();
+                        } else !succeeded && !legacyDirectoryPickerType && error instanceof TypeError && (legacyDirectoryPickerType = "openDirectory");
+                        errorCallback && errorCallback();
                     });
             }),
-            (c.prototype.openPrompt = function (e, t, n) {
-                let { disableFileSystemAccessAPI: i = false, silent: a = false } =
+            (FileSystemAccessStorage.prototype.openPrompt = function (filters, callback, multiple) {
+                let { disableFileSystemAccessAPI: disableFileSystemAccessAPI = false, silent: silent = false } =
                     arguments.length > 3 && void 0 !== arguments[3] ? arguments[3] : {};
-                if (!i && this._isFileAPIAvailable()) {
-                    var r = { multiple: !!n };
-                    if (e.length > 0) {
-                        const t = {};
-                        r.excludeAcceptAllOptions = true;
-                        for (let n = 0, o = e.length; n < o; n++) {
-                            const { mime, ext } = e[n];
+                if (!disableFileSystemAccessAPI && this._isFileAPIAvailable()) {
+                    var options = { multiple: !!multiple };
+                    if (filters.length > 0) {
+                        const mimeExtMap = {};
+                        options.excludeAcceptAllOptions = true;
+                        for (let n = 0, filterCount = filters.length; n < filterCount; n++) {
+                            const { mime, ext } = filters[n];
                             mime && ext
-                                ? void 0 !== t[mime]
-                                    ? (Array.isArray(t[mime]) || (t[mime] = [t[mime]]), t[mime].push(ext.startsWith(".") ? ext : ".".concat(ext)))
-                                    : (t[mime] = ext.startsWith(".") ? ext : ".".concat(ext))
+                                ? void 0 !== mimeExtMap[mime]
+                                    ? (Array.isArray(mimeExtMap[mime]) || (mimeExtMap[mime] = [mimeExtMap[mime]]), mimeExtMap[mime].push(ext.startsWith(".") ? ext : ".".concat(ext)))
+                                    : (mimeExtMap[mime] = ext.startsWith(".") ? ext : ".".concat(ext))
                                 : console.warn(
                                       'openPrompt warning: no mime or ext. given mime: "'.concat(mime, '", given ext: "').concat(ext, '"')
                                   );
                         }
-                        r.types = [{ accept: t }];
+                        options.types = [{ accept: mimeExtMap }];
                     }
                     return (
                         window
-                            .showOpenFilePicker(r)
-                            .then((e) => {
-                                (Array.isArray(e) || (e = [e]),
-                                    e.forEach((n) => {
-                                        n.getFile()
-                                            .then((e) => e.arrayBuffer())
-                                            .then((o) => t(new c.Item(this, new Uint8Array(o), n.name, n), e.length))
+                            .showOpenFilePicker(options)
+                            .then((fileHandles) => {
+                                (Array.isArray(fileHandles) || (fileHandles = [fileHandles]),
+                                    fileHandles.forEach((fileHandle) => {
+                                        fileHandle.getFile()
+                                            .then((file) => file.arrayBuffer())
+                                            .then((buffer) => callback(new FileSystemAccessStorage.Item(this, new Uint8Array(buffer), fileHandle.name, fileHandle), fileHandles.length))
                                             .catch(() => {
                                                 console.log("ERROR reading file");
                                             });
                                     }));
                             })
-                            .catch((e) => {
-                                e instanceof DOMException || console.warn("showOpenFilePicker warning", e);
+                            .catch((error) => {
+                                error instanceof DOMException || console.warn("showOpenFilePicker warning", error);
                             }),
-                        void (this._fileInputCallback = t)
+                        void (this._fileInputCallback = callback)
                     );
                 }
-                const s = e.map((e) => e.ext).flat();
+                const extensions = filters.map((filter) => filter.ext).flat();
                 if (!this._fileInput) {
                     ((this._fileInput = document.createElement("input")),
                         this._fileInput.setAttribute("type", "file"),
                         this._fileInput.setAttribute("id", "file-input"),
-                        (this._fileInput.multiple = n),
+                        (this._fileInput.multiple = multiple),
                         (this._fileInput.style.opacity = 0),
                         (this._fileInput.style.position = "absolute"),
                         (this._fileInput.style.zIndex = -1),
                         (this._fileInput.style.left = "-9999px"),
                         (this._fileInput.style.top = "-9999px"));
-                    var l = function (e) {
-                        var t = this._fileInput.files.length;
-                        if (e >= t) this._fileInput.value = "";
+                    var readNextFile = function (index) {
+                        var fileCount = this._fileInput.files.length;
+                        if (index >= fileCount) this._fileInput.value = "";
                         else {
-                            var n = this._fileInput.files[e],
-                                o = n.name;
-                            if (n instanceof File || n instanceof Blob) {
-                                var i = new FileReader();
-                                ((i.onload = function () {
-                                    (this._fileInputCallback(new c.Item(this, new Uint8Array(i.result), o), t), l(e + 1));
+                            var file = this._fileInput.files[index],
+                                name = file.name;
+                            if (file instanceof File || file instanceof Blob) {
+                                var reader = new FileReader();
+                                ((reader.onload = function () {
+                                    (this._fileInputCallback(new FileSystemAccessStorage.Item(this, new Uint8Array(reader.result), name), fileCount), readNextFile(index + 1));
                                 }.bind(this)),
-                                    i.readAsArrayBuffer(n));
-                            } else l(e + 1);
+                                    reader.readAsArrayBuffer(file));
+                            } else readNextFile(index + 1);
                         }
                     }.bind(this);
                     (this._fileInput.addEventListener("change", () => {
-                        l(0);
+                        readNextFile(0);
                     }),
                         document.body.appendChild(this._fileInput));
                 }
-                (o.hardware === o.Hardware.Tablet && o.operatingSystem === o.OperatingSystem.OSX_IOS
+                (GSystem.hardware === GSystem.Hardware.Tablet && GSystem.operatingSystem === GSystem.OperatingSystem.OSX_IOS
                     ? this._fileInput.removeAttribute("accept")
-                    : s && s.length
-                      ? this._fileInput.setAttribute("accept", s.map((e) => "." + e).join(","))
+                    : extensions && extensions.length
+                      ? this._fileInput.setAttribute("accept", extensions.map((ext) => "." + ext).join(","))
                       : this._fileInput.removeAttribute("accept"),
-                    (this._fileInputCallback = t),
+                    (this._fileInputCallback = callback),
                     this._fileInput.focus(),
-                    a || this._fileInput.click());
+                    silent || this._fileInput.click());
             }),
-            (c.prototype.savePrompt = function (e, t, n, o) {
+            (FileSystemAccessStorage.prototype.savePrompt = function (suggestedName, filters, callback, cancelCallback) {
                 if (this._isFileAPIAvailable()) {
-                    var i = { suggestedName: e };
-                    if (t.length > 0) {
-                        const e = {};
-                        i.excludeAcceptAllOptions = true;
-                        for (let n = 0, o = t.length; n < o; n++) {
-                            let { mime: o, ext: i } = t[n];
-                            o && i
-                                ? ("jpg" === i && (o = "x-really-an-image/jpeg"),
-                                  void 0 !== e[o]
-                                      ? (Array.isArray(e[o]) || (e[o] = [e[o]]), e[o].push(i.startsWith(".") ? i : ".".concat(i)))
-                                      : (e[o] = i.startsWith(".") ? i : ".".concat(i)))
+                    var options = { suggestedName: suggestedName };
+                    if (filters.length > 0) {
+                        const mimeExtMap = {};
+                        options.excludeAcceptAllOptions = true;
+                        for (let n = 0, filterCount = filters.length; n < filterCount; n++) {
+                            let { mime: mime, ext: ext } = filters[n];
+                            mime && ext
+                                ? ("jpg" === ext && (mime = "x-really-an-image/jpeg"),
+                                  void 0 !== mimeExtMap[mime]
+                                      ? (Array.isArray(mimeExtMap[mime]) || (mimeExtMap[mime] = [mimeExtMap[mime]]), mimeExtMap[mime].push(ext.startsWith(".") ? ext : ".".concat(ext)))
+                                      : (mimeExtMap[mime] = ext.startsWith(".") ? ext : ".".concat(ext)))
                                 : console.warn(
-                                      'openPrompt warning: no mime or ext. given mime: "'.concat(o, '", given ext: "').concat(i, '"')
+                                      'openPrompt warning: no mime or ext. given mime: "'.concat(mime, '", given ext: "').concat(ext, '"')
                                   );
                         }
-                        let n = [{ accept: e }];
-                        const o = Object.keys(e);
-                        ((o || []).length > 1 &&
-                            (n = o.map((t) => {
-                                let n = {};
-                                return ((n[t] = e[t]), { accept: n });
+                        let types = [{ accept: mimeExtMap }];
+                        const mimeKeys = Object.keys(mimeExtMap);
+                        ((mimeKeys || []).length > 1 &&
+                            (types = mimeKeys.map((key) => {
+                                let accept = {};
+                                return ((accept[key] = mimeExtMap[key]), { accept: accept });
                             })),
-                            (i.types = n));
+                            (options.types = types));
                     }
-                    var a = false;
+                    var succeeded = false;
                     window
-                        .showSaveFilePicker(i)
-                        .then((e) => ((a = true), n(new c.Item(this, null, e.name, e))))
-                        .catch((t) => {
-                            if ((!a && !s && t instanceof TypeError && (s = "saveFile"), !a && t.code !== DOMException.ABORT_ERR))
-                                return this.download(e, n);
-                            o && o();
+                        .showSaveFilePicker(options)
+                        .then((fileHandle) => ((succeeded = true), callback(new FileSystemAccessStorage.Item(this, null, fileHandle.name, fileHandle))))
+                        .catch((error) => {
+                            if ((!succeeded && !legacySaveFilePickerType && error instanceof TypeError && (legacySaveFilePickerType = "saveFile"), !succeeded && error.code !== DOMException.ABORT_ERR))
+                                return this.download(suggestedName, callback);
+                            cancelCallback && cancelCallback();
                         });
                 }
             }),
-            (c.prototype.download = function (e, t) {
-                return t(new c.Item(this, null, e));
+            (FileSystemAccessStorage.prototype.download = function (name, callback) {
+                return callback(new FileSystemAccessStorage.Item(this, null, name));
             }),
-            (module.exports = c));
+            (module.exports = FileSystemAccessStorage));
     };

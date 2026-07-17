@@ -3450,5 +3450,5 @@ module.exports = function (module, exports, require) {
                 "undefined" != typeof window && null !== window
                     ? (window.P = window.Promise)
                     : "undefined" != typeof self && null !== self && (self.P = self.Promise));
-        }).call(this, require(183), require(109), require(1115).setImmediate);
+        }).call(this, require(183 /* lib:process */), require(109), require(1115).setImmediate);
     };

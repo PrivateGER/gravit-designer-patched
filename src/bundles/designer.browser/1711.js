@@ -3,74 +3,74 @@ module.exports = function (module, exports, require) {
         (require(19), require(26));
         require(53);
         var GObject = require(1),
-            i = (require(15 /* GPlatform */), require(40 /* Utils */), require(67), require(1351)),
-            a = require(451 /* GVirtualTree */).GVirtualTree,
-            r = (require(451 /* GVirtualTree */).GVirtualTreeNode, require(451 /* GVirtualTree */).GVirtualTreeNodeNamed),
+            LayerItemUtil = (require(15 /* GPlatform */), require(40 /* Utils */), require(67 /* GRichTooltipConfig */), require(1351 /* layerItemUtils */)),
+            GVirtualTree = require(451 /* GVirtualTree */).GVirtualTree,
+            GVirtualTreeNodeNamed = (require(451 /* GVirtualTree */).GVirtualTreeNode, require(451 /* GVirtualTree */).GVirtualTreeNodeNamed),
             { VTREE_FREE_HEIGHT } = require(10 /* designerConfig */);
         (require(173), require(450));
-        function l() {}
-        function c(e) {
-            var t = $(this).data("gselectedpanel"),
-                n = $(this).data("gselectedpanel").vtree;
-            if (t.options.clickCallback) {
-                var o = g.call(this, e.id);
-                t.options.clickCallback(o);
+        function GSelectedPanel() {}
+        function handleNodeClick(nodeEvent) {
+            var panel = $(this).data("gselectedpanel"),
+                vtree = $(this).data("gselectedpanel").vtree;
+            if (panel.options.clickCallback) {
+                var node = getNodeById.call(this, nodeEvent.id);
+                panel.options.clickCallback(node);
             }
-            n.requestInvalidation();
+            vtree.requestInvalidation();
         }
-        function d(e) {
-            var t = g.call(this, e.id);
-            t && (e.expanded ? t.setFlag(GObject.GNode.Flag.Expanded) : t.removeFlag(GObject.GNode.Flag.Expanded));
+        function handleNodeToggle(nodeEvent) {
+            var node = getNodeById.call(this, nodeEvent.id);
+            node && (nodeEvent.expanded ? node.setFlag(GObject.GNode.Flag.Expanded) : node.removeFlag(GObject.GNode.Flag.Expanded));
         }
-        function u(e, t) {
-            var n = $(this).data("gselectedpanel");
-            n.options.renderer && n.options.renderer(e.id, e.expanded, t);
+        function renderNode(nodeEvent, container) {
+            var panel = $(this).data("gselectedpanel");
+            panel.options.renderer && panel.options.renderer(nodeEvent.id, nodeEvent.expanded, container);
         }
-        function p(e) {
-            var t = $(this);
-            e.id === a.COLLAPSE_ID
-                ? $(e).addClass(t.data("gselectedpanel").options.collapseStyle)
-                : e.id === a.EXPAND_ID && $(e).addClass(t.data("gselectedpanel").options.expandStyle);
+        function renderToggleIcon(toggleElement) {
+            var panelElement = $(this);
+            toggleElement.id === GVirtualTree.COLLAPSE_ID
+                ? $(toggleElement).addClass(panelElement.data("gselectedpanel").options.collapseStyle)
+                : toggleElement.id === GVirtualTree.EXPAND_ID && $(toggleElement).addClass(panelElement.data("gselectedpanel").options.expandStyle);
         }
-        function g(e) {
-            var t = h.call(this, e);
-            return t ? t.node : null;
+        function getNodeById(nodeId) {
+            var entry = getTreeEntry.call(this, nodeId);
+            return entry ? entry.node : null;
         }
-        function h(e) {
-            return $(this).data("gselectedpanel").layersTreeNodeMap[e];
+        function getTreeEntry(nodeId) {
+            return $(this).data("gselectedpanel").layersTreeNodeMap[nodeId];
         }
-        function f(e, t, n) {
+        function renderLayerItem(nodeId, expanded, container) {
             $(this).data("glayerpanel");
-            var o = h.call(this, e),
-                a = o ? o.node : null;
-            if (a) {
-                var { hasSelection } = (0, i.getLayerOrItemStatus)(a),
-                    { titleGroup } = (0, i.buildLayerItemContainer)(n, a, hasSelection, t);
-                o.element = titleGroup;
+            var entry = getTreeEntry.call(this, nodeId),
+                node = entry ? entry.node : null;
+            if (node) {
+                var { hasSelection } = (0, LayerItemUtil.getLayerOrItemStatus)(node),
+                    { titleGroup } = (0, LayerItemUtil.buildLayerItemContainer)(container, node, hasSelection, expanded);
+                entry.element = titleGroup;
             }
         }
-        function m(e, t, n) {
-            var { newNode, vtree } = y.call(this, e, n);
-            return (vtree.appendNode(t, newNode), newNode);
+        function createAndAppendNode(nodeId, parentNode, expanded) {
+            var { newNode, vtree } = createNode.call(this, nodeId, expanded);
+            return (vtree.appendNode(parentNode, newNode), newNode);
         }
-        function y(e, t) {
+        function createNode(nodeId, expanded) {
             return {
-                newNode: new r(e, t),
+                newNode: new GVirtualTreeNodeNamed(nodeId, expanded),
                 vtree: $(this).data("gselectedpanel").vtree,
             };
         }
-        function v() {
-            var e = $(this).data("gselectedpanel"),
-                t = e.vtree;
-            t.beginUpdate();
+        function populateTree() {
+            var panel = $(this).data("gselectedpanel"),
+                vtree = panel.vtree;
+            vtree.beginUpdate();
             for (
-                var { elementHits, filteredElementHits, submenus } = e.selections,
-                    r = (t, n, o) => {
-                        ((e.layersTreeNodeMap[o] = { element: null, node: n, treeNode: t }),
-                            e.layersTreeNodeMapByNodes.set(n, {
+                var { elementHits, filteredElementHits, submenus } = panel.selections,
+                    registerNode = (treeNode, sourceNode, nodeId) => {
+                        ((panel.layersTreeNodeMap[nodeId] = { element: null, node: sourceNode, treeNode: treeNode }),
+                            panel.layersTreeNodeMapByNodes.set(sourceNode, {
                                 element: null,
-                                treeNode: t,
-                                treeId: o,
+                                treeNode: treeNode,
+                                treeId: nodeId,
                             }));
                     },
                     s = 0;
@@ -81,27 +81,27 @@ module.exports = function (module, exports, require) {
                     c = filteredElementHits[s].element,
                     d = (c instanceof GObject.GBlock ? c.getLabel() : c.getNodeNameTranslated(), "temp-" + elementHits.indexOf(filteredElementHits[s]));
                 if (submenus[d]) {
-                    r((p = m.call(this, l, null, true)), c, l);
+                    registerNode((parentTreeNode = createAndAppendNode.call(this, l, null, true)), c, l);
                     for (let e = 0; e < submenus[d].length; e++) {
                         var u = GObject.GUtil.uuid();
-                        r(m.call(this, u, p, false), submenus[d][e], u);
+                        registerNode(createAndAppendNode.call(this, u, parentTreeNode, false), submenus[d][e], u);
                     }
                 } else {
-                    var p;
-                    r((p = m.call(this, l, null, false)), c, l);
+                    var parentTreeNode;
+                    registerNode((parentTreeNode = createAndAppendNode.call(this, l, null, false)), c, l);
                 }
             }
-            t.endUpdate();
+            vtree.endUpdate();
         }
-        function _() {
-            var e = $(this).data("gselectedpanel");
-            (e.vtree.clean(), (e.layersTreeNodeMap = {}), (e.layersTreeNodeMapByNodes = new Map()));
+        function resetTree() {
+            var panel = $(this).data("gselectedpanel");
+            (panel.vtree.clean(), (panel.layersTreeNodeMap = {}), (panel.layersTreeNodeMapByNodes = new Map()));
         }
-        GObject.GObject.inheritAndMix(l, GObject.GObject);
-        var b = {
-            init: function (e) {
+        GObject.GObject.inheritAndMix(GSelectedPanel, GObject.GObject);
+        var methods = {
+            init: function (options) {
                 return (
-                    (e = $.extend(
+                    (options = $.extend(
                         {
                             nodeStyle: "selected-row",
                             expandStyle: "selected-arrow gravit-icon-right",
@@ -112,8 +112,8 @@ module.exports = function (module, exports, require) {
                             upSeparatorSpan2Style: "g-up-separator-span2",
                             downSeparatorSpan1Style: "g-down-separator-span1",
                             downSeparatorSpan2Style: "g-down-separator-span2",
-                            renderer: f.bind(this),
-                            toggleRenderer: p.bind(this),
+                            renderer: renderLayerItem.bind(this),
+                            toggleRenderer: renderToggleIcon.bind(this),
                             separatorRenderer: null,
                             canDropCallback: () => false,
                             moveCallback: null,
@@ -124,38 +124,38 @@ module.exports = function (module, exports, require) {
                             patternChooserStatusChangeCallBack: null,
                             bottomHeight: 3,
                         },
-                        e
+                        options
                     )),
                     this.each(function () {
                         $(this)
                             .addClass("g-selected-panel")
                             .data("gselectedpanel", {
-                                vtree: new a(
+                                vtree: new GVirtualTree(
                                     this,
-                                    u.bind(this),
-                                    e.nodeStyle,
-                                    e.toggleRenderer ? e.toggleRenderer : null,
-                                    e.expandStyle == e.collapseStyle ? e.expandStyle : null,
-                                    e.separatorRenderer ? e.separatorRenderer : null,
-                                    e.freeHeight,
-                                    e.insertIntoStyle,
+                                    renderNode.bind(this),
+                                    options.nodeStyle,
+                                    options.toggleRenderer ? options.toggleRenderer : null,
+                                    options.expandStyle == options.collapseStyle ? options.expandStyle : null,
+                                    options.separatorRenderer ? options.separatorRenderer : null,
+                                    options.freeHeight,
+                                    options.insertIntoStyle,
                                     () => false,
                                     null,
-                                    e.isDuplicateEffectCallback,
+                                    options.isDuplicateEffectCallback,
                                     null,
-                                    c.bind(this),
-                                    d.bind(this),
-                                    e.upSeparatorSpan1Style,
-                                    e.upSeparatorSpan2Style,
-                                    e.downSeparatorSpan1Style,
-                                    e.downSeparatorSpan2Style,
+                                    handleNodeClick.bind(this),
+                                    handleNodeToggle.bind(this),
+                                    options.upSeparatorSpan1Style,
+                                    options.upSeparatorSpan2Style,
+                                    options.downSeparatorSpan1Style,
+                                    options.downSeparatorSpan2Style,
                                     false,
                                     15,
                                     21,
-                                    e.bottomHeight,
-                                    e.renderFinishCallback
+                                    options.bottomHeight,
+                                    options.renderFinishCallback
                                 ),
-                                options: e,
+                                options: options,
                                 layersTreeNodeMap: {},
                                 layersTreeNodeMapByNodes: new Map(),
                                 selections: null,
@@ -170,18 +170,18 @@ module.exports = function (module, exports, require) {
             relayout: function () {
                 $(this).data("gselectedpanel").vtree.requestInvalidation();
             },
-            setSelections: function (e) {
-                var t = $(this),
-                    n = t.data("gselectedpanel");
-                return arguments.length ? (e !== n.selections && (_.call(this), (n.selections = e), v.call(this)), this) : n.selections;
+            setSelections: function (selections) {
+                var panelElement = $(this),
+                    panel = panelElement.data("gselectedpanel");
+                return arguments.length ? (selections !== panel.selections && (resetTree.call(this), (panel.selections = selections), populateTree.call(this)), this) : panel.selections;
             },
         };
-        ((module.exports = l),
-            ($.fn.gSelectedPanel = function (e) {
-                return b[e]
-                    ? b[e].apply(this, Array.prototype.slice.call(arguments, 1))
-                    : "object" != typeof e && e
-                      ? void $.error("Method " + e + " does not exist on jQuery.myPlugin")
-                      : b.init.apply(this, arguments);
+        ((module.exports = GSelectedPanel),
+            ($.fn.gSelectedPanel = function (method) {
+                return methods[method]
+                    ? methods[method].apply(this, Array.prototype.slice.call(arguments, 1))
+                    : "object" != typeof method && method
+                      ? void $.error("Method " + method + " does not exist on jQuery.myPlugin")
+                      : methods.init.apply(this, arguments);
             }));
     };

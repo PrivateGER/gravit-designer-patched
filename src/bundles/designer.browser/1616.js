@@ -4,125 +4,125 @@ module.exports = function (module, exports, require) {
         var GObject = require(1),
             Utils = require(40),
             GCategory = require(18),
-            r = require(106);
-        function s() {}
-        (GObject.GObject.inherit(s, r),
-            (s.ID = "modify.bmp2path"),
-            (s.TITLE = new GObject.GLocaleKey("GVectorizeImageAction", "title")),
-            (s.prototype.getId = function () {
-                return s.ID;
+            GAction = require(106);
+        function GVectorizeImageAction() {}
+        (GObject.GObject.inherit(GVectorizeImageAction, GAction),
+            (GVectorizeImageAction.ID = "modify.bmp2path"),
+            (GVectorizeImageAction.TITLE = new GObject.GLocaleKey("GVectorizeImageAction", "title")),
+            (GVectorizeImageAction.prototype.getId = function () {
+                return GVectorizeImageAction.ID;
             }),
-            (s.prototype.getTitle = function () {
-                return s.TITLE;
+            (GVectorizeImageAction.prototype.getTitle = function () {
+                return GVectorizeImageAction.TITLE;
             }),
-            (s.prototype.getCategory = function () {
+            (GVectorizeImageAction.prototype.getCategory = function () {
                 return GCategory.CATEGORY_MODIFY_PATH;
             }),
-            (s.prototype.getGroup = function () {
+            (GVectorizeImageAction.prototype.getGroup = function () {
                 return "structure/modify";
             }),
-            (s.prototype.isEnabled = function () {
-                if (!r.prototype.isEnabled.call(this)) return false;
-                var e = gDesigner.getActiveDocument() ? gDesigner.getActiveDocument().getEditor().getSelection() : null;
-                if (e) for (var t = 0; t < e.length; ++t) if (e[t] instanceof GObject.GImage && !e[t].getStatus()) return true;
+            (GVectorizeImageAction.prototype.isEnabled = function () {
+                if (!GAction.prototype.isEnabled.call(this)) return false;
+                var selection = gDesigner.getActiveDocument() ? gDesigner.getActiveDocument().getEditor().getSelection() : null;
+                if (selection) for (var t = 0; t < selection.length; ++t) if (selection[t] instanceof GObject.GImage && !selection[t].getStatus()) return true;
                 return false;
             }),
-            (s.prototype.execute = function () {
-                var e = gDesigner.getActiveDocument(),
-                    t = e ? e.getEditor() : null,
-                    n = t ? t.getIndividualSelection() : null,
-                    a = [];
-                if (n) for (var r = 0; r < n.length; ++r) n[r] instanceof GObject.GImage && !n[r].getStatus() && a.push(n[r]);
-                if (a.length) {
-                    t.beginTransaction();
+            (GVectorizeImageAction.prototype.execute = function () {
+                var activeDocument = gDesigner.getActiveDocument(),
+                    editor = activeDocument ? activeDocument.getEditor() : null,
+                    individualSelection = editor ? editor.getIndividualSelection() : null,
+                    images = [];
+                if (individualSelection) for (var r = 0; r < individualSelection.length; ++r) individualSelection[r] instanceof GObject.GImage && !individualSelection[r].getStatus() && images.push(individualSelection[r]);
+                if (images.length) {
+                    editor.beginTransaction();
                     try {
-                        var s,
-                            l = [];
-                        s = new Set();
-                        for (r = 0; r < a.length; ++r) {
-                            var c = a[r].getParent();
-                            c && s.add(c);
+                        var parentSet,
+                            vectorizedImages = [];
+                        parentSet = new Set();
+                        for (r = 0; r < images.length; ++r) {
+                            var c = images[r].getParent();
+                            c && parentSet.add(c);
                         }
                         try {
-                            (0, Utils.blockChanges)(t, s);
-                            for (r = 0; r < a.length; ++r) {
-                                var d = a[r],
+                            (0, Utils.blockChanges)(editor, parentSet);
+                            for (r = 0; r < images.length; ++r) {
+                                var d = images[r],
                                     u = d.getParent(),
                                     p = d.getNext(),
                                     g = this._vectorize(d);
-                                (g && (u.insertChild(g, p), l.push(g)), u.removeChild(d));
+                                (g && (u.insertChild(g, p), vectorizedImages.push(g)), u.removeChild(d));
                             }
                         } finally {
-                            ((0, Utils.releaseChanges)(t, s), l.length && t.updateSelection(false, l));
+                            ((0, Utils.releaseChanges)(editor, parentSet), vectorizedImages.length && editor.updateSelection(false, vectorizedImages));
                         }
                     } finally {
-                        t.commitTransaction(GObject.GLocale.get(this.getTitle()));
+                        editor.commitTransaction(GObject.GLocale.get(this.getTitle()));
                     }
                 }
             }),
-            (s.prototype._vectorize = function (e) {
+            (GVectorizeImageAction.prototype._vectorize = function (image) {
                 new GObject.GVertexContainer();
                 var t,
                     n,
-                    i = e.getImageCanvas(),
-                    a = new GObject.GImageTracer(),
-                    r = a.getImgdata(i),
-                    s = r.width,
-                    l = r.height,
-                    c = a.imagedataToTracedata(r, {
+                    imageCanvas = image.getImageCanvas(),
+                    imageTracer = new GObject.GImageTracer(),
+                    imgData = imageTracer.getImgdata(imageCanvas),
+                    imgWidth = imgData.width,
+                    imgHeight = imgData.height,
+                    tracedata = imageTracer.imagedataToTracedata(imgData, {
                         ltres: 1,
-                        qtres: Math.min(s / 4, l / 4, 10),
+                        qtres: Math.min(imgWidth / 4, imgHeight / 4, 10),
                         numberofcolors: 8,
                         blurradius: 2,
                         colorquantcycles: 5,
-                        pathomit: Math.min(0.25 * s, 0.25 * l, 20),
+                        pathomit: Math.min(0.25 * imgWidth, 0.25 * imgHeight, 20),
                     }),
-                    d = c.palette,
-                    u = [];
-                for (t in c.layers)
-                    if (c.layers.hasOwnProperty(t))
-                        for (n = 0; n < c.layers[t].length; n++)
-                            u[c.layers[t][n][0].y1 * s + c.layers[t][n][0].x1] = {
+                    palette = tracedata.palette,
+                    pixelMap = [];
+                for (t in tracedata.layers)
+                    if (tracedata.layers.hasOwnProperty(t))
+                        for (n = 0; n < tracedata.layers[t].length; n++)
+                            pixelMap[tracedata.layers[t][n][0].y1 * imgWidth + tracedata.layers[t][n][0].x1] = {
                                 l: "" + t,
                                 p: "" + n,
                             };
-                var p,
-                    g,
-                    h = Object.keys(u);
-                h.sort(function (e, t) {
-                    return e - t;
+                var layerKey,
+                    pathIndex,
+                    sortedKeys = Object.keys(pixelMap);
+                sortedKeys.sort(function (keyA, keyB) {
+                    return keyA - keyB;
                 });
-                var f,
-                    m,
-                    y = new GObject.GGroup(),
-                    v = -1;
-                for (t = 0; t < h.length; t++)
-                    if (((p = u[h[t]].l), (f = t + 1 < h.length ? u[h[t + 1]].l : -1), (g = u[h[t]].p), 0 !== d[p].a)) {
-                        var _ = new GObject.GRGBColor([d[p].r, d[p].g, d[p].b]),
-                            b = c.layers[p];
-                        p !== v && (m = new GObject.GVertexContainer());
-                        var w = b[g];
-                        m.addVertex(GObject.GVertex.Command.Move, w[0].x1, w[0].y1);
+                var nextLayerKey,
+                    vertexContainer,
+                    group = new GObject.GGroup(),
+                    previousLayerKey = -1;
+                for (t = 0; t < sortedKeys.length; t++)
+                    if (((layerKey = pixelMap[sortedKeys[t]].l), (nextLayerKey = t + 1 < sortedKeys.length ? pixelMap[sortedKeys[t + 1]].l : -1), (pathIndex = pixelMap[sortedKeys[t]].p), 0 !== palette[layerKey].a)) {
+                        var _ = new GObject.GRGBColor([palette[layerKey].r, palette[layerKey].g, palette[layerKey].b]),
+                            b = tracedata.layers[layerKey];
+                        layerKey !== previousLayerKey && (vertexContainer = new GObject.GVertexContainer());
+                        var w = b[pathIndex];
+                        vertexContainer.addVertex(GObject.GVertex.Command.Move, w[0].x1, w[0].y1);
                         for (var C = 0; C < w.length; C++) {
                             var x = w[C];
                             "L" === x.type
-                                ? m.addVertex(GObject.GVertex.Command.Line, x.x2, x.y2)
-                                : (m.addVertex(GObject.GVertex.Command.Curve, x.x3, x.y3), m.addVertex(GObject.GVertex.Command.Curve, x.x2, x.y2));
+                                ? vertexContainer.addVertex(GObject.GVertex.Command.Line, x.x2, x.y2)
+                                : (vertexContainer.addVertex(GObject.GVertex.Command.Curve, x.x3, x.y3), vertexContainer.addVertex(GObject.GVertex.Command.Curve, x.x2, x.y2));
                         }
-                        if (p !== f) {
-                            m = new GObject.GVertexSimplifier(m).simplify(0.4, false, true);
-                            var S = GObject.GPathUtil.createPathFromVertexSource(m);
+                        if (layerKey !== nextLayerKey) {
+                            vertexContainer = new GObject.GVertexSimplifier(vertexContainer).simplify(0.4, false, true);
+                            var S = GObject.GPathUtil.createPathFromVertexSource(vertexContainer);
                             S &&
                                 (S.getPaintLayers().appendChild(new GObject.GStylable.FillPaintLayer(_)),
                                 S.setProperty("name", _.getClosestCSSName()),
-                                y.appendChild(S));
+                                group.appendChild(S));
                         }
-                        v = p;
+                        previousLayerKey = layerKey;
                     }
-                return y;
+                return group;
             }),
-            (s.prototype.toString = function () {
+            (GVectorizeImageAction.prototype.toString = function () {
                 return "[Object GVectorizeImageAction]";
             }),
-            (module.exports = s));
+            (module.exports = GVectorizeImageAction));
     };

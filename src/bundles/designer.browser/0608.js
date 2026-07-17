@@ -3,65 +3,65 @@ module.exports = function (module, exports, require) {
         (require(3), require(4), require(41), require(32), require(33));
         var GObject = require(1),
             GPlatform = require(15),
-            a = require(67),
+            GRichTooltipConfig = require(67),
             GCategory = require(18),
-            s = require(106),
+            GAction = require(106),
             GSystemDialog = require(44);
-        function c() {
-            c.TOOLTIP_CONFIG = {
-                [a.TOOLTIP_AREA.TOOLBAR]: a.GRichTooltipConfig.from({
+        function GCreateSymbolAction() {
+            GCreateSymbolAction.TOOLTIP_CONFIG = {
+                [GRichTooltipConfig.TOOLTIP_AREA.TOOLBAR]: GRichTooltipConfig.GRichTooltipConfig.from({
                     title: GObject.GLocale.get(new GObject.GLocaleKey("GCreateSymbolAction", "tooltip-title")),
                     description: GObject.GLocale.get(new GObject.GLocaleKey("GCreateSymbolAction", "tooltip-description")),
                     learnMore: "/docs/organizing-your-designs/symbols/",
                 }),
             };
         }
-        (GObject.GObject.inherit(c, s),
-            (c.ID = "modify.createsymbol"),
-            (c.TITLE = new GObject.GLocaleKey("GCreateSymbolAction", "title")),
-            (c.SHORTCUT = [GPlatform.GKey.Constant.F8]),
-            (c.TOOLTIP_CONFIG = null),
-            (c.prototype.getId = function () {
-                return c.ID;
+        (GObject.GObject.inherit(GCreateSymbolAction, GAction),
+            (GCreateSymbolAction.ID = "modify.createsymbol"),
+            (GCreateSymbolAction.TITLE = new GObject.GLocaleKey("GCreateSymbolAction", "title")),
+            (GCreateSymbolAction.SHORTCUT = [GPlatform.GKey.Constant.F8]),
+            (GCreateSymbolAction.TOOLTIP_CONFIG = null),
+            (GCreateSymbolAction.prototype.getId = function () {
+                return GCreateSymbolAction.ID;
             }),
-            (c.prototype.getTitle = function () {
-                return c.TITLE;
+            (GCreateSymbolAction.prototype.getTitle = function () {
+                return GCreateSymbolAction.TITLE;
             }),
-            (c.prototype.getCategory = function () {
+            (GCreateSymbolAction.prototype.getCategory = function () {
                 return GCategory.CATEGORY_MODIFY_SYMBOL;
             }),
-            (c.prototype.getGroup = function () {
+            (GCreateSymbolAction.prototype.getGroup = function () {
                 return "structure/modify";
             }),
-            (c.prototype.getIcon = function () {
+            (GCreateSymbolAction.prototype.getIcon = function () {
                 return gDesigner.isTouchEnabled() ? "gravit-icon-create-symbol" : "gravit-icon-symbolmaster";
             }),
-            (c.prototype.getShortcut = function () {
-                return c.SHORTCUT;
+            (GCreateSymbolAction.prototype.getShortcut = function () {
+                return GCreateSymbolAction.SHORTCUT;
             }),
-            (c.prototype.isPro = function () {
+            (GCreateSymbolAction.prototype.isPro = function () {
                 if (!gDesigner.isEnabledProFeatures()) {
-                    const e = gDesigner.getActiveDocument();
-                    if (e) {
-                        const t = e.getEditor().getIndividualSelection();
-                        if (t && t.length) return t.filter((e) => e instanceof GObject.GSymbol).length > 1;
+                    const document = gDesigner.getActiveDocument();
+                    if (document) {
+                        const selection = document.getEditor().getIndividualSelection();
+                        if (selection && selection.length) return selection.filter((node) => node instanceof GObject.GSymbol).length > 1;
                     }
                 }
                 return false;
             }),
-            (c.prototype.isEnabled = function () {
-                if (!s.prototype.isEnabled.call(this)) return false;
-                var e = gDesigner.getActiveDocument();
-                if (e) {
-                    var t = e.getEditor().getIndividualSelection();
-                    if (t && t.length)
-                        for (var n = 0, i = new GObject.GSymbol(), a = t.length - 1; a >= 0; --a) {
-                            var r = t[a];
+            (GCreateSymbolAction.prototype.isEnabled = function () {
+                if (!GAction.prototype.isEnabled.call(this)) return false;
+                var document = gDesigner.getActiveDocument();
+                if (document) {
+                    var selection = document.getEditor().getIndividualSelection();
+                    if (selection && selection.length)
+                        for (var n = 0, newSymbol = new GObject.GSymbol(), a = selection.length - 1; a >= 0; --a) {
+                            var r = selection[a];
                             if (
                                 (r instanceof GObject.GSymbol && !r.getMasterSymbol()) ||
-                                (r.validateInsertion(i) &&
+                                (r.validateInsertion(newSymbol) &&
                                     !r.getParent().isLocked() &&
-                                    i.validateInsertion(r.getParent()) &&
+                                    newSymbol.validateInsertion(r.getParent()) &&
                                     !GObject.GSymbol.containsUnsupportedNodes(r))
                             ) {
                                 if (!(r instanceof GObject.GSymbol && r.isMaster())) return true;
@@ -71,50 +71,50 @@ module.exports = function (module, exports, require) {
                 }
                 return false;
             }),
-            (c.prototype.execute = function () {
+            (GCreateSymbolAction.prototype.execute = function () {
                 if (!this.isPro() || gDesigner.isEnabledProFeatures()) {
                     var e = 1,
-                        t = GObject.GLocale.get(new GObject.GLocaleKey("GCreateSymbolAction", "createsymbol.defaultname")),
-                        n = t + " " + e,
-                        i = gDesigner.getActiveDocument();
-                    if (i) {
-                        var a = i.getScene();
-                        if (a)
-                            ((a.getSymbols() || []).forEach(function (i) {
-                                i instanceof GObject.GSymbol && i.isMaster() && i.getProperty("name") === n && (e++, (n = t + " " + e));
+                        baseName = GObject.GLocale.get(new GObject.GLocaleKey("GCreateSymbolAction", "createsymbol.defaultname")),
+                        candidateName = baseName + " " + e,
+                        document = gDesigner.getActiveDocument();
+                    if (document) {
+                        var scene = document.getScene();
+                        if (scene)
+                            ((scene.getSymbols() || []).forEach(function (symbol) {
+                                symbol instanceof GObject.GSymbol && symbol.isMaster() && symbol.getProperty("name") === candidateName && (e++, (candidateName = baseName + " " + e));
                             }),
                                 GSystemDialog.prompt(
                                     GObject.GLocale.get(new GObject.GLocaleKey("GCreateSymbolAction", "createsymbol.enternewname")),
-                                    (e) => {
-                                        if (gDesigner.getActiveDocument() && e) {
-                                            var t = gDesigner.getActiveDocument().getEditor(),
-                                                n = GObject.GNode.order(t.getIndividualSelection().slice());
-                                            t.beginTransaction();
+                                    (newName) => {
+                                        if (gDesigner.getActiveDocument() && newName) {
+                                            var editor = gDesigner.getActiveDocument().getEditor(),
+                                                orderedSelection = GObject.GNode.order(editor.getIndividualSelection().slice());
+                                            editor.beginTransaction();
                                             try {
-                                                for (var i = new GObject.GSymbol(), a = null, r = n.length - 1; r >= 0; --r) {
-                                                    var s = n[r];
-                                                    if (s instanceof GObject.GSymbol && s.convertToMaster(e)) n.splice(r, 1);
-                                                    else if (s.validateInsertion(i) && !GObject.GSymbol.containsUnsupportedNodes(s)) {
-                                                        if (!(a = s.getParent()).isLocked() && i.validateInsertion(a)) break;
-                                                        a = null;
+                                                for (var newSymbol = new GObject.GSymbol(), targetParent = null, r = orderedSelection.length - 1; r >= 0; --r) {
+                                                    var s = orderedSelection[r];
+                                                    if (s instanceof GObject.GSymbol && s.convertToMaster(newName)) orderedSelection.splice(r, 1);
+                                                    else if (s.validateInsertion(newSymbol) && !GObject.GSymbol.containsUnsupportedNodes(s)) {
+                                                        if (!(targetParent = s.getParent()).isLocked() && newSymbol.validateInsertion(targetParent)) break;
+                                                        targetParent = null;
                                                     }
                                                 }
-                                                a && t.updateSelection(false, [GObject.GSymbol.create(n, a, e)]);
+                                                targetParent && editor.updateSelection(false, [GObject.GSymbol.create(orderedSelection, targetParent, newName)]);
                                             } finally {
-                                                t.commitTransaction(GObject.GLocale.get(new GObject.GLocaleKey("GCreateSymbolAction", "title")));
+                                                editor.commitTransaction(GObject.GLocale.get(new GObject.GLocaleKey("GCreateSymbolAction", "title")));
                                             }
                                         }
                                     },
-                                    n
+                                    candidateName
                                 ));
                     }
                 } else gDesigner.handlePROFeatureInterruption();
             }),
-            (c.prototype.getTooltipConfig = function (e) {
-                return (e && c.TOOLTIP_CONFIG[e]) || null;
+            (GCreateSymbolAction.prototype.getTooltipConfig = function (area) {
+                return (area && GCreateSymbolAction.TOOLTIP_CONFIG[area]) || null;
             }),
-            (c.prototype.toString = function () {
+            (GCreateSymbolAction.prototype.toString = function () {
                 return "[Object GCreateSymbolAction]";
             }),
-            (module.exports = c));
+            (module.exports = GCreateSymbolAction));
     };

@@ -5,60 +5,60 @@ module.exports = function (module, exports, require) {
             GPlatform = require(15),
             Utils = require(40),
             GCategory = require(18),
-            s = require(106),
+            GAction = require(106),
             GSystemDialog = require(44);
-        function c() {}
-        (GObject.GObject.inherit(c, s),
-            (c.ID = "modify.simplify"),
-            (c.TITLE = new GObject.GLocaleKey("GSimplifyAction", "title")),
-            (c.prototype.getId = function () {
-                return c.ID;
+        function SimplifyAction() {}
+        (GObject.GObject.inherit(SimplifyAction, GAction),
+            (SimplifyAction.ID = "modify.simplify"),
+            (SimplifyAction.TITLE = new GObject.GLocaleKey("GSimplifyAction", "title")),
+            (SimplifyAction.prototype.getId = function () {
+                return SimplifyAction.ID;
             }),
-            (c.prototype.getTitle = function () {
-                return c.TITLE;
+            (SimplifyAction.prototype.getTitle = function () {
+                return SimplifyAction.TITLE;
             }),
-            (c.prototype.getCategory = function () {
+            (SimplifyAction.prototype.getCategory = function () {
                 return GCategory.CATEGORY_MODIFY_PATH;
             }),
-            (c.prototype.getGroup = function () {
+            (SimplifyAction.prototype.getGroup = function () {
                 return "structure/modify";
             }),
-            (c.prototype.getIcon = function () {
+            (SimplifyAction.prototype.getIcon = function () {
                 return gDesigner.isTouchEnabled() ? "gravit-icon-simplity" : null;
             }),
-            (c.prototype.getShortcut = function () {
+            (SimplifyAction.prototype.getShortcut = function () {
                 return [GPlatform.GKey.Constant.META, GPlatform.GKey.Constant.OPTION, "S"];
             }),
-            (c.prototype.isEnabled = function () {
-                if (!s.prototype.isEnabled.call(this)) return false;
-                var e = gDesigner.getActiveDocument() ? gDesigner.getActiveDocument().getEditor().getIndividualSelection() : null,
-                    t = false;
-                if (e) for (var n = 0; !t && n < e.length; ++n) e[n] instanceof GObject.GImage || !e[n].hasMixin(GObject.GVertexSource) || (t = true);
-                return t;
+            (SimplifyAction.prototype.isEnabled = function () {
+                if (!GAction.prototype.isEnabled.call(this)) return false;
+                var individualSelection = gDesigner.getActiveDocument() ? gDesigner.getActiveDocument().getEditor().getIndividualSelection() : null,
+                    hasSimplifiable = false;
+                if (individualSelection) for (var n = 0; !hasSimplifiable && n < individualSelection.length; ++n) individualSelection[n] instanceof GObject.GImage || !individualSelection[n].hasMixin(GObject.GVertexSource) || (hasSimplifiable = true);
+                return hasSimplifiable;
             }),
-            (c.prototype.execute = function () {
-                var e = gDesigner.getActiveDocument(),
-                    t = e ? e.getEditor() : null,
-                    n = t ? t.getIndividualSelection() : null,
-                    i = e ? e.getScene() : null,
-                    r = [];
-                if (n)
-                    for (var s = 0; s < n.length; ++s) {
-                        var c = n[s];
-                        c.hasMixin(GObject.GVertexSource) && r.push(c);
+            (SimplifyAction.prototype.execute = function () {
+                var document = gDesigner.getActiveDocument(),
+                    editor = document ? document.getEditor() : null,
+                    selection = editor ? editor.getIndividualSelection() : null,
+                    scene = document ? document.getScene() : null,
+                    elements = [];
+                if (selection)
+                    for (var s = 0; s < selection.length; ++s) {
+                        var c = selection[s];
+                        c.hasMixin(GObject.GVertexSource) && elements.push(c);
                     }
-                if (r.length) {
-                    var d = $("<div></div>")
+                if (elements.length) {
+                    var content = $("<div></div>")
                         .append(
                             $("<div>")
                                 .gInputSlider({ min: 0, max: 100, step: 1 })
                                 .attr("name", "tolerance")
                                 .css("width", "50%")
                                 .gInputSlider("value", 10)
-                                .on("change", function (e) {
-                                    if (i) {
-                                        var t = Number(i.stringToPoint($(this).gInputSlider("value")).toFixed(0));
-                                        $(this).parent().find("input").val(t);
+                                .on("change", function (event) {
+                                    if (scene) {
+                                        var toleranceValue = Number(scene.stringToPoint($(this).gInputSlider("value")).toFixed(0));
+                                        $(this).parent().find("input").val(toleranceValue);
                                     }
                                 })
                         )
@@ -70,57 +70,57 @@ module.exports = function (module, exports, require) {
                                         .attr("type", "text")
                                         .css("width", "3em")
                                         .val(10)
-                                        .on("change", function (e) {
-                                            var t = Number(i.stringToPoint($(this).val()).toFixed(0));
-                                            $(this).parent().find(".g-input-slider").gInputSlider("value", t);
+                                        .on("change", function (event) {
+                                            var toleranceValue = Number(scene.stringToPoint($(this).val()).toFixed(0));
+                                            $(this).parent().find(".g-input-slider").gInputSlider("value", toleranceValue);
                                         })
                                 )
                                 .append($("<label>").html(GObject.GLocale.get(new GObject.GLocaleKey("GSimplifyAction", "text.tolerance"))))
                         );
                     GSystemDialog.prompt(
                         GObject.GLocale.get(new GObject.GLocaleKey("GSimplifyAction", "text.simplification")),
-                        (e) => {
-                            if (e) {
-                                var n = parseFloat(d.find(".g-input-slider").gInputSlider("value"));
-                                if (isNaN(n) || !isFinite(n) || GObject.GMath.isEqualEps(n, 0))
+                        (confirmed) => {
+                            if (confirmed) {
+                                var tolerance = parseFloat(content.find(".g-input-slider").gInputSlider("value"));
+                                if (isNaN(tolerance) || !isFinite(tolerance) || GObject.GMath.isEqualEps(tolerance, 0))
                                     GSystemDialog.alert(GObject.GLocale.get(new GObject.GLocaleKey("GSimplifyAction", "text.invalid-value")));
                                 else {
-                                    t.beginTransaction();
+                                    editor.beginTransaction();
                                     try {
-                                        for (var i = [], s = new Set(), c = 0; c < r.length; ++c) {
-                                            var u = r[c].getParent();
-                                            u && s.add(u);
+                                        for (var newElements = [], parentSet = new Set(), c = 0; c < elements.length; ++c) {
+                                            var u = elements[c].getParent();
+                                            u && parentSet.add(u);
                                         }
                                         try {
-                                            (0, Utils.blockChanges)(t, s);
-                                            for (c = 0; c < r.length; ++c) {
-                                                var p = r[c],
+                                            (0, Utils.blockChanges)(editor, parentSet);
+                                            for (c = 0; c < elements.length; ++c) {
+                                                var p = elements[c],
                                                     g = p.getParent(),
                                                     h = p.getNext(),
-                                                    f = this._makeSimplified(n, p),
+                                                    f = this._makeSimplified(tolerance, p),
                                                     m = GObject.GPathUtil.createPathFromVertexSource(f);
-                                                (m && (GObject.GElement.prototype.assignFrom.call(m, p), g.insertChild(m, h), i.push(m)),
+                                                (m && (GObject.GElement.prototype.assignFrom.call(m, p), g.insertChild(m, h), newElements.push(m)),
                                                     g.removeChild(p));
                                             }
                                         } finally {
-                                            ((0, Utils.releaseChanges)(t, s), i.length && t.updateSelection(false, i));
+                                            ((0, Utils.releaseChanges)(editor, parentSet), newElements.length && editor.updateSelection(false, newElements));
                                         }
                                     } finally {
-                                        t.commitTransaction(GObject.GLocale.get(this.getTitle()));
+                                        editor.commitTransaction(GObject.GLocale.get(this.getTitle()));
                                     }
                                 }
                             }
                         },
-                        d
+                        content
                     );
                 }
             }),
-            (c.prototype._makeSimplified = function (e, t) {
-                var n = e > 0 ? e : -e;
-                return new GObject.GVertexSimplifier(t).simplify(n / 2, false, true);
+            (SimplifyAction.prototype._makeSimplified = function (tolerance, vertexSource) {
+                var absTolerance = tolerance > 0 ? tolerance : -tolerance;
+                return new GObject.GVertexSimplifier(vertexSource).simplify(absTolerance / 2, false, true);
             }),
-            (c.prototype.toString = function () {
+            (SimplifyAction.prototype.toString = function () {
                 return "[Object GSimplifyAction]";
             }),
-            (module.exports = c));
+            (module.exports = SimplifyAction));
     };

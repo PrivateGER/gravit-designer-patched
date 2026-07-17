@@ -3,60 +3,60 @@ module.exports = function (module, exports, require) {
         var _interopRequireDefault = require(16);
         (require(3), require(38));
         var GObject = require(1),
-            a = _interopRequireDefault(require(609));
-        function r(e) {
-            ((this._type = e), a.default.call(this, r.getId(e), r.getTitle(e)));
+            GSelectByAction = _interopRequireDefault(require(609 /* GSelectByAction */));
+        function GSelectByPaintLayerAction(type) {
+            ((this._type = type), GSelectByAction.default.call(this, GSelectByPaintLayerAction.getId(type), GSelectByPaintLayerAction.getTitle(type)));
         }
-        (GObject.GObject.inherit(r, a.default),
-            (r.ID = "edit.select-by-paintlayer"),
-            (r.getId = function (e) {
-                return "".concat(r.ID, ".").concat(e);
+        (GObject.GObject.inherit(GSelectByPaintLayerAction, GSelectByAction.default),
+            (GSelectByPaintLayerAction.ID = "edit.select-by-paintlayer"),
+            (GSelectByPaintLayerAction.getId = function (type) {
+                return "".concat(GSelectByPaintLayerAction.ID, ".").concat(type);
             }),
-            (r.getTitle = function (e) {
-                return new GObject.GLocaleKey("GSelectByPaintLayerAction", "title.".concat(e));
+            (GSelectByPaintLayerAction.getTitle = function (type) {
+                return new GObject.GLocaleKey("GSelectByPaintLayerAction", "title.".concat(type));
             }),
-            (r.Type = {
+            (GSelectByPaintLayerAction.Type = {
                 Fill: "fill",
                 Border: "border",
                 FillAndBorder: "fill_border",
             }),
-            (r.prototype._type = null),
-            (r.prototype.getGroup = function () {
+            (GSelectByPaintLayerAction.prototype._type = null),
+            (GSelectByPaintLayerAction.prototype.getGroup = function () {
                 return "edit/select-by-paintlayer";
             }),
-            (r.prototype._getValue = function (e) {
+            (GSelectByPaintLayerAction.prototype._getValue = function (element) {
                 switch (this._type) {
-                    case r.Type.Fill:
-                        return this._getFillPatterns(e);
-                    case r.Type.Border:
-                        return this._getBorderPatterns(e);
-                    case r.Type.FillAndBorder: {
-                        const t = this._getFillPatterns(e),
-                            n = this._getBorderPatterns(e);
-                        return t === a.default.EmptyValue || n === a.default.EmptyValue ? a.default.EmptyValue : { fills: t, borders: n };
+                    case GSelectByPaintLayerAction.Type.Fill:
+                        return this._getFillPatterns(element);
+                    case GSelectByPaintLayerAction.Type.Border:
+                        return this._getBorderPatterns(element);
+                    case GSelectByPaintLayerAction.Type.FillAndBorder: {
+                        const fillPatterns = this._getFillPatterns(element),
+                            borderPatterns = this._getBorderPatterns(element);
+                        return fillPatterns === GSelectByAction.default.EmptyValue || borderPatterns === GSelectByAction.default.EmptyValue ? GSelectByAction.default.EmptyValue : { fills: fillPatterns, borders: borderPatterns };
                     }
                     default:
-                        return a.default.EmptyValue;
+                        return GSelectByAction.default.EmptyValue;
                 }
             }),
-            (r.prototype._getFillPatterns = function (e) {
-                if (e.hasMixin(GObject.GStylable)) {
-                    const t = e.getPaintLayers(),
-                        n = t && t.getFillLayers(true);
-                    if (n && n.length > 0) return n.map((e) => e.getProperty("_pt"));
+            (GSelectByPaintLayerAction.prototype._getFillPatterns = function (element) {
+                if (element.hasMixin(GObject.GStylable)) {
+                    const paintLayers = element.getPaintLayers(),
+                        fillLayers = paintLayers && paintLayers.getFillLayers(true);
+                    if (fillLayers && fillLayers.length > 0) return fillLayers.map((layer) => layer.getProperty("_pt"));
                 }
-                return a.default.EmptyValue;
+                return GSelectByAction.default.EmptyValue;
             }),
-            (r.prototype._getBorderPatterns = function (e) {
-                if (e.hasMixin(GObject.GStylable)) {
-                    const t = e.getPaintLayers(),
-                        n = t && t.getBorderLayers(true);
-                    if (n && n.length) return n.map((e) => e.getProperty("_pt"));
+            (GSelectByPaintLayerAction.prototype._getBorderPatterns = function (element) {
+                if (element.hasMixin(GObject.GStylable)) {
+                    const paintLayers = element.getPaintLayers(),
+                        borderLayers = paintLayers && paintLayers.getBorderLayers(true);
+                    if (borderLayers && borderLayers.length) return borderLayers.map((layer) => layer.getProperty("_pt"));
                 }
-                return a.default.EmptyValue;
+                return GSelectByAction.default.EmptyValue;
             }),
-            (r.prototype.toString = function () {
+            (GSelectByPaintLayerAction.prototype.toString = function () {
                 return "[Object GSelectByPaintLayerAction]";
             }),
-            (module.exports = r));
+            (module.exports = GSelectByPaintLayerAction));
     };

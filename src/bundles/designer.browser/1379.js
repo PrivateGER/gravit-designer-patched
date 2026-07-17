@@ -2,80 +2,80 @@ module.exports = function (module, exports, require) {
         "use strict";
         (require(57), require(4), require(41), require(32), require(33));
         var GObject = require(1),
-            i = require(381);
-        function a(e) {
-            i.call(this, e);
+            GFontsProvider = require(381);
+        function GoogleFontsProvider(options) {
+            GFontsProvider.call(this, options);
         }
-        GObject.GObject.inherit(a, i);
-        var r = GObject.GUtil.uuid(),
-            s = [],
-            l = {};
-        (GObject.GObject.inherit(a, i),
-            (a.prototype._totalFonts = 0),
-            (a.prototype._initialized = false),
-            (a.prototype._initializing = false),
-            (a.prototype._resolveCallbacks = []),
-            (a.prototype._loadCallbacks = []),
-            (a.prototype._clearCallbacks = function (e) {
-                (this._resolveCallbacks.forEach(function (t) {
-                    t(e);
+        GObject.GObject.inherit(GoogleFontsProvider, GFontsProvider);
+        var providerId = GObject.GUtil.uuid(),
+            fontList = [],
+            pendingFontLoads = {};
+        (GObject.GObject.inherit(GoogleFontsProvider, GFontsProvider),
+            (GoogleFontsProvider.prototype._totalFonts = 0),
+            (GoogleFontsProvider.prototype._initialized = false),
+            (GoogleFontsProvider.prototype._initializing = false),
+            (GoogleFontsProvider.prototype._resolveCallbacks = []),
+            (GoogleFontsProvider.prototype._loadCallbacks = []),
+            (GoogleFontsProvider.prototype._clearCallbacks = function (error) {
+                (this._resolveCallbacks.forEach(function (resolveCallback) {
+                    resolveCallback(error);
                 }),
                     (this._resolveCallbacks = []),
-                    this._loadCallbacks.forEach(function (t) {
-                        t(e);
+                    this._loadCallbacks.forEach(function (loadCallback) {
+                        loadCallback(error);
                     }),
                     (this._loadCallbacks = []));
             }),
-            (a.prototype.addPreviews = function (e, t) {
+            (GoogleFontsProvider.prototype.addPreviews = function (fontEntries, loadImmediately) {
                 for (
-                    var n = new DOMParser(),
-                        o = false,
-                        i = function (e, t) {
-                            e ? ((this.cb = e), this.svg && e(this.svg)) : ((this.svg = t), this.cb && this.cb(t));
+                    var domParser = new DOMParser(),
+                        needsFetch = false,
+                        registerPreviewCallback = function (callback, svg) {
+                            callback ? ((this.cb = callback), this.svg && callback(this.svg)) : ((this.svg = svg), this.cb && this.cb(svg));
                         },
                         a = 0;
-                    a < e.length;
+                    a < fontEntries.length;
                     a++
                 )
-                    e[a].cachedPreview || e[a].addPreviewCallback || (e[a].addPreviewCallback = i);
-                if (t) {
-                    e.length;
-                    if (!e.length) return;
-                    var r = [];
-                    for (a = 0; a < e.length; a++) {
-                        for (var l = 0; l < s.length; l++)
-                            if (s[l].family === e[a].family) {
+                    fontEntries[a].cachedPreview || fontEntries[a].addPreviewCallback || (fontEntries[a].addPreviewCallback = registerPreviewCallback);
+                if (loadImmediately) {
+                    fontEntries.length;
+                    if (!fontEntries.length) return;
+                    var batchIndices = [];
+                    for (a = 0; a < fontEntries.length; a++) {
+                        for (var l = 0; l < fontList.length; l++)
+                            if (fontList[l].family === fontEntries[a].family) {
                                 var c = parseInt(l / 10);
-                                r.indexOf(c) < 0 && r.push(c);
+                                batchIndices.indexOf(c) < 0 && batchIndices.push(c);
                                 break;
                             }
-                        if (l === s.length) return void console.warn("Error while generating previews: couldn't find font.");
+                        if (l === fontList.length) return void console.warn("Error while generating previews: couldn't find font.");
                     }
-                    for (a = 0; a < r.length; a++) {
-                        c = r[a];
-                        if ((s[10 * c].cachedPreview || (o = true), o)) {
+                    for (a = 0; a < batchIndices.length; a++) {
+                        c = batchIndices[a];
+                        if ((fontList[10 * c].cachedPreview || (needsFetch = true), needsFetch)) {
                             var d = new XMLHttpRequest(),
                                 u = gContainer.getRootPath();
                             (d.open("GET", u + "/assets/data/google_previews/previews" + c + ".json"),
                                 (d.num = c),
                                 (d.onload = function () {
                                     if (this.status >= 200 && this.status < 300) {
-                                        var e;
+                                        var previewsData;
                                         try {
-                                            e = JSON.parse(this.response);
+                                            previewsData = JSON.parse(this.response);
                                         } catch (e) {
                                             return void (
                                                 "undefined" != typeof gdb_loaddesign && console.warn("couldn't parse font preview")
                                             );
                                         }
-                                        for (var t = Math.min(s.length, 10 * (this.num + 1)) - 10 * this.num, o = 0; o < t; o++) {
-                                            var a,
-                                                r = s[10 * this.num + o];
-                                            r.addPreviewCallback || (r.addPreviewCallback = i);
+                                        for (var batchFontCount = Math.min(fontList.length, 10 * (this.num + 1)) - 10 * this.num, o = 0; o < batchFontCount; o++) {
+                                            var svgElement,
+                                                r = fontList[10 * this.num + o];
+                                            r.addPreviewCallback || (r.addPreviewCallback = registerPreviewCallback);
                                             try {
-                                                (a = n.parseFromString(e[o], "image/svg+xml").firstChild) &&
-                                                    a.getAttribute("xmlns") &&
-                                                    (a.setAttribute("height", "20px"), r.addPreviewCallback(null, a));
+                                                (svgElement = domParser.parseFromString(previewsData[o], "image/svg+xml").firstChild) &&
+                                                    svgElement.getAttribute("xmlns") &&
+                                                    (svgElement.setAttribute("height", "20px"), r.addPreviewCallback(null, svgElement));
                                             } catch (e) {
                                                 "undefined" != typeof gdb_loaddesign && console.warn("error parsing svg");
                                             }
@@ -87,93 +87,93 @@ module.exports = function (module, exports, require) {
                     }
                 }
             }),
-            (a.prototype.initialize = function () {
+            (GoogleFontsProvider.prototype.initialize = function () {
                 this._initialized || this._initializing || this._load.apply(this, arguments);
             }),
-            (a.prototype._load = function () {
+            (GoogleFontsProvider.prototype._load = function () {
                 this._initializing = true;
-                var e = Array.prototype.slice.call(arguments),
-                    t = gContainer.getRootPath(),
-                    n = new XMLHttpRequest(),
-                    o = gDesigner ? gDesigner.getVersion() : ~~(1e4 * Math.random());
-                (n.open("GET", t + "/assets/data/googlefonts.json?" + o),
-                    (n.onload = function () {
-                        n.status >= 200 && n.status < 300
+                var args = Array.prototype.slice.call(arguments),
+                    rootPath = gContainer.getRootPath(),
+                    xhr = new XMLHttpRequest(),
+                    cacheBuster = gDesigner ? gDesigner.getVersion() : ~~(1e4 * Math.random());
+                (xhr.open("GET", rootPath + "/assets/data/googlefonts.json?" + cacheBuster),
+                    (xhr.onload = function () {
+                        xhr.status >= 200 && xhr.status < 300
                             ? ((this._initialized = true),
                               (this._initializing = false),
-                              (s = JSON.parse(n.response)),
-                              (this._totalFonts = s.length),
-                              e.length,
+                              (fontList = JSON.parse(xhr.response)),
+                              (this._totalFonts = fontList.length),
+                              args.length,
                               this._clearCallbacks())
-                            : n.status >= 400 && ((this._initialized = true), (this._initializing = false), this._clearCallbacks(true));
+                            : xhr.status >= 400 && ((this._initialized = true), (this._initializing = false), this._clearCallbacks(true));
                     }.bind(this)),
-                    (n.onerror = function () {
-                        ((this._initialized = true), (this._initializing = false), this._clearCallbacks(i.Errors.ConnectionError));
+                    (xhr.onerror = function () {
+                        ((this._initialized = true), (this._initializing = false), this._clearCallbacks(GFontsProvider.Errors.ConnectionError));
                     }.bind(this)),
-                    n.send());
+                    xhr.send());
             }),
-            (a.prototype.load = function (e, t, n, o) {
+            (GoogleFontsProvider.prototype.load = function (filter, offset, count, callback) {
                 if (!this._initialized && !this._initializing)
                     return (
                         this._loadCallbacks.push(
-                            function (i) {
-                                i ? o.fail(i) : this.load(e, t, n, o);
+                            function (error) {
+                                error ? callback.fail(error) : this.load(filter, offset, count, callback);
                             }.bind(this)
                         ),
-                        void this.initialize(this.load, e, t, n, o)
+                        void this.initialize(this.load, filter, offset, count, callback)
                     );
                 this._initializing
                     ? this._loadCallbacks.push(
-                          function (i) {
-                              i ? o.fail(i) : this.load(e, t, n, o);
+                          function (error) {
+                              error ? callback.fail(error) : this.load(filter, offset, count, callback);
                           }.bind(this)
                       )
-                    : o.done(s.filter(this._searchFilter(e)).slice(t, t + n), true, null);
+                    : callback.done(fontList.filter(this._searchFilter(filter)).slice(offset, offset + count), true, null);
             }),
-            (a.prototype.getTotalFonts = function (e) {
-                return e ? s.filter(this._searchFilter(e)).length : this._totalFonts;
+            (GoogleFontsProvider.prototype.getTotalFonts = function (filter) {
+                return filter ? fontList.filter(this._searchFilter(filter)).length : this._totalFonts;
             }),
-            (a.prototype.resolveFont = function (e, t, n, a) {
+            (GoogleFontsProvider.prototype.resolveFont = function (family, style, weight, callback) {
                 if (!this._initialized && !this._initializing)
                     return (
                         this._loadCallbacks.push(
-                            function (o) {
-                                o ? a.fail(o) : this.resolveFont(e, t, n, a);
+                            function (error) {
+                                error ? callback.fail(error) : this.resolveFont(family, style, weight, callback);
                             }.bind(this)
                         ),
-                        void this.initialize(this.resolveFont, e, t, n, a)
+                        void this.initialize(this.resolveFont, family, style, weight, callback)
                     );
                 if (this._initializing)
                     this._resolveCallbacks.push(
-                        function (o) {
-                            o ? a.fail(o) : this.resolveFont(e, t, n, a);
+                        function (error) {
+                            error ? callback.fail(error) : this.resolveFont(family, style, weight, callback);
                         }.bind(this)
                     );
                 else {
-                    for (var r = 0; r < s.length; r++) {
-                        var c = s[r];
-                        if (c.family === e)
+                    for (var r = 0; r < fontList.length; r++) {
+                        var c = fontList[r];
+                        if (c.family === family)
                             for (var d = c.fonts, u = 0; u < d.length; u++) {
                                 var p = d[u];
-                                if (p.weight === (n || 400) && p.style === (t || GObject.GFont.Style.Normal)) {
-                                    if (l[p.url]) l[p.url].push(a);
+                                if (p.weight === (weight || 400) && p.style === (style || GObject.GFont.Style.Normal)) {
+                                    if (pendingFontLoads[p.url]) pendingFontLoads[p.url].push(callback);
                                     else {
                                         var g = new XMLHttpRequest();
                                         ((g.responseType = "arraybuffer"),
                                             g.open("GET", p.url),
-                                            (l[p.url] = []),
-                                            l[p.url].push(a),
+                                            (pendingFontLoads[p.url] = []),
+                                            pendingFontLoads[p.url].push(callback),
                                             (g.onload = function () {
                                                 if (this.status >= 200 && this.status < 300) {
-                                                    var e = l[p.url];
-                                                    (delete l[p.url],
-                                                        e.forEach((e) => {
-                                                            e.done(this.response);
+                                                    var pendingCallbacks = pendingFontLoads[p.url];
+                                                    (delete pendingFontLoads[p.url],
+                                                        pendingCallbacks.forEach((pendingCallback) => {
+                                                            pendingCallback.done(this.response);
                                                         }));
                                                 }
                                             }),
                                             (g.onerror = () => {
-                                                (delete l[p.url], a.fail(i.Errors.ConnectionError));
+                                                (delete pendingFontLoads[p.url], callback.fail(GFontsProvider.Errors.ConnectionError));
                                             }),
                                             g.send());
                                     }
@@ -181,14 +181,14 @@ module.exports = function (module, exports, require) {
                                 }
                             }
                     }
-                    a.fail();
+                    callback.fail();
                 }
             }),
-            (a.prototype.getProviderId = function () {
-                return r;
+            (GoogleFontsProvider.prototype.getProviderId = function () {
+                return providerId;
             }),
-            (a.prototype.resetProvider = function () {
+            (GoogleFontsProvider.prototype.resetProvider = function () {
                 this._load();
             }),
-            (module.exports = a));
+            (module.exports = GoogleFontsProvider));
     };

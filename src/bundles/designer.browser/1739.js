@@ -1196,7 +1196,7 @@ module.exports = function (module, exports, require) {
                     return { promise: e.apply(void 0, p([], u(t), false)) };
                 };
             },
-            N = require(1358),
+            N = require(1358 /* lib:@amplitude/analytics-connector */),
             B = function () {
                 return N.a.getInstance("$default_instance");
             };

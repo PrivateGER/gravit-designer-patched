@@ -1,9 +1,9 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        const GFilesPanelViewBase = require(1550);
+        const FilesPanelFileView = require(1550);
         function i() {}
         ((i.getRenderForFile = function (e) {
-            return new GFilesPanelViewBase();
+            return new FilesPanelFileView();
         }),
             (module.exports = i));
     };

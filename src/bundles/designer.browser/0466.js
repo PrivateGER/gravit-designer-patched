@@ -3,7 +3,7 @@ module.exports = function (module, exports, require) {
         var o = require(94),
             i = require(310),
             a = require(311),
-            r = require(467),
+            r = require(467 /* lib:pako */),
             s = require(468);
         function l(e) {
             return ((e >>> 24) & 255) + ((e >>> 8) & 65280) + ((65280 & e) << 8) + ((255 & e) << 24);

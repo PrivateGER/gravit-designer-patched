@@ -3,94 +3,94 @@ module.exports = function (module, exports, require) {
         (require(8 /* Symbol */), require(3));
         var GObject = require(1);
         const GStorage = require(237),
-            a = require(156);
-        function r() {}
-        (GObject.GObject.inherit(r, GStorage),
-            (r.Item = function (e, t) {
-                (GStorage.Item.call(this, e), this.setFile(t));
+            CloudFile = require(156);
+        function GExternalStorage() {}
+        (GObject.GObject.inherit(GExternalStorage, GStorage),
+            (GExternalStorage.Item = function (id, file) {
+                (GStorage.Item.call(this, id), this.setFile(file));
             }),
-            GObject.GObject.inherit(r.Item, GStorage.Item),
-            (r.Item.prototype._app = null),
-            (r.Item.prototype._filename = null),
-            (r.Item.prototype._ext = null),
-            (r.Item.prototype._id = null),
-            (r.Item.prototype._file = null),
-            (r.Item.prototype.isRegistrable = function () {
+            GObject.GObject.inherit(GExternalStorage.Item, GStorage.Item),
+            (GExternalStorage.Item.prototype._app = null),
+            (GExternalStorage.Item.prototype._filename = null),
+            (GExternalStorage.Item.prototype._ext = null),
+            (GExternalStorage.Item.prototype._id = null),
+            (GExternalStorage.Item.prototype._file = null),
+            (GExternalStorage.Item.prototype.isRegistrable = function () {
                 return !!this.getId();
             }),
-            (r.Item.prototype.getId = function () {
+            (GExternalStorage.Item.prototype.getId = function () {
                 return this._id;
             }),
-            (r.Item.prototype.setId = function (e) {
-                return ((this._id = e), this);
+            (GExternalStorage.Item.prototype.setId = function (id) {
+                return ((this._id = id), this);
             }),
-            (r.Item.prototype.getFullName = function () {
+            (GExternalStorage.Item.prototype.getFullName = function () {
                 return this._filename;
             }),
-            (r.Item.prototype.getName = function () {
+            (GExternalStorage.Item.prototype.getName = function () {
                 return this._filename;
             }),
-            (r.Item.prototype.setFileName = function (e) {
-                return ((this._filename = e), this);
+            (GExternalStorage.Item.prototype.setFileName = function (filename) {
+                return ((this._filename = filename), this);
             }),
-            (r.Item.prototype.getExtension = function () {
+            (GExternalStorage.Item.prototype.getExtension = function () {
                 return (this._ext && this._ext.toUpperCase()) || "CDRAPP";
             }),
-            (r.Item.prototype.setFile = function (e) {
-                if (!e) throw new Error(GObject.GLocale.get(new GObject.GLocaleKey("GExternalStorage", "text.error-file-cant-be-null")));
-                ((e = a.createOrReturnSelfInstance(e)), (this._file = e), (this._id = e.id), (this._filename = e.name));
+            (GExternalStorage.Item.prototype.setFile = function (file) {
+                if (!file) throw new Error(GObject.GLocale.get(new GObject.GLocaleKey("GExternalStorage", "text.error-file-cant-be-null")));
+                ((file = CloudFile.createOrReturnSelfInstance(file)), (this._file = file), (this._id = file.id), (this._filename = file.name));
             }),
-            (r.Item.prototype.getFile = function () {
-                const e = this._file;
-                return (!e.settings && this._client && (e.settings = this._client.getSettings()), e);
+            (GExternalStorage.Item.prototype.getFile = function () {
+                const file = this._file;
+                return (!file.settings && this._client && (file.settings = this._client.getSettings()), file);
             }),
-            (r.Item.prototype.hasFileSettings = function () {
+            (GExternalStorage.Item.prototype.hasFileSettings = function () {
                 return this._file && this._file.settings;
             }),
-            (r.Item.prototype.getUniqueId = function () {
+            (GExternalStorage.Item.prototype.getUniqueId = function () {
                 return this._id;
             }),
-            (r.Item.prototype.getVersion = function () {
+            (GExternalStorage.Item.prototype.getVersion = function () {
                 throw Error("Not implemented!");
             }),
-            (r.Item.prototype.getMimeType = function () {
+            (GExternalStorage.Item.prototype.getMimeType = function () {
                 throw Error("Not implemented!");
             }),
-            (r.Item.prototype.hasVersionControl = function () {
+            (GExternalStorage.Item.prototype.hasVersionControl = function () {
                 return false;
             }),
-            (r.Item.prototype.hasUpdates = async function () {
+            (GExternalStorage.Item.prototype.hasUpdates = async function () {
                 throw Error("Not implemented!");
             }),
-            (r.Item.prototype.getLatestFileVersion = async function () {
+            (GExternalStorage.Item.prototype.getLatestFileVersion = async function () {
                 throw Error("Not implemented!");
             }),
-            (r.Item.prototype.getLatestFileInfo = async function () {
+            (GExternalStorage.Item.prototype.getLatestFileInfo = async function () {
                 throw Error("Not implemented!");
             }),
-            (r.Item.prototype.exists = async function () {
+            (GExternalStorage.Item.prototype.exists = async function () {
                 throw Error("Not implemented!");
             }),
-            (r.Item.prototype.isVersionNewerThan = function () {
+            (GExternalStorage.Item.prototype.isVersionNewerThan = function () {
                 throw Error("Not implemented!");
             }),
-            (r.Item.prototype.setCloudClient = function (e) {
-                this._client = e;
+            (GExternalStorage.Item.prototype.setCloudClient = function (client) {
+                this._client = client;
             }),
-            (r.Item.prototype.getCloudClient = function () {
+            (GExternalStorage.Item.prototype.getCloudClient = function () {
                 return this._client;
             }),
-            (r.Item.prototype.supportsSharing = function () {
+            (GExternalStorage.Item.prototype.supportsSharing = function () {
                 return this._getClient().isCorporate();
             }),
-            (r.Item.prototype.getCorporateProviderName = function () {
+            (GExternalStorage.Item.prototype.getCorporateProviderName = function () {
                 throw Error("Not implemented!");
             }),
-            (r.Item.prototype.isEmailFromCorporateDomain = function () {
+            (GExternalStorage.Item.prototype.isEmailFromCorporateDomain = function () {
                 throw Error("Not implemented!");
             }),
-            (r.Item.prototype.toString = function () {
+            (GExternalStorage.Item.prototype.toString = function () {
                 return "[Object GExternalStorage.Item]";
             }),
-            (module.exports = r));
+            (module.exports = GExternalStorage));
     };

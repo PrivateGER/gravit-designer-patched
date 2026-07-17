@@ -4,71 +4,71 @@ module.exports = function (module, exports, require) {
         const GProfileDialog = require(604);
         module.exports = class {
             constructor() {
-                let e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
-                this._settings = e;
+                let settings = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
+                this._settings = settings;
             }
             getFrame() {
                 return this._iframe;
             }
-            open(e) {
-                const t = gDesigner.getUTM();
-                if (t && t.size) {
-                    const n = new URL(e),
-                        o = n.searchParams;
-                    (t.forEach((e, t) => o.set(t, e)), (e = n.toString()));
+            open(url) {
+                const utm = gDesigner.getUTM();
+                if (utm && utm.size) {
+                    const parsedUrl = new URL(url),
+                        searchParams = parsedUrl.searchParams;
+                    (utm.forEach((value, key) => searchParams.set(key, value)), (url = parsedUrl.toString()));
                 }
-                if (((this._iframe = $("<iframe></iframe>").addClass("cross-frame").attr("src", e).appendTo($("body"))), this._settings)) {
+                if (((this._iframe = $("<iframe></iframe>").addClass("cross-frame").attr("src", url).appendTo($("body"))), this._settings)) {
                     const { id, className, css } = this._settings;
                     (id && this._iframe.attr("id", id), className && this._iframe.addClass(className), css && this._iframe.css(css));
                 }
-                let n = this.close.bind(this);
+                let closeHandler = this.close.bind(this);
                 return (
-                    this._settings.close && (n = this._settings.close),
-                    (this._messageHandler = async (e) => {
-                        if (e.originalEvent.source !== this._iframe[0].contentWindow) return;
-                        let t = e.originalEvent.data;
-                        const { cmd } = t;
+                    this._settings.close && (closeHandler = this._settings.close),
+                    (this._messageHandler = async (event) => {
+                        if (event.originalEvent.source !== this._iframe[0].contentWindow) return;
+                        let data = event.originalEvent.data;
+                        const { cmd } = data;
                         if (cmd) {
-                            if (this._settings[cmd]) return void this._settings[cmd](t);
+                            if (this._settings[cmd]) return void this._settings[cmd](data);
                             switch (cmd) {
                                 case "close":
-                                    n(t);
+                                    closeHandler(data);
                                     break;
                                 case "settings":
-                                    let e = await gDesigner.getUser();
-                                    new GProfileDialog(e, "purchase").open();
+                                    let user = await gDesigner.getUser();
+                                    new GProfileDialog(user, "purchase").open();
                                     break;
                                 case "purchase_flow":
-                                    const { options: i = {} } = t,
-                                        { immediatePurchase: a = false, closeable: r = true } = i;
-                                    (a &&
-                                        Object.assign(i, {
+                                    const { options: options = {} } = data,
+                                        { immediatePurchase: immediatePurchase = false, closeable: closeable = true } = options;
+                                    (immediatePurchase &&
+                                        Object.assign(options, {
                                             autoClose: true,
                                             paymentCallback: () => {
-                                                n();
+                                                closeHandler();
                                             },
                                         }),
-                                        r ||
-                                            Object.assign(i, {
-                                                paymentCallback: (e) => {
-                                                    let { licenseHasBeenUpgraded: t = false } = e;
-                                                    n({ licenseHasBeenUpgraded: t, closeable: r });
+                                        closeable ||
+                                            Object.assign(options, {
+                                                paymentCallback: (paymentResult) => {
+                                                    let { licenseHasBeenUpgraded: upgraded = false } = paymentResult;
+                                                    closeHandler({ licenseHasBeenUpgraded: upgraded, closeable: closeable });
                                                 },
                                             }));
-                                    let s = t.options;
-                                    (gInAppPurchase.getOptions() && (s = Object.assign({}, gInAppPurchase.getOptions(), s)),
+                                    let purchaseOptions = data.options;
+                                    (gInAppPurchase.getOptions() && (purchaseOptions = Object.assign({}, gInAppPurchase.getOptions(), purchaseOptions)),
                                         gDesigner
-                                            .openPaymentDialog(null, s)
+                                            .openPaymentDialog(null, purchaseOptions)
                                             .then(function () {
                                                 let { reinstate } = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
-                                                (a && !reinstate) || n({ closeable: r });
+                                                (immediatePurchase && !reinstate) || closeHandler({ closeable: closeable });
                                             })
                                             .catch(() => {
-                                                n({ closeable: r });
+                                                closeHandler({ closeable: closeable });
                                             }));
                                     break;
                                 case "link":
-                                    gContainer.openExternalLink(null, t.link);
+                                    gContainer.openExternalLink(null, data.link);
                             }
                         }
                     }),
@@ -77,13 +77,13 @@ module.exports = function (module, exports, require) {
                 );
             }
             close() {
-                let { licenseHasBeenUpgraded: e = false, closeable: t = true } =
+                let { licenseHasBeenUpgraded: licenseHasBeenUpgraded = false, closeable: closeable = true } =
                     arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
-                (this._messageHandler && (t || e) && ($(window).unbind("message", this._messageHandler), this._iframe.remove()),
-                    e && gDesigner.requestLicenseUpdate());
+                (this._messageHandler && (closeable || licenseHasBeenUpgraded) && ($(window).unbind("message", this._messageHandler), this._iframe.remove()),
+                    licenseHasBeenUpgraded && gDesigner.requestLicenseUpdate());
             }
-            on(e, t) {
-                this._iframe.on(e, t);
+            on(event, handler) {
+                this._iframe.on(event, handler);
             }
             postMessage() {
                 this._iframe[0].contentWindow.postMessage.apply(this._iframe[0].contentWindow, arguments);

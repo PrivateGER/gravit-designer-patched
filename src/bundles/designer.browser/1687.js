@@ -3,26 +3,26 @@ module.exports = function (module, exports, require) {
         var _interopRequireDefault = require(16);
         (require(20 /* polyfill:RegExp */), require(34));
         var GObject = require(1),
-            a = _interopRequireDefault(require(44 /* GSystemDialog */));
+            GSystemDialog = _interopRequireDefault(require(44 /* GSystemDialog */));
         const { DateAPI, DESIGNER: { TITLE } = {} } = require(10 /* designerConfig */),
-            l = require(78),
-            c = DateAPI.minutesToMilliseconds(1),
-            d = 0.8,
-            u = DateAPI.minutesToMilliseconds(30);
+            GDocumentEvent = require(78),
+            defaultMemoryCheckInterval = DateAPI.minutesToMilliseconds(1),
+            defaultMemoryUsageThreshold = 0.8,
+            defaultAutostartTime = DateAPI.minutesToMilliseconds(30);
         module.exports = class {
             constructor() {
                 let {
-                    memoryCheckInterval: e = c,
-                    memoryUsageThreshold: t = d,
-                    autostartTime: n = u,
+                    memoryCheckInterval: memoryCheckInterval = defaultMemoryCheckInterval,
+                    memoryUsageThreshold: memoryUsageThreshold = defaultMemoryUsageThreshold,
+                    autostartTime: autostartTime = defaultAutostartTime,
                 } = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
-                ((this._memoryCheckInterval = Math.max(e, DateAPI.minutesToMilliseconds(1))),
-                    (this._memoryUsageThreshold = t),
-                    (this._autostartTime = n));
+                ((this._memoryCheckInterval = Math.max(memoryCheckInterval, DateAPI.minutesToMilliseconds(1))),
+                    (this._memoryUsageThreshold = memoryUsageThreshold),
+                    (this._autostartTime = autostartTime));
             }
             start() {
                 (this.stop(),
-                    gDesigner.addEventListener(l, this._documentEvent, this),
+                    gDesigner.addEventListener(GDocumentEvent, this._documentEvent, this),
                     this._memoryUsageThreshold <= 0 ||
                         (gContainer.isMemoryInfoAvailable() &&
                             (this._memoryCheckIntervalId = setInterval(this._checkMemory.bind(this), this._memoryCheckInterval))));
@@ -30,15 +30,15 @@ module.exports = function (module, exports, require) {
             stop() {
                 (this._autostartScheduleId && (clearTimeout(this._autostartScheduleId), delete this._autostartScheduleId),
                     this._memoryCheckIntervalId && (clearInterval(this._memoryCheckIntervalId), delete this._memoryCheckIntervalId),
-                    gDesigner.removeEventListener(l, this._documentEvent, this));
+                    gDesigner.removeEventListener(GDocumentEvent, this._documentEvent, this));
             }
             _checkMemory() {
                 this._calculateThreshold() >= this._memoryUsageThreshold &&
                     (this._openWarningDialog(), this.stop(), this._scheduleStartup());
             }
             _calculateThreshold() {
-                const e = gContainer.getMemoryInfo();
-                return e ? e.heapSizeInUse / e.heapSizeLimit : 0;
+                const memoryInfo = gContainer.getMemoryInfo();
+                return memoryInfo ? memoryInfo.heapSizeInUse / memoryInfo.heapSizeLimit : 0;
             }
             _scheduleStartup() {
                 this._autostartTime > 0 &&
@@ -49,7 +49,7 @@ module.exports = function (module, exports, require) {
             _openWarningDialog() {
                 this._dialog ||
                     (gDesigner.stats("memorywarningdialog_open"),
-                    (this._dialog = a.default.custom({
+                    (this._dialog = GSystemDialog.default.custom({
                         closeCallback: () => {
                             delete this._dialog;
                         },
@@ -61,16 +61,16 @@ module.exports = function (module, exports, require) {
                         buttons: [
                             {
                                 label: GObject.GLocale.get(new GObject.GLocaleKey("GLocale", "ok")),
-                                onclick: (e) => {
-                                    e.gDialog("close");
+                                onclick: (dialogElement) => {
+                                    dialogElement.gDialog("close");
                                 },
                                 highlighted: true,
                             },
                         ],
                     })));
             }
-            _documentEvent(e) {
-                e.type === l.Type.Removed && (gDesigner.hasDocuments() || GObject.GRendererCtx.freeMemory());
+            _documentEvent(event) {
+                event.type === GDocumentEvent.Type.Removed && (gDesigner.hasDocuments() || GObject.GRendererCtx.freeMemory());
             }
         };
     };

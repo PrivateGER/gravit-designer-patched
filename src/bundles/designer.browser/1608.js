@@ -2,13 +2,13 @@ module.exports = function (module, exports, require) {
         "use strict";
         require(3);
         var GObject = require(1),
-            i = (require(15 /* GPlatform */), require(67)),
+            GTooltip = (require(15 /* GPlatform */), require(67 /* GRichTooltipConfig */)),
             GCategory = require(18),
-            r = require(31),
-            s = require(1245);
-        function l() {
-            l.TOOLTIP_CONFIG = {
-                [i.TOOLTIP_AREA.MAIN_MENU.TRY_PRO_COMMON]: i.GRichTooltipConfig.from({
+            GAction = require(31),
+            FontImporter = require(1245);
+        function GImportFontsAction() {
+            GImportFontsAction.TOOLTIP_CONFIG = {
+                [GTooltip.TOOLTIP_AREA.MAIN_MENU.TRY_PRO_COMMON]: GTooltip.GRichTooltipConfig.from({
                     title: GObject.GLocale.get(new GObject.GLocaleKey("GImportFontsAction", "text.try-this-feature-pro-tooltip-title")),
                     description: GObject.GLocale.get(new GObject.GLocaleKey("GImportFontsAction", "text.try-this-feature-pro-tooltip-description")),
                     learnMore: "/docs/import-export/import/#import-fonts",
@@ -18,42 +18,42 @@ module.exports = function (module, exports, require) {
                 }),
             };
         }
-        (GObject.GObject.inherit(l, r),
-            (l.ID = "font.import"),
-            (l.TITLE = new GObject.GLocaleKey("GImportFontsAction", "title")),
-            (l.TOOLTIP_CONFIG = null),
-            (l.prototype.getId = function () {
-                return l.ID;
+        (GObject.GObject.inherit(GImportFontsAction, GAction),
+            (GImportFontsAction.ID = "font.import"),
+            (GImportFontsAction.TITLE = new GObject.GLocaleKey("GImportFontsAction", "title")),
+            (GImportFontsAction.TOOLTIP_CONFIG = null),
+            (GImportFontsAction.prototype.getId = function () {
+                return GImportFontsAction.ID;
             }),
-            (l.prototype.getTitle = function () {
-                return l.TITLE;
+            (GImportFontsAction.prototype.getTitle = function () {
+                return GImportFontsAction.TITLE;
             }),
-            (l.prototype.getCategory = function () {
+            (GImportFontsAction.prototype.getCategory = function () {
                 return GCategory.CATEGORY_FILE_IMPORT;
             }),
-            (l.prototype.getGroup = function () {
+            (GImportFontsAction.prototype.getGroup = function () {
                 return "import/import-fonts";
             }),
-            (l.prototype.isEnabled = function (e) {
+            (GImportFontsAction.prototype.isEnabled = function (storage) {
                 return (
-                    (e = e || gDesigner.getDefaultStorage()),
+                    (storage = storage || gDesigner.getDefaultStorage()),
                     !!gDesigner.getApplicationManager().isImportResourcesEnabled() &&
-                        e.canPromptOpen() &&
+                        storage.canPromptOpen() &&
                         "undefined" != typeof window &&
                         window.indexedDB
                 );
             }),
-            (l.prototype.execute = function (e, t) {
-                (e = e || new s()).import(t);
+            (GImportFontsAction.prototype.execute = function (importer, doneCallback) {
+                (importer = importer || new FontImporter()).import(doneCallback);
             }),
-            (l.prototype.getTooltipArea = function () {
-                return i.TOOLTIP_AREA.MAIN_MENU.TRY_PRO_COMMON;
+            (GImportFontsAction.prototype.getTooltipArea = function () {
+                return GTooltip.TOOLTIP_AREA.MAIN_MENU.TRY_PRO_COMMON;
             }),
-            (l.prototype.getTooltipConfig = function (e) {
-                return (e && l.TOOLTIP_CONFIG[e]) || null;
+            (GImportFontsAction.prototype.getTooltipConfig = function (area) {
+                return (area && GImportFontsAction.TOOLTIP_CONFIG[area]) || null;
             }),
-            (l.prototype.toString = function () {
+            (GImportFontsAction.prototype.toString = function () {
                 return "[Object GImportFontsAction]";
             }),
-            (module.exports = l));
+            (module.exports = GImportFontsAction));
     };

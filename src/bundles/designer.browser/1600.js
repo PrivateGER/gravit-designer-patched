@@ -4,41 +4,41 @@ module.exports = function (module, exports, require) {
         (require(19), require(4), require(32), require(33), require(26));
         var GObject = require(1),
             GPlatform = require(15),
-            r = _interopRequireDefault(require(18 /* GCategory */)),
-            s = _interopRequireDefault(require(1168)),
+            GCategory = _interopRequireDefault(require(18 /* GCategory */)),
+            GSubAction = _interopRequireDefault(require(1168)),
             Utils = require(40),
-            c = require(67),
-            d = _interopRequireDefault(require(812)),
+            GRichTooltipConfig = require(67),
+            GMergeMainAction = _interopRequireDefault(require(812 /* GMergeMainAction */)),
             designerConfig = require(10);
-        class p extends s.default {
-            constructor(e) {
-                (super(e),
+        class MergeSubAction extends GSubAction.default {
+            constructor(options) {
+                (super(options),
                     (this._title = new GObject.GLocaleKey("GMergeSubAction", "title.".concat(this._type))),
                     (this._transactionType = null));
             }
             _getMainActionId() {
-                return d.default.ID;
+                return GMergeMainAction.default.ID;
             }
             getFullTitle() {
-                const e = this.getTitle(),
-                    t = this.getMainAction().getTitle();
-                return "".concat(GObject.GLocale.get(t), " (").concat(GObject.GLocale.get(e), ")");
+                const title = this.getTitle(),
+                    mainTitle = this.getMainAction().getTitle();
+                return "".concat(GObject.GLocale.get(mainTitle), " (").concat(GObject.GLocale.get(title), ")");
             }
             getCategory() {
-                return r.default.CATEGORY_MODIFY_COMBINE;
+                return GCategory.default.CATEGORY_MODIFY_COMBINE;
             }
             getGroup() {
                 return "structure-boolean/combine";
             }
             getIcon() {
                 switch (this._type) {
-                    case p.Type.Union:
+                    case MergeSubAction.Type.Union:
                         return "gravit-icon-merge-union";
-                    case p.Type.Subtract:
+                    case MergeSubAction.Type.Subtract:
                         return "gravit-icon-merge-subtract";
-                    case p.Type.Intersect:
+                    case MergeSubAction.Type.Intersect:
                         return "gravit-icon-merge-intersect";
-                    case p.Type.Difference:
+                    case MergeSubAction.Type.Difference:
                         return "gravit-icon-merge-difference";
                     default:
                         return null;
@@ -49,161 +49,161 @@ module.exports = function (module, exports, require) {
             }
             getShortcutSubKey() {
                 switch (this._type) {
-                    case p.Type.Union:
+                    case MergeSubAction.Type.Union:
                         return GPlatform.GKey.Constant.U;
-                    case p.Type.Subtract:
+                    case MergeSubAction.Type.Subtract:
                         return GPlatform.GKey.Constant.S;
-                    case p.Type.Intersect:
+                    case MergeSubAction.Type.Intersect:
                         return GPlatform.GKey.Constant.I;
-                    case p.Type.Difference:
+                    case MergeSubAction.Type.Difference:
                         return GPlatform.GKey.Constant.X;
                     default:
                         return null;
                 }
             }
             execute() {
-                const e = gDesigner.getActiveDocument().getEditor(),
-                    t = e && GObject.GNode.order(e.getIndividualSelection().slice());
-                if (!t) return;
-                e.beginTransaction();
-                const n = this._shouldChangeBooleanOperation(t);
+                const editor = gDesigner.getActiveDocument().getEditor(),
+                    selection = editor && GObject.GNode.order(editor.getIndividualSelection().slice());
+                if (!selection) return;
+                editor.beginTransaction();
+                const shouldChangeBoolean = this._shouldChangeBooleanOperation(selection);
                 try {
-                    n
-                        ? (this._setTransactionType(p.TransactionType.Merge), this._changeBooleanOperationType(t[0]))
-                        : (this._setTransactionType(p.TransactionType.Combine), this._createCompoundShape(e, t));
+                    shouldChangeBoolean
+                        ? (this._setTransactionType(MergeSubAction.TransactionType.Merge), this._changeBooleanOperationType(selection[0]))
+                        : (this._setTransactionType(MergeSubAction.TransactionType.Combine), this._createCompoundShape(editor, selection));
                 } finally {
-                    e.commitTransaction(this._getTransactionName());
+                    editor.commitTransaction(this._getTransactionName());
                 }
             }
-            _setTransactionType(e) {
-                this._transactionType = e;
+            _setTransactionType(transactionType) {
+                this._transactionType = transactionType;
             }
             _getTransactionName() {
                 return GObject.GLocale.getValue("GMergeSubAction", "transaction.".concat(this._transactionType));
             }
-            _shouldChangeBooleanOperation(e) {
-                const [t] = e;
-                return 1 === e.length && (t instanceof GObject.GCompoundShape || 1 === d.default.getValidItems(t).length);
+            _shouldChangeBooleanOperation(elements) {
+                const [firstElement] = elements;
+                return 1 === elements.length && (firstElement instanceof GObject.GCompoundShape || 1 === GMergeMainAction.default.getValidItems(firstElement).length);
             }
-            _changeBooleanOperationType(e) {
+            _changeBooleanOperationType(element) {
                 if (
-                    e.getParent() instanceof GObject.GCompoundShape &&
-                    (e instanceof GObject.GCompoundShape || (e.hasMixin(GObject.GVertexSource) && !(e instanceof GObject.GGroup)))
+                    element.getParent() instanceof GObject.GCompoundShape &&
+                    (element instanceof GObject.GCompoundShape || (element.hasMixin(GObject.GVertexSource) && !(element instanceof GObject.GGroup)))
                 )
-                    return e.setProperty("bool", this._getBooleanOperationType());
-                if (e instanceof GObject.GCompoundShape && e.getFirstChild())
-                    for (let t = e.getFirstChild().getNext(); null !== t; t = t.getNext())
-                        t.setProperty("bool", this._getBooleanOperationType());
+                    return element.setProperty("bool", this._getBooleanOperationType());
+                if (element instanceof GObject.GCompoundShape && element.getFirstChild())
+                    for (let child = element.getFirstChild().getNext(); null !== child; child = child.getNext())
+                        child.setProperty("bool", this._getBooleanOperationType());
             }
-            _createCompoundShape(e, t) {
-                const n = new GObject.GCompoundShape();
-                let o,
-                    a = [];
+            _createCompoundShape(editor, elements) {
+                const compoundShape = new GObject.GCompoundShape();
+                let parentsSet,
+                    validItems = [];
                 if (
-                    (t.forEach((e) => {
-                        a = a.concat(d.default.getValidItems(e));
+                    (elements.forEach((element) => {
+                        validItems = validItems.concat(GMergeMainAction.default.getValidItems(element));
                     }),
-                    a.length > 1)
+                    validItems.length > 1)
                 ) {
-                    const r = t[t.length - 1];
-                    let s = r.getParent(),
-                        c = r.getNext();
-                    for (; !n.validateInsertion(s); ) ((c = s.getNext()), (s = s.getParent()));
-                    if (!s) return;
-                    s.insertChild(n, c);
+                    const lastElement = elements[elements.length - 1];
+                    let insertionParent = lastElement.getParent(),
+                        insertAnchor = lastElement.getNext();
+                    for (; !compoundShape.validateInsertion(insertionParent); ) ((insertAnchor = insertionParent.getNext()), (insertionParent = insertionParent.getParent()));
+                    if (!insertionParent) return;
+                    insertionParent.insertChild(compoundShape, insertAnchor);
                     try {
-                        const t = [],
-                            r = [];
-                        let s = null;
-                        ((o = new Set()),
-                            a.forEach((e) => {
-                                (e.getParent() instanceof GObject.GCompoundShape ? (t.push(e), s || (s = e.getParent())) : r.push(e),
-                                    o.add(e.getParent()));
+                        const compoundChildren = [],
+                            otherChildren = [];
+                        let firstCompoundParent = null;
+                        ((parentsSet = new Set()),
+                            validItems.forEach((element) => {
+                                (element.getParent() instanceof GObject.GCompoundShape ? (compoundChildren.push(element), firstCompoundParent || (firstCompoundParent = element.getParent())) : otherChildren.push(element),
+                                    parentsSet.add(element.getParent()));
                             }),
-                            (a = t.concat(r)));
-                        const c = s || a[0];
-                        if (((0, Utils.blockChanges)(e, o, null, n), n.assignStyleFrom(c), c instanceof GObject.GText)) {
-                            const e = c;
-                            if (!e.getPaintLayers().getFillLayers(true).length && e.getProperty("_fc")) {
-                                n.getPaintLayers().clearFillLayers();
-                                const t =
-                                    "string" == typeof e.getProperty("_fc")
-                                        ? GObject.GRGBColor.fromCSSColor(e.getProperty("_fc"))
-                                        : e.getProperty("_fc");
-                                n.getPaintLayers().appendChild(new GObject.GStylable.FillPaintLayer(t));
+                            (validItems = compoundChildren.concat(otherChildren)));
+                        const styleSource = firstCompoundParent || validItems[0];
+                        if (((0, Utils.blockChanges)(editor, parentsSet, null, compoundShape), compoundShape.assignStyleFrom(styleSource), styleSource instanceof GObject.GText)) {
+                            const textElement = styleSource;
+                            if (!textElement.getPaintLayers().getFillLayers(true).length && textElement.getProperty("_fc")) {
+                                compoundShape.getPaintLayers().clearFillLayers();
+                                const fillColor =
+                                    "string" == typeof textElement.getProperty("_fc")
+                                        ? GObject.GRGBColor.fromCSSColor(textElement.getProperty("_fc"))
+                                        : textElement.getProperty("_fc");
+                                compoundShape.getPaintLayers().appendChild(new GObject.GStylable.FillPaintLayer(fillColor));
                             }
                         }
-                        a.forEach((e) => {
-                            let t,
-                                o = e.getParent();
+                        validItems.forEach((element) => {
+                            let childToRemove,
+                                parent = element.getParent();
                             for (
-                                !(o === s || (o instanceof GObject.GCompoundShape && this._type === p.Type.Union)) &&
-                                    e.setProperty("bool", this._getBooleanOperationType()),
-                                    o.removeChild(e);
-                                (o instanceof GObject.GGroup || o instanceof GObject.GCompoundShape) && !o.getFirstChild();
+                                !(parent === firstCompoundParent || (parent instanceof GObject.GCompoundShape && this._type === MergeSubAction.Type.Union)) &&
+                                    element.setProperty("bool", this._getBooleanOperationType()),
+                                    parent.removeChild(element);
+                                (parent instanceof GObject.GGroup || parent instanceof GObject.GCompoundShape) && !parent.getFirstChild();
 
                             )
-                                ((t = o), (o = o.getParent()), o.removeChild(t));
-                            n.appendChild(e);
+                                ((childToRemove = parent), (parent = parent.getParent()), parent.removeChild(childToRemove));
+                            compoundShape.appendChild(element);
                         });
                     } finally {
-                        (0, Utils.releaseChanges)(e, o, null, n);
+                        (0, Utils.releaseChanges)(editor, parentsSet, null, compoundShape);
                     }
-                    e.updateSelection(false, [n]);
+                    editor.updateSelection(false, [compoundShape]);
                 }
             }
             _getBooleanOperationType() {
                 switch (this._type) {
-                    case p.Type.Union:
+                    case MergeSubAction.Type.Union:
                         return GObject.GVertexPolyBoolean.OR;
-                    case p.Type.Subtract:
+                    case MergeSubAction.Type.Subtract:
                         return GObject.GVertexPolyBoolean.SUB;
-                    case p.Type.Intersect:
+                    case MergeSubAction.Type.Intersect:
                         return GObject.GVertexPolyBoolean.AND;
-                    case p.Type.Difference:
+                    case MergeSubAction.Type.Difference:
                         return GObject.GVertexPolyBoolean.XOR;
                     default:
                         throw new Error("Type is not valid.");
                 }
             }
-            getTooltipConfig(e) {
-                return e && p.TOOLTIP_CONFIG[e] ? p.TOOLTIP_CONFIG[e][this._type] : null;
+            getTooltipConfig(area) {
+                return area && MergeSubAction.TOOLTIP_CONFIG[area] ? MergeSubAction.TOOLTIP_CONFIG[area][this._type] : null;
             }
             toString() {
                 return "[Object GMergeSubAction]";
             }
         }
-        ((p.Type = {
+        ((MergeSubAction.Type = {
             Union: "union",
             Subtract: "subtract",
             Intersect: "intersect",
             Difference: "difference",
         }),
-            (p.TransactionType = { Merge: "merge", Combine: "combine" }),
-            (p.TOOLTIP_CONFIG = {
-                [c.TOOLTIP_AREA.TOOLBAR]: {
-                    [p.Type.Union]: c.GRichTooltipConfig.from({
+            (MergeSubAction.TransactionType = { Merge: "merge", Combine: "combine" }),
+            (MergeSubAction.TOOLTIP_CONFIG = {
+                [GRichTooltipConfig.TOOLTIP_AREA.TOOLBAR]: {
+                    [MergeSubAction.Type.Union]: GRichTooltipConfig.GRichTooltipConfig.from({
                         title: GObject.GLocale.getValue("GMergeSubAction", "tooltip.union.title"),
                         description: GObject.GLocale.getValue("GMergeSubAction", "tooltip.union.description"),
                         video: designerConfig.gApi.getRichTooltipVideoURL("Boolean_Union.mp4"),
                         middle: false,
                         learnMore: "/docs/basics/compound-shapes-boolean-operations/",
                     }),
-                    [p.Type.Subtract]: c.GRichTooltipConfig.from({
+                    [MergeSubAction.Type.Subtract]: GRichTooltipConfig.GRichTooltipConfig.from({
                         title: GObject.GLocale.getValue("GMergeSubAction", "tooltip.substract.title"),
                         description: GObject.GLocale.getValue("GMergeSubAction", "tooltip.substract.description"),
                         video: designerConfig.gApi.getRichTooltipVideoURL("Boolean_Subtract.mp4"),
                         middle: false,
                         learnMore: "/docs/basics/compound-shapes-boolean-operations/",
                     }),
-                    [p.Type.Intersect]: c.GRichTooltipConfig.from({
+                    [MergeSubAction.Type.Intersect]: GRichTooltipConfig.GRichTooltipConfig.from({
                         title: GObject.GLocale.getValue("GMergeSubAction", "tooltip.intersect.title"),
                         description: GObject.GLocale.getValue("GMergeSubAction", "tooltip.intersect.description"),
                         video: designerConfig.gApi.getRichTooltipVideoURL("Boolean_Intersect.mp4"),
                         middle: false,
                         learnMore: "/docs/basics/compound-shapes-boolean-operations/",
                     }),
-                    [p.Type.Difference]: c.GRichTooltipConfig.from({
+                    [MergeSubAction.Type.Difference]: GRichTooltipConfig.GRichTooltipConfig.from({
                         title: GObject.GLocale.getValue("GMergeSubAction", "tooltip.difference.title"),
                         description: GObject.GLocale.getValue("GMergeSubAction", "tooltip.difference.description"),
                         video: designerConfig.gApi.getRichTooltipVideoURL("Boolean_Difference.mp4"),
@@ -212,5 +212,5 @@ module.exports = function (module, exports, require) {
                     }),
                 },
             }),
-            (module.exports = p));
+            (module.exports = MergeSubAction));
     };

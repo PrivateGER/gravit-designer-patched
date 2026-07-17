@@ -1,77 +1,77 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        function o() {}
+        function Collapsible() {}
         (require(4),
             require(13),
-            (o.Orientation = { Vertical: "vertical", Horizontal: "horizontal" }),
-            (function (e) {
-                const t = {
-                    _toggleTransitions: function (t) {
-                        return (e(this).toggleClass("g-transitions-off", !t), this);
+            (Collapsible.Orientation = { Vertical: "vertical", Horizontal: "horizontal" }),
+            (function ($) {
+                const methods = {
+                    _toggleTransitions: function (enableTransitions) {
+                        return ($(this).toggleClass("g-transitions-off", !enableTransitions), this);
                     },
-                    _toggleVisibilty: function (t) {
-                        const n = e(this);
-                        if (n.hasClass("expanded") !== t)
+                    _toggleVisibilty: function (expand) {
+                        const element = $(this);
+                        if (element.hasClass("expanded") !== expand)
                             return (
-                                n.toggleClass("collapsed", !t).toggleClass("expanded", t),
-                                n.hasClass(o.Orientation.Vertical)
-                                    ? n
+                                element.toggleClass("collapsed", !expand).toggleClass("expanded", expand),
+                                element.hasClass(Collapsible.Orientation.Vertical)
+                                    ? element
                                           .children(".g-collapsible-button:first")
                                           .find("span")
-                                          .toggleClass("gravit-icon-touch-arrow-up", !t)
-                                          .toggleClass("gravit-icon-touch-arrow-down", t)
-                                    : n
+                                          .toggleClass("gravit-icon-touch-arrow-up", !expand)
+                                          .toggleClass("gravit-icon-touch-arrow-down", expand)
+                                    : element
                                           .siblings(".g-collapsible-button:first")
                                           .find("span")
-                                          .toggleClass("gravit-icon-touch-arrow-right", !t)
-                                          .toggleClass("gravit-icon-touch-arrow-left", t),
+                                          .toggleClass("gravit-icon-touch-arrow-right", !expand)
+                                          .toggleClass("gravit-icon-touch-arrow-left", expand),
                                 this
                             );
                     },
-                    init: function (n) {
-                        n = e.extend({ orientation: o.Orientation.Vertical }, n);
-                        const i = this;
+                    init: function (options) {
+                        options = $.extend({ orientation: Collapsible.Orientation.Vertical }, options);
+                        const self = this;
                         return this.each(function () {
-                            const o = e(this).addClass("g-collapsible g-transitions-off expanded").addClass(n.orientation);
-                            "vertical" === n.orientation
-                                ? o.prepend(
-                                      e("<div/>")
+                            const container = $(this).addClass("g-collapsible g-transitions-off expanded").addClass(options.orientation);
+                            "vertical" === options.orientation
+                                ? container.prepend(
+                                      $("<div/>")
                                           .addClass("g-collapsible-button")
-                                          .append(e("<span/>").addClass("gravit-icon-touch-arrow-down"))
+                                          .append($("<span/>").addClass("gravit-icon-touch-arrow-down"))
                                           .on("click", () => {
-                                              const e = o.hasClass("expanded");
-                                              (t._toggleTransitions.call(i, true),
-                                                  t._toggleVisibilty.call(i, !e),
-                                                  o.trigger("visibilitychanged", [!e]));
+                                              const isExpanded = container.hasClass("expanded");
+                                              (methods._toggleTransitions.call(self, true),
+                                                  methods._toggleVisibilty.call(self, !isExpanded),
+                                                  container.trigger("visibilitychanged", [!isExpanded]));
                                           })
                                   )
-                                : o.before(
-                                      e("<div/>")
+                                : container.before(
+                                      $("<div/>")
                                           .addClass("g-collapsible-button")
-                                          .append(e("<span/>").addClass("gravit-icon-touch-arrow-left"))
+                                          .append($("<span/>").addClass("gravit-icon-touch-arrow-left"))
                                           .on("click", () => {
-                                              const e = o.hasClass("expanded");
-                                              (t._toggleTransitions.call(i, true),
-                                                  t._toggleVisibilty.call(i, !e, true),
-                                                  o.trigger("visibilitychanged", [!e]));
+                                              const isExpanded = container.hasClass("expanded");
+                                              (methods._toggleTransitions.call(self, true),
+                                                  methods._toggleVisibilty.call(self, !isExpanded, true),
+                                                  container.trigger("visibilitychanged", [!isExpanded]));
                                           })
                                   );
                         });
                     },
                     collapse: function () {
-                        return t._toggleVisibilty.call(this, false);
+                        return methods._toggleVisibilty.call(this, false);
                     },
                     expand: function () {
-                        return t._toggleVisibilty.call(this, true);
+                        return methods._toggleVisibilty.call(this, true);
                     },
                 };
-                e.fn.gCollapsible = function (n) {
-                    return t[n]
-                        ? t[n].apply(this, Array.prototype.slice.call(arguments, 1))
-                        : "object" != typeof n && n
-                          ? void e.error("Method " + n + " does not exist on jQuery.gCollapsible")
-                          : t.init.apply(this, arguments);
+                $.fn.gCollapsible = function (method) {
+                    return methods[method]
+                        ? methods[method].apply(this, Array.prototype.slice.call(arguments, 1))
+                        : "object" != typeof method && method
+                          ? void $.error("Method " + method + " does not exist on jQuery.gCollapsible")
+                          : methods.init.apply(this, arguments);
                 };
             })(jQuery),
-            (module.exports = o));
+            (module.exports = Collapsible));
     };

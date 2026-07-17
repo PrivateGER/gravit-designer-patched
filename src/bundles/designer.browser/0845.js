@@ -25,29 +25,29 @@ module.exports = function (module, exports, require) {
             require(192),
             require(26),
             require(114));
-        var i = _interopRequireDefault(require(227));
-        const a = require(435),
-            r = (exports.syncImagesToCloud = async function (e, t, n, o, r, s, l, c, d) {
+        var Dictionary = _interopRequireDefault(require(227));
+        const md5 = require(435),
+            r = (exports.syncImagesToCloud = async function (findExistingByMd5, defaultFileName, existingFileRefs, images, r, onFileUploaded, onDictionaryReady, fileNamePrefix, onProgress) {
                 try {
-                    var u = new i.default();
-                    const S = o.length;
-                    for (var p = 0; p < S; ++p) {
-                        var g = o[p];
+                    var imageDictionary = new Dictionary.default();
+                    const totalImages = images.length;
+                    for (var p = 0; p < totalImages; ++p) {
+                        var g = images[p];
                         if (g.cloud) {
-                            u.addEntry(new i.default.Entry(g.cloud, g.uuid, g.references));
+                            imageDictionary.addEntry(new Dictionary.default.Entry(g.cloud, g.uuid, g.references));
                             continue;
                         }
                         var h = /^data:.{0,255};base64,/i.exec(g.value);
                         if (!h) continue;
-                        var f = a(g.value);
-                        let l = await e({ md5: f }),
-                            E = l ? l[0] : null;
-                        if (E) u.addEntry(new i.default.Entry(i.default.CLOUD_PROTOCOL + "://id=" + E.id, g.uuid, g.references));
+                        var f = md5(g.value);
+                        let matches = await findExistingByMd5({ md5: f }),
+                            E = matches ? matches[0] : null;
+                        if (E) imageDictionary.addEntry(new Dictionary.default.Entry(Dictionary.default.CLOUD_PROTOCOL + "://id=" + E.id, g.uuid, g.references));
                         else if (g.references > 0) {
-                            for (var m = t, y = 0; y < n.length; ++y) {
-                                var v = n[y],
-                                    _ = i.default.PROTOCOL + "://" + g.uuid;
-                                if ((v.url + "").startsWith(i.default.PROTOCOL) && v.url === _) {
+                            for (var m = defaultFileName, y = 0; y < existingFileRefs.length; ++y) {
+                                var v = existingFileRefs[y],
+                                    _ = Dictionary.default.PROTOCOL + "://" + g.uuid;
+                                if ((v.url + "").startsWith(Dictionary.default.PROTOCOL) && v.url === _) {
                                     v.name && (m = v.name);
                                     break;
                                 }
@@ -55,19 +55,19 @@ module.exports = function (module, exports, require) {
                             var b = g.value,
                                 w = h[1] || "application/octet-stream";
                             let e;
-                            function C(e, t, n) {
-                                var o,
-                                    i = e.split(",");
+                            function C(dataUri, fileName, mimeType) {
+                                var binaryString,
+                                    parts = dataUri.split(",");
                                 try {
-                                    o = atob(i[1]);
+                                    binaryString = atob(parts[1]);
                                 } catch (e) {
-                                    o = "";
+                                    binaryString = "";
                                 }
-                                for (var a = o.length, r = new Uint8Array(a); a--; ) r[a] = o.charCodeAt(a);
-                                return new File([r], t, { type: n });
+                                for (var a = binaryString.length, r = new Uint8Array(a); a--; ) r[a] = binaryString.charCodeAt(a);
+                                return new File([r], fileName, { type: mimeType });
                             }
                             ({ urls: e, file: E } = await r(m, w));
-                            var x = C(b, c + "-" + E.id + ".txt", w);
+                            var x = C(b, fileNamePrefix + "-" + E.id + ".txt", w);
                             let o = {
                                 method: "PUT",
                                 headers: { "Cache-Control": "public, max-age=31536000" },
@@ -75,52 +75,52 @@ module.exports = function (module, exports, require) {
                             };
                             w && (o.headers = Object.assign(o.headers, { "Content-Type": w }));
                             if (!(await fetch(e.url, o)).ok) throw new Error("failed to upload");
-                            (await s(x, E.id, f),
-                                u.addEntry(new i.default.Entry(i.default.CLOUD_PROTOCOL + "://id=" + E.id, g.uuid, g.references)),
-                                d && d(p / S));
+                            (await onFileUploaded(x, E.id, f),
+                                imageDictionary.addEntry(new Dictionary.default.Entry(Dictionary.default.CLOUD_PROTOCOL + "://id=" + E.id, g.uuid, g.references)),
+                                onProgress && onProgress(p / totalImages));
                         }
                     }
-                    return l && l(u);
+                    return onDictionaryReady && onDictionaryReady(imageDictionary);
                 } catch (e) {
                     return Promise.reject(e);
                 }
             }),
-            s = (e, t, n) => {
-                var o = (n && n.method) || "GET",
-                    i = n && n.body && JSON.stringify(n.body),
-                    a = Object.assign(
+            fetchRequest = (url, authToken, options) => {
+                var method = (options && options.method) || "GET",
+                    bodyJson = options && options.body && JSON.stringify(options.body),
+                    headers = Object.assign(
                         {
                             "Content-Type": "application/json",
                             Accept: "json",
-                            Authorization: t || "",
+                            Authorization: authToken || "",
                         },
-                        n && n.headers
+                        options && options.headers
                     );
-                if (n && n.query) {
-                    var r = n.query,
-                        s = new URLSearchParams();
-                    for (var l in r) s.append(l, r[l]);
-                    e = e + "/?" + s.toString();
+                if (options && options.query) {
+                    var queryParams = options.query,
+                        searchParams = new URLSearchParams();
+                    for (var l in queryParams) searchParams.append(l, queryParams[l]);
+                    url = url + "/?" + searchParams.toString();
                 }
-                var c = { credentials: "include", headers: a, method: o };
-                return (i && "GET" !== o && (c.body = i), fetch(e, c).then((e) => e.json()));
+                var fetchOptions = { credentials: "include", headers: headers, method: method };
+                return (bodyJson && "GET" !== method && (fetchOptions.body = bodyJson), fetch(url, fetchOptions).then((response) => response.json()));
             };
-        exports.fetchRequest = s;
-        exports.listFilesFn = (e, t, n) => s("".concat(n, "/file"), t, { query: e });
-        ((exports.createFileAndGetSignedPutUrlsFn = async function (e, t, n, o) {
-            var i = { method: "POST", body: { name: e, type: t, trashed: null } };
-            const a = await s("".concat(n, "/file"), o, i);
-            var r = { method: "PUT", body: { id: a.id, type: t } };
+        exports.fetchRequest = fetchRequest;
+        exports.listFilesFn = (query, authToken, baseUrl) => fetchRequest("".concat(baseUrl, "/file"), authToken, { query: query });
+        ((exports.createFileAndGetSignedPutUrlsFn = async function (name, type, baseUrl, authToken) {
+            var createOptions = { method: "POST", body: { name: name, type: type, trashed: null } };
+            const createdFile = await fetchRequest("".concat(baseUrl, "/file"), authToken, createOptions);
+            var signedUrlOptions = { method: "PUT", body: { id: createdFile.id, type: type } };
             return {
-                urls: await s("".concat(n, "/file/").concat(a.id, "/urls"), o, r),
-                file: a,
+                urls: await fetchRequest("".concat(baseUrl, "/file/").concat(createdFile.id, "/urls"), authToken, signedUrlOptions),
+                file: createdFile,
             };
         }),
-            (exports.updateFileFn = async function (e, t, n, o, i, a, r) {
-                const l = a && r ? await r(e) : null;
-                return await s("".concat(o, "/file/").concat(t), i, {
+            (exports.updateFileFn = async function (fileValue, fileId, md5Value, baseUrl, authToken, computeSha256, sha256Fn) {
+                const sha256 = computeSha256 && sha256Fn ? await sha256Fn(fileValue) : null;
+                return await fetchRequest("".concat(baseUrl, "/file/").concat(fileId), authToken, {
                     method: "PUT",
-                    body: { md5: n, trashed: false, sha256: l },
+                    body: { md5: md5Value, trashed: false, sha256: sha256 },
                 });
             }));
         exports.default = { syncImagesToCloud: r };

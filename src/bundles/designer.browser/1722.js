@@ -2,56 +2,56 @@ module.exports = function (module, exports, require) {
         "use strict";
         require(57);
         var GPlatform = require(15),
-            i = [],
-            a = function (e) {
-                var t = false;
-                if (i.length > 0)
-                    for (var n = i.length - 1; n >= 0; --n) {
-                        var o = $(i[n]),
+            openOverlays = [],
+            closeOverlaysOnOutsideEvent = function (event) {
+                var closedOverlay = false;
+                if (openOverlays.length > 0)
+                    for (var n = openOverlays.length - 1; n >= 0; --n) {
+                        var o = $(openOverlays[n]),
                             a = o.closest(".g-overlay"),
-                            r = $(e.target).closest("body > *"),
+                            r = $(event.target).closest("body > *"),
                             s = false;
                         (a.parent().length > 0 &&
                             a.parent().hasClass("g-dialog-container") &&
-                            0 === $(e.target).closest(".g-overlay").length &&
+                            0 === $(event.target).closest(".g-overlay").length &&
                             (s = true),
-                            ($(r).index() < a.index() || s) && ((t = true), o.gOverlay("close", e, n)));
+                            ($(r).index() < a.index() || s) && ((closedOverlay = true), o.gOverlay("close", event, n)));
                     }
-                return t;
+                return closedOverlay;
             };
         (document.addEventListener(
             "mousedown",
-            function (e) {
-                a(e);
+            function (event) {
+                closeOverlaysOnOutsideEvent(event);
             },
             true
         ),
             document.addEventListener(
                 "keydown",
-                function (e) {
-                    var t = e.which || e.keyCode;
-                    if (27 === t) a(e) && e.stopPropagation();
-                    else if (13 === t && i.length > 0)
-                        for (var n = i.length - 1; n >= 0; --n) {
-                            var o = $(i[n]).data("goverlay"),
+                function (event) {
+                    var keyCode = event.which || event.keyCode;
+                    if (27 === keyCode) closeOverlaysOnOutsideEvent(event) && event.stopPropagation();
+                    else if (13 === keyCode && openOverlays.length > 0)
+                        for (var n = openOverlays.length - 1; n >= 0; --n) {
+                            var o = $(openOverlays[n]).data("goverlay"),
                                 r = o && o.options;
-                            r.enterCallback && r.enterCallback(e);
+                            r.enterCallback && r.enterCallback(event);
                         }
                 },
                 true
             ),
             window.addEventListener("resize", function () {
-                for (var e = 0; e < i.length; ++e) {
-                    $(i[e]).gOverlay("relayout");
+                for (var e = 0; e < openOverlays.length; ++e) {
+                    $(openOverlays[e]).gOverlay("relayout");
                 }
             }));
-        var r = function (e) {
-                e.changed.escapeKey && (e.isImmediatePropagationStopped = true);
+        var handleModifiersChanged = function (event) {
+                event.changed.escapeKey && (event.isImmediatePropagationStopped = true);
             },
-            s = {
-                init: function (e) {
+            methods = {
+                init: function (options) {
                     return (
-                        (e = $.extend(
+                        (options = $.extend(
                             {
                                 modal: false,
                                 padding: true,
@@ -71,130 +71,130 @@ module.exports = function (module, exports, require) {
                                 sideClazz: "g-overlay-side",
                                 flipHorizontal: false,
                             },
-                            e
+                            options
                         )),
                         this.each(function () {
                             $(this)
-                                .data("goverlay", { options: e, target: null })
+                                .data("goverlay", { options: options, target: null })
                                 .wrap(
                                     $("<div></div>")
                                         .addClass("g-overlay")
-                                        .addClass(e.clazz)
-                                        .toggleClass("no-padding", !e.padding)
+                                        .addClass(options.clazz)
+                                        .toggleClass("no-padding", !options.padding)
                                         .css("position", "absolute")
                                 );
                         })
                     );
                 },
                 relayout: function () {
-                    let e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
-                    e = $.extend({ preserveTop: false }, e);
-                    var t = $(this),
-                        n = t.data("goverlay");
-                    if (!n || (!n.target && !n.isPoint)) return;
-                    let o;
-                    var i = t.closest(".g-overlay"),
-                        a = $(window),
-                        r = a.width(),
-                        s = a.height(),
-                        l = i.outerWidth(),
-                        c = i.outerHeight(),
-                        d = {};
-                    n.yTop && n.xLeft ? ((d.top = n.yTop), (d.left = n.xLeft)) : ((o = $(n.target)), (d = o.offset()));
-                    var u,
-                        p,
-                        g = d.top,
-                        h = n.isPoint ? 0 : o.outerWidth() / 2,
-                        f = d.left + h,
-                        m = n.options.middle ? f : d.left,
-                        y = n.isPoint ? 0 : o.outerWidth(),
-                        v = n.options.middle ? f : d.left + y,
-                        _ = n.isPoint ? 0 : o.outerHeight(),
-                        b = d.top + _;
-                    (n.options.side
-                        ? (t.addClass(n.options.sideClazz),
-                          (u = v + n.options.offsetX) + l > r && ((u = m - l - n.options.offsetX), t.addClass("g-overlay-left-side")),
-                          (p = g + n.options.offsetY) + c > s && ((p = b - c - n.options.offsetY), t.addClass("g-overlay-valign-bottom")))
-                        : ((u = null !== n.options.customRight ? r - v + n.options.customRight : m + n.options.offsetX) + l > r
-                              ? ((u = v - l - n.options.offsetX), n.options.rightClazz && t.addClass(n.options.rightClazz))
-                              : n.options.flipHorizontal && (u = m - l - n.options.offsetX),
-                          u + l > r && (u = r - l),
-                          (p = b + n.options.offsetY) + c > s &&
-                              ((p = g - c - parseInt(n.options.bottomOffsetY)), n.options.bottomClazz && t.addClass(n.options.bottomClazz)),
-                          p + c > s && (p = s - c - parseInt(n.options.bottomOffsetY))),
-                        u < 0 && (u = 0),
-                        p < 0 && (p = 0));
-                    let w = false;
-                    if (e.preserveTop) {
-                        const e = i.offset(),
-                            t = e && e.top;
-                        w = "number" == typeof t && t + c < s;
+                    let options = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
+                    options = $.extend({ preserveTop: false }, options);
+                    var element = $(this),
+                        overlayData = element.data("goverlay");
+                    if (!overlayData || (!overlayData.target && !overlayData.isPoint)) return;
+                    let targetElement;
+                    var overlayContainer = element.closest(".g-overlay"),
+                        windowElement = $(window),
+                        windowWidth = windowElement.width(),
+                        windowHeight = windowElement.height(),
+                        overlayWidth = overlayContainer.outerWidth(),
+                        overlayHeight = overlayContainer.outerHeight(),
+                        targetOffset = {};
+                    overlayData.yTop && overlayData.xLeft ? ((targetOffset.top = overlayData.yTop), (targetOffset.left = overlayData.xLeft)) : ((targetElement = $(overlayData.target)), (targetOffset = targetElement.offset()));
+                    var finalLeft,
+                        finalTop,
+                        topEdge = targetOffset.top,
+                        halfWidth = overlayData.isPoint ? 0 : targetElement.outerWidth() / 2,
+                        centerX = targetOffset.left + halfWidth,
+                        leftEdge = overlayData.options.middle ? centerX : targetOffset.left,
+                        targetWidth = overlayData.isPoint ? 0 : targetElement.outerWidth(),
+                        rightEdge = overlayData.options.middle ? centerX : targetOffset.left + targetWidth,
+                        targetHeight = overlayData.isPoint ? 0 : targetElement.outerHeight(),
+                        bottomEdge = targetOffset.top + targetHeight;
+                    (overlayData.options.side
+                        ? (element.addClass(overlayData.options.sideClazz),
+                          (finalLeft = rightEdge + overlayData.options.offsetX) + overlayWidth > windowWidth && ((finalLeft = leftEdge - overlayWidth - overlayData.options.offsetX), element.addClass("g-overlay-left-side")),
+                          (finalTop = topEdge + overlayData.options.offsetY) + overlayHeight > windowHeight && ((finalTop = bottomEdge - overlayHeight - overlayData.options.offsetY), element.addClass("g-overlay-valign-bottom")))
+                        : ((finalLeft = null !== overlayData.options.customRight ? windowWidth - rightEdge + overlayData.options.customRight : leftEdge + overlayData.options.offsetX) + overlayWidth > windowWidth
+                              ? ((finalLeft = rightEdge - overlayWidth - overlayData.options.offsetX), overlayData.options.rightClazz && element.addClass(overlayData.options.rightClazz))
+                              : overlayData.options.flipHorizontal && (finalLeft = leftEdge - overlayWidth - overlayData.options.offsetX),
+                          finalLeft + overlayWidth > windowWidth && (finalLeft = windowWidth - overlayWidth),
+                          (finalTop = bottomEdge + overlayData.options.offsetY) + overlayHeight > windowHeight &&
+                              ((finalTop = topEdge - overlayHeight - parseInt(overlayData.options.bottomOffsetY)), overlayData.options.bottomClazz && element.addClass(overlayData.options.bottomClazz)),
+                          finalTop + overlayHeight > windowHeight && (finalTop = windowHeight - overlayHeight - parseInt(overlayData.options.bottomOffsetY))),
+                        finalLeft < 0 && (finalLeft = 0),
+                        finalTop < 0 && (finalTop = 0));
+                    let canPreserveTop = false;
+                    if (options.preserveTop) {
+                        const containerOffset = overlayContainer.offset(),
+                            containerTop = containerOffset && containerOffset.top;
+                        canPreserveTop = "number" == typeof containerTop && containerTop + overlayHeight < windowHeight;
                     }
-                    (w || i.css("top", p + "px"), null === n.options.customRight ? i.css("left", u + "px") : i.css("right", u + "px"));
+                    (canPreserveTop || overlayContainer.css("top", finalTop + "px"), null === overlayData.options.customRight ? overlayContainer.css("left", finalLeft + "px") : overlayContainer.css("right", finalLeft + "px"));
                 },
-                open: function (e, t, n) {
-                    var a = $(this);
-                    const l = e && "number" == typeof e.x && "number" == typeof e.y;
-                    var c = a.data("goverlay"),
-                        d = c && c.options;
-                    (e &&
-                        !d.disableDarkShadow &&
-                        ($(e).closest(".sidebar-inspector").addClass("sidebar-overlay"),
+                open: function (target, contextElement, callback) {
+                    var element = $(this);
+                    const isPoint = target && "number" == typeof target.x && "number" == typeof target.y;
+                    var overlayData = element.data("goverlay"),
+                        options = overlayData && overlayData.options;
+                    (target &&
+                        !options.disableDarkShadow &&
+                        ($(target).closest(".sidebar-inspector").addClass("sidebar-overlay"),
                         $(".g-touch-toolbar").addClass("sidebar-overlay"),
-                        $(e).is(":input") && $(e).closest(".content").addClass("overlay")),
-                        c && ((c.target = e), (c.isPoint = l), (c.xLeft = e.x), (c.yTop = e.y)));
-                    var u,
-                        p = a.closest(".g-overlay");
-                    if ((t && (u = $(t).closest(".g-dialog-container.visible")), !u || !u.length)) {
-                        var g = $(".g-dialog-container.visible");
-                        u = g.length > 0 ? g[g.length - 1] : $("body");
+                        $(target).is(":input") && $(target).closest(".content").addClass("overlay")),
+                        overlayData && ((overlayData.target = target), (overlayData.isPoint = isPoint), (overlayData.xLeft = target.x), (overlayData.yTop = target.y)));
+                    var container,
+                        overlayWrapper = element.closest(".g-overlay");
+                    if ((contextElement && (container = $(contextElement).closest(".g-dialog-container.visible")), !container || !container.length)) {
+                        var visibleDialogs = $(".g-dialog-container.visible");
+                        container = visibleDialogs.length > 0 ? visibleDialogs[visibleDialogs.length - 1] : $("body");
                     }
                     return (
-                        d && d.modal ? $("<div></div>").addClass("g-overlay-modal").append(p).appendTo(u) : p.appendTo(u),
-                        GPlatform.GPlatform.addEventListener(GPlatform.GModifiersChangedEvent, r, this[0], null, true),
-                        s.relayout.call(this),
-                        i.push(this[0]),
-                        a.trigger("open"),
-                        n && n(),
+                        options && options.modal ? $("<div></div>").addClass("g-overlay-modal").append(overlayWrapper).appendTo(container) : overlayWrapper.appendTo(container),
+                        GPlatform.GPlatform.addEventListener(GPlatform.GModifiersChangedEvent, handleModifiersChanged, this[0], null, true),
+                        methods.relayout.call(this),
+                        openOverlays.push(this[0]),
+                        element.trigger("open"),
+                        callback && callback(),
                         this
                     );
                 },
-                close: function (e, t) {
-                    var n = $(this),
-                        a = n.data("goverlay");
-                    if (i.length && i[t >= 0 ? t : i.length - 1] === this[0]) {
-                        var s = false;
-                        const t = function () {
-                            s = true;
+                close: function (event, index) {
+                    var element = $(this),
+                        overlayData = element.data("goverlay");
+                    if (openOverlays.length && openOverlays[index >= 0 ? index : openOverlays.length - 1] === this[0]) {
+                        var prevented = false;
+                        const preventClose = function () {
+                            prevented = true;
                         };
-                        if ((n.trigger("close", [t, e]), s)) return;
-                        var l;
-                        (GPlatform.GPlatform.removeEventListener(GPlatform.GModifiersChangedEvent, r, this[0]),
-                            a &&
-                                (a.target &&
+                        if ((element.trigger("close", [preventClose, event]), prevented)) return;
+                        var options;
+                        (GPlatform.GPlatform.removeEventListener(GPlatform.GModifiersChangedEvent, handleModifiersChanged, this[0]),
+                            overlayData &&
+                                (overlayData.target &&
                                     ($(".sidebar-inspector").removeClass("sidebar-overlay"),
                                     $(".g-touch-toolbar").removeClass("sidebar-overlay"),
                                     $(".content.overlay").removeClass("overlay")),
-                                (a.target = null),
-                                (l = a.options)));
-                        var c = n.closest(".g-overlay-modal");
-                        (!l || l.releaseOnClose ? n.closest(".g-overlay").remove() : n.closest(".g-overlay").detach(),
-                            c.remove(),
-                            i.pop(),
-                            l && l.closeCallback && l.closeCallback());
+                                (overlayData.target = null),
+                                (options = overlayData.options)));
+                        var modalWrapper = element.closest(".g-overlay-modal");
+                        (!options || options.releaseOnClose ? element.closest(".g-overlay").remove() : element.closest(".g-overlay").detach(),
+                            modalWrapper.remove(),
+                            openOverlays.pop(),
+                            options && options.closeCallback && options.closeCallback());
                     }
                     return this;
                 },
-                isOpenned: function (e) {
-                    var t = $(this).data("goverlay");
-                    return e ? t && t.target && t.target.get(0) === e.get(0) : t && t.target;
+                isOpenned: function (target) {
+                    var overlayData = $(this).data("goverlay");
+                    return target ? overlayData && overlayData.target && overlayData.target.get(0) === target.get(0) : overlayData && overlayData.target;
                 },
             };
-        $.fn.gOverlay = function (e) {
-            return s[e]
-                ? s[e].apply(this, Array.prototype.slice.call(arguments, 1))
-                : "object" != typeof e && e
-                  ? void $.error("Method " + e + " does not exist on jQuery.myPlugin")
-                  : s.init.apply(this, arguments);
+        $.fn.gOverlay = function (method) {
+            return methods[method]
+                ? methods[method].apply(this, Array.prototype.slice.call(arguments, 1))
+                : "object" != typeof method && method
+                  ? void $.error("Method " + method + " does not exist on jQuery.myPlugin")
+                  : methods.init.apply(this, arguments);
         };
     };

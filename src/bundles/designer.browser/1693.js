@@ -5,34 +5,34 @@ module.exports = function (module, exports, require) {
             GPlatform = require(15),
             designerConfig = require(10),
             Utils = require(40);
-        function s() {}
-        (GObject.GObject.inherit(s, GObject.GEvent),
-            (s.prototype._startX = 0),
-            (s.prototype._startY = 0),
-            (s.prototype._timerHandle = null),
-            (s.prototype._mouseMove = null),
-            (s.prototype._mouseUp = null),
-            (s.prototype._mouseDown = null),
-            (s.prototype._isTouchDevice = false),
-            (s.prototype._event = null),
-            (s.prototype._touching = false),
-            (s.prototype._clearRequestTimeout = function (e) {
-                e &&
+        function GLongPressEvent() {}
+        (GObject.GObject.inherit(GLongPressEvent, GObject.GEvent),
+            (GLongPressEvent.prototype._startX = 0),
+            (GLongPressEvent.prototype._startY = 0),
+            (GLongPressEvent.prototype._timerHandle = null),
+            (GLongPressEvent.prototype._mouseMove = null),
+            (GLongPressEvent.prototype._mouseUp = null),
+            (GLongPressEvent.prototype._mouseDown = null),
+            (GLongPressEvent.prototype._isTouchDevice = false),
+            (GLongPressEvent.prototype._event = null),
+            (GLongPressEvent.prototype._touching = false),
+            (GLongPressEvent.prototype._clearRequestTimeout = function (handle) {
+                handle &&
                     (window.cancelAnimationFrame
-                        ? window.cancelAnimationFrame(e.value)
+                        ? window.cancelAnimationFrame(handle.value)
                         : window.webkitCancelAnimationFrame
-                          ? window.webkitCancelAnimationFrame(e.value)
+                          ? window.webkitCancelAnimationFrame(handle.value)
                           : window.webkitCancelRequestAnimationFrame
-                            ? window.webkitCancelRequestAnimationFrame(e.value)
+                            ? window.webkitCancelRequestAnimationFrame(handle.value)
                             : window.mozCancelRequestAnimationFrame
-                              ? window.mozCancelRequestAnimationFrame(e.value)
+                              ? window.mozCancelRequestAnimationFrame(handle.value)
                               : window.oCancelRequestAnimationFrame
-                                ? window.oCancelRequestAnimationFrame(e.value)
+                                ? window.oCancelRequestAnimationFrame(handle.value)
                                 : window.msCancelRequestAnimationFrame
-                                  ? window.msCancelRequestAnimationFrame(e.value)
-                                  : clearTimeout(e.value));
+                                  ? window.msCancelRequestAnimationFrame(handle.value)
+                                  : clearTimeout(handle.value));
             }),
-            (s.prototype._requestTimeout = function (e, t) {
+            (GLongPressEvent.prototype._requestTimeout = function (callback, delay) {
                 if (
                     !(
                         window.requestAnimationFrame ||
@@ -42,61 +42,61 @@ module.exports = function (module, exports, require) {
                         window.msRequestAnimationFrame
                     )
                 )
-                    return { value: window.setTimeout(e, t) };
-                var n = new Date().getTime(),
-                    o = {},
-                    i = function () {
-                        new Date().getTime() - n >= t ? e.call() : (o.value = requestAnimFrame(i));
+                    return { value: window.setTimeout(callback, delay) };
+                var startTime = new Date().getTime(),
+                    handle = {},
+                    tick = function () {
+                        new Date().getTime() - startTime >= delay ? callback.call() : (handle.value = requestAnimFrame(tick));
                     };
-                return ((o.value = requestAnimFrame(i)), o);
+                return ((handle.value = requestAnimFrame(tick)), handle);
             }),
-            (s.prototype._clearLongPressTimer = function () {
+            (GLongPressEvent.prototype._clearLongPressTimer = function () {
                 (this._clearRequestTimeout(this._timerHandle), (this._timerHandle = null));
             }),
-            (s.prototype._cancelEvent = function (e) {
-                (e.stopImmediatePropagation(), e.preventDefault(), e.stopPropagation());
+            (GLongPressEvent.prototype._cancelEvent = function (event) {
+                (event.stopImmediatePropagation(), event.preventDefault(), event.stopPropagation());
             }),
-            (s.prototype._mouseDownHandler = function (e) {
-                if (e.defaultPrevented) return void this._clearLongPressTimer();
-                let { clientX: t, clientY: n } = e;
-                ("touchstart" === e.type && e.changedTouches && e.changedTouches[0] && ({ clientX: t, clientY: n } = e.changedTouches[0]),
+            (GLongPressEvent.prototype._mouseDownHandler = function (event) {
+                if (event.defaultPrevented) return void this._clearLongPressTimer();
+                let { clientX: t, clientY: n } = event;
+                ("touchstart" === event.type && event.changedTouches && event.changedTouches[0] && ({ clientX: t, clientY: n } = event.changedTouches[0]),
                     (this._startX = t),
                     (this._startY = n),
-                    this._startLongPressTimer(e));
+                    this._startLongPressTimer(event));
             }),
-            (s.prototype._startLongPressTimer = function (e) {
-                (this._clearLongPressTimer(), (this._event = e));
-                var t = e.target,
-                    n = parseInt(t.getAttribute("data-long-press-delay") || designerConfig.LONG_PRESS_TIME_OUT, 10);
-                this._timerHandle = this._requestTimeout(this._fireLongPressEvent.bind(this), n);
+            (GLongPressEvent.prototype._startLongPressTimer = function (event) {
+                (this._clearLongPressTimer(), (this._event = event));
+                var target = event.target,
+                    delay = parseInt(target.getAttribute("data-long-press-delay") || designerConfig.LONG_PRESS_TIME_OUT, 10);
+                this._timerHandle = this._requestTimeout(this._fireLongPressEvent.bind(this), delay);
             }),
-            (s.prototype._fireLongPressEvent = function () {
+            (GLongPressEvent.prototype._fireLongPressEvent = function () {
                 this._clearLongPressTimer();
-                var e = this._event.target,
-                    t = this._isTouchDevice ? this._event.touches[0].clientX : this._event.clientX,
-                    n = this._isTouchDevice ? this._event.touches[0].clientY : this._event.clientY,
-                    o = e.dispatchEvent(
+                var target = this._event.target,
+                    clientX = this._isTouchDevice ? this._event.touches[0].clientX : this._event.clientX,
+                    clientY = this._isTouchDevice ? this._event.touches[0].clientY : this._event.clientY,
+                    notCancelled = target.dispatchEvent(
                         new CustomEvent("long-press", {
                             bubbles: true,
                             cancelable: true,
-                            detail: { clientX: t, clientY: n },
+                            detail: { clientX: clientX, clientY: clientY },
                         })
                     ),
-                    i =
+                    notInSceneWidget =
                         this._event.target.parentElement &&
                         this._event.target.parentElement.className &&
                         -1 === this._event.target.parentElement.className.indexOf("g-scene-widget");
-                if (o && i) {
-                    const e = (t) => {
-                        t.isTrusted &&
-                            (document.removeEventListener("touchend", e, true),
-                            document.removeEventListener("mouseup", e, true),
-                            this._cancelEvent(t));
+                if (notCancelled && notInSceneWidget) {
+                    const onPointerUp = (event) => {
+                        event.isTrusted &&
+                            (document.removeEventListener("touchend", onPointerUp, true),
+                            document.removeEventListener("mouseup", onPointerUp, true),
+                            this._cancelEvent(event));
                     };
-                    (document.addEventListener("touchend", e, true), document.addEventListener("mouseup", e, true));
+                    (document.addEventListener("touchend", onPointerUp, true), document.addEventListener("mouseup", onPointerUp, true));
                 }
             }),
-            (s.prototype.startup = function () {
+            (GLongPressEvent.prototype.startup = function () {
                 if (
                     ((this._isTouchDevice = GPlatform.GPlatform.constructor.isTouchDevice),
                     (this._mouseDown = this._isTouchDevice ? "touchstart" : "mousedown"),
@@ -109,36 +109,36 @@ module.exports = function (module, exports, require) {
                     document.addEventListener(this._mouseDown, this._mouseDownHandler.bind(this)),
                     this._isTouchDevice && GPlatform.GPlatform.webBrowser === GPlatform.GPlatform.constructor.WebBrowser.Safari)
                 ) {
-                    const e = !(0, Utils.isPassiveSupported)() || {
+                    const passiveOption = !(0, Utils.isPassiveSupported)() || {
                         passive: true,
                         capture: true,
                     };
-                    (document.addEventListener("touchstart", this._documentTouchStart.bind(this), e),
-                        document.addEventListener("touchend", this.documentTouchEnd.bind(this), e),
-                        document.addEventListener("touchcancel", this.documentTouchEnd.bind(this), e),
+                    (document.addEventListener("touchstart", this._documentTouchStart.bind(this), passiveOption),
+                        document.addEventListener("touchend", this.documentTouchEnd.bind(this), passiveOption),
+                        document.addEventListener("touchcancel", this.documentTouchEnd.bind(this), passiveOption),
                         document.addEventListener("mousedown", this._documentMouseDown.bind(this), true));
                 }
             }),
-            (s.prototype._documentTouchStart = function (e) {
-                e.isTrusted && (this._touching = true);
+            (GLongPressEvent.prototype._documentTouchStart = function (event) {
+                event.isTrusted && (this._touching = true);
             }),
-            (s.prototype.documentTouchEnd = function (e) {
-                e.isTrusted && (this._touching = false);
+            (GLongPressEvent.prototype.documentTouchEnd = function (event) {
+                event.isTrusted && (this._touching = false);
             }),
-            (s.prototype._documentMouseDown = function (e) {
-                e.isTrusted && this._touching && e.cancelable && e.stopImmediatePropagation();
+            (GLongPressEvent.prototype._documentMouseDown = function (event) {
+                event.isTrusted && this._touching && event.cancelable && event.stopImmediatePropagation();
             }),
-            (s.prototype._mouseMoveHandler = function (e) {
-                if ("touchmove" === e.type) {
-                    const { clientX, clientY } = e.changedTouches[0];
+            (GLongPressEvent.prototype._mouseMoveHandler = function (event) {
+                if ("touchmove" === event.type) {
+                    const { clientX, clientY } = event.changedTouches[0];
                     if (Math.abs(clientX - this._startX) < designerConfig.MIN_TOUCH_MOVE_DISTANCE && Math.abs(clientY - this._startY) < designerConfig.MIN_TOUCH_MOVE_DISTANCE)
                         return;
                 }
                 this._clearLongPressTimer();
             }),
-            (s.prototype.toString = function () {
+            (GLongPressEvent.prototype.toString = function () {
                 return "[Object GLongPressEvent]";
             }),
-            new s().startup(),
-            (module.exports = s));
+            new GLongPressEvent().startup(),
+            (module.exports = GLongPressEvent));
     };

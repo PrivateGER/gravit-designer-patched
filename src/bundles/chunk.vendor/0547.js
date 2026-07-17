@@ -1,76 +1,76 @@
 module.exports = function (module, exports, require) {
-            var n = require(179),
-                r = require(2),
-                o = require(236),
+            var GPathUtil = require(179),
+                GNode = require(2),
+                GShapeTool = require(236),
                 IsFiniteNonNegativeNumber = require(0),
-                s = require(60),
-                l = require(162),
-                h = require(56),
-                A = require(52),
-                c = (require(73), require(70)),
-                p = require(5),
-                u = require(24),
-                d = require(6),
-                g = require(215),
-                f = require(113),
-                m = require(7),
-                y = require(45),
-                _ = require(548),
-                v = require(95),
+                GPath = require(60),
+                GPathsGraph = require(162),
+                GShape = require(56),
+                GCursor = require(52),
+                GText = (require(73), require(70)),
+                GPoint = require(5),
+                GEditorOptions = require(24),
+                GRect = require(6),
+                GTLPathTextTransformer = require(215),
+                GCompoundPath = require(113),
+                GTransform = require(7),
+                GPathBase = require(45),
+                GPointerTool = require(548),
+                GImage = require(95),
                 String = require(9),
-                C = require(47),
-                w = require(416),
+                GLocaleKey = require(47),
+                GTextMeasure = require(416),
                 GFont = require(108);
 
-            function B() {
-                o.call(this, true, true);
+            function GTextTool() {
+                GShapeTool.call(this, true, true);
             }
             (require(387 /* GTextEditor */),
-                IsFiniteNonNegativeNumber.inherit(B, o),
-                (B.prototype._textUnderMouse = null),
-                (B.prototype._pathUnderMouse = null),
-                (B.prototype._pathHit = null),
-                (B.prototype._justCreatedText = null),
-                (B.prototype._defaultMeasure = null),
-                (B.prototype.deactivate = function (e, t) {
-                    (o.prototype.deactivate.call(this, e, t),
-                        this._pathUnderMouse && (this._pathUnderMouse.removeFlag(r.Flag.Highlighted), (this._pathUnderMouse = null)));
+                IsFiniteNonNegativeNumber.inherit(GTextTool, GShapeTool),
+                (GTextTool.prototype._textUnderMouse = null),
+                (GTextTool.prototype._pathUnderMouse = null),
+                (GTextTool.prototype._pathHit = null),
+                (GTextTool.prototype._justCreatedText = null),
+                (GTextTool.prototype._defaultMeasure = null),
+                (GTextTool.prototype.deactivate = function (view, t) {
+                    (GShapeTool.prototype.deactivate.call(this, view, t),
+                        this._pathUnderMouse && (this._pathUnderMouse.removeFlag(GNode.Flag.Highlighted), (this._pathUnderMouse = null)));
                 }),
-                (B.prototype.getCursor = function () {
-                    return this._textUnderMouse ? A.Text : this._shape ? o.prototype.getCursor.call(this) : A.Cross;
+                (GTextTool.prototype.getCursor = function () {
+                    return this._textUnderMouse ? GCursor.Text : this._shape ? GShapeTool.prototype.getCursor.call(this) : GCursor.Cross;
                 }),
-                (B.prototype._getRelatedItemClass = function () {
-                    return c;
+                (GTextTool.prototype._getRelatedItemClass = function () {
+                    return GText;
                 }),
-                (B.prototype._mouseRelease = function (e) {
-                    var t = this._editor,
-                        i = this._view;
-                    if ((t.getGuides().invalidate(), this._textUnderMouse))
-                        (this._manager.activateTool(_),
-                            this._textUnderMouse.hasFlag(r.Flag.Selected) ||
-                                (_.prototype._mouseDown.call(this._manager.getActiveTool(), e),
-                                _.prototype._mouseRelease.call(this._manager.getActiveTool(), e)),
-                            t.openInlineEditor(this._textUnderMouse, i, e.client));
+                (GTextTool.prototype._mouseRelease = function (event) {
+                    var editor = this._editor,
+                        view = this._view;
+                    if ((editor.getGuides().invalidate(), this._textUnderMouse))
+                        (this._manager.activateTool(GPointerTool),
+                            this._textUnderMouse.hasFlag(GNode.Flag.Selected) ||
+                                (GPointerTool.prototype._mouseDown.call(this._manager.getActiveTool(), event),
+                                GPointerTool.prototype._mouseRelease.call(this._manager.getActiveTool(), event)),
+                            editor.openInlineEditor(this._textUnderMouse, view, event.client));
                     else if (
-                        (o.prototype._mouseRelease.call(this, e),
-                        this._pathUnderMouse && (this._pathUnderMouse.removeFlag(r.Flag.Highlighted), (this._pathUnderMouse = null)),
+                        (GShapeTool.prototype._mouseRelease.call(this, event),
+                        this._pathUnderMouse && (this._pathUnderMouse.removeFlag(GNode.Flag.Highlighted), (this._pathUnderMouse = null)),
                         this._justCreatedText)
                     ) {
-                        var n = this._justCreatedText;
+                        var createdText = this._justCreatedText;
                         ((this._justCreatedText = null),
                             setTimeout(function () {
-                                t.openInlineEditor(n, i);
+                                editor.openInlineEditor(createdText, view);
                             }, 10));
                     }
                 }),
-                (B.prototype._mouseMove = function (e) {
+                (GTextTool.prototype._mouseMove = function (event) {
                     if (
                         (this._textUnderMouse && ((this._textUnderMouse = null), this.updateCursor()),
-                        this._pathUnderMouse && (this._pathUnderMouse.removeFlag(r.Flag.Highlighted), (this._pathUnderMouse = null)),
+                        this._pathUnderMouse && (this._pathUnderMouse.removeFlag(GNode.Flag.Highlighted), (this._pathUnderMouse = null)),
                         !this._shape)
                     ) {
-                        var t = this._scene.hitTest(
-                            e.client,
+                        var hitResult = this._scene.hitTest(
+                            event.client,
                             this._view.getWorldTransform(this._scene),
                             null,
                             false,
@@ -82,150 +82,150 @@ module.exports = function (module, exports, require) {
                             false,
                             this._view.getViewConfiguration().multiPageView
                         );
-                        ((t && t.length && t[0].element instanceof c && t[0].element instanceof s) ||
-                            (t = this._scene.hitTest(
-                                e.client,
+                        ((hitResult && hitResult.length && hitResult[0].element instanceof GText && hitResult[0].element instanceof GPath) ||
+                            (hitResult = this._scene.hitTest(
+                                event.client,
                                 this._view.getWorldTransform(this._scene),
                                 null,
                                 false,
                                 -1,
-                                u.pickDistance,
+                                GEditorOptions.pickDistance,
                                 false,
                                 null,
                                 false,
                                 false,
                                 this._view.getViewConfiguration().multiPageView
                             )),
-                            t &&
-                                t.length &&
-                                (t[0].element instanceof c
-                                    ? ((this._textUnderMouse = t[0].element), this.updateCursor())
-                                    : !(t[0].element instanceof h) ||
-                                      t[0].element instanceof v ||
-                                      t[0].element instanceof f ||
-                                      t[0].element instanceof l ||
-                                      null === t[0].data.vertex.x ||
-                                      ((this._pathUnderMouse = t[0].element),
-                                      (this._pathHit = new p(t[0].data.vertex.x, t[0].data.vertex.y)),
-                                      this._pathUnderMouse.setFlag(r.Flag.Highlighted))));
+                            hitResult &&
+                                hitResult.length &&
+                                (hitResult[0].element instanceof GText
+                                    ? ((this._textUnderMouse = hitResult[0].element), this.updateCursor())
+                                    : !(hitResult[0].element instanceof GShape) ||
+                                      hitResult[0].element instanceof GImage ||
+                                      hitResult[0].element instanceof GCompoundPath ||
+                                      hitResult[0].element instanceof GPathsGraph ||
+                                      null === hitResult[0].data.vertex.x ||
+                                      ((this._pathUnderMouse = hitResult[0].element),
+                                      (this._pathHit = new GPoint(hitResult[0].data.vertex.x, hitResult[0].data.vertex.y)),
+                                      this._pathUnderMouse.setFlag(GNode.Flag.Highlighted))));
                     }
                 }),
-                (B.prototype._createShape = function () {
-                    var e = new c();
-                    return (e.setProperties(["w", "h", "aw", "ah"], [1, 1, false, false]), e);
+                (GTextTool.prototype._createShape = function () {
+                    var textShape = new GText();
+                    return (textShape.setProperties(["w", "h", "aw", "ah"], [1, 1, false, false]), textShape);
                 }),
-                (B.prototype._updateShape = function (e, t, i, n) {
+                (GTextTool.prototype._updateShape = function (element, area, i, useAreaRect) {
                     return (
-                        !!t &&
-                        (n
-                            ? e.setProperty("trf", new m(t.getWidth(), 0, 0, t.getHeight(), t.getX(), t.getY()))
-                            : e.setProperty(
+                        !!area &&
+                        (useAreaRect
+                            ? element.setProperty("trf", new GTransform(area.getWidth(), 0, 0, area.getHeight(), area.getX(), area.getY()))
+                            : element.setProperty(
                                   "trf",
-                                  new m(
-                                      t.getWidth() / 2,
+                                  new GTransform(
+                                      area.getWidth() / 2,
                                       0,
                                       0,
-                                      t.getHeight() / 2,
-                                      t.getX() + t.getWidth() / 2,
-                                      t.getY() + t.getHeight() / 2
+                                      area.getHeight() / 2,
+                                      area.getX() + area.getWidth() / 2,
+                                      area.getY() + area.getHeight() / 2
                                   )
                               ),
                         true)
                     );
                 }),
-                (B.prototype._insertShape = function (e, t) {
-                    var i = false;
-                    if (t) e && ((this._fakeShape = e), o.prototype._insertShape.call(this, e, false, true));
+                (GTextTool.prototype._insertShape = function (element, preview) {
+                    var inserted = false;
+                    if (preview) element && ((this._fakeShape = element), GShapeTool.prototype._insertShape.call(this, element, false, true));
                     else {
                         if (this._fakeShape) {
-                            var n = this._fakeShape.getParent();
-                            (n && n.removeChild(this._fakeShape), (this._fakeShape = null));
+                            var parent = this._fakeShape.getParent();
+                            (parent && parent.removeChild(this._fakeShape), (this._fakeShape = null));
                         }
-                        var r = new c(),
-                            a = e && e.getProperty("trf");
-                        if (a) {
-                            var s = 0,
-                                l = this._getDefaultMeasure(r);
-                            l && (s = l.height);
-                            var h = a.getMatrix(),
-                                A = h[0] < 4,
-                                p = h[3] <= s;
-                            (r.setProperties(["aw", "ah"], [A, p]), r.transformSourceBBox(a, !A, !p));
-                        } else r.setProperties(["aw", "ah"], [false, false]);
-                        (r.setText(String.get(new C("GTextTool", "your-text-here")), 1, 1),
-                            (i = this._insertText(r)),
-                            (this._justCreatedText = r));
+                        var textShape = new GText(),
+                            transform = element && element.getProperty("trf");
+                        if (transform) {
+                            var minHeight = 0,
+                                measure = this._getDefaultMeasure(textShape);
+                            measure && (minHeight = measure.height);
+                            var matrix = transform.getMatrix(),
+                                autoWidth = matrix[0] < 4,
+                                autoHeight = matrix[3] <= minHeight;
+                            (textShape.setProperties(["aw", "ah"], [autoWidth, autoHeight]), textShape.transformSourceBBox(transform, !autoWidth, !autoHeight));
+                        } else textShape.setProperties(["aw", "ah"], [false, false]);
+                        (textShape.setText(String.get(new GLocaleKey("GTextTool", "your-text-here")), 1, 1),
+                            (inserted = this._insertText(textShape)),
+                            (this._justCreatedText = textShape));
                     }
-                    return i;
+                    return inserted;
                 }),
-                (B.prototype._showMousePositionInlineHint = function () {
+                (GTextTool.prototype._showMousePositionInlineHint = function () {
                     return true;
                 }),
-                (B.prototype._showAreaInlineHint = function () {
+                (GTextTool.prototype._showAreaInlineHint = function () {
                     return true;
                 }),
-                (B.prototype._hasCenterCross = function () {
+                (GTextTool.prototype._hasCenterCross = function () {
                     return true;
                 }),
-                (B.prototype._createShapeManually = function (e) {
-                    var t = new c(),
-                        i = new m(1, 0, 0, 1, e.getX(), e.getY());
-                    (t.transformSourceBBox(i), t.setText(String.get(new C("GTextTool", "your-text-here")), 1, 1));
+                (GTextTool.prototype._createShapeManually = function (point) {
+                    var textShape = new GText(),
+                        transform = new GTransform(1, 0, 0, 1, point.getX(), point.getY());
+                    (textShape.transformSourceBBox(transform), textShape.setText(String.get(new GLocaleKey("GTextTool", "your-text-here")), 1, 1));
                     try {
-                        if ((this._editor.beginTransaction(), this._insertText(t, true), this._pathUnderMouse)) {
-                            var r = null;
-                            if (this._pathUnderMouse instanceof y) r = this._pathUnderMouse;
-                            else if ((r = n.createPathFromVertexSource(this._pathUnderMouse)) instanceof s) {
-                                var o = this._pathUnderMouse,
-                                    a = o.$trf;
-                                ((o.$trf = null),
-                                    r.assignFrom(o),
-                                    o instanceof y && ((r.$evenodd = o.getProperty("evenodd")), (r.$closed = o.getProperty("closed"))),
-                                    (o.$trf = a));
-                                var l = o.getParent(),
-                                    h = o.getNext(true);
-                                (l.removeChild(o), l.insertChild(r, h));
-                            } else r = null;
-                            if (r) {
-                                var A = r.clone();
-                                this._scene.link(t, r);
-                                var p = new g(null, A);
-                                p.getMatrix(0, 0, new d());
-                                var u = this._view
+                        if ((this._editor.beginTransaction(), this._insertText(textShape, true), this._pathUnderMouse)) {
+                            var path = null;
+                            if (this._pathUnderMouse instanceof GPathBase) path = this._pathUnderMouse;
+                            else if ((path = GPathUtil.createPathFromVertexSource(this._pathUnderMouse)) instanceof GPath) {
+                                var sourcePath = this._pathUnderMouse,
+                                    pathTransform = sourcePath.$trf;
+                                ((sourcePath.$trf = null),
+                                    path.assignFrom(sourcePath),
+                                    sourcePath instanceof GPathBase && ((path.$evenodd = sourcePath.getProperty("evenodd")), (path.$closed = sourcePath.getProperty("closed"))),
+                                    (sourcePath.$trf = pathTransform));
+                                var pathParent = sourcePath.getParent(),
+                                    nextSibling = sourcePath.getNext(true);
+                                (pathParent.removeChild(sourcePath), pathParent.insertChild(path, nextSibling));
+                            } else path = null;
+                            if (path) {
+                                var clonedPath = path.clone();
+                                this._scene.link(textShape, path);
+                                var pathTransformer = new GTLPathTextTransformer(null, clonedPath);
+                                pathTransformer.getMatrix(0, 0, new GRect());
+                                var hitPoint = this._view
                                         .getWorldTransform(this._view.getScene().getActivePage())
                                         .inverted()
                                         .mapPoint(this._pathHit),
-                                    f = m.getNativeRectTransformation(r.getGeometryBBox()).getTranslation(),
-                                    _ = p.inverseTransform(u.subtract(f));
-                                t.setProperties(["tpthl", "tpths"], [_.getX(), g.OUTSIDE]);
+                                    translation = GTransform.getNativeRectTransformation(path.getGeometryBBox()).getTranslation(),
+                                    pathOffset = pathTransformer.inverseTransform(hitPoint.subtract(translation));
+                                textShape.setProperties(["tpthl", "tpths"], [pathOffset.getX(), GTLPathTextTransformer.OUTSIDE]);
                             }
                         }
                     } finally {
-                        this._editor.commitTransaction(String.get(new C("GTextTool", "action.insert-text")));
+                        this._editor.commitTransaction(String.get(new GLocaleKey("GTextTool", "action.insert-text")));
                     }
-                    this._justCreatedText = t;
+                    this._justCreatedText = textShape;
                 }),
-                (B.prototype._insertText = function (e, t) {
-                    return o.prototype._insertShape.call(this, e, false, t, String.get(new C("GTextTool", "action.insert-text")));
+                (GTextTool.prototype._insertText = function (element, skipTransaction) {
+                    return GShapeTool.prototype._insertShape.call(this, element, false, skipTransaction, String.get(new GLocaleKey("GTextTool", "action.insert-text")));
                 }),
-                (B.prototype._getDefaultMeasure = function (e) {
+                (GTextTool.prototype._getDefaultMeasure = function (element) {
                     if (!this._defaultMeasure) {
-                        var t = this._scene && this._scene.getWorkspace(),
-                            i = t && t.getFontManager();
-                        if (i) {
-                            var n = [];
-                            (n.push(e.getProperty("_tfs") === GFont.Style.Normal ? "normal" : "italic"),
-                                n.push(e.getProperty("_tfw")),
-                                n.push(e.getProperty("_tfi") + "px"),
-                                n.push(e.getProperty("_tff")));
-                            var r = "font: " + n.join(" ");
-                            this._defaultMeasure = new w(String.get(new C("GTextTool", "your-text-here")), r, null, i);
+                        var workspace = this._scene && this._scene.getWorkspace(),
+                            fontManager = workspace && workspace.getFontManager();
+                        if (fontManager) {
+                            var fontParts = [];
+                            (fontParts.push(element.getProperty("_tfs") === GFont.Style.Normal ? "normal" : "italic"),
+                                fontParts.push(element.getProperty("_tfw")),
+                                fontParts.push(element.getProperty("_tfi") + "px"),
+                                fontParts.push(element.getProperty("_tff")));
+                            var fontCss = "font: " + fontParts.join(" ");
+                            this._defaultMeasure = new GTextMeasure(String.get(new GLocaleKey("GTextTool", "your-text-here")), fontCss, null, fontManager);
                         }
                     }
                     return this._defaultMeasure;
                 }),
-                (B.prototype.toString = function () {
+                (GTextTool.prototype.toString = function () {
                     return "[Object GTextTool]";
                 }),
-                (module.exports = B));
+                (module.exports = GTextTool));
         };

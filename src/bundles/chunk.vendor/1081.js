@@ -1,189 +1,189 @@
 module.exports = function (module, exports, require) {
-            var n = require(50),
-                r = require(2),
-                o = require(77),
-                a = require(363),
-                s = require(64),
-                l = require(150),
-                h = require(777),
+            var GPattern = require(50),
+                GNode = require(2),
+                GMouseEvent = require(77),
+                GSceneWidget = require(363),
+                GSystem = require(64),
+                GModifiersChangedEvent = require(150),
+                GEditorPaintConfiguration = require(777),
                 GScenePaintConfiguration = require(133),
-                c = require(24),
-                p = require(153),
+                GEditorOptions = require(24),
+                GBBoxGuide = require(153),
                 IsFiniteNonNegativeNumber = require(0),
-                d = require(6),
-                g = require(22),
-                f = require(7),
+                GRect = require(6),
+                GElement = require(22),
+                GTransform = require(7),
                 GEditor = require(82),
-                y = require(544),
-                _ = require(36),
-                v = require(5),
-                b = require(83),
-                C = require(553),
-                w = require(14),
-                E = require(210),
-                B = require(540),
-                x = require(11),
-                P = require(17),
-                S = require(138),
-                T = require(216),
+                GFullPixelsGuide = require(544),
+                GElementEditor = require(36),
+                GPoint = require(5),
+                GPage = require(83),
+                GToolManager = require(553),
+                GCanvas = require(14),
+                GGuides = require(210),
+                GDistanceHelper = require(540),
+                GUtil = require(11),
+                GRGBColor = require(17),
+                GGradient = require(138),
+                GSymbol = require(216),
                 String = require(9),
-                F = require(47),
-                R = require(207);
+                GLocaleKey = require(47),
+                GSceneOptions = require(207);
 
-            function D(e) {
-                var t = Array.prototype.slice.call(arguments);
-                ((t[0] = e.getScene()),
-                    (this._editor = e),
-                    (this._viewConfiguration = new h()),
-                    (this._viewConfiguration.enableFxCache = !a.WORKER_RENDERING_ENABLED),
-                    a.apply(this, t),
+            function GEditorWidget(editor) {
+                var args = Array.prototype.slice.call(arguments);
+                ((args[0] = editor.getScene()),
+                    (this._editor = editor),
+                    (this._viewConfiguration = new GEditorPaintConfiguration()),
+                    (this._viewConfiguration.enableFxCache = !GSceneWidget.WORKER_RENDERING_ENABLED),
+                    GSceneWidget.apply(this, args),
                     (this._htmlElement.className += " g-editor-widget"));
-                var i = this._editor.getGuides();
-                i && (i.setView(this), i.addEventListener(E.InvalidationRequestEvent, this._editorHelpersInvalidationRequest, this));
-                var n = this._editor.getDistanceHelper();
-                (n && (n.setView(this), n.addEventListener(B.InvalidationRequestEvent, this._editorHelpersInvalidationRequest, this)),
-                    (this._dragEventerEvent = function (e) {
-                        (e.preventDefault(), e.stopPropagation());
+                var guides = this._editor.getGuides();
+                guides && (guides.setView(this), guides.addEventListener(GGuides.InvalidationRequestEvent, this._editorHelpersInvalidationRequest, this));
+                var distanceHelper = this._editor.getDistanceHelper();
+                (distanceHelper && (distanceHelper.setView(this), distanceHelper.addEventListener(GDistanceHelper.InvalidationRequestEvent, this._editorHelpersInvalidationRequest, this)),
+                    (this._dragEventerEvent = function (event) {
+                        (event.preventDefault(), event.stopPropagation());
                     }.bind(this)),
-                    (this._dragOverEvent = function (e) {
-                        (e.preventDefault(), e.stopPropagation(), (e.dataTransfer.dropEffect = "move"));
+                    (this._dragOverEvent = function (event) {
+                        (event.preventDefault(), event.stopPropagation(), (event.dataTransfer.dropEffect = "move"));
                     }.bind(this)),
-                    (this._dropEvent = function (e) {
-                        return (e.preventDefault(), e.stopPropagation(), this.handleDropEvent(e), false);
+                    (this._dropEvent = function (event) {
+                        return (event.preventDefault(), event.stopPropagation(), this.handleDropEvent(event), false);
                     }.bind(this)),
                     this._inputHtmlElement.addEventListener("dragenter", this._dragEventerEvent),
                     this._inputHtmlElement.addEventListener("dragover", this._dragOverEvent),
                     this._inputHtmlElement.addEventListener("drop", this._dropEvent),
                     this._editor.addEventListener(GEditor.InvalidationRequestEvent, this._editorInvalidationRequest, this, void 0, void 0, true),
-                    this._scene.addEventListener(r.AfterPropertiesChangeEvent, this._afterPropertiesChanged, this, void 0, void 0, true),
+                    this._scene.addEventListener(GNode.AfterPropertiesChangeEvent, this._afterPropertiesChanged, this, void 0, void 0, true),
                     this._scene
                         .getWorkspace()
                         .getToolManager()
-                        .addEventListener(C.InvalidationRequestEvent, this._toolInvalidationRequest, this));
+                        .addEventListener(GToolManager.InvalidationRequestEvent, this._toolInvalidationRequest, this));
             }
-            (IsFiniteNonNegativeNumber.inherit(D, a),
-                (D.prototype._editor = null),
-                (D.prototype._guideLineDiv = null),
-                (D.prototype._guideLineViewPoint = null),
-                (D.prototype._guideLinePosition = null),
-                (D.prototype._guideLineInfo = null),
-                (D.prototype._lastFocus = null),
-                (D.prototype._inputListener = null),
-                (D.prototype._inputListenerCompStart = null),
-                (D.prototype._inputListenerCompEnd = null),
-                (D.prototype._inputListenerCompUpd = null),
-                (D.prototype.setRulers = function (e) {
-                    e && !this._horizontalRuler
-                        ? (a.prototype.setRulers.call(this, e),
-                          this._horizontalRuler.addEventListener(o.Down, this._rulerDownLister, this),
-                          this._verticalRuler.addEventListener(o.Down, this._rulerDownLister, this))
-                        : !e &&
+            (IsFiniteNonNegativeNumber.inherit(GEditorWidget, GSceneWidget),
+                (GEditorWidget.prototype._editor = null),
+                (GEditorWidget.prototype._guideLineDiv = null),
+                (GEditorWidget.prototype._guideLineViewPoint = null),
+                (GEditorWidget.prototype._guideLinePosition = null),
+                (GEditorWidget.prototype._guideLineInfo = null),
+                (GEditorWidget.prototype._lastFocus = null),
+                (GEditorWidget.prototype._inputListener = null),
+                (GEditorWidget.prototype._inputListenerCompStart = null),
+                (GEditorWidget.prototype._inputListenerCompEnd = null),
+                (GEditorWidget.prototype._inputListenerCompUpd = null),
+                (GEditorWidget.prototype.setRulers = function (enabled) {
+                    enabled && !this._horizontalRuler
+                        ? (GSceneWidget.prototype.setRulers.call(this, enabled),
+                          this._horizontalRuler.addEventListener(GMouseEvent.Down, this._rulerDownLister, this),
+                          this._verticalRuler.addEventListener(GMouseEvent.Down, this._rulerDownLister, this))
+                        : !enabled &&
                           this._horizontalRuler &&
-                          (this._horizontalRuler.removeEventListener(o.Down, this._rulerDownLister, this),
-                          this._verticalRuler.removeEventListener(o.Down, this._rulerDownLister, this),
-                          a.prototype.setRulers.call(this, e));
+                          (this._horizontalRuler.removeEventListener(GMouseEvent.Down, this._rulerDownLister, this),
+                          this._verticalRuler.removeEventListener(GMouseEvent.Down, this._rulerDownLister, this),
+                          GSceneWidget.prototype.setRulers.call(this, enabled));
                 }),
-                (D.prototype.getHtmlElement = function () {
+                (GEditorWidget.prototype.getHtmlElement = function () {
                     return this._htmlElement;
                 }),
-                (D.prototype.startMoveGuideLine = function (e, t) {
+                (GEditorWidget.prototype.startMoveGuideLine = function (isVertical, guideIndex) {
                     this._guideLineInfo = {
-                        isVertical: e,
-                        guideIndex: t,
+                        isVertical: isVertical,
+                        guideIndex: guideIndex,
                     };
-                    var i = e ? "vgl" : "hgl",
-                        n = this._editor.getScene().getProperty(i),
-                        r = t >= 0 ? n[t] : 0,
-                        o = new v(r, r),
-                        a = this.getWorldTransform().mapPoint(o);
-                    ((this._guideLinePosition = o),
+                    var propertyName = isVertical ? "vgl" : "hgl",
+                        guideLines = this._editor.getScene().getProperty(propertyName),
+                        position = guideIndex >= 0 ? guideLines[guideIndex] : 0,
+                        point = new GPoint(position, position),
+                        viewPoint = this.getWorldTransform().mapPoint(point);
+                    ((this._guideLinePosition = point),
                         (this._guideLineDiv = document.createElement("div")),
                         (this._guideLineDiv.style.position = "absolute"),
-                        (this._guideLineDiv.style.backgroundColor = c.guideLineHintColor),
-                        t < 0 && (this._guideLineDiv.style.visibility = "hidden"),
+                        (this._guideLineDiv.style.backgroundColor = GEditorOptions.guideLineHintColor),
+                        guideIndex < 0 && (this._guideLineDiv.style.visibility = "hidden"),
                         this._htmlElement.insertBefore(this._guideLineDiv, this._inlineHintDiv),
-                        e
+                        isVertical
                             ? ((this._guideLineDiv.style.top = "0px"),
                               (this._guideLineDiv.style.bottom = "0px"),
                               (this._guideLineDiv.style.width = "1px"),
-                              (this._guideLineDiv.style.left = a.getX() + "px"))
+                              (this._guideLineDiv.style.left = viewPoint.getX() + "px"))
                             : ((this._guideLineDiv.style.left = "0px"),
                               (this._guideLineDiv.style.right = "0px"),
                               (this._guideLineDiv.style.height = "1px"),
-                              (this._guideLineDiv.style.top = a.getY() + "px")),
-                        s.addEventListener(l, this._guideMoveModifierChangeListener, this));
+                              (this._guideLineDiv.style.top = viewPoint.getY() + "px")),
+                        GSystem.addEventListener(GModifiersChangedEvent, this._guideMoveModifierChangeListener, this));
                 }),
-                (D.prototype.moveGuideLine = function (e) {
+                (GEditorWidget.prototype.moveGuideLine = function (viewPoint) {
                     if (this._guideLineInfo) {
-                        this._guideLineViewPoint = e;
-                        var t = this.getViewTransform().mapPoint(e);
+                        this._guideLineViewPoint = viewPoint;
+                        var scenePoint = this.getViewTransform().mapPoint(viewPoint);
                         (this._editor.getGuides().beginMap(),
-                            (t = this._editor.getGuides().mapPoint(t, null, [p.ID, y.ID])),
+                            (scenePoint = this._editor.getGuides().mapPoint(scenePoint, null, [GBBoxGuide.ID, GFullPixelsGuide.ID])),
                             this._editor.getGuides().finishMap(),
-                            (e = this.getWorldTransform().mapPoint(t)),
-                            (this._guideLinePosition = t));
-                        var i = w.getScreenDPI();
+                            (viewPoint = this.getWorldTransform().mapPoint(scenePoint)),
+                            (this._guideLinePosition = scenePoint));
+                        var dpi = GCanvas.getScreenDPI();
                         if (this._guideLineInfo.isVertical) {
-                            this._guideLineDiv.style.left = e.getX() / i + "px";
-                            var n = this._horizontalRuler
+                            this._guideLineDiv.style.left = viewPoint.getX() / dpi + "px";
+                            var rulerBottom = this._horizontalRuler
                                 ? this._horizontalRuler.getY() + this._horizontalRuler.getHeight()
                                 : this._viewOffset[1];
                             this.updateInlineHint(
-                                this._editor.getScene().pointToString(t.getX(), 1) + this._editor.getScene().getProperty("ut"),
-                                new v(e.getX(), i * n + 3),
-                                d.Side.TOP_CENTER
+                                this._editor.getScene().pointToString(scenePoint.getX(), 1) + this._editor.getScene().getProperty("ut"),
+                                new GPoint(viewPoint.getX(), dpi * rulerBottom + 3),
+                                GRect.Side.TOP_CENTER
                             );
                         } else {
-                            this._guideLineDiv.style.top = e.getY() / i + "px";
-                            var r = this._verticalRuler ? this._verticalRuler.getX() + this._verticalRuler.getWidth() : this._viewOffset[0];
+                            this._guideLineDiv.style.top = viewPoint.getY() / dpi + "px";
+                            var rulerRight = this._verticalRuler ? this._verticalRuler.getX() + this._verticalRuler.getWidth() : this._viewOffset[0];
                             this.updateInlineHint(
-                                this._editor.getScene().pointToString(t.getY(), 1) + this._editor.getScene().getProperty("ut"),
-                                new v(i * r + 3, e.getY()),
-                                d.Side.LEFT_CENTER
+                                this._editor.getScene().pointToString(scenePoint.getY(), 1) + this._editor.getScene().getProperty("ut"),
+                                new GPoint(dpi * rulerRight + 3, viewPoint.getY()),
+                                GRect.Side.LEFT_CENTER
                             );
                         }
                         this._guideLineDiv.style.visibility = "";
                     }
                 }),
-                (D.prototype.finishMoveGuideLine = function () {
+                (GEditorWidget.prototype.finishMoveGuideLine = function () {
                     if (this._guideLineInfo) {
-                        (s.removeEventListener(l, this._guideMoveModifierChangeListener, this), this._editor.getGuides().invalidate());
-                        var e = this._guideLineInfo.isVertical,
-                            t = this._guideLineInfo.guideIndex,
-                            i = e ? "vgl" : "hgl",
-                            n = this._editor.getScene().getProperty(i);
-                        n = n ? n.slice() : [];
-                        var r = this._verticalRuler
+                        (GSystem.removeEventListener(GModifiersChangedEvent, this._guideMoveModifierChangeListener, this), this._editor.getGuides().invalidate());
+                        var isVertical = this._guideLineInfo.isVertical,
+                            guideIndex = this._guideLineInfo.guideIndex,
+                            propertyName = isVertical ? "vgl" : "hgl",
+                            guideLines = this._editor.getScene().getProperty(propertyName);
+                        guideLines = guideLines ? guideLines.slice() : [];
+                        var rulerRight = this._verticalRuler
                                 ? this._verticalRuler.getX() + this._verticalRuler.getWidth()
-                                : this._viewOffset[0] + c.pickDistance,
-                            o = this._horizontalRuler
+                                : this._viewOffset[0] + GEditorOptions.pickDistance,
+                            rulerBottom = this._horizontalRuler
                                 ? this._horizontalRuler.getY() + this._horizontalRuler.getHeight()
-                                : this._viewOffset[1] + c.pickDistance,
-                            a = this._verticalRuler ? this._verticalRuler.getX() : -100,
-                            h = this._horizontalRuler ? this._horizontalRuler.getY() : -100;
+                                : this._viewOffset[1] + GEditorOptions.pickDistance,
+                            rulerLeft = this._verticalRuler ? this._verticalRuler.getX() : -100,
+                            rulerTop = this._horizontalRuler ? this._horizontalRuler.getY() : -100;
                         if (
-                            (!e && this._guideLineDiv.offsetTop >= h && this._guideLineDiv.offsetTop <= o) ||
-                            (e && this._guideLineDiv.offsetLeft >= a && this._guideLineDiv.offsetLeft <= r)
+                            (!isVertical && this._guideLineDiv.offsetTop >= rulerTop && this._guideLineDiv.offsetTop <= rulerBottom) ||
+                            (isVertical && this._guideLineDiv.offsetLeft >= rulerLeft && this._guideLineDiv.offsetLeft <= rulerRight)
                         ) {
-                            if (t >= 0) {
-                                (n.splice(t, 1), this._editor.beginTransaction());
+                            if (guideIndex >= 0) {
+                                (guideLines.splice(guideIndex, 1), this._editor.beginTransaction());
                                 try {
-                                    this._editor.getScene().setProperties([i], [n]);
+                                    this._editor.getScene().setProperties([propertyName], [guideLines]);
                                 } finally {
-                                    this._editor.commitTransaction(String.get(new F("GEditorWidget", "action.remove-guide-line")));
+                                    this._editor.commitTransaction(String.get(new GLocaleKey("GEditorWidget", "action.remove-guide-line")));
                                 }
                             }
                         } else {
-                            var A = e ? this._guideLinePosition.getX() : this._guideLinePosition.getY();
-                            if (t < 0 || (t >= 0 && n[t] !== A)) {
-                                (t >= 0 ? (n[t] = A) : n.push(A), this._editor.beginTransaction());
+                            var newPosition = isVertical ? this._guideLinePosition.getX() : this._guideLinePosition.getY();
+                            if (guideIndex < 0 || (guideIndex >= 0 && guideLines[guideIndex] !== newPosition)) {
+                                (guideIndex >= 0 ? (guideLines[guideIndex] = newPosition) : guideLines.push(newPosition), this._editor.beginTransaction());
                                 try {
-                                    this._editor.getScene().setProperties([i], [n]);
+                                    this._editor.getScene().setProperties([propertyName], [guideLines]);
                                 } finally {
                                     this._editor.commitTransaction(
-                                        t >= 0
-                                            ? String.get(new F("GEditorWidget", "action.change-guide-line"))
-                                            : String.get(new F("GEditorWidget", "action.add-guide-line"))
+                                        guideIndex >= 0
+                                            ? String.get(new GLocaleKey("GEditorWidget", "action.change-guide-line"))
+                                            : String.get(new GLocaleKey("GEditorWidget", "action.add-guide-line"))
                                     );
                                 }
                             }
@@ -196,40 +196,40 @@ module.exports = function (module, exports, require) {
                             this.updateInlineHint(null));
                     }
                 }),
-                (D.prototype.getEditor = function () {
+                (GEditorWidget.prototype.getEditor = function () {
                     return this._editor;
                 }),
-                (D.prototype.hasFocus = function () {
-                    return !(!this._fakeTextBox || document.activeElement !== this._fakeTextBox) || a.prototype.hasFocus.call(this);
+                (GEditorWidget.prototype.hasFocus = function () {
+                    return !(!this._fakeTextBox || document.activeElement !== this._fakeTextBox) || GSceneWidget.prototype.hasFocus.call(this);
                 }),
-                (D.prototype.focus = function () {
-                    return "none" !== this._fakeTextDiv.style.display ? (this._fakeTextBox.focus(), true) : a.prototype.focus.call(this);
+                (GEditorWidget.prototype.focus = function () {
+                    return "none" !== this._fakeTextDiv.style.display ? (this._fakeTextBox.focus(), true) : GSceneWidget.prototype.focus.call(this);
                 }),
-                (D.prototype.isCapturingInput = function () {
+                (GEditorWidget.prototype.isCapturingInput = function () {
                     return !!this._inputListener;
                 }),
-                (D.prototype.startCaptureInput = function (e, t, i, n) {
+                (GEditorWidget.prototype.startCaptureInput = function (inputListener, compositionStartListener, compositionEndListener, compositionUpdateListener) {
                     if (!this.isCapturingInput()) {
                         if (this._inputRecorder) return;
                         ((this._lastFocus = document.activeElement),
                             (this._fakeTextDiv.style.display = ""),
                             (this._fakeTextBox.value = ""),
-                            this._fakeTextBox.addEventListener("input", e),
-                            this._fakeTextBox.addEventListener("keydown", e),
+                            this._fakeTextBox.addEventListener("input", inputListener),
+                            this._fakeTextBox.addEventListener("keydown", inputListener),
                             this._fakeTextBox.addEventListener("paste", this._preventListener),
                             this._fakeTextBox.addEventListener("copy", this._preventListener),
                             this._fakeTextBox.addEventListener("cut", this._preventListener),
-                            t && this._fakeTextBox.addEventListener("compositionstart", t),
-                            i && this._fakeTextBox.addEventListener("compositionend", i),
-                            n && this._fakeTextBox.addEventListener("compositionupdate", n),
+                            compositionStartListener && this._fakeTextBox.addEventListener("compositionstart", compositionStartListener),
+                            compositionEndListener && this._fakeTextBox.addEventListener("compositionend", compositionEndListener),
+                            compositionUpdateListener && this._fakeTextBox.addEventListener("compositionupdate", compositionUpdateListener),
                             this._fakeTextBox.focus(),
-                            (this._inputListener = e),
-                            (this._inputListenerCompStart = t),
-                            (this._inputListenerCompEnd = i),
-                            (this._inputListenerCompUpd = n));
+                            (this._inputListener = inputListener),
+                            (this._inputListenerCompStart = compositionStartListener),
+                            (this._inputListenerCompEnd = compositionEndListener),
+                            (this._inputListenerCompUpd = compositionUpdateListener));
                     }
                 }),
-                (D.prototype.endCaptureInput = function () {
+                (GEditorWidget.prototype.endCaptureInput = function () {
                     this.isCapturingInput() &&
                         ((document.activeElement = this._lastFocus),
                         (this._fakeTextDiv.style.display = "none"),
@@ -247,160 +247,160 @@ module.exports = function (module, exports, require) {
                         (this._lastFocus = null),
                         (this._inputListener = null));
                 }),
-                (D.prototype._preventListener = function (e) {
-                    e.preventDefault();
+                (GEditorWidget.prototype._preventListener = function (event) {
+                    event.preventDefault();
                 }),
-                (D.prototype.updateInputBox = function (e, t) {
-                    if (!isNaN(e) && !isNaN(t)) {
-                        var i = new v(e, t),
-                            n = this.getWorldTransform().mapPoint(i),
-                            r = w.getScreenDPI();
-                        ((this._fakeTextDiv.style.left = n.getX() / r + "px"), (this._fakeTextDiv.style.top = n.getY() / r + "px"));
+                (GEditorWidget.prototype.updateInputBox = function (x, y) {
+                    if (!isNaN(x) && !isNaN(y)) {
+                        var point = new GPoint(x, y),
+                            viewPoint = this.getWorldTransform().mapPoint(point),
+                            dpi = GCanvas.getScreenDPI();
+                        ((this._fakeTextDiv.style.left = viewPoint.getX() / dpi + "px"), (this._fakeTextDiv.style.top = viewPoint.getY() / dpi + "px"));
                     }
                 }),
-                (D.prototype.resetInputBoxCursor = function () {
+                (GEditorWidget.prototype.resetInputBoxCursor = function () {
                     this._fakeTextBox &&
                         "function" == typeof this._fakeTextBox.setSelectionRange &&
                         this._fakeTextBox.selectionStart !== this._fakeTextBox.value.length &&
                         this._fakeTextBox.setSelectionRange(this._fakeTextBox.value.length, this._fakeTextBox.value.length);
                 }),
-                (D.prototype.resetInputBoxContent = function () {
+                (GEditorWidget.prototype.resetInputBoxContent = function () {
                     this._fakeTextBox && (this._fakeTextBox.value = "");
                 }),
-                (D.prototype.release = function () {
+                (GEditorWidget.prototype.release = function () {
                     (this._inputHtmlElement.removeEventListener("dragenter", this._dragEventerEvent),
                         this._inputHtmlElement.removeEventListener("dragover", this._dragOverEvent),
                         this._inputHtmlElement.removeEventListener("drop", this._dropEvent),
                         this._editor.removeEventListener(GEditor.InvalidationRequestEvent, this._editorInvalidationRequest, this),
                         this._editor
                             .getGuides()
-                            .removeEventListener(E.InvalidationRequestEvent, this._editorHelpersInvalidationRequest, this),
+                            .removeEventListener(GGuides.InvalidationRequestEvent, this._editorHelpersInvalidationRequest, this),
                         this._editor
                             .getDistanceHelper()
-                            .removeEventListener(B.InvalidationRequestEvent, this._editorHelpersInvalidationRequest, this),
-                        this._scene.removeEventListener(r.AfterPropertiesChangeEvent, this._afterPropertiesChanged, this),
+                            .removeEventListener(GDistanceHelper.InvalidationRequestEvent, this._editorHelpersInvalidationRequest, this),
+                        this._scene.removeEventListener(GNode.AfterPropertiesChangeEvent, this._afterPropertiesChanged, this),
                         this._scene
                             .getWorkspace()
                             .getToolManager()
-                            .removeEventListener(C.InvalidationRequestEvent, this._toolInvalidationRequest, this),
-                        a.prototype.release.call(this));
+                            .removeEventListener(GToolManager.InvalidationRequestEvent, this._toolInvalidationRequest, this),
+                        GSceneWidget.prototype.release.call(this));
                 }),
-                (D.prototype._afterPropertiesChanged = function (e) {
-                    !e.temporary &&
-                        ((e.node === this._scene &&
-                            x.containsOneOf(e.properties, ["w", "h", "gx", "gy", "gm", "ga1", "ga2", "vgl", "hgl", "gaw", "gah"])) ||
-                            (e.node instanceof b && x.containsOneOf(e.properties, this._viewConfiguration.pageDecoration.margin))) &&
+                (GEditorWidget.prototype._afterPropertiesChanged = function (event) {
+                    !event.temporary &&
+                        ((event.node === this._scene &&
+                            GUtil.containsOneOf(event.properties, ["w", "h", "gx", "gy", "gm", "ga1", "ga2", "vgl", "hgl", "gaw", "gah"])) ||
+                            (event.node instanceof GPage && GUtil.containsOneOf(event.properties, this._viewConfiguration.pageDecoration.margin))) &&
                         this.invalidate();
                 }),
-                (D.prototype._editorHelpersInvalidationRequest = function (e) {
-                    e.area && this.invalidate(this.getWorldTransform().mapRect(e.area));
+                (GEditorWidget.prototype._editorHelpersInvalidationRequest = function (event) {
+                    event.area && this.invalidate(this.getWorldTransform().mapRect(event.area));
                 }),
-                (D.prototype._editorInvalidationRequest = function (e) {
-                    if (e.editor) {
-                        var t;
-                        if (e.args && e.args.pageTransform && this.getViewConfiguration().multiPageView) {
-                            var i = this.getWorldTransform(this.getScene()).preMultiplied(e.args.pageTransform);
-                            t = e.editor.invalidate(i, null);
+                (GEditorWidget.prototype._editorInvalidationRequest = function (event) {
+                    if (event.editor) {
+                        var invalidArea;
+                        if (event.args && event.args.pageTransform && this.getViewConfiguration().multiPageView) {
+                            var transform = this.getWorldTransform(this.getScene()).preMultiplied(event.args.pageTransform);
+                            invalidArea = event.editor.invalidate(transform, null);
                         } else if (this.getViewConfiguration().multiPageView)
-                            t = e.editor.invalidate(this.getWorldTransform(e.getEditorPage() || this.getScene()), e.args);
+                            invalidArea = event.editor.invalidate(this.getWorldTransform(event.getEditorPage() || this.getScene()), event.args);
                         else {
-                            var n = this.getScene(),
-                                r = e.getEditorPage(),
-                                o = n ? n.getActivePage() : null;
-                            (r && r !== n && r !== o) || (t = e.editor.invalidate(this.getWorldTransform(r || n), e.args));
+                            var scene = this.getScene(),
+                                page = event.getEditorPage(),
+                                activePage = scene ? scene.getActivePage() : null;
+                            (page && page !== scene && page !== activePage) || (invalidArea = event.editor.invalidate(this.getWorldTransform(page || scene), event.args));
                         }
-                        t && this.invalidate(t);
+                        invalidArea && this.invalidate(invalidArea);
                     }
                 }),
-                (D.prototype._toolInvalidationRequest = function (e) {
-                    this.invalidate(e.area);
+                (GEditorWidget.prototype._toolInvalidationRequest = function (event) {
+                    this.invalidate(event.area);
                 }),
-                (D.prototype._rulerDownLister = function (e) {
-                    var t = e.sender === this._verticalRuler;
-                    if (!(t && e.client.getX() <= 2 * w.getScreenDPI())) {
-                        (e.stopPropagation(), this.startMoveGuideLine(t, -1));
-                        var i = function (e) {
-                                this.moveGuideLine(e.client);
+                (GEditorWidget.prototype._rulerDownLister = function (event) {
+                    var isVertical = event.sender === this._verticalRuler;
+                    if (!(isVertical && event.client.getX() <= 2 * GCanvas.getScreenDPI())) {
+                        (event.stopPropagation(), this.startMoveGuideLine(isVertical, -1));
+                        var moveListener = function (event) {
+                                this.moveGuideLine(event.client);
                             },
-                            n = function (e) {
-                                (this.removeEventListener(o.Move, i, this),
-                                    this.removeEventListener(o.Release, n, this),
+                            releaseListener = function (e) {
+                                (this.removeEventListener(GMouseEvent.Move, moveListener, this),
+                                    this.removeEventListener(GMouseEvent.Release, releaseListener, this),
                                     this.finishMoveGuideLine());
                             };
-                        (this.addEventListener(o.Move, i, this), this.addEventListener(o.Release, n, this));
+                        (this.addEventListener(GMouseEvent.Move, moveListener, this), this.addEventListener(GMouseEvent.Release, releaseListener, this));
                     }
                 }),
-                (D.prototype._guideMoveModifierChangeListener = function (e) {
-                    e.changed.metaKey && this.moveGuideLine(this._guideLineViewPoint);
+                (GEditorWidget.prototype._guideMoveModifierChangeListener = function (event) {
+                    event.changed.metaKey && this.moveGuideLine(this._guideLineViewPoint);
                 }),
-                (D.prototype._paintElement = function (e, t, i, n) {
+                (GEditorWidget.prototype._paintElement = function (worldTransform, viewTransform, i, n) {
                     if (
-                        ((e = e || this.getWorldTransform()),
-                        (t = t || this.getViewTransform()),
+                        ((worldTransform = worldTransform || this.getWorldTransform()),
+                        (viewTransform = viewTransform || this.getViewTransform()),
                         this._viewConfiguration.pageDecoration.chessboard ||
                             (this._viewConfiguration.pageDecoration.shadow > 0 && this._scene.isFixedSized()))
                     )
                         if (this._viewConfiguration.multiPageView) {
-                            var r = this;
-                            this._scene.iteratePages(function (t) {
-                                r._renderPageBackground.call(r, t, e);
+                            var self = this;
+                            this._scene.iteratePages(function (page) {
+                                self._renderPageBackground.call(self, page, worldTransform);
                             });
-                        } else this._renderPageBackground(this._scene.getActivePage(), e);
-                    a.prototype._paintElement.call(this, e, t, i, n);
-                    var o = _.getEditor(this._scene);
+                        } else this._renderPageBackground(this._scene.getActivePage(), worldTransform);
+                    GSceneWidget.prototype._paintElement.call(this, worldTransform, viewTransform, i, n);
+                    var editor = GElementEditor.getEditor(this._scene);
                     if (
-                        (o && o.paint(e, this._elementPaintContext),
+                        (editor && editor.paint(worldTransform, this._elementPaintContext),
                         this._scene.getWorkspace().getToolManager().paint(this._elementPaintContext),
                         this._viewConfiguration.pageDecoration.margin && this._scene.isFixedSized())
                     )
                         if (this._viewConfiguration.multiPageView) {
-                            r = this;
-                            this._scene.iteratePages(function (t) {
-                                r._renderPageMargin.call(r, t, e);
+                            self = this;
+                            this._scene.iteratePages(function (page) {
+                                self._renderPageMargin.call(self, page, worldTransform);
                             });
-                        } else this._renderPageMargin(this._scene.getActivePage(), e);
-                    var s = null;
+                        } else this._renderPageMargin(this._scene.getActivePage(), worldTransform);
+                    var revertTransform = null;
                     if (this._elementPaintContext.dirtyMatcher) {
-                        var l = t;
-                        (this._elementPaintContext.dirtyMatcher.transform(t), l && (s = l.inverted()));
+                        var savedViewTransform = viewTransform;
+                        (this._elementPaintContext.dirtyMatcher.transform(viewTransform), savedViewTransform && (revertTransform = savedViewTransform.inverted()));
                     }
-                    this._editor.getGuides().paint(e, this._elementPaintContext);
-                    var h = this._editor.getDistanceHelper();
-                    (h && h.isActivated() && h.paint(e, this._elementPaintContext),
-                        s && this._elementPaintContext.dirtyMatcher.transform(s));
+                    this._editor.getGuides().paint(worldTransform, this._elementPaintContext);
+                    var distanceHelper = this._editor.getDistanceHelper();
+                    (distanceHelper && distanceHelper.isActivated() && distanceHelper.paint(worldTransform, this._elementPaintContext),
+                        revertTransform && this._elementPaintContext.dirtyMatcher.transform(revertTransform));
                 }),
-                (D.prototype._updateViewTransforms = function (e, t) {
-                    a.prototype._updateViewTransforms.apply(this, arguments);
-                    var i = this._viewConfiguration.pageDecoration;
-                    if (i.shadow > 0) {
-                        var n = i.shadowOffsetX || 0,
-                            r = i.shadowOffsetY || 0,
-                            o = 1 + 2 * i.shadow,
-                            s = this.getViewTransform(),
-                            l = s.getScaleFactor(),
-                            h = o + Math.max(0, -n),
-                            A = o + Math.max(0, -r),
-                            c = o + Math.max(0, n),
-                            p = o + Math.max(0, r);
-                        ((h *= l), (A *= l), (c *= l), (p *= l), this._scene.setShadowExpandArea(h, A, c, p));
+                (GEditorWidget.prototype._updateViewTransforms = function (e, t) {
+                    GSceneWidget.prototype._updateViewTransforms.apply(this, arguments);
+                    var pageDecoration = this._viewConfiguration.pageDecoration;
+                    if (pageDecoration.shadow > 0) {
+                        var shadowOffsetX = pageDecoration.shadowOffsetX || 0,
+                            shadowOffsetY = pageDecoration.shadowOffsetY || 0,
+                            shadowSize = 1 + 2 * pageDecoration.shadow,
+                            viewTransform = this.getViewTransform(),
+                            scaleFactor = viewTransform.getScaleFactor(),
+                            left = shadowSize + Math.max(0, -shadowOffsetX),
+                            top = shadowSize + Math.max(0, -shadowOffsetY),
+                            right = shadowSize + Math.max(0, shadowOffsetX),
+                            bottom = shadowSize + Math.max(0, shadowOffsetY);
+                        ((left *= scaleFactor), (top *= scaleFactor), (right *= scaleFactor), (bottom *= scaleFactor), this._scene.setShadowExpandArea(left, top, right, bottom));
                     } else this._scene.setShadowExpandArea(null);
                     this._editor.updateInlineEditorForView(this);
                 }));
-            var k = null,
-                G = false;
-            ((D.prototype._renderPageBackground = function (e, t) {
-                var i = this._viewConfiguration.pageDecoration,
-                    n = e.getPosition(this._viewConfiguration.multiPageView),
-                    r = t.preMultiplied(new f(1, 0, 0, 1, n.getX(), n.getY())),
-                    o = e.isFixedSized() ? e.getGeometryBBox() : e.getPaintBBox(null, true);
-                if (o) {
-                    var a = r.mapRect(o),
-                        s = a.getX(),
-                        l = a.getY(),
-                        h = a.getWidth(),
-                        c = a.getHeight(),
-                        p = this._elementPaintContext.dirtyMatcher,
-                        u =
+            var chessboardPattern = null,
+                shadowWarningShown = false;
+            ((GEditorWidget.prototype._renderPageBackground = function (page, worldTransform) {
+                var pageDecoration = this._viewConfiguration.pageDecoration,
+                    pagePosition = page.getPosition(this._viewConfiguration.multiPageView),
+                    pageTransform = worldTransform.preMultiplied(new GTransform(1, 0, 0, 1, pagePosition.getX(), pagePosition.getY())),
+                    bbox = page.isFixedSized() ? page.getGeometryBBox() : page.getPaintBBox(null, true);
+                if (bbox) {
+                    var bounds = pageTransform.mapRect(bbox),
+                        boundsX = bounds.getX(),
+                        boundsY = bounds.getY(),
+                        boundsWidth = bounds.getWidth(),
+                        boundsHeight = bounds.getHeight(),
+                        dirtyMatcher = this._elementPaintContext.dirtyMatcher,
+                        isFirefoxOnWindows =
                             "undefined" != typeof navigator &&
                             navigator &&
                             0 == navigator.userAgent.indexOf("Mozilla") &&
@@ -408,164 +408,164 @@ module.exports = function (module, exports, require) {
                             navigator.userAgent.indexOf("Edge") < 0 &&
                             navigator.userAgent.indexOf("Chrome") < 0 &&
                             navigator.userAgent.indexOf("Safari") < 0;
-                    u &&
-                        i.shadow > 0 &&
-                        !G &&
-                        ((G = true), console.warn("Due to browser bug (Firefox), shadow under canvas isn't displayed."));
-                    var g = i.shadow > 0 && !u && !(R.pagesCanOverlap && this._viewConfiguration.multiPageView),
-                        m = i.shadowOffsetX || 0,
-                        y = i.shadowOffsetY || 0;
-                    if (p) {
-                        var _ = 1 + 2 * i.shadow,
-                            v = a.expanded(_ + Math.max(0, -m), _ + Math.max(0, -y), _ + Math.max(0, m), _ + Math.max(0, y));
-                        if (!p.isDirty(v)) return;
-                        if (g) {
-                            g = false;
-                            var b = v.subtracted(a, true);
-                            b instanceof d && (b = [b]);
-                            for (var C = 0; C < b.length; C++) {
-                                var E = b[C];
-                                if (p.isDirty(E)) {
-                                    g = true;
+                    isFirefoxOnWindows &&
+                        pageDecoration.shadow > 0 &&
+                        !shadowWarningShown &&
+                        ((shadowWarningShown = true), console.warn("Due to browser bug (Firefox), shadow under canvas isn't displayed."));
+                    var drawShadow = pageDecoration.shadow > 0 && !isFirefoxOnWindows && !(GSceneOptions.pagesCanOverlap && this._viewConfiguration.multiPageView),
+                        shadowOffsetX = pageDecoration.shadowOffsetX || 0,
+                        shadowOffsetY = pageDecoration.shadowOffsetY || 0;
+                    if (dirtyMatcher) {
+                        var shadowSize = 1 + 2 * pageDecoration.shadow,
+                            expandedBounds = bounds.expanded(shadowSize + Math.max(0, -shadowOffsetX), shadowSize + Math.max(0, -shadowOffsetY), shadowSize + Math.max(0, shadowOffsetX), shadowSize + Math.max(0, shadowOffsetY));
+                        if (!dirtyMatcher.isDirty(expandedBounds)) return;
+                        if (drawShadow) {
+                            drawShadow = false;
+                            var subtractedRects = expandedBounds.subtracted(bounds, true);
+                            subtractedRects instanceof GRect && (subtractedRects = [subtractedRects]);
+                            for (var C = 0; C < subtractedRects.length; C++) {
+                                var E = subtractedRects[C];
+                                if (dirtyMatcher.isDirty(E)) {
+                                    drawShadow = true;
                                     break;
                                 }
                             }
                         }
                         if (
-                            !g &&
+                            !drawShadow &&
                             this._viewConfiguration.paintMode !== GScenePaintConfiguration.PaintMode.Outline &&
                             !this._sceneCanvas.isMasked() &&
-                            1 == e.getProperty("bop")
+                            1 == page.getProperty("bop")
                         ) {
-                            var B = e.getProperty("bck");
-                            if (B instanceof P) return;
+                            var background = page.getProperty("bck");
+                            if (background instanceof GRGBColor) return;
                             if (
-                                B instanceof S &&
-                                B.getStops().every(function (e) {
-                                    return 1 == e.opacity;
+                                background instanceof GGradient &&
+                                background.getStops().every(function (stop) {
+                                    return 1 == stop.opacity;
                                 })
                             )
                                 return;
                         }
                     }
-                    var x = i.background || "white";
-                    i.chessboard &&
-                        (k || (k = w.createChessboard(8, "white", "rgb(205, 205, 205)")), (x = this._elementCanvas.createTexture(k)));
+                    var fillStyle = pageDecoration.background || "white";
+                    pageDecoration.chessboard &&
+                        (chessboardPattern || (chessboardPattern = GCanvas.createChessboard(8, "white", "rgb(205, 205, 205)")), (fillStyle = this._elementCanvas.createTexture(chessboardPattern)));
                     try {
                         if (
-                            (g &&
-                                ((this._elementCanvas._canvasContext.shadowColor = i.shadowBackground || "rgba(0,0,0,0.5)"),
-                                (this._elementCanvas._canvasContext.shadowBlur = i.shadow),
-                                (this._elementCanvas._canvasContext.shadowOffsetX = m),
-                                (this._elementCanvas._canvasContext.shadowOffsetY = y)),
-                            p && u)
+                            (drawShadow &&
+                                ((this._elementCanvas._canvasContext.shadowColor = pageDecoration.shadowBackground || "rgba(0,0,0,0.5)"),
+                                (this._elementCanvas._canvasContext.shadowBlur = pageDecoration.shadow),
+                                (this._elementCanvas._canvasContext.shadowOffsetX = shadowOffsetX),
+                                (this._elementCanvas._canvasContext.shadowOffsetY = shadowOffsetY)),
+                            dirtyMatcher && isFirefoxOnWindows)
                         ) {
-                            var T = new d(Math.ceil(s), Math.ceil(l), Math.floor(h), Math.floor(c)),
-                                I = p.getNonIntersectingDirtyRectangles();
-                            for (C = 0; C < I.length; ++C) {
-                                var F = I[C];
-                                ((F = F.intersected(T)), this._elementCanvas.fillRect(F.getX(), F.getY(), F.getWidth(), F.getHeight(), x));
+                            var pageRect = new GRect(Math.ceil(boundsX), Math.ceil(boundsY), Math.floor(boundsWidth), Math.floor(boundsHeight)),
+                                dirtyRects = dirtyMatcher.getNonIntersectingDirtyRectangles();
+                            for (C = 0; C < dirtyRects.length; ++C) {
+                                var F = dirtyRects[C];
+                                ((F = F.intersected(pageRect)), this._elementCanvas.fillRect(F.getX(), F.getY(), F.getWidth(), F.getHeight(), fillStyle));
                             }
-                        } else this._elementCanvas.fillRect(Math.ceil(s), Math.ceil(l), Math.floor(h), Math.floor(c), x);
+                        } else this._elementCanvas.fillRect(Math.ceil(boundsX), Math.ceil(boundsY), Math.floor(boundsWidth), Math.floor(boundsHeight), fillStyle);
                     } finally {
-                        g &&
+                        drawShadow &&
                             ((this._elementCanvas._canvasContext.shadowBlur = 0),
                             (this._elementCanvas._canvasContext.shadowColor = "transparent"));
                     }
                 }
             }),
-                (D.prototype._renderPageMargin = function (e, t) {
-                    var i = e.getPosition(this._viewConfiguration.multiPageView),
-                        n = t.preMultiplied(new f(1, 0, 0, 1, i.getX(), i.getY())),
-                        r = e.getGeometryBBox();
-                    if (r) {
-                        var o = 0;
-                        c.outlineWidth % 2 != 0 && (o = 0.5);
-                        var a = r.expanded(-e.getProperty("ml"), -e.getProperty("mt"), -e.getProperty("mr"), -e.getProperty("mb")),
-                            s = n.mapRect(a).translated(o, o).toAlignedRect(),
-                            l = this._elementPaintContext.dirtyMatcher,
-                            h = Math.ceil(c.outlineWidth / 2);
-                        if ((!l || l.isDirty(s.expanded(h, h, h, h))) && !d.equals(r, a)) {
-                            var A = s.getX(),
-                                p = s.getY(),
-                                u = s.getWidth(),
-                                g = s.getHeight();
-                            this._elementPaintContext.canvas.strokeRect(A, p, u, g, c.outlineWidth, new P([255, 0, 255]));
+                (GEditorWidget.prototype._renderPageMargin = function (page, worldTransform) {
+                    var pagePosition = page.getPosition(this._viewConfiguration.multiPageView),
+                        pageTransform = worldTransform.preMultiplied(new GTransform(1, 0, 0, 1, pagePosition.getX(), pagePosition.getY())),
+                        bbox = page.getGeometryBBox();
+                    if (bbox) {
+                        var offset = 0;
+                        GEditorOptions.outlineWidth % 2 != 0 && (offset = 0.5);
+                        var marginBBox = bbox.expanded(-page.getProperty("ml"), -page.getProperty("mt"), -page.getProperty("mr"), -page.getProperty("mb")),
+                            marginRect = pageTransform.mapRect(marginBBox).translated(offset, offset).toAlignedRect(),
+                            dirtyMatcher = this._elementPaintContext.dirtyMatcher,
+                            halfOutlineWidth = Math.ceil(GEditorOptions.outlineWidth / 2);
+                        if ((!dirtyMatcher || dirtyMatcher.isDirty(marginRect.expanded(halfOutlineWidth, halfOutlineWidth, halfOutlineWidth, halfOutlineWidth))) && !GRect.equals(bbox, marginBBox)) {
+                            var x = marginRect.getX(),
+                                y = marginRect.getY(),
+                                width = marginRect.getWidth(),
+                                height = marginRect.getHeight();
+                            this._elementPaintContext.canvas.strokeRect(x, y, width, height, GEditorOptions.outlineWidth, new GRGBColor([255, 0, 255]));
                         }
                     }
                 }),
-                (D.prototype.handleDropEvent = function (e) {
-                    var t = this._convertClientPositionFromMousePosition(e);
-                    this._handleDrop(t, e.dataTransfer);
+                (GEditorWidget.prototype.handleDropEvent = function (event) {
+                    var clientPosition = this._convertClientPositionFromMousePosition(event);
+                    this._handleDrop(clientPosition, event.dataTransfer);
                 }),
-                (D.prototype._handleSymbolDrop = function (e) {
-                    var t = this._scene.getSymbols();
-                    if (t) {
-                        for (var i = false, n = 0; n < t.length && !i; n++)
-                            t[n].getMultireferenceId() !== e.getMultireferenceId() || t[n].getParent() || ((e = t[n]), (i = true));
-                        if (!i) {
-                            var r = e.getProperty("masterMultiRef");
-                            for (n = 0; n < t.length && !i; n++) t[n].getProperty("masterMultiRef") === r && (i = true);
-                            i
+                (GEditorWidget.prototype._handleSymbolDrop = function (symbol) {
+                    var symbols = this._scene.getSymbols();
+                    if (symbols) {
+                        for (var found = false, n = 0; n < symbols.length && !found; n++)
+                            symbols[n].getMultireferenceId() !== symbol.getMultireferenceId() || symbols[n].getParent() || ((symbol = symbols[n]), (found = true));
+                        if (!found) {
+                            var masterMultiRef = symbol.getProperty("masterMultiRef");
+                            for (n = 0; n < symbols.length && !found; n++) symbols[n].getProperty("masterMultiRef") === masterMultiRef && (found = true);
+                            found
                                 ? console.log("inserting:found")
-                                : ((e._master = true),
-                                  (e.getProperty("masterRef") === e.getReferenceId() &&
-                                      e.getProperty("masterMultiRef") === e.getMultireferenceId()) ||
+                                : ((symbol._master = true),
+                                  (symbol.getProperty("masterRef") === symbol.getReferenceId() &&
+                                      symbol.getProperty("masterMultiRef") === symbol.getMultireferenceId()) ||
                                       console.log("inserting: making non master a master"),
-                                  e.setProperties(["masterRef", "masterMultiRef"], [e.getReferenceId(), e.getMultireferenceId()]));
+                                  symbol.setProperties(["masterRef", "masterMultiRef"], [symbol.getReferenceId(), symbol.getMultireferenceId()]));
                         }
                     }
-                    return e;
+                    return symbol;
                 }),
-                (D.prototype._handleDrop = function (e, t) {
-                    var i = this.getViewTransform(this._scene).mapPoint(e),
-                        o = this.getViewTransform(this._scene.getActivePage()).mapPoint(e);
-                    if (t.files && t.files.length > 0) {
+                (GEditorWidget.prototype._handleDrop = function (clientPosition, dataTransfer) {
+                    var scenePoint = this.getViewTransform(this._scene).mapPoint(clientPosition),
+                        pagePoint = this.getViewTransform(this._scene.getActivePage()).mapPoint(clientPosition);
+                    if (dataTransfer.files && dataTransfer.files.length > 0) {
                         if (this._editor.hasEventListeners(GEditor.FileDropEvent))
-                            for (var a = 0; a < t.files.length; ++a) this._editor.trigger(new GEditor.FileDropEvent(t.files[a], o));
-                    } else if (t.types && t.types.length > 0) {
-                        var s = [],
-                            l = false;
-                        for (a = 0; a < t.types.length; ++a) {
-                            var h = t.types[a],
-                                A = t.getData(h);
+                            for (var a = 0; a < dataTransfer.files.length; ++a) this._editor.trigger(new GEditor.FileDropEvent(dataTransfer.files[a], pagePoint));
+                    } else if (dataTransfer.types && dataTransfer.types.length > 0) {
+                        var matches = [],
+                            handled = false;
+                        for (a = 0; a < dataTransfer.types.length; ++a) {
+                            var h = dataTransfer.types[a],
+                                A = dataTransfer.getData(h);
                             if (A) {
                                 var p = null,
                                     u = null;
                                 switch (h) {
-                                    case n.MIME_TYPE:
-                                        ((p = _.DropType.Pattern), (u = n.deserialize(A)));
+                                    case GPattern.MIME_TYPE:
+                                        ((p = GElementEditor.DropType.Pattern), (u = GPattern.deserialize(A)));
                                         break;
-                                    case r.MIME_TYPE:
-                                        ((p = _.DropType.Node), (u = r.deserialize(A)) instanceof T && (u = this._handleSymbolDrop(u)));
+                                    case GNode.MIME_TYPE:
+                                        ((p = GElementEditor.DropType.Node), (u = GNode.deserialize(A)) instanceof GSymbol && (u = this._handleSymbolDrop(u)));
                                         break;
-                                    case _.DROP_MIME_TYPE_FONT_FAMILY:
-                                        ((p = _.DropType.FontFamily), (u = A));
+                                    case GElementEditor.DROP_MIME_TYPE_FONT_FAMILY:
+                                        ((p = GElementEditor.DropType.FontFamily), (u = A));
                                         break;
-                                    case _.DROP_MIME_TYPE_CUSTOM:
+                                    case GElementEditor.DROP_MIME_TYPE_CUSTOM:
                                         this._editor.hasEventListeners(GEditor.CustomDropEvent) &&
-                                            this._editor.trigger(new GEditor.CustomDropEvent(A, o));
+                                            this._editor.trigger(new GEditor.CustomDropEvent(A, pagePoint));
                                         break;
                                     case "text/plain":
-                                        ((p = _.DropType.Text), (u = A));
+                                        ((p = GElementEditor.DropType.Text), (u = A));
                                         break;
                                     default:
                                         continue;
                                 }
                                 if (
-                                    (s.push({
+                                    (matches.push({
                                         type: p,
                                         source: u,
                                     }),
                                     null !== p)
                                 ) {
                                     var d = this._scene.hitTest(
-                                        e,
+                                        clientPosition,
                                         this.getWorldTransform(this._scene),
                                         null,
                                         true,
                                         -1,
-                                        c.pickDistance,
+                                        GEditorOptions.pickDistance,
                                         true,
                                         this._dropHitFilter,
                                         false,
@@ -575,17 +575,17 @@ module.exports = function (module, exports, require) {
                                     if (d && d.length > 0)
                                         for (var y = 0; y < d.length; ++y) {
                                             var v = d[y],
-                                                C = _.createEditor(v.element);
+                                                C = GElementEditor.createEditor(v.element);
                                             if (C) {
                                                 for (var w = null, E = v.element; E; ) {
-                                                    if (E instanceof b) {
-                                                        w = this.getViewTransform(E).mapPoint(e);
+                                                    if (E instanceof GPage) {
+                                                        w = this.getViewTransform(E).mapPoint(clientPosition);
                                                         break;
                                                     }
                                                     E = E.getParent();
                                                 }
                                                 if (w && C.acceptDrop(w, p, u, v.data)) {
-                                                    l = true;
+                                                    handled = true;
                                                     break;
                                                 }
                                             }
@@ -593,25 +593,25 @@ module.exports = function (module, exports, require) {
                                 }
                             }
                         }
-                        if (!l)
-                            for (a = 0; a < s.length; ++a) {
-                                ((p = s[a].type), (u = s[a].source));
-                                if (p === _.DropType.Node && u instanceof g) {
-                                    if (u instanceof T) {
+                        if (!handled)
+                            for (a = 0; a < matches.length; ++a) {
+                                ((p = matches[a].type), (u = matches[a].source));
+                                if (p === GElementEditor.DropType.Node && u instanceof GElement) {
+                                    if (u instanceof GSymbol) {
                                         var B = u.getGeometryBBox();
                                         if (B) {
                                             var x = B.getX(),
                                                 P = B.getY();
-                                            u.transform(new f(1, 0, 0, 1, -x + o.getX(), -P + o.getY()), true);
+                                            u.transform(new GTransform(1, 0, 0, 1, -x + pagePoint.getX(), -P + pagePoint.getY()), true);
                                         }
-                                    } else u.transform(new f(1, 0, 0, 1, o.getX(), o.getY()), true);
-                                    this._editor.updateByMousePosition(i, null, false, this._viewConfiguration);
+                                    } else u.transform(new GTransform(1, 0, 0, 1, pagePoint.getX(), pagePoint.getY()), true);
+                                    this._editor.updateByMousePosition(scenePoint, null, false, this._viewConfiguration);
                                     var S = [],
                                         R = [],
                                         D = u.accept(
-                                            function (e) {
+                                            function (child) {
                                                 return (
-                                                    !!(e instanceof T && e.isMaster()) && (S.push(e.getMultireferenceId()), R.push(e), true)
+                                                    !!(child instanceof GSymbol && child.isMaster()) && (S.push(child.getMultireferenceId()), R.push(child), true)
                                                 );
                                             },
                                             false,
@@ -621,27 +621,27 @@ module.exports = function (module, exports, require) {
                                         this._editor.insertElements([u], true, D, true),
                                         D &&
                                             (this._scene.acceptChildren(
-                                                function (e) {
-                                                    if (e instanceof T && !e.isMaster()) {
-                                                        var t = S.indexOf(e.getProperty("masterMultiRef"));
-                                                        if (t >= 0) {
-                                                            var i = R[t];
-                                                            (this._scene.link(i, e), e.setProperty("masterRef", i.getReferenceId()));
+                                                function (child) {
+                                                    if (child instanceof GSymbol && !child.isMaster()) {
+                                                        var masterIndex = S.indexOf(child.getProperty("masterMultiRef"));
+                                                        if (masterIndex >= 0) {
+                                                            var masterElement = R[masterIndex];
+                                                            (this._scene.link(masterElement, child), child.setProperty("masterRef", masterElement.getReferenceId()));
                                                         }
                                                     }
                                                 }.bind(this)
                                             ),
-                                            this._editor.commitTransaction(String.get(new F("GEditorWidget", "action.insert-master-symbol")))),
-                                        (l = true));
+                                            this._editor.commitTransaction(String.get(new GLocaleKey("GEditorWidget", "action.insert-master-symbol")))),
+                                        (handled = true));
                                 }
                             }
                     }
                 }),
-                (D.prototype._dropHitFilter = function (e) {
-                    return !e.hasFlag(g.Flag.FullLocked);
+                (GEditorWidget.prototype._dropHitFilter = function (element) {
+                    return !element.hasFlag(GElement.Flag.FullLocked);
                 }),
-                (D.prototype.toString = function () {
+                (GEditorWidget.prototype.toString = function () {
                     return "[Object GEditorWidget]";
                 }),
-                (module.exports = D));
+                (module.exports = GEditorWidget));
         };

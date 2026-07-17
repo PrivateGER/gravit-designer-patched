@@ -3,10 +3,10 @@ module.exports = function (module, exports, require) {
         var _interopRequireDefault = require(16),
             GObject = require(1),
             GPlatform = require(15),
-            r = _interopRequireDefault(require(31)),
+            r = _interopRequireDefault(require(31 /* GAction */)),
             s = _interopRequireDefault(require(18 /* GCategory */)),
             SidebarsIds = require(198),
-            c = _interopRequireDefault(require(1170));
+            c = _interopRequireDefault(require(1170 /* GToggleSidebarAction */));
         class d extends r.default {
             getId() {
                 return d.ID;

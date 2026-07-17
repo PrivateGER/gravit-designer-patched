@@ -1,7 +1,7 @@
 module.exports = function (module, exports, require) {
         "use strict";
         (require(30 /* polyfill:Object */), require(4), require(38), require(97));
-        const o = require(156),
+        const CloudFile = require(156),
             i = require(1301);
         function a(e) {
             var t, n, o;
@@ -10,7 +10,7 @@ module.exports = function (module, exports, require) {
             ((this.nextPageToken = t), (this.items = n || []), (this.query = o));
         }
         ((a.prototype._isItemValid = function (e) {
-            return !(e = e instanceof Array ? e : [e]).some((e) => (!e) instanceof o);
+            return !(e = e instanceof Array ? e : [e]).some((e) => (!e) instanceof CloudFile);
         }),
             (a.prototype.nextPageToken = null),
             (a.prototype.items = null),
@@ -34,7 +34,7 @@ module.exports = function (module, exports, require) {
                 var t = new a();
                 return (
                     (t = Object.assign(t, e)).query && (t.query = i.from(t.query)),
-                    t.items && (t.items = t.items.map((e) => o.from(e))),
+                    t.items && (t.items = t.items.map((e) => CloudFile.from(e))),
                     t
                 );
             }),

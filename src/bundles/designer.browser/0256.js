@@ -5,35 +5,35 @@ module.exports = function (module, exports, require) {
             GPlatform = require(15),
             Utils = require(40),
             designerConfig = require(10),
-            s = require(357);
-        function l(e, t, n) {
-            const a = (e) => {
-                if (GPlatform.GKey.translateKey(e.keyCode) === GPlatform.GKey.Constant.ESC)
-                    return (e.preventDefault(), e.stopPropagation(), $(document).off("keydown", a), this._dialog.gDialog("close"), false);
+            uiConfig = require(357);
+        function GOfflineDialog(title, subtitle, buttons) {
+            const handleKeydown = (event) => {
+                if (GPlatform.GKey.translateKey(event.keyCode) === GPlatform.GKey.Constant.ESC)
+                    return (event.preventDefault(), event.stopPropagation(), $(document).off("keydown", handleKeydown), this._dialog.gDialog("close"), false);
             };
             ((this._dialog = $("<div></div>").gDialog({
                 releaseOnClose: true,
                 className: "g-offline-dialog",
                 alwaysCloseable: true,
-                closeCallback: () => $(document).off("keydown", a),
+                closeCallback: () => $(document).off("keydown", handleKeydown),
             })),
-                $(document).on("keydown", a),
+                $(document).on("keydown", handleKeydown),
                 $("<div></div>")
                     .addClass("g-btn-close")
                     .append($("<span></span>").addClass("gravit-icon-close"))
                     .on("click", this.close.bind(this))
                     .appendTo(this._dialog),
                 $("<div></div>").addClass("logo").appendTo(this._dialog));
-            const l = $("<div></div>")
+            const content = $("<div></div>")
                 .addClass("content")
-                .append($("<span></span>").addClass("title").html(e))
-                .append($("<span></span>").addClass("subtitle").html(t))
+                .append($("<span></span>").addClass("title").html(title))
+                .append($("<span></span>").addClass("subtitle").html(subtitle))
                 .append(
                     $("<div></div>")
                         .addClass("buttons")
                         .append(
-                            n.map((e) => {
-                                let { label, onclick, highlighted } = e;
+                            buttons.map((buttonSpec) => {
+                                let { label, onclick, highlighted } = buttonSpec;
                                 return $("<button></button>")
                                     .append($("<span></span>").text(label))
                                     .addClass("g-pro-button " + (highlighted ? "highlighted" : ""))
@@ -41,75 +41,75 @@ module.exports = function (module, exports, require) {
                             })
                         )
                 );
-            (s.OFFLINEDIALOG.HAS_FOOTER &&
-                l.append(
+            (uiConfig.OFFLINEDIALOG.HAS_FOOTER &&
+                content.append(
                     $("<span></span>")
                         .addClass("footer")
                         .html(GObject.GLocale.getValue("GOfflineDialog", "text.offline-footer").replace("%link", designerConfig.gApi.link.getSupportUrl()))
                 ),
-                l.appendTo(this._dialog));
+                content.appendTo(this._dialog));
         }
-        (GObject.GObject.inherit(l, GObject.GObject),
-            (l.openOfflineWarning = async function () {
-                const e = await gDesigner.getUser();
-                if (!e) return;
-                const t = gDesigner.getLicense(),
-                    n = gDesigner.now();
-                let i = designerConfig.DateAPI.millisecondsToDays(designerConfig.DateAPI.diff(designerConfig.DateAPI.toUTCZone(n), t.getOfflineExpirationDate()));
-                new l(
-                    GObject.GLocale.get(new GObject.GLocaleKey("GOfflineDialog", "text.offline-title")).replace("%name", e.getFullUserName()),
-                    GObject.GLocale.get(new GObject.GLocaleKey("GOfflineDialog", "text.offline-subtitle")).replace("%days", i),
+        (GObject.GObject.inherit(GOfflineDialog, GObject.GObject),
+            (GOfflineDialog.openOfflineWarning = async function () {
+                const user = await gDesigner.getUser();
+                if (!user) return;
+                const license = gDesigner.getLicense(),
+                    now = gDesigner.now();
+                let daysUntilExpiration = designerConfig.DateAPI.millisecondsToDays(designerConfig.DateAPI.diff(designerConfig.DateAPI.toUTCZone(now), license.getOfflineExpirationDate()));
+                new GOfflineDialog(
+                    GObject.GLocale.get(new GObject.GLocaleKey("GOfflineDialog", "text.offline-title")).replace("%name", user.getFullUserName()),
+                    GObject.GLocale.get(new GObject.GLocaleKey("GOfflineDialog", "text.offline-subtitle")).replace("%days", daysUntilExpiration),
                     [
                         {
                             label: GObject.GLocale.get(new GObject.GLocaleKey("GOfflineDialog", "text.offline-check")),
-                            onclick: (e) => e.close(),
+                            onclick: (dialog) => dialog.close(),
                         },
                     ]
                 ).open();
             }),
-            (l.openUnavailableFeature = function (e) {
-                l.openRetryConnection(e, GObject.GLocale.get(new GObject.GLocaleKey("GOfflineDialog", "title.unavailable-feature")));
+            (GOfflineDialog.openUnavailableFeature = function (onRetrySuccess) {
+                GOfflineDialog.openRetryConnection(onRetrySuccess, GObject.GLocale.get(new GObject.GLocaleKey("GOfflineDialog", "title.unavailable-feature")));
             }),
-            (l.openRetryConnection = async function (e, t) {
+            (GOfflineDialog.openRetryConnection = async function (onRetrySuccess, titleOverride) {
                 if ($(".g-offline-dialog").length) return;
-                const n = await gDesigner.getUser();
-                new l(
-                    t ||
+                const user = await gDesigner.getUser();
+                new GOfflineDialog(
+                    titleOverride ||
                         GObject.GLocale.get(new GObject.GLocaleKey("GOfflineDialog", "text.offline-title-retry")).replace(
                             "%name",
-                            n ? n.getFullUserName() : GObject.GLocale.get(new GObject.GLocaleKey("GOfflineDialog", "text.display-name-in-case-missing"))
+                            user ? user.getFullUserName() : GObject.GLocale.get(new GObject.GLocaleKey("GOfflineDialog", "text.display-name-in-case-missing"))
                         ),
                     "",
                     [
                         {
                             label: GObject.GLocale.get(new GObject.GLocaleKey("GOfflineDialog", "text.offline-retry")),
                             highlighted: true,
-                            onclick: async (t) => {
+                            onclick: async (dialog) => {
                                 (gDesigner.stats("offline-dialog_retry"),
-                                    t._dialog.addClass("g-loading"),
+                                    dialog._dialog.addClass("g-loading"),
                                     await (0, Utils.sleep)(500),
-                                    t._dialog.removeClass("g-loading"),
-                                    (await gDesigner.isOfflineAsync()) || (e && e(), t.close()));
+                                    dialog._dialog.removeClass("g-loading"),
+                                    (await gDesigner.isOfflineAsync()) || (onRetrySuccess && onRetrySuccess(), dialog.close()));
                             },
                         },
                         {
                             label: GObject.GLocale.get(new GObject.GLocaleKey("GOfflineDialog", "text.offline-cancel")),
-                            onclick: (e) => {
-                                (gDesigner.stats("offline-dialog_cancel"), e.close());
+                            onclick: (dialog) => {
+                                (gDesigner.stats("offline-dialog_cancel"), dialog.close());
                             },
                         },
                     ]
                 ).open();
             }),
-            (l.prototype._dialog = null),
-            (l.prototype.open = function () {
+            (GOfflineDialog.prototype._dialog = null),
+            (GOfflineDialog.prototype.open = function () {
                 this._dialog.gDialog("open", false);
             }),
-            (l.prototype.close = function () {
+            (GOfflineDialog.prototype.close = function () {
                 this._dialog.gDialog("close");
             }),
-            (l.prototype.toString = function () {
+            (GOfflineDialog.prototype.toString = function () {
                 return "[Object GOfflineDialog]";
             }),
-            (module.exports = l));
+            (module.exports = GOfflineDialog));
     };

@@ -3,265 +3,265 @@ module.exports = function (module, exports, require) {
         (require(58 /* polyfill:Array */), require(19), require(96 /* polyfill:JSON */), require(8 /* Symbol */), require(20 /* polyfill:RegExp */), require(3), require(4), require(13), require(26), require(125), require(126 /* polyfill:URL */), require(114));
         var IsFiniteNonNegativeNumber = require(0),
             String = require(9),
-            a = require(47),
-            r = require(85),
-            s = require(1195);
-        const l = require(1378);
-        var c = require(255),
-            d = require(1379),
-            u = require(1380),
-            p = require(1118),
-            g = require(1199),
+            GLocaleKey = require(47),
+            GContainer = require(85),
+            GBrowserStorage = require(1195);
+        const GMarketingFileStorageItem = require(1378);
+        var FontsProviderManager = require(255),
+            GoogleFontsProvider = require(1379),
+            GBrowserFontsProvider = require(1380),
+            GImportedFontsProvider = require(1118),
+            GLocalFontsProvider = require(1199),
             GCloudStorage = require(220),
-            f = require(1385),
-            m = require(1386),
+            GStoreStorage = require(1385),
+            GExternalAssetStorage = require(1386),
             GCommonNames = require(119),
             GDocument = require(163),
-            _ = require(86),
+            DocumentStatus = require(86),
             GPresets = require(1153),
             GSystemDialog = require(44),
-            C = require(10 /* designerConfig */).LOCAL_FONTS_API_ENABLED;
-        const x = require(1482),
+            localFontsApiEnabled = require(10 /* designerConfig */).LOCAL_FONTS_API_ENABLED;
+        const downloadMixin = require(1482),
             { base64StringToString } = require(40 /* Utils */);
-        function E() {
-            ((this._storage = new s()),
+        function GBrowserContainer() {
+            ((this._storage = new GBrowserStorage()),
                 "serviceWorker" in navigator &&
                     setTimeout(function () {
-                        navigator.serviceWorker.register("/cacher.js").then(function (e) {
-                            e.update && e.update();
+                        navigator.serviceWorker.register("/cacher.js").then(function (registration) {
+                            registration.update && registration.update();
                         });
                     }, 15e3));
         }
-        (IsFiniteNonNegativeNumber.inheritAndMix(E, r, [x]),
-            (E.prototype.getRuntime = function () {
-                return window.matchMedia("(display-mode: standalone)").matches ? r.Runtime.PWA : r.Runtime.Browser;
+        (IsFiniteNonNegativeNumber.inheritAndMix(GBrowserContainer, GContainer, [downloadMixin]),
+            (GBrowserContainer.prototype.getRuntime = function () {
+                return window.matchMedia("(display-mode: standalone)").matches ? GContainer.Runtime.PWA : GContainer.Runtime.Browser;
             }),
-            (E.prototype.getStorage = function () {
+            (GBrowserContainer.prototype.getStorage = function () {
                 return this._storage;
             }),
-            (E.prototype.getSystemFontsProvider = function () {
-                return u;
+            (GBrowserContainer.prototype.getSystemFontsProvider = function () {
+                return GBrowserFontsProvider;
             }),
-            (E.prototype.supportsLocalFonts = function () {
-                return C;
+            (GBrowserContainer.prototype.supportsLocalFonts = function () {
+                return localFontsApiEnabled;
             }),
-            (E.prototype.registerFontProviders = function () {
-                if ((r.prototype.registerFontProviders.call(this), c.registerProvider(p), c.registerProvider(d), this.supportsLocalFonts()))
+            (GBrowserContainer.prototype.registerFontProviders = function () {
+                if ((GContainer.prototype.registerFontProviders.call(this), FontsProviderManager.registerProvider(GImportedFontsProvider), FontsProviderManager.registerProvider(GoogleFontsProvider), this.supportsLocalFonts()))
                     try {
-                        c.registerProvider(g);
+                        FontsProviderManager.registerProvider(GLocalFontsProvider);
                     } catch (e) {
                         console.error("Local Fonts Access API is not available");
                     }
-                window.GSystemFontsProvider = u;
+                window.GSystemFontsProvider = GBrowserFontsProvider;
             }),
-            (E.prototype.openExternalLink = function (e, t) {
-                (e && e.preventDefault(), window.open(t, "_blank"));
+            (GBrowserContainer.prototype.openExternalLink = function (event, url) {
+                (event && event.preventDefault(), window.open(url, "_blank"));
             }),
-            (E.prototype.start = function () {
-                var e,
-                    t,
-                    n,
-                    o = new URL(window.location.href),
-                    i = null;
-                if (o.searchParams) {
-                    if (o.searchParams.get("token") && o.searchParams.get("d"))
-                        i = new r.OpenFileRequest(
-                            r.OpenFileRequest.Type.DocumentOrToken,
+            (GBrowserContainer.prototype.start = function () {
+                var linkType,
+                    directLinkValue,
+                    match,
+                    currentUrl = new URL(window.location.href),
+                    openFileRequest = null;
+                if (currentUrl.searchParams) {
+                    if (currentUrl.searchParams.get("token") && currentUrl.searchParams.get("d"))
+                        openFileRequest = new GContainer.OpenFileRequest(
+                            GContainer.OpenFileRequest.Type.DocumentOrToken,
                             JSON.stringify({
-                                token: o.searchParams.get(r.OpenFileRequest.Type.Token),
-                                doc: o.searchParams.get("d"),
+                                token: currentUrl.searchParams.get(GContainer.OpenFileRequest.Type.Token),
+                                doc: currentUrl.searchParams.get("d"),
                             })
                         );
-                    else if (o.searchParams.get("token"))
-                        i = new r.OpenFileRequest(r.OpenFileRequest.Type.Token, o.searchParams.get(r.OpenFileRequest.Type.Token));
-                    else if (o.searchParams.get("d")) i = new r.OpenFileRequest(r.OpenFileRequest.Type.Document, o.searchParams.get("d"));
-                    else if (o.searchParams.get("storeContent"))
-                        i = new r.OpenFileRequest(
-                            r.OpenFileRequest.Type.StoreContent,
-                            o.searchParams.get(r.OpenFileRequest.Type.StoreContent)
+                    else if (currentUrl.searchParams.get("token"))
+                        openFileRequest = new GContainer.OpenFileRequest(GContainer.OpenFileRequest.Type.Token, currentUrl.searchParams.get(GContainer.OpenFileRequest.Type.Token));
+                    else if (currentUrl.searchParams.get("d")) openFileRequest = new GContainer.OpenFileRequest(GContainer.OpenFileRequest.Type.Document, currentUrl.searchParams.get("d"));
+                    else if (currentUrl.searchParams.get("storeContent"))
+                        openFileRequest = new GContainer.OpenFileRequest(
+                            GContainer.OpenFileRequest.Type.StoreContent,
+                            currentUrl.searchParams.get(GContainer.OpenFileRequest.Type.StoreContent)
                         );
-                    else if (o.searchParams.get(r.OpenFileRequest.Type.ExternalAsset))
-                        i = new r.OpenFileRequest(
-                            r.OpenFileRequest.Type.ExternalAsset,
-                            o.searchParams.get(r.OpenFileRequest.Type.ExternalAsset)
+                    else if (currentUrl.searchParams.get(GContainer.OpenFileRequest.Type.ExternalAsset))
+                        openFileRequest = new GContainer.OpenFileRequest(
+                            GContainer.OpenFileRequest.Type.ExternalAsset,
+                            currentUrl.searchParams.get(GContainer.OpenFileRequest.Type.ExternalAsset)
                         );
-                    else if (o.searchParams.get("directlink")) {
-                        t = o.searchParams.get("directlink");
+                    else if (currentUrl.searchParams.get("directlink")) {
+                        directLinkValue = currentUrl.searchParams.get("directlink");
                         try {
-                            (e = JSON.parse(base64StringToString(decodeURIComponent(t))).type) === r.OpenFileRequest.Type.Preset
-                                ? (i = new r.OpenFileRequest(r.OpenFileRequest.Type.Preset, t))
-                                : e === r.OpenFileRequest.Type.Template && (i = new r.OpenFileRequest(r.OpenFileRequest.Type.Template, t));
+                            (linkType = JSON.parse(base64StringToString(decodeURIComponent(directLinkValue))).type) === GContainer.OpenFileRequest.Type.Preset
+                                ? (openFileRequest = new GContainer.OpenFileRequest(GContainer.OpenFileRequest.Type.Preset, directLinkValue))
+                                : linkType === GContainer.OpenFileRequest.Type.Template && (openFileRequest = new GContainer.OpenFileRequest(GContainer.OpenFileRequest.Type.Template, directLinkValue));
                         } catch (e) {
                             "function" == typeof gdb_showScene && console.warn("Invalid parameters.");
                         }
                     }
                 } else {
                     for (
-                        var a =
+                        var queryParamPattern =
                                 /[&\?]((?:[\0-"\$-<>-\uD7FF\uE000-\uFFFF]|[\uD800-\uDBFF][\uDC00-\uDFFF]|[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?:[^\uD800-\uDBFF]|^)[\uDC00-\uDFFF])+)=((?:[\0-"\$%'-\uD7FF\uE000-\uFFFF]|[\uD800-\uDBFF][\uDC00-\uDFFF]|[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?:[^\uD800-\uDBFF]|^)[\uDC00-\uDFFF])*)/g,
-                            s = {};
-                        (n = a.exec(window.location.href));
+                            queryParams = {};
+                        (match = queryParamPattern.exec(window.location.href));
 
                     )
-                        s[n[1]] = n[2];
-                    if (s.token && s.d)
-                        i = new r.OpenFileRequest(r.OpenFileRequest.Type.DocumentOrToken, {
-                            token: s[r.OpenFileRequest.Type.Token],
-                            doc: s.d,
+                        queryParams[match[1]] = match[2];
+                    if (queryParams.token && queryParams.d)
+                        openFileRequest = new GContainer.OpenFileRequest(GContainer.OpenFileRequest.Type.DocumentOrToken, {
+                            token: queryParams[GContainer.OpenFileRequest.Type.Token],
+                            doc: queryParams.d,
                         });
-                    else if (s.token) i = new r.OpenFileRequest(r.OpenFileRequest.Type.Token, s[r.OpenFileRequest.Type.Token]);
-                    else if (s.d) i = new r.OpenFileRequest(r.OpenFileRequest.Type.Document, s.d);
-                    else if (s.storeContent)
-                        i = new r.OpenFileRequest(r.OpenFileRequest.Type.StoreContent, s[r.OpenFileRequest.Type.StoreContent]);
-                    else if (s[r.OpenFileRequest.Type.ExternalAsset])
-                        i = new r.OpenFileRequest(r.OpenFileRequest.Type.StoreContent, s[r.OpenFileRequest.Type.ExternalAsset]);
-                    else if (s.directlink) {
-                        t = s.directlink;
+                    else if (queryParams.token) openFileRequest = new GContainer.OpenFileRequest(GContainer.OpenFileRequest.Type.Token, queryParams[GContainer.OpenFileRequest.Type.Token]);
+                    else if (queryParams.d) openFileRequest = new GContainer.OpenFileRequest(GContainer.OpenFileRequest.Type.Document, queryParams.d);
+                    else if (queryParams.storeContent)
+                        openFileRequest = new GContainer.OpenFileRequest(GContainer.OpenFileRequest.Type.StoreContent, queryParams[GContainer.OpenFileRequest.Type.StoreContent]);
+                    else if (queryParams[GContainer.OpenFileRequest.Type.ExternalAsset])
+                        openFileRequest = new GContainer.OpenFileRequest(GContainer.OpenFileRequest.Type.StoreContent, queryParams[GContainer.OpenFileRequest.Type.ExternalAsset]);
+                    else if (queryParams.directlink) {
+                        directLinkValue = queryParams.directlink;
                         try {
-                            (e = JSON.parse(base64StringToString(decodeURIComponent(t))).type) === r.OpenFileRequest.Type.Preset
-                                ? (i = new r.OpenFileRequest(r.OpenFileRequest.Type.Preset, t))
-                                : e === r.OpenFileRequest.Type.Template && (i = new r.OpenFileRequest(r.OpenFileRequest.Type.Template, t));
+                            (linkType = JSON.parse(base64StringToString(decodeURIComponent(directLinkValue))).type) === GContainer.OpenFileRequest.Type.Preset
+                                ? (openFileRequest = new GContainer.OpenFileRequest(GContainer.OpenFileRequest.Type.Preset, directLinkValue))
+                                : linkType === GContainer.OpenFileRequest.Type.Template && (openFileRequest = new GContainer.OpenFileRequest(GContainer.OpenFileRequest.Type.Template, directLinkValue));
                         } catch (e) {
                             "function" == typeof gdb_showScene && console.warn("Invalid parameters.");
                         }
                     }
                 }
-                return i;
+                return openFileRequest;
             }),
-            (E.prototype.copyToClipboard = function (e) {
-                if (navigator.clipboard) return navigator.clipboard.writeText(e);
+            (GBrowserContainer.prototype.copyToClipboard = function (text) {
+                if (navigator.clipboard) return navigator.clipboard.writeText(text);
                 try {
-                    var t = (function () {
+                    var savedRange = (function () {
                             if (window.getSelection) {
-                                var e = window.getSelection();
-                                if (e.getRangeAt && e.rangeCount) return e.getRangeAt(0);
+                                var selection = window.getSelection();
+                                if (selection.getRangeAt && selection.rangeCount) return selection.getRangeAt(0);
                             } else if (document.selection && document.selection.createRange) return document.selection.createRange();
                         })(),
-                        n = document.createElement("textArea");
+                        textArea = document.createElement("textArea");
                     return (
-                        (n.value = e),
-                        document.body.appendChild(n),
-                        n.select(),
+                        (textArea.value = text),
+                        document.body.appendChild(textArea),
+                        textArea.select(),
                         document.execCommand("copy"),
-                        document.body.removeChild(n),
-                        (function (e) {
-                            if (e)
+                        document.body.removeChild(textArea),
+                        (function (previousRange) {
+                            if (previousRange)
                                 if (window.getSelection) {
-                                    var t = window.getSelection();
-                                    (t.removeAllRanges(), t.addRange(e));
-                                } else document.selection && e.select && e.select();
-                        })(t),
+                                    var selection = window.getSelection();
+                                    (selection.removeAllRanges(), selection.addRange(previousRange));
+                                } else document.selection && previousRange.select && previousRange.select();
+                        })(savedRange),
                         Promise.resolve()
                     );
-                } catch (e) {
-                    return Promise.reject(e);
+                } catch (error) {
+                    return Promise.reject(error);
                 }
             }),
-            (E.prototype.openStorageFile = function (e, t, n) {
-                E.openStorageFile(e, t, n, this._storage);
+            (GBrowserContainer.prototype.openStorageFile = function (targetDocument, request, callback) {
+                GBrowserContainer.openStorageFile(targetDocument, request, callback, this._storage);
             }),
-            (E.openStorageFile = function (e, t, n, o) {
-                var s = { progress: null };
-                (e.updateStatus(_.Loading, s),
+            (GBrowserContainer.openStorageFile = function (targetDocument, request, callback, storage) {
+                var loadingData = { progress: null };
+                (targetDocument.updateStatus(DocumentStatus.Loading, loadingData),
                     (async function () {
                         try {
-                            let d,
-                                u = t.getType(),
-                                p = t.getContent();
-                            if (u === r.OpenFileRequest.Type.StoreContent)
-                                ((d = await gApi.getProviderContentDetails(p)), d && n(new f.Item(o, d.id, d.name, d), { loadingData: s }));
-                            else if (u === r.OpenFileRequest.Type.ExternalAsset)
-                                ((d = await gApi.getProviderContentDetails(p)),
-                                    d && n(new m.Item(o, d.id, d.name, d, p), { loadingData: s }));
-                            else if (u === r.OpenFileRequest.Type.Preset) {
-                                let e = JSON.parse(base64StringToString(decodeURIComponent(p))),
-                                    t =
-                                        e &&
-                                        (function (e) {
-                                            let t = GPresets.getPresets(),
-                                                n = null,
-                                                o = null;
-                                            for (let i of t) {
-                                                let t = i.layouts.find((t) => (t.template ? t.template === e : t.id === e));
-                                                if (t) {
-                                                    ((n = i.name), (o = t));
+                            let loadedData,
+                                requestType = request.getType(),
+                                requestContent = request.getContent();
+                            if (requestType === GContainer.OpenFileRequest.Type.StoreContent)
+                                ((loadedData = await gApi.getProviderContentDetails(requestContent)), loadedData && callback(new GStoreStorage.Item(storage, loadedData.id, loadedData.name, loadedData), { loadingData: loadingData }));
+                            else if (requestType === GContainer.OpenFileRequest.Type.ExternalAsset)
+                                ((loadedData = await gApi.getProviderContentDetails(requestContent)),
+                                    loadedData && callback(new GExternalAssetStorage.Item(storage, loadedData.id, loadedData.name, loadedData, requestContent), { loadingData: loadingData }));
+                            else if (requestType === GContainer.OpenFileRequest.Type.Preset) {
+                                let presetContent = JSON.parse(base64StringToString(decodeURIComponent(requestContent))),
+                                    presetMatch =
+                                        presetContent &&
+                                        (function (presetId) {
+                                            let presetCategories = GPresets.getPresets(),
+                                                matchedCategoryName = null,
+                                                matchedLayout = null;
+                                            for (let category of presetCategories) {
+                                                let layout = category.layouts.find((layout) => (layout.template ? layout.template === presetId : layout.id === presetId));
+                                                if (layout) {
+                                                    ((matchedCategoryName = category.name), (matchedLayout = layout));
                                                     break;
                                                 }
                                             }
-                                            return { presetCategory: n, presetLayout: o };
-                                        })(e.id);
-                                t &&
-                                    t.presetLayout &&
-                                    (t.presetLayout.template
-                                        ? ((d = await gApi.getPresetTemplate({ type: t.presetLayout.template }).catch(() => null)),
-                                          d &&
-                                              n(new l(o, d.data, "".concat(e.id, ".gvdesign"), d.id), {
-                                                  content: e,
-                                                  file: d,
-                                                  preset: t,
-                                                  loadingData: s,
+                                            return { presetCategory: matchedCategoryName, presetLayout: matchedLayout };
+                                        })(presetContent.id);
+                                presetMatch &&
+                                    presetMatch.presetLayout &&
+                                    (presetMatch.presetLayout.template
+                                        ? ((loadedData = await gApi.getPresetTemplate({ type: presetMatch.presetLayout.template }).catch(() => null)),
+                                          loadedData &&
+                                              callback(new GMarketingFileStorageItem(storage, loadedData.data, "".concat(presetContent.id, ".gvdesign"), loadedData.id), {
+                                                  content: presetContent,
+                                                  file: loadedData,
+                                                  preset: presetMatch,
+                                                  loadingData: loadingData,
                                               }))
-                                        : n(t, {
-                                              content: e,
-                                              category: t.presetCategory,
-                                              loadingData: s,
+                                        : callback(presetMatch, {
+                                              content: presetContent,
+                                              category: presetMatch.presetCategory,
+                                              loadingData: loadingData,
                                           }));
-                            } else if (u === r.OpenFileRequest.Type.Template) {
-                                let e = JSON.parse(base64StringToString(decodeURIComponent(p))),
-                                    { file, data } = await GCommonNames.loadDesignData(e.id),
-                                    a = GDocument.FileTypes.find((e) => e.mime === file.type).ext;
+                            } else if (requestType === GContainer.OpenFileRequest.Type.Template) {
+                                let templateContent = JSON.parse(base64StringToString(decodeURIComponent(requestContent))),
+                                    { file, data } = await GCommonNames.loadDesignData(templateContent.id),
+                                    extension = GDocument.FileTypes.find((fileType) => fileType.mime === file.type).ext;
                                 file &&
                                     data &&
-                                    n(new l(o, data, "".concat(file.name, ".").concat(a), file.id), {
-                                        content: e,
+                                    callback(new GMarketingFileStorageItem(storage, data, "".concat(file.name, ".").concat(extension), file.id), {
+                                        content: templateContent,
                                         file: file,
                                         category: file.path,
-                                        loadingData: s,
+                                        loadingData: loadingData,
                                     });
                             } else {
-                                let t;
-                                if (u === r.OpenFileRequest.Type.DocumentOrToken) {
-                                    let e = JSON.parse(p);
-                                    ((d = await gApi.getShare(e.token, true).catch(() => null)),
-                                        d ? (t = e.token) : (d = await gApi.getFile(e.doc).catch(() => null)));
+                                let shareToken;
+                                if (requestType === GContainer.OpenFileRequest.Type.DocumentOrToken) {
+                                    let linkPayload = JSON.parse(requestContent);
+                                    ((loadedData = await gApi.getShare(linkPayload.token, true).catch(() => null)),
+                                        loadedData ? (shareToken = linkPayload.token) : (loadedData = await gApi.getFile(linkPayload.doc).catch(() => null)));
                                 } else
-                                    u === r.OpenFileRequest.Type.Document
-                                        ? (d = await gApi.getFile(p).catch(() => null))
-                                        : u === r.OpenFileRequest.Type.Token &&
-                                          ((t = p), (d = await gApi.getShare(t, true).catch(() => null)));
-                                if (d)
-                                    n(new GCloudStorage.Item(o, d.id, d.name, d, null, t, d.autosave), {
-                                        loadingData: s,
+                                    requestType === GContainer.OpenFileRequest.Type.Document
+                                        ? (loadedData = await gApi.getFile(requestContent).catch(() => null))
+                                        : requestType === GContainer.OpenFileRequest.Type.Token &&
+                                          ((shareToken = requestContent), (loadedData = await gApi.getShare(shareToken, true).catch(() => null)));
+                                if (loadedData)
+                                    callback(new GCloudStorage.Item(storage, loadedData.id, loadedData.name, loadedData, null, shareToken, loadedData.autosave), {
+                                        loadingData: loadingData,
                                     });
                                 else {
-                                    ((s.text = String.get(new a("GContainer", "text.load-failed"))),
-                                        e.updateStatus(_.LoadFailed, s),
-                                        e.setFailedDocumentIdOrToken(p),
-                                        n(null));
-                                    var c = [];
+                                    ((loadingData.text = String.get(new GLocaleKey("GContainer", "text.load-failed"))),
+                                        targetDocument.updateStatus(DocumentStatus.LoadFailed, loadingData),
+                                        targetDocument.setFailedDocumentIdOrToken(requestContent),
+                                        callback(null));
+                                    var buttons = [];
                                     (gDesigner.getShareManager().isPermissionRequestEnabled() &&
-                                        c.push({
-                                            label: String.get(new a("GShareManager", "text.file-request-access")),
-                                            onclick: (e) => {
+                                        buttons.push({
+                                            label: String.get(new GLocaleKey("GShareManager", "text.file-request-access")),
+                                            onclick: (dialogElement) => {
                                                 (gDesigner.stats("permission-dialog_no-access_request-access"),
                                                     gApi
-                                                        .requestPermission(p, {
+                                                        .requestPermission(requestContent, {
                                                             access: true,
-                                                            isToken: u === r.OpenFileRequest.Type.Token,
+                                                            isToken: requestType === GContainer.OpenFileRequest.Type.Token,
                                                         })
                                                         .then(() => {
-                                                            (e.gDialog("close"),
-                                                                GSystemDialog.alert(String.get(new a("GShareManager", "text.sent-request-email"))));
+                                                            (dialogElement.gDialog("close"),
+                                                                GSystemDialog.alert(String.get(new GLocaleKey("GShareManager", "text.sent-request-email"))));
                                                         })
                                                         .catch(() => {
-                                                            GSystemDialog.error(String.get(new a("GShareManager", "text.cannot-request-access")));
+                                                            GSystemDialog.error(String.get(new GLocaleKey("GShareManager", "text.cannot-request-access")));
                                                         }));
                                             },
                                         }),
-                                        c.push({
-                                            label: String.get(new a("GLocale", "ok")),
-                                            onclick: (e) => {
-                                                (gDesigner.stats("permission-dialog_no-access_click-ok"), e.gDialog("close"));
+                                        buttons.push({
+                                            label: String.get(new GLocaleKey("GLocale", "ok")),
+                                            onclick: (dialogElement) => {
+                                                (gDesigner.stats("permission-dialog_no-access_click-ok"), dialogElement.gDialog("close"));
                                             },
                                             highlighted: true,
                                         }),
@@ -269,30 +269,30 @@ module.exports = function (module, exports, require) {
                                             icon: "error",
                                             className: "g-file-can-not-be-found-dialog",
                                             closeable: false,
-                                            closeCallback: () => gDesigner.removeDocument(e, null, true),
-                                            title: String.get(new a("GShareManager", "text.file-can-not-be-accessed-title")),
-                                            subtitle: String.get(new a("GShareManager", "text.file-can-not-be-accessed-info")),
-                                            buttons: c,
+                                            closeCallback: () => gDesigner.removeDocument(targetDocument, null, true),
+                                            title: String.get(new GLocaleKey("GShareManager", "text.file-can-not-be-accessed-title")),
+                                            subtitle: String.get(new GLocaleKey("GShareManager", "text.file-can-not-be-accessed-info")),
+                                            buttons: buttons,
                                         }));
                                 }
                             }
-                        } catch (t) {
-                            (console.log(t),
+                        } catch (error) {
+                            (console.log(error),
                                 setTimeout(function () {
-                                    e.updateStatus(_.LoadFailed, s);
+                                    targetDocument.updateStatus(DocumentStatus.LoadFailed, loadingData);
                                 }, 10),
-                                e.updateStatus(_.LoadFailed, s),
-                                n(null));
+                                targetDocument.updateStatus(DocumentStatus.LoadFailed, loadingData),
+                                callback(null));
                         }
                     })());
             }),
-            (E.prototype.handleDeepLinking = function (e) {
-                const t = r.prototype.handleDeepLinking.call(this, e),
-                    n = [r.DeepLinking.DirectLink, r.DeepLinking.FocusAnnot, r.DeepLinking.CreateShare];
-                return (t && !n.includes(t.link) && window.history.pushState(null, null, window.location.pathname), t);
+            (GBrowserContainer.prototype.handleDeepLinking = function (url) {
+                const deepLinkResult = GContainer.prototype.handleDeepLinking.call(this, url),
+                    excludedLinkTypes = [GContainer.DeepLinking.DirectLink, GContainer.DeepLinking.FocusAnnot, GContainer.DeepLinking.CreateShare];
+                return (deepLinkResult && !excludedLinkTypes.includes(deepLinkResult.link) && window.history.pushState(null, null, window.location.pathname), deepLinkResult);
             }),
-            (E.prototype.toString = function () {
+            (GBrowserContainer.prototype.toString = function () {
                 return "[Object GBrowserContainer]";
             }),
-            (module.exports = E));
+            (module.exports = GBrowserContainer));
     };

@@ -3,60 +3,60 @@ module.exports = function (module, exports, require) {
         (require(290), require(38));
         const {
                 ShareRoles,
-                defaultUserSettings: { share: { defaults: { public: { role } = {}, private: { role: a } = {} } = {} } = {} } = {},
+                defaultUserSettings: { share: { defaults: { public: { role } = {}, private: { role: defaultPrivateRole } = {} } = {} } = {} } = {},
             } = require(10 /* designerConfig */),
-            r = require(1067),
-            s = require(1070),
-            l = require(1071);
-        function c() {
+            GShareRole = require(1067),
+            GPermissions = require(1070),
+            roleExtraGrants = require(1071);
+        function GShareRoleFactory() {
             throw "No instantiate";
         }
-        ((c.makeFromShare = function (e) {
-            const t = c._makeFromShareRole(e.getRole());
-            return (t && (t.applyPermissions(new s(e.getPermissions())), t.lockPermissions()), t);
+        ((GShareRoleFactory.makeFromShare = function (share) {
+            const shareRole = GShareRoleFactory._makeFromShareRole(share.getRole());
+            return (shareRole && (shareRole.applyPermissions(new GPermissions(share.getPermissions())), shareRole.lockPermissions()), shareRole);
         }),
-            (c.makeFromShareRole = function (e) {
-                const t = c._makeFromShareRole(e);
-                return (t.lockPermissions(), t);
+            (GShareRoleFactory.makeFromShareRole = function (roleDefinition) {
+                const shareRole = GShareRoleFactory._makeFromShareRole(roleDefinition);
+                return (shareRole.lockPermissions(), shareRole);
             }),
-            (c._makeFromShareRole = function (e) {
-                if (!e) return null;
-                const { id, name, description, status, pro, permissions: c = {}, assignable, level } = e,
-                    p = new r({
+            (GShareRoleFactory._makeFromShareRole = function (roleDefinition) {
+                if (!roleDefinition) return null;
+                const { id, name, description, status, pro, permissions: rawPermissions = {}, assignable, level } = roleDefinition,
+                    shareRole = new GShareRole({
                         id: id,
                         level: level,
                         name: name,
                         description: description,
                         status: status,
                         pro: pro,
-                        permissions: new s(c),
+                        permissions: new GPermissions(rawPermissions),
                         assignable: assignable,
                     }),
-                    g = l[p.id];
-                return (g && p.grant(g), p);
+                    extraGrants = roleExtraGrants[shareRole.id];
+                return (extraGrants && shareRole.grant(extraGrants), shareRole);
             }),
-            (c.ROLES = {
+            (GShareRoleFactory.ROLES = {
                 get ALL() {
-                    return Object.values(ShareRoles).map((e) => c.makeFromShareRole(e));
+                    return Object.values(ShareRoles).map((roleDefinition) => GShareRoleFactory.makeFromShareRole(roleDefinition));
                 },
                 get DEFAULT_PUBLIC_ROLE() {
-                    return c.makeFromShareRole(role);
+                    return GShareRoleFactory.makeFromShareRole(role);
                 },
                 get DEFAULT_PRIVATE_ROLE() {
-                    return c.makeFromShareRole(a);
+                    return GShareRoleFactory.makeFromShareRole(defaultPrivateRole);
                 },
                 get NO_ACCESS_ROLE() {
-                    return c.makeFromShareRole(ShareRoles.NoAccess);
+                    return GShareRoleFactory.makeFromShareRole(ShareRoles.NoAccess);
                 },
                 get APPROVER_ROLE() {
-                    return c.makeFromShareRole(ShareRoles.Approver);
+                    return GShareRoleFactory.makeFromShareRole(ShareRoles.Approver);
                 },
                 get OWNER_ROLE() {
-                    return c.makeFromShareRole(ShareRoles.Owner);
+                    return GShareRoleFactory.makeFromShareRole(ShareRoles.Owner);
                 },
                 get VIEWER_ROLE() {
-                    return c.makeFromShareRole(ShareRoles.Viewer);
+                    return GShareRoleFactory.makeFromShareRole(ShareRoles.Viewer);
                 },
             }),
-            (module.exports = c));
+            (module.exports = GShareRoleFactory));
     };

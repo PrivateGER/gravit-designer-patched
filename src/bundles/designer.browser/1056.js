@@ -1,7 +1,7 @@
 module.exports = function (module, exports, require) {
         var o;
         module.exports =
-            ((o = require(55)),
+            ((o = require(55 /* lib:crypto-js */)),
             require(98),
             (o.pad.AnsiX923 = {
                 pad: function (e, t) {

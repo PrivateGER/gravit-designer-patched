@@ -2,12 +2,12 @@ module.exports = function (module, exports, require) {
         "use strict";
         require(3);
         var GObject = require(1),
-            i = require(67),
+            GRichTooltipConfig = require(67),
             GCategory = require(18),
-            r = require(31);
+            GAction = require(31);
         function s() {
             s.TOOLTIP_CONFIG = {
-                [i.TOOLTIP_AREA.TOOLBAR]: i.GRichTooltipConfig.from({
+                [GRichTooltipConfig.TOOLTIP_AREA.TOOLBAR]: GRichTooltipConfig.GRichTooltipConfig.from({
                     title: GObject.GLocale.get(new GObject.GLocaleKey("GToggleSnapZonesAction", "tooltip-title")),
                     description: GObject.GLocale.get(new GObject.GLocaleKey("GToggleSnapZonesAction", "tooltip-description")),
                     middle: false,
@@ -15,7 +15,7 @@ module.exports = function (module, exports, require) {
                 }),
             };
         }
-        (GObject.GObject.inherit(s, r),
+        (GObject.GObject.inherit(s, GAction),
             (s.ID = "view.toggle-snapzones"),
             (s.TITLE = new GObject.GLocaleKey("GToggleSnapZonesAction", "title")),
             (s.TOOLTIP_CONFIG = null),

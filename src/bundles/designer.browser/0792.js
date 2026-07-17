@@ -17205,5 +17205,5 @@ module.exports = function (module, exports, require) {
                 ]);
             }),
                 (module.exports = a()));
-        }).call(this, require(221 /* Buffer */).Buffer, require(109), require(183));
+        }).call(this, require(221 /* Buffer */).Buffer, require(109), require(183 /* lib:process */));
     };

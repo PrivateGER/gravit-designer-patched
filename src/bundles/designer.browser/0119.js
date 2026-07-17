@@ -30,11 +30,11 @@ module.exports = function (module, exports, require) {
         var GDocumentEvent = require(78),
             GSystemDialog = require(44);
         const GLoginDialog = require(1093);
-        var GRuntime = require(85),
+        var GContainer = require(85),
             GNoticeDialog = require(219),
-            GAnnotationsApi = require(358);
+            GAnnotationsUtils = require(358);
         const DocumentStatus = require(86),
-            GOfflineDialog = (require(156), require(256 /* GOfflineDialog */)),
+            GOfflineDialog = (require(156 /* CloudFile */), require(256 /* GOfflineDialog */)),
             GLicenseApi = require(337),
             md5 = require(435),
             pako = require(165 /* PDFNodeStream */);
@@ -502,13 +502,13 @@ module.exports = function (module, exports, require) {
                                 if (designerConfig.HAS_ANNOTATIONS)
                                     if (secondaryFormat) {
                                         let t = true;
-                                        await GAnnotationsApi.saveDocumentAnnotations(document, t);
+                                        await GAnnotationsUtils.saveDocumentAnnotations(document, t);
                                         saveOptions = document.updateSaveOptionsLastModifiedDate(saveOptions);
                                     } else
                                         try {
-                                            let annotationsCollection = (await GAnnotationsApi.getCloudAnnotationsForDocument(document)).annotationsCollection;
+                                            let annotationsCollection = (await GAnnotationsUtils.getCloudAnnotationsForDocument(document)).annotationsCollection;
                                             (document.getScene().iteratePages((page) => {
-                                                !!GAnnotationsApi.findAnnotationsListForPage(page, annotationsCollection) || annotationsCollection.push(GObject.GNode.store(page.getAnnotations()));
+                                                !!GAnnotationsUtils.findAnnotationsListForPage(page, annotationsCollection) || annotationsCollection.push(GObject.GNode.store(page.getAnnotations()));
                                             }, true),
                                                 (fileData.annotations = annotationsCollection));
                                         } catch (e) {
@@ -583,7 +583,7 @@ module.exports = function (module, exports, require) {
                     !!designerConfig.HAS_ANNOTATIONS &&
                     (gDesigner.isOffline()
                         ? (console.warn("Failed to record annotations"), false)
-                        : gDesigner.getUser().then((user) => !(!user || gDesigner.isAnonymous()) && GAnnotationsApi.saveDocumentAnnotations(document, t, void 0, n)))
+                        : gDesigner.getUser().then((user) => !(!user || gDesigner.isAnonymous()) && GAnnotationsUtils.saveDocumentAnnotations(document, t, void 0, n)))
                 );
             }
             static async getCloudAnnotations(e) {
@@ -643,7 +643,7 @@ module.exports = function (module, exports, require) {
             }
             static resendEmailConfirmation(user) {
                 let appUrl, webUrl;
-                if (gContainer.getRuntime() === GRuntime.Runtime.Electron) {
+                if (gContainer.getRuntime() === GContainer.Runtime.Electron) {
                     const platform = gContainer.getPlatform();
                     (("darwin" !== platform && "win32" !== platform) || (appUrl = "designer://"), (webUrl = gDesigner.getAssetsURL()));
                 } else webUrl = location.origin;

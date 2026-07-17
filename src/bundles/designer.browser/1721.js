@@ -1,12 +1,12 @@
 module.exports = function (module, exports, require) {
         "use strict";
         require(57);
-        var o = require(1156),
-            i = require(444),
-            a = {
-                init: function (e) {
+        var GMenuCloseEvent = require(1156),
+            GPosition = require(444),
+            methods = {
+                init: function (options) {
                     return (
-                        (e = $.extend(
+                        (options = $.extend(
                             {
                                 menu: null,
                                 defaultAction: null,
@@ -14,107 +14,107 @@ module.exports = function (module, exports, require) {
                                 touch: false,
                                 reference: null,
                             },
-                            e
+                            options
                         )),
                         this.each(function () {
-                            var t = this,
-                                n = null;
-                            ("function" == typeof e.menu && ((e.menuFactory = e.menu), (e.menu = e.menuFactory())),
-                                e.menu.setTouchMode(!!e.touch));
+                            var button = this,
+                                timer = null;
+                            ("function" == typeof options.menu && ((options.menuFactory = options.menu), (options.menu = options.menuFactory())),
+                                options.menu.setTouchMode(!!options.touch));
                             $(this)
                                 .addClass("g-menu-button")
-                                .data("gmenubutton", { options: e })
-                                .on("mousedown", function (o) {
-                                    if ((o.stopPropagation(), e.menuFactory)) {
-                                        const t = e.menuFactory();
-                                        if (t !== e.menu) {
-                                            e.menu.clearItems();
-                                            for (let n = 0; n < t.getItemCount(); ++n) e.menu.addItem(t.getItem(n));
+                                .data("gmenubutton", { options: options })
+                                .on("mousedown", function (event) {
+                                    if ((event.stopPropagation(), options.menuFactory)) {
+                                        const newMenu = options.menuFactory();
+                                        if (newMenu !== options.menu) {
+                                            options.menu.clearItems();
+                                            for (let n = 0; n < newMenu.getItemCount(); ++n) options.menu.addItem(newMenu.getItem(n));
                                         }
                                     }
-                                    e.dblclick
+                                    options.dblclick
                                         ? setTimeout(() => {
-                                              parseInt($(t).data("dblclicked"), 10)
-                                                  ? e.menu.isOpen() && a.close.call(t)
-                                                  : e.defaultAction
-                                                    ? (n = setTimeout(
+                                              parseInt($(button).data("dblclicked"), 10)
+                                                  ? options.menu.isOpen() && methods.close.call(button)
+                                                  : options.defaultAction
+                                                    ? (timer = setTimeout(
                                                           function () {
-                                                              (a.open.call(t), (n = null));
+                                                              (methods.open.call(button), (timer = null));
                                                           }.bind(this),
                                                           250
                                                       ))
-                                                    : e.menu.isOpen()
-                                                      ? a.close.call(t)
-                                                      : a.open.call(t);
+                                                    : options.menu.isOpen()
+                                                      ? methods.close.call(button)
+                                                      : methods.open.call(button);
                                           }, 500)
-                                        : e.defaultAction
-                                          ? (n = setTimeout(
+                                        : options.defaultAction
+                                          ? (timer = setTimeout(
                                                 function () {
-                                                    (a.open.call(t), (n = null));
+                                                    (methods.open.call(button), (timer = null));
                                                 }.bind(this),
                                                 250
                                             ))
-                                          : e.menu.isOpen()
-                                            ? a.close.call(t)
-                                            : a.open.call(t);
+                                          : options.menu.isOpen()
+                                            ? methods.close.call(button)
+                                            : methods.open.call(button);
                                 })
-                                .on("mouseup", function (o) {
-                                    (o.stopPropagation(),
-                                        e.dblclick
+                                .on("mouseup", function (event) {
+                                    (event.stopPropagation(),
+                                        options.dblclick
                                             ? setTimeout(() => {
-                                                  var o = parseInt($(t).data("dblclicked"), 10);
-                                                  o
-                                                      ? $(t).data("dblclicked", o - 1)
-                                                      : (null !== n && (clearTimeout(n), (n = null)),
-                                                        !e.menu.isOpen() && e.defaultAction && e.defaultAction());
+                                                  var clickCount = parseInt($(button).data("dblclicked"), 10);
+                                                  clickCount
+                                                      ? $(button).data("dblclicked", clickCount - 1)
+                                                      : (null !== timer && (clearTimeout(timer), (timer = null)),
+                                                        !options.menu.isOpen() && options.defaultAction && options.defaultAction());
                                               }, 500)
-                                            : (null !== n && (clearTimeout(n), (n = null)),
-                                              !e.menu.isOpen() && e.defaultAction && e.defaultAction()));
+                                            : (null !== timer && (clearTimeout(timer), (timer = null)),
+                                              !options.menu.isOpen() && options.defaultAction && options.defaultAction()));
                                 })
-                                .on("dblclick", function (n) {
-                                    (n.stopPropagation(), e.dblclick && ($(t).data("dblclicked", 2), e.dblclick.call(t)));
+                                .on("dblclick", function (event) {
+                                    (event.stopPropagation(), options.dblclick && ($(button).data("dblclicked", 2), options.dblclick.call(button)));
                                 });
                         })
                     );
                 },
                 open: function () {
-                    var e = $(this),
-                        t = e.data("gmenubutton").options,
-                        n = t.menu;
-                    if (!n.isOpen()) {
-                        e.addClass("g-active");
-                        var a,
-                            r = function () {
-                                (e.removeClass("g-active"), n.removeEventListener(o, r));
+                    var button = $(this),
+                        options = button.data("gmenubutton").options,
+                        menu = options.menu;
+                    if (!menu.isOpen()) {
+                        button.addClass("g-active");
+                        var reference,
+                            onMenuClose = function () {
+                                (button.removeClass("g-active"), menu.removeEventListener(GMenuCloseEvent, onMenuClose));
                             };
                         if (
-                            (n.addEventListener(o, r),
-                            t.reference &&
-                                (t.reference instanceof jQuery || t.reference instanceof HTMLElement
-                                    ? (a = t.reference)
-                                    : "function" == typeof t.reference && (a = t.reference())),
-                            a instanceof HTMLElement && (a = $(a)),
-                            a || (a = e),
-                            n.open(a, i.Position.Center, i.Position.Right_Bottom, function (t) {
-                                e.trigger("menuitemactivate", t);
+                            (menu.addEventListener(GMenuCloseEvent, onMenuClose),
+                            options.reference &&
+                                (options.reference instanceof jQuery || options.reference instanceof HTMLElement
+                                    ? (reference = options.reference)
+                                    : "function" == typeof options.reference && (reference = options.reference())),
+                            reference instanceof HTMLElement && (reference = $(reference)),
+                            reference || (reference = button),
+                            menu.open(reference, GPosition.Position.Center, GPosition.Position.Right_Bottom, function (item) {
+                                button.trigger("menuitemactivate", item);
                             }),
-                            t.getActiveItem && "function" == typeof t.getActiveItem)
+                            options.getActiveItem && "function" == typeof options.getActiveItem)
                         ) {
-                            const e = t.getActiveItem();
-                            e && n.setActiveItem(e);
+                            const activeItem = options.getActiveItem();
+                            activeItem && menu.setActiveItem(activeItem);
                         }
                     }
                 },
                 close: function () {
-                    var e = $(this).data("gmenubutton").options.menu;
-                    e.isOpen() && e.close();
+                    var menu = $(this).data("gmenubutton").options.menu;
+                    menu.isOpen() && menu.close();
                 },
             };
-        $.fn.gMenuButton = function (e) {
-            return a[e]
-                ? a[e].apply(this, Array.prototype.slice.call(arguments, 1))
-                : "object" != typeof e && e
-                  ? void $.error("Method " + e + " does not exist on jQuery.myPlugin")
-                  : a.init.apply(this, arguments);
+        $.fn.gMenuButton = function (method) {
+            return methods[method]
+                ? methods[method].apply(this, Array.prototype.slice.call(arguments, 1))
+                : "object" != typeof method && method
+                  ? void $.error("Method " + method + " does not exist on jQuery.myPlugin")
+                  : methods.init.apply(this, arguments);
         };
     };

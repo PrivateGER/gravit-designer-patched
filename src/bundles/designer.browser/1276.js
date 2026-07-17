@@ -4,28 +4,28 @@ module.exports = function (module, exports, require) {
         var GObject = require(1);
         const { gApi, AUTO_SAVE_ENABLED, AUTOSAVE_INTERVAL_DEFAULT, CloudIntegration, DESIGNER, EXTERNAL_APP } = require(10 /* designerConfig */),
             { buildDialogDocumentHasUpdates } = require(40 /* Utils */),
-            u = require(85),
+            GContainer = require(85),
             GSystemDialog = require(44),
             GGoogleDriveStorage = require(556),
-            h = require(448),
-            f = require(78),
-            m = require(135),
-            y = require(291),
-            v = require(1530),
-            _ = require(1534),
-            b = require(86),
-            w = require(217),
+            GGravitCloudAction = require(448),
+            GDocumentEvent = require(78),
+            GSettingChangedEvent = require(135),
+            GNetworkAvailabilityChangedEvent = require(291),
+            AutoSaveModel = require(1530),
+            GQueue = require(1534),
+            GDocumentStatus = require(86),
+            GDocumentStatusEvent = require(217),
             { SETUP, CODES } = require(591 /* COMMAND_SAVE */),
-            S = require(1277);
-        function E() {
+            SettingsAction = require(1277);
+        function GAutoSaveManager() {
             if (
                 ((this._pendingSyncDialog = new Set()),
                 (this._pendingFormatNotSupportDialog = new Set()),
                 (this._pendingEntriesNotCreatedWarning = new Set()),
                 (this._documentsMap = new Map()),
-                (this._savingQueue = new _()),
+                (this._savingQueue = new GQueue()),
                 this._savingQueue.onNext(this._processDocumentSave.bind(this)),
-                E._instance && console.warn("[GAutoSaveManager] Already initiated"),
+                GAutoSaveManager._instance && console.warn("[GAutoSaveManager] Already initiated"),
                 (this._autoSaveWorker = new Worker("./autosave.worker.js")),
                 !this._autoSaveWorker)
             )
@@ -34,268 +34,268 @@ module.exports = function (module, exports, require) {
                 cmd: SETUP.ENDPOINT,
                 data: { url: gApi.url },
             }),
-                (this._autoSaveModel = new v(this._autoSaveWorker)),
-                this._updateStatus(gDesigner.getSetting(E.AUTO_SAVE_SETTING) ? E.Status.Stopped : E.Status.Disabled),
-                this._setInterval(gDesigner.getSetting(E.AUTO_SAVE_INTERVAL_SETTING)),
-                gContainer.getProperty(E.AUTO_SAVE_WARN_DIALOG_SHOWN).then((e) => {
-                    this._warnDialogShown = !!e;
+                (this._autoSaveModel = new AutoSaveModel(this._autoSaveWorker)),
+                this._updateStatus(gDesigner.getSetting(GAutoSaveManager.AUTO_SAVE_SETTING) ? GAutoSaveManager.Status.Stopped : GAutoSaveManager.Status.Disabled),
+                this._setInterval(gDesigner.getSetting(GAutoSaveManager.AUTO_SAVE_INTERVAL_SETTING)),
+                gContainer.getProperty(GAutoSaveManager.AUTO_SAVE_WARN_DIALOG_SHOWN).then((shown) => {
+                    this._warnDialogShown = !!shown;
                 }),
-                gDesigner.addEventListener(f, this._documentEvent, this),
-                gDesigner.addEventListener(m, this._settingsChangedEvent, this),
-                gDesigner.addEventListener(y, this._networkAvailabilityChangedEvent, this));
+                gDesigner.addEventListener(GDocumentEvent, this._documentEvent, this),
+                gDesigner.addEventListener(GSettingChangedEvent, this._settingsChangedEvent, this),
+                gDesigner.addEventListener(GNetworkAvailabilityChangedEvent, this._networkAvailabilityChangedEvent, this));
         }
-        ((E.ALTERNATE_STRINGS = [
+        ((GAutoSaveManager.ALTERNATE_STRINGS = [
             new GObject.GLocaleKey("GAutoSave", "text.notification-message-1"),
             new GObject.GLocaleKey("GAutoSave", "text.notification-message-2"),
             new GObject.GLocaleKey("GAutoSave", "text.notification-message-3"),
         ]),
-            (E.DISABLE_EXTERNAL_FILE_NO_ENTRIES_CREATED_WARING = "disable-external-file-no-entries-created-waring"),
-            (E.DISABLE_WARNING_SETTING_NAME = "autosave-prompt-for-local-files-disabled"),
-            (E.REMINDER_FOR_CDR_DES_FILE = "autosave-prompt-for-reminding-not-support-cdr-des"),
-            (E.AUTO_SAVE_SETTING = "auto_save"),
-            (E.AUTO_SAVE_INTERVAL_SETTING = "auto_save_interval"),
-            (E.AUTO_SAVE_WARN_DIALOG_SHOWN = "designer.settings.auto-save-warn-dialog-shown"),
-            (E.AUTO_SAVE_HIDE_NOTIFICATION_PROP_NAME = "designer.settings.auto-save-hide-notification"),
-            (E.Status = { Stopped: -1, Enabled: 0, Disabled: 1 }),
-            (E._instance = null),
-            (E.prototype._timerId = null),
-            (E.prototype._warnDialogShown = false),
-            (E.prototype._fileUpdatedWarningShowing = false),
-            (E.prototype._warnDialogTimer = null),
-            (E.prototype._status = E.Status.Stopped),
-            (E.prototype._documentsMap = null),
-            (E.prototype._pendingSyncDialog = null),
-            (E.prototype._pendingFormatNotSupportDialog = null),
-            (E.prototype._pendingEntriesNotCreatedWarning = null),
-            (E.prototype._savingQueue = null),
-            (E.prototype._syncDialogShown = {}),
-            (E.prototype._formatNotSupportDialogShown = {}),
-            (E.prototype._noEntriesCreatedWaringShown = {}),
-            (E.prototype._offlineAlert = null),
-            (E.prototype._interval = null),
-            (E.prototype._autoSaveWorker = null),
-            (E.getInstance = function () {
-                return (E._instance || (E._instance = new E()), E._instance);
+            (GAutoSaveManager.DISABLE_EXTERNAL_FILE_NO_ENTRIES_CREATED_WARING = "disable-external-file-no-entries-created-waring"),
+            (GAutoSaveManager.DISABLE_WARNING_SETTING_NAME = "autosave-prompt-for-local-files-disabled"),
+            (GAutoSaveManager.REMINDER_FOR_CDR_DES_FILE = "autosave-prompt-for-reminding-not-support-cdr-des"),
+            (GAutoSaveManager.AUTO_SAVE_SETTING = "auto_save"),
+            (GAutoSaveManager.AUTO_SAVE_INTERVAL_SETTING = "auto_save_interval"),
+            (GAutoSaveManager.AUTO_SAVE_WARN_DIALOG_SHOWN = "designer.settings.auto-save-warn-dialog-shown"),
+            (GAutoSaveManager.AUTO_SAVE_HIDE_NOTIFICATION_PROP_NAME = "designer.settings.auto-save-hide-notification"),
+            (GAutoSaveManager.Status = { Stopped: -1, Enabled: 0, Disabled: 1 }),
+            (GAutoSaveManager._instance = null),
+            (GAutoSaveManager.prototype._timerId = null),
+            (GAutoSaveManager.prototype._warnDialogShown = false),
+            (GAutoSaveManager.prototype._fileUpdatedWarningShowing = false),
+            (GAutoSaveManager.prototype._warnDialogTimer = null),
+            (GAutoSaveManager.prototype._status = GAutoSaveManager.Status.Stopped),
+            (GAutoSaveManager.prototype._documentsMap = null),
+            (GAutoSaveManager.prototype._pendingSyncDialog = null),
+            (GAutoSaveManager.prototype._pendingFormatNotSupportDialog = null),
+            (GAutoSaveManager.prototype._pendingEntriesNotCreatedWarning = null),
+            (GAutoSaveManager.prototype._savingQueue = null),
+            (GAutoSaveManager.prototype._syncDialogShown = {}),
+            (GAutoSaveManager.prototype._formatNotSupportDialogShown = {}),
+            (GAutoSaveManager.prototype._noEntriesCreatedWaringShown = {}),
+            (GAutoSaveManager.prototype._offlineAlert = null),
+            (GAutoSaveManager.prototype._interval = null),
+            (GAutoSaveManager.prototype._autoSaveWorker = null),
+            (GAutoSaveManager.getInstance = function () {
+                return (GAutoSaveManager._instance || (GAutoSaveManager._instance = new GAutoSaveManager()), GAutoSaveManager._instance);
             }),
-            (E.prototype._updateStatus = function (e) {
-                this._status = e;
+            (GAutoSaveManager.prototype._updateStatus = function (status) {
+                this._status = status;
             }),
-            (E.prototype.getStatus = function () {
+            (GAutoSaveManager.prototype.getStatus = function () {
                 return this._status;
             }),
-            (E.prototype._setInterval = function (e) {
-                const t = parseFloat(e) || AUTOSAVE_INTERVAL_DEFAULT;
-                this._interval = 60 * t * 1e3;
+            (GAutoSaveManager.prototype._setInterval = function (value) {
+                const minutes = parseFloat(value) || AUTOSAVE_INTERVAL_DEFAULT;
+                this._interval = 60 * minutes * 1e3;
             }),
-            (E.prototype._shouldHandle = async function (e) {
-                return !e.isCloudFile() || (await e.canSaveToCloud()) || e.isExternalFile();
+            (GAutoSaveManager.prototype._shouldHandle = async function (document) {
+                return !document.isCloudFile() || (await document.canSaveToCloud()) || document.isExternalFile();
             }),
-            (E.prototype._processDocumentSave = async function (e) {
-                if (!(await this._shouldHandle(e))) return;
+            (GAutoSaveManager.prototype._processDocumentSave = async function (document) {
+                if (!(await this._shouldHandle(document))) return;
                 if (!this._warnDialogShown) {
                     this._warnDialogTimer && clearTimeout(this._warnDialogTimer);
                     if (!(await this._showWarnDialog())) return;
                 }
-                if ((this._resetDocumentTimeout(e, this.getStatus() === E.Status.Enabled), gDesigner.isOffline()))
+                if ((this._resetDocumentTimeout(document, this.getStatus() === GAutoSaveManager.Status.Enabled), gDesigner.isOffline()))
                     return (this._toggleOfflineAlert(true), Promise.reject(CODES.AUTOSAVE_OFFLINE_NOT_AVAILABLE));
                 this._offlineAlert && this._toggleOfflineAlert(false);
-                const t = [b.Saving, b.Syncing, b.Loading].includes(e.getStatus());
-                return this._autoSaveModel.has(e) || t
+                const isBusy = [GDocumentStatus.Saving, GDocumentStatus.Syncing, GDocumentStatus.Loading].includes(document.getStatus());
+                return this._autoSaveModel.has(document) || isBusy
                     ? CODES.AUTOSAVE_ALREADY_SAVING
-                    : e.isCloudFile() || e.isExternalFile()
-                      ? this._isCDRFile(e)
-                          ? (this._executeDocumentFormatNotSupportedDialog(e), CODES.AUTOSAVE_CLOUD_SYNCHRONIZM_NOT_AVAILABLE)
-                          : e.isWebFile() || e.isCloudSyncOn() || e.isExternalFile()
-                            ? e.isExternalFile() && !(await this._executeExternalFileWarningDialog(e))
+                    : document.isCloudFile() || document.isExternalFile()
+                      ? this._isCDRFile(document)
+                          ? (this._executeDocumentFormatNotSupportedDialog(document), CODES.AUTOSAVE_CLOUD_SYNCHRONIZM_NOT_AVAILABLE)
+                          : document.isWebFile() || document.isCloudSyncOn() || document.isExternalFile()
+                            ? document.isExternalFile() && !(await this._executeExternalFileWarningDialog(document))
                                 ? CODES.AUTOSAVE_CLOUD_SYNCHRONIZM_NOT_AVAILABLE
-                                : e.isModified()
-                                  ? (await e.isUpdateAvailable())
-                                      ? (this._executeDocumentConflictResolutionDialog(e), CODES.AUTOSAVE_FILE_CONFLICT)
-                                      : this._runAndScheduleAutoSave(e)
+                                : document.isModified()
+                                  ? (await document.isUpdateAvailable())
+                                      ? (this._executeDocumentConflictResolutionDialog(document), CODES.AUTOSAVE_FILE_CONFLICT)
+                                      : this._runAndScheduleAutoSave(document)
                                   : CODES.AUTOSAVE_NOT_MODIFIED
                             : CODES.AUTOSAVE_LOCAL_FILES_WITHOUT_CID_NOT_AVAILABLE
-                      : (this._executeDocumentSyncDialog(e), CODES.AUTOSAVE_CLOUD_SYNCHRONIZM_NOT_AVAILABLE);
+                      : (this._executeDocumentSyncDialog(document), CODES.AUTOSAVE_CLOUD_SYNCHRONIZM_NOT_AVAILABLE);
             }),
-            (E.prototype._executeDocumentSyncDialog = function (e) {
-                this._syncDialogShown[e.sessionId] ||
-                    (gDesigner.isActiveDocument(e) ? this._showSyncDialog(e) : this._pendingSyncDialog.add(e));
+            (GAutoSaveManager.prototype._executeDocumentSyncDialog = function (document) {
+                this._syncDialogShown[document.sessionId] ||
+                    (gDesigner.isActiveDocument(document) ? this._showSyncDialog(document) : this._pendingSyncDialog.add(document));
             }),
-            (E.prototype._executeDocumentFormatNotSupportedDialog = function (e) {
-                this._formatNotSupportDialogShown[e.sessionId] ||
-                    (gDesigner.isActiveDocument(e) ? this._showFormatNotSupportedDialog(e) : this._pendingFormatNotSupportDialog.add(e));
+            (GAutoSaveManager.prototype._executeDocumentFormatNotSupportedDialog = function (document) {
+                this._formatNotSupportDialogShown[document.sessionId] ||
+                    (gDesigner.isActiveDocument(document) ? this._showFormatNotSupportedDialog(document) : this._pendingFormatNotSupportDialog.add(document));
             }),
-            (E.prototype._executeDocumentConflictResolutionDialog = function (e) {
-                gDesigner.isActiveDocument(e) &&
+            (GAutoSaveManager.prototype._executeDocumentConflictResolutionDialog = function (document) {
+                gDesigner.isActiveDocument(document) &&
                     (this._dialogResolveDocumentConflicts &&
                         this._dialogResolveDocumentConflicts.gDialog("isOpen") &&
                         this._dialogResolveDocumentConflicts.gDialog("close"),
                     (this._dialogResolveDocumentConflicts = buildDialogDocumentHasUpdates.call(
                         this,
-                        e,
-                        function (e) {
-                            e.reload();
+                        document,
+                        function (document) {
+                            document.reload();
                         }.bind(this),
-                        function (e) {
-                            this._runAndScheduleAutoSave(e);
+                        function (document) {
+                            this._runAndScheduleAutoSave(document);
                         }.bind(this)
                     )));
             }),
-            (E.prototype._executeExternalFileWarningDialog = async function (e) {
-                return e.getStorageItem() && (await e.getStorageItem().hasUpdates()) && !this._fileUpdatedWarningShowing
-                    ? this._showExternalFileUpdatedOutAppWarningDialog(e)
-                    : !!this._noEntriesCreatedWaringShown[e.sessionId] ||
-                          (gDesigner.isActiveDocument(e)
-                              ? this._showNoEntriesCreatedInVersionHistoryForExternalFileWarningDialog(e)
-                              : (this._pendingEntriesNotCreatedWarning.add(e), false));
+            (GAutoSaveManager.prototype._executeExternalFileWarningDialog = async function (document) {
+                return document.getStorageItem() && (await document.getStorageItem().hasUpdates()) && !this._fileUpdatedWarningShowing
+                    ? this._showExternalFileUpdatedOutAppWarningDialog(document)
+                    : !!this._noEntriesCreatedWaringShown[document.sessionId] ||
+                          (gDesigner.isActiveDocument(document)
+                              ? this._showNoEntriesCreatedInVersionHistoryForExternalFileWarningDialog(document)
+                              : (this._pendingEntriesNotCreatedWarning.add(document), false));
             }),
-            (E.prototype._runAndScheduleAutoSave = function (e) {
-                return this._handleAutoSave(e).finally(() => {
-                    this._resetDocumentTimeout(e, this.getStatus() === E.Status.Enabled);
+            (GAutoSaveManager.prototype._runAndScheduleAutoSave = function (document) {
+                return this._handleAutoSave(document).finally(() => {
+                    this._resetDocumentTimeout(document, this.getStatus() === GAutoSaveManager.Status.Enabled);
                 });
             }),
-            (E.prototype._handleAutoSave = function (e) {
+            (GAutoSaveManager.prototype._handleAutoSave = function (document) {
                 return (
-                    gDesigner.isActiveDocument(e) && this._showNotification(),
-                    this._autoSaveModel.save(e).catch((t) => {
-                        (console.warn("[GAutoSaveManager][Failed to auto save]", t),
-                            gDesigner.isActiveDocument(e) && this._showNotification(true));
+                    gDesigner.isActiveDocument(document) && this._showNotification(),
+                    this._autoSaveModel.save(document).catch((error) => {
+                        (console.warn("[GAutoSaveManager][Failed to auto save]", error),
+                            gDesigner.isActiveDocument(document) && this._showNotification(true));
                     })
                 );
             }),
-            (E.prototype._resetDocumentTimeout = function (e) {
-                let t = !(arguments.length > 1 && void 0 !== arguments[1]) || arguments[1];
-                const n = this._documentsMap.get(e);
-                (n.timeoutId && (clearTimeout(n.timeoutId), (n.timeoutId = null)),
-                    t &&
-                        (n.timeoutId = setTimeout(() => {
-                            this._savingQueue.has(e) || (this._savingQueue.add(e), this._savingQueue.process());
+            (GAutoSaveManager.prototype._resetDocumentTimeout = function (document) {
+                let shouldSchedule = !(arguments.length > 1 && void 0 !== arguments[1]) || arguments[1];
+                const entry = this._documentsMap.get(document);
+                (entry.timeoutId && (clearTimeout(entry.timeoutId), (entry.timeoutId = null)),
+                    shouldSchedule &&
+                        (entry.timeoutId = setTimeout(() => {
+                            this._savingQueue.has(document) || (this._savingQueue.add(document), this._savingQueue.process());
                         }, this._interval)),
-                    this._documentsMap.set(e, n));
+                    this._documentsMap.set(document, entry));
             }),
-            (E.prototype._resetAllDocumentsTimeout = function () {
-                let e = !(arguments.length > 0 && void 0 !== arguments[0]) || arguments[0];
-                for (let t of this._documentsMap.values()) this._resetDocumentTimeout(t.doc, e);
+            (GAutoSaveManager.prototype._resetAllDocumentsTimeout = function () {
+                let shouldSchedule = !(arguments.length > 0 && void 0 !== arguments[0]) || arguments[0];
+                for (let entry of this._documentsMap.values()) this._resetDocumentTimeout(entry.doc, shouldSchedule);
             }),
-            (E.prototype.disable = function () {
-                this.getStatus() !== E.Status.Disabled && (this._resetAllDocumentsTimeout(false), this._updateStatus(E.Status.Disabled));
+            (GAutoSaveManager.prototype.disable = function () {
+                this.getStatus() !== GAutoSaveManager.Status.Disabled && (this._resetAllDocumentsTimeout(false), this._updateStatus(GAutoSaveManager.Status.Disabled));
             }),
-            (E.prototype.enable = function () {
+            (GAutoSaveManager.prototype.enable = function () {
                 AUTO_SAVE_ENABLED &&
-                    this.getStatus() !== E.Status.Enabled &&
+                    this.getStatus() !== GAutoSaveManager.Status.Enabled &&
                     !gDesigner.isOffline() &&
-                    gDesigner.getSetting(E.AUTO_SAVE_SETTING) &&
-                    (this._resetAllDocumentsTimeout(), this._updateStatus(E.Status.Enabled));
+                    gDesigner.getSetting(GAutoSaveManager.AUTO_SAVE_SETTING) &&
+                    (this._resetAllDocumentsTimeout(), this._updateStatus(GAutoSaveManager.Status.Enabled));
             }),
-            (E.prototype._removeDocument = function (e) {
-                this._documentsMap.has(e) &&
-                    (this._resetDocumentTimeout(e, false),
-                    this._savingQueue.delete(e),
-                    this._documentsMap.delete(e),
-                    this._syncDialogShown[e.sessionId] && delete this._syncDialogShown[e.sessionId],
-                    this._formatNotSupportDialogShown[e.sessionId] && delete this._formatNotSupportDialogShown[e.sessionId],
-                    this._noEntriesCreatedWaringShown[e.sessionId] && delete this._noEntriesCreatedWaringShown[e.sessionId]);
+            (GAutoSaveManager.prototype._removeDocument = function (document) {
+                this._documentsMap.has(document) &&
+                    (this._resetDocumentTimeout(document, false),
+                    this._savingQueue.delete(document),
+                    this._documentsMap.delete(document),
+                    this._syncDialogShown[document.sessionId] && delete this._syncDialogShown[document.sessionId],
+                    this._formatNotSupportDialogShown[document.sessionId] && delete this._formatNotSupportDialogShown[document.sessionId],
+                    this._noEntriesCreatedWaringShown[document.sessionId] && delete this._noEntriesCreatedWaringShown[document.sessionId]);
             }),
-            (E.prototype._addDocument = function (e) {
-                this._documentsMap.has(e) ||
-                    (this._documentsMap.set(e, { doc: e }),
-                    this._resetDocumentTimeout(e, this.getStatus() === E.Status.Enabled),
-                    (this._syncDialogShown[e.sessionId] = false),
-                    (this._formatNotSupportDialogShown[e.sessionId] = false),
-                    (this._noEntriesCreatedWaringShown[e.sessionId] = false));
+            (GAutoSaveManager.prototype._addDocument = function (document) {
+                this._documentsMap.has(document) ||
+                    (this._documentsMap.set(document, { doc: document }),
+                    this._resetDocumentTimeout(document, this.getStatus() === GAutoSaveManager.Status.Enabled),
+                    (this._syncDialogShown[document.sessionId] = false),
+                    (this._formatNotSupportDialogShown[document.sessionId] = false),
+                    (this._noEntriesCreatedWaringShown[document.sessionId] = false));
             }),
-            (E.prototype._documentEvent = function (e) {
-                if (!e.document.isLockedByVersionHistory())
-                    switch (e.type) {
-                        case f.Type.Added:
-                            (this._addDocument(e.document),
-                                e.document.addEventListener(w, this._handleDocumentStatusEvent, this, void 0, void 0, true),
+            (GAutoSaveManager.prototype._documentEvent = function (event) {
+                if (!event.document.isLockedByVersionHistory())
+                    switch (event.type) {
+                        case GDocumentEvent.Type.Added:
+                            (this._addDocument(event.document),
+                                event.document.addEventListener(GDocumentStatusEvent, this._handleDocumentStatusEvent, this, void 0, void 0, true),
                                 this.enable());
                             break;
-                        case f.Type.Removed:
-                            (this._removeDocument(e.document), e.document.removeEventListener(w, this._handleDocumentStatusEvent, this));
+                        case GDocumentEvent.Type.Removed:
+                            (this._removeDocument(event.document), event.document.removeEventListener(GDocumentStatusEvent, this._handleDocumentStatusEvent, this));
                             break;
-                        case f.Type.SynchronismUpdated: {
-                            let t = true;
-                            (e.document.isWebFile() ||
-                                (e.document.isCloudSyncOn() ? this.enable() : ((t = false), this._removeDocument(e.document))),
-                                t && this._addDocument(e.document));
+                        case GDocumentEvent.Type.SynchronismUpdated: {
+                            let shouldAdd = true;
+                            (event.document.isWebFile() ||
+                                (event.document.isCloudSyncOn() ? this.enable() : ((shouldAdd = false), this._removeDocument(event.document))),
+                                shouldAdd && this._addDocument(event.document));
                             break;
                         }
-                        case f.Type.Activated:
-                            (this._documentsMap.has(e.document) ||
-                                (this._addDocument(e.document),
-                                e.document.addEventListener(w, this._handleDocumentStatusEvent, this, void 0, void 0, true),
+                        case GDocumentEvent.Type.Activated:
+                            (this._documentsMap.has(event.document) ||
+                                (this._addDocument(event.document),
+                                event.document.addEventListener(GDocumentStatusEvent, this._handleDocumentStatusEvent, this, void 0, void 0, true),
                                 this.enable()),
-                                e.document.isCloudSynchronismAvailable() ||
-                                    this._syncDialogShown[e.document.sessionId] ||
-                                    !this._pendingSyncDialog.has(e.document) ||
-                                    (this._showSyncDialog(e.document), this._pendingSyncDialog.delete(e.document)),
-                                !this._noEntriesCreatedWaringShown[e.document.sessionId] &&
-                                    this._pendingEntriesNotCreatedWarning.has(e.document) &&
-                                    (this._processDocumentSave(e.document), this._pendingEntriesNotCreatedWarning.delete(e.document)),
-                                this._shouldFormatNotSupportedDialogAppearForUser(e.document) &&
-                                    (this._showFormatNotSupportedDialog(e.document),
-                                    this._pendingFormatNotSupportDialog.delete(e.document)),
+                                event.document.isCloudSynchronismAvailable() ||
+                                    this._syncDialogShown[event.document.sessionId] ||
+                                    !this._pendingSyncDialog.has(event.document) ||
+                                    (this._showSyncDialog(event.document), this._pendingSyncDialog.delete(event.document)),
+                                !this._noEntriesCreatedWaringShown[event.document.sessionId] &&
+                                    this._pendingEntriesNotCreatedWarning.has(event.document) &&
+                                    (this._processDocumentSave(event.document), this._pendingEntriesNotCreatedWarning.delete(event.document)),
+                                this._shouldFormatNotSupportedDialogAppearForUser(event.document) &&
+                                    (this._showFormatNotSupportedDialog(event.document),
+                                    this._pendingFormatNotSupportDialog.delete(event.document)),
                                 this._warnDialogTimer && clearTimeout(this._warnDialogTimer),
                                 this._shouldWarningDialogAppearForUser() &&
                                     (this._warnDialogTimer = setTimeout(() => {
-                                        this._showWarnDialog(true).then((e) => {
-                                            e && this._savingQueue.process();
+                                        this._showWarnDialog(true).then((accepted) => {
+                                            accepted && this._savingQueue.process();
                                         });
                                     }, this._interval)));
                             break;
-                        case f.Type.BeforeReload:
-                            this._removeDocument(e.document);
+                        case GDocumentEvent.Type.BeforeReload:
+                            this._removeDocument(event.document);
                     }
             }),
-            (E.prototype._shouldWarningDialogAppearForUser = function () {
+            (GAutoSaveManager.prototype._shouldWarningDialogAppearForUser = function () {
                 return !this._warnDialogShown && !gDesigner.getLicense().isGuest() && !gDesigner.isAnonymous();
             }),
-            (E.prototype._shouldFormatNotSupportedDialogAppearForUser = function (e) {
+            (GAutoSaveManager.prototype._shouldFormatNotSupportedDialogAppearForUser = function (document) {
                 return (
                     !gDesigner.getLicense().isGuest() &&
                     !gDesigner.isAnonymous() &&
-                    this._pendingFormatNotSupportDialog.has(e) &&
-                    e.isCloudFile() &&
-                    this._isCDRFile(e) &&
-                    !this._formatNotSupportDialogShown[e.sessionId]
+                    this._pendingFormatNotSupportDialog.has(document) &&
+                    document.isCloudFile() &&
+                    this._isCDRFile(document) &&
+                    !this._formatNotSupportDialogShown[document.sessionId]
                 );
             }),
-            (E.prototype._handleDocumentStatusEvent = function (e) {
-                e.status === b.Loaded && this._addDocument(e.sender);
+            (GAutoSaveManager.prototype._handleDocumentStatusEvent = function (event) {
+                event.status === GDocumentStatus.Loaded && this._addDocument(event.sender);
             }),
-            (E.prototype._settingsChangedEvent = function (e) {
-                e.previousValue !== e.newValue &&
-                    (e.key === E.AUTO_SAVE_SETTING
-                        ? e.newValue
+            (GAutoSaveManager.prototype._settingsChangedEvent = function (event) {
+                event.previousValue !== event.newValue &&
+                    (event.key === GAutoSaveManager.AUTO_SAVE_SETTING
+                        ? event.newValue
                             ? this.enable()
                             : this.disable()
-                        : e.key === E.AUTO_SAVE_INTERVAL_SETTING &&
-                          (this._setInterval(e.newValue), this._resetAllDocumentsTimeout(this.getStatus() === E.Status.Enabled)));
+                        : event.key === GAutoSaveManager.AUTO_SAVE_INTERVAL_SETTING &&
+                          (this._setInterval(event.newValue), this._resetAllDocumentsTimeout(this.getStatus() === GAutoSaveManager.Status.Enabled)));
             }),
-            (E.prototype._networkAvailabilityChangedEvent = function (e) {
-                e.connected ? (this._toggleOfflineAlert(false), this.enable()) : (this._toggleOfflineAlert(true), this.disable());
+            (GAutoSaveManager.prototype._networkAvailabilityChangedEvent = function (event) {
+                event.connected ? (this._toggleOfflineAlert(false), this.enable()) : (this._toggleOfflineAlert(true), this.disable());
             }),
-            (E.prototype._toggleOfflineAlert = function (e) {
-                if (e) {
-                    let e = GObject.GLocale.get(new GObject.GLocaleKey("GAutoSave", "text.alert-offline"));
-                    (gContainer.getRuntime() === u.Runtime.Electron &&
+            (GAutoSaveManager.prototype._toggleOfflineAlert = function (show) {
+                if (show) {
+                    let message = GObject.GLocale.get(new GObject.GLocaleKey("GAutoSave", "text.alert-offline"));
+                    (gContainer.getRuntime() === GContainer.Runtime.Electron &&
                         GObject.GLocale.get(new GObject.GLocaleKey("GAutoSave", "text.alert-offline-desktop")),
                         this._offlineAlert ||
-                            (this._offlineAlert = GSystemDialog.alert(e, () => {
+                            (this._offlineAlert = GSystemDialog.alert(message, () => {
                                 this._offlineAlert = null;
                             })));
                 } else
                     (this._offlineAlert && 0 !== this._offlineAlert.length && this._offlineAlert.gDialog("close"),
                         (this._offlineAlert = null));
             }),
-            (E.prototype._showWarnDialog = function () {
-                let e = arguments.length > 0 && void 0 !== arguments[0] && arguments[0];
-                return this._warnDialogShown || (e && this.getStatus() === E.Status.Enabled)
+            (GAutoSaveManager.prototype._showWarnDialog = function () {
+                let isReminder = arguments.length > 0 && void 0 !== arguments[0] && arguments[0];
+                return this._warnDialogShown || (isReminder && this.getStatus() === GAutoSaveManager.Status.Enabled)
                     ? Promise.resolve()
-                    : this.getStatus() === E.Status.Enabled
+                    : this.getStatus() === GAutoSaveManager.Status.Enabled
                       ? Promise.resolve(true)
-                      : new Promise((e) => {
+                      : new Promise((resolve) => {
                             GSystemDialog.custom({
                                 title: GObject.GLocale.get(new GObject.GLocaleKey("GAutoSave", "text.dialog-inform-warn-feature.title")),
                                 subtitle: $("<span />")
@@ -322,11 +322,11 @@ module.exports = function (module, exports, require) {
                                         closeOnClick: true,
                                         shortcut: GSystemDialog.Shortcut.Esc,
                                         onclick: () => {
-                                            (gDesigner.setSetting(E.AUTO_SAVE_SETTING, false),
+                                            (gDesigner.setSetting(GAutoSaveManager.AUTO_SAVE_SETTING, false),
                                                 (this._warnDialogShown = true),
-                                                gContainer.setProperty(E.AUTO_SAVE_WARN_DIALOG_SHOWN, true),
+                                                gContainer.setProperty(GAutoSaveManager.AUTO_SAVE_WARN_DIALOG_SHOWN, true),
                                                 gDesigner.stats("settings_toggle_auto-save-disabled"),
-                                                e(false));
+                                                resolve(false));
                                         },
                                     },
                                     {
@@ -337,19 +337,19 @@ module.exports = function (module, exports, require) {
                                         closeOnClick: true,
                                         shortcut: GSystemDialog.Shortcut.Enter,
                                         onclick: () => {
-                                            (gDesigner.setSetting(E.AUTO_SAVE_SETTING, true),
+                                            (gDesigner.setSetting(GAutoSaveManager.AUTO_SAVE_SETTING, true),
                                                 (this._warnDialogShown = true),
-                                                gContainer.setProperty(E.AUTO_SAVE_WARN_DIALOG_SHOWN, true),
+                                                gContainer.setProperty(GAutoSaveManager.AUTO_SAVE_WARN_DIALOG_SHOWN, true),
                                                 gDesigner.stats("settings_toggle_auto-save-enabled"),
-                                                e(true));
+                                                resolve(true));
                                         },
                                     },
                                 ],
                             });
                         });
             }),
-            (E.prototype._showFormatNotSupportedDialog = function (e) {
-                gDesigner.getSetting(E.REMINDER_FOR_CDR_DES_FILE, true) &&
+            (GAutoSaveManager.prototype._showFormatNotSupportedDialog = function (document) {
+                gDesigner.getSetting(GAutoSaveManager.REMINDER_FOR_CDR_DES_FILE, true) &&
                     (GSystemDialog.custom({
                         title: GObject.GLocale.get(new GObject.GLocaleKey("GAutoSave", "text.dialog-auto-save-is-not-available-for-cdr-and-des.text")),
                         className: "g-auto-save-format-not-support-warn-dialog",
@@ -362,7 +362,7 @@ module.exports = function (module, exports, require) {
                                 ),
                                 closeOnClick: true,
                                 onclick: () => {
-                                    gDesigner.executeAction(h.getIdForAction(h.Actions.SaveAs), e);
+                                    gDesigner.executeAction(GGravitCloudAction.getIdForAction(GGravitCloudAction.Actions.SaveAs), document);
                                 },
                             },
                             {
@@ -374,29 +374,29 @@ module.exports = function (module, exports, require) {
                                 shortcut: GSystemDialog.Shortcut.Enter,
                             },
                         ],
-                        dontShowAgainCb: (e) => {
-                            (gDesigner.setSetting(E.REMINDER_FOR_CDR_DES_FILE, !e),
-                                gDesigner.stats("settings_toggle_auto-save-not-support-for-cdr-des-reminder-enabled", !e));
+                        dontShowAgainCb: (checked) => {
+                            (gDesigner.setSetting(GAutoSaveManager.REMINDER_FOR_CDR_DES_FILE, !checked),
+                                gDesigner.stats("settings_toggle_auto-save-not-support-for-cdr-des-reminder-enabled", !checked));
                         },
                     }),
-                    (this._formatNotSupportDialogShown[e.sessionId] = true));
+                    (this._formatNotSupportDialogShown[document.sessionId] = true));
             }),
-            (E.prototype._showSyncDialog = function (e) {
-                if (gDesigner.getSetting(E.DISABLE_WARNING_SETTING_NAME)) return;
-                let t, n, i;
-                (e.hasCloudReference()
-                    ? ((t = GObject.GLocale.get(new GObject.GLocaleKey("GAutoSave", "text.alert-cloud-reference-sync"))),
-                      (n = GObject.GLocale.get(new GObject.GLocaleKey("GAutoSave", "text.alert-cloud-reference-sync-sub-text"))),
-                      (i = [
+            (GAutoSaveManager.prototype._showSyncDialog = function (document) {
+                if (gDesigner.getSetting(GAutoSaveManager.DISABLE_WARNING_SETTING_NAME)) return;
+                let title, subtitle, buttons;
+                (document.hasCloudReference()
+                    ? ((title = GObject.GLocale.get(new GObject.GLocaleKey("GAutoSave", "text.alert-cloud-reference-sync"))),
+                      (subtitle = GObject.GLocale.get(new GObject.GLocaleKey("GAutoSave", "text.alert-cloud-reference-sync-sub-text"))),
+                      (buttons = [
                           {
                               label: GObject.GLocale.get(new GObject.GLocaleKey("GLocale", "ok")),
                               closeOnClick: true,
                               shortcut: GSystemDialog.Shortcut.Enter,
                           },
                       ]))
-                    : ((t = GObject.GLocale.get(new GObject.GLocaleKey("GAutoSave", "text.alert-sync"))),
-                      (n = GObject.GLocale.get(new GObject.GLocaleKey("GAutoSave", "text.alert-sync-sub-text"))),
-                      (i = [
+                    : ((title = GObject.GLocale.get(new GObject.GLocaleKey("GAutoSave", "text.alert-sync"))),
+                      (subtitle = GObject.GLocale.get(new GObject.GLocaleKey("GAutoSave", "text.alert-sync-sub-text"))),
+                      (buttons = [
                           {
                               label: GObject.GLocale.get(new GObject.GLocaleKey("GAutoSave", "text.alert-button.cancel")),
                               closeOnClick: true,
@@ -408,33 +408,33 @@ module.exports = function (module, exports, require) {
                               closeOnClick: true,
                               shortcut: GSystemDialog.Shortcut.Enter,
                               onclick: () => {
-                                  gDesigner.executeAction(h.getIdForAction(h.Actions.SaveAs), e);
+                                  gDesigner.executeAction(GGravitCloudAction.getIdForAction(GGravitCloudAction.Actions.SaveAs), document);
                               },
                           },
                       ])),
-                    (this._syncDialogShown[e.sessionId] = true),
+                    (this._syncDialogShown[document.sessionId] = true),
                     GSystemDialog.custom({
-                        title: t.replace("%title", e.getTitle()),
-                        subtitle: n.replace("%title", e.getTitle()),
+                        title: title.replace("%title", document.getTitle()),
+                        subtitle: subtitle.replace("%title", document.getTitle()),
                         className: "g-auto-save-sync-dialog",
                         icon: "info",
                         closeable: false,
-                        buttons: i,
-                        dontShowAgainCb: (e) => {
-                            (gDesigner.setSetting(E.DISABLE_WARNING_SETTING_NAME, !!e),
-                                gDesigner.stats("settings_toggle_auto-save-warning-enabled", !e));
+                        buttons: buttons,
+                        dontShowAgainCb: (checked) => {
+                            (gDesigner.setSetting(GAutoSaveManager.DISABLE_WARNING_SETTING_NAME, !!checked),
+                                gDesigner.stats("settings_toggle_auto-save-warning-enabled", !checked));
                         },
                     }));
             }),
-            (E.prototype._showNoEntriesCreatedInVersionHistoryForExternalFileWarningDialog = function (e) {
-                return new Promise((t) => {
-                    gDesigner.getSetting(E.DISABLE_EXTERNAL_FILE_NO_ENTRIES_CREATED_WARING, false)
-                        ? t(true)
-                        : ((this._noEntriesCreatedWaringShown[e.sessionId] = true),
+            (GAutoSaveManager.prototype._showNoEntriesCreatedInVersionHistoryForExternalFileWarningDialog = function (document) {
+                return new Promise((resolve) => {
+                    gDesigner.getSetting(GAutoSaveManager.DISABLE_EXTERNAL_FILE_NO_ENTRIES_CREATED_WARING, false)
+                        ? resolve(true)
+                        : ((this._noEntriesCreatedWaringShown[document.sessionId] = true),
                           GSystemDialog.custom({
                               title: GObject.GLocale.get(new GObject.GLocaleKey("GAutoSave", "text.dialog-no-entries-created-waring.title")).replace(
                                   "%storage",
-                                  this._getExternalStorageName(e)
+                                  this._getExternalStorageName(document)
                               ),
                               subtitle: GObject.GLocale.get(new GObject.GLocaleKey("GAutoSave", "text.dialog-no-entries-created-waring.subtitle")),
                               className: "g-auto-save-no-entries-created-in-version-history-warn-dialog",
@@ -447,7 +447,7 @@ module.exports = function (module, exports, require) {
                                       ),
                                       closeOnClick: true,
                                       onclick: () => {
-                                          (gDesigner.executeAction(S.ID), t(false));
+                                          (gDesigner.executeAction(SettingsAction.ID), resolve(false));
                                       },
                                   },
                                   {
@@ -456,22 +456,22 @@ module.exports = function (module, exports, require) {
                                       className: "primary",
                                       shortcut: GSystemDialog.Shortcut.Enter,
                                       onclick: () => {
-                                          t(true);
+                                          resolve(true);
                                       },
                                   },
                               ],
-                              dontShowAgainCb: (e) => {
-                                  (gDesigner.setSetting(E.DISABLE_EXTERNAL_FILE_NO_ENTRIES_CREATED_WARING, !!e),
-                                      gDesigner.stats("settings_toggle_auto-save-no-entries-created-warning-enabled", !e));
+                              dontShowAgainCb: (checked) => {
+                                  (gDesigner.setSetting(GAutoSaveManager.DISABLE_EXTERNAL_FILE_NO_ENTRIES_CREATED_WARING, !!checked),
+                                      gDesigner.stats("settings_toggle_auto-save-no-entries-created-warning-enabled", !checked));
                               },
                           }));
                 });
             }),
-            (E.prototype._showExternalFileUpdatedOutAppWarningDialog = function (e) {
+            (GAutoSaveManager.prototype._showExternalFileUpdatedOutAppWarningDialog = function (document) {
                 return (
                     GSystemDialog.custom({
                         title: GObject.GLocale.get(new GObject.GLocaleKey("GAutoSave", "text.dialog-file-updated-out-app-waring.title"))
-                            .replace("%file-name", e.getTitle() + "." + e.getExtension().toLowerCase())
+                            .replace("%file-name", document.getTitle() + "." + document.getExtension().toLowerCase())
                             .replace("%app-name", DESIGNER.TITLE),
                         className: "g-auto-save-file-updated-out-app-warn-dialog",
                         icon: "info",
@@ -492,7 +492,7 @@ module.exports = function (module, exports, require) {
                                 className: "primary",
                                 shortcut: GSystemDialog.Shortcut.Enter,
                                 onclick: () => {
-                                    ((this._fileUpdatedWarningShowing = false), e.reload());
+                                    ((this._fileUpdatedWarningShowing = false), document.reload());
                                 },
                             },
                         ],
@@ -501,28 +501,28 @@ module.exports = function (module, exports, require) {
                     false
                 );
             }),
-            (E.prototype._getExternalStorageName = function (e) {
-                if (!e) return "";
-                const t = e.getStorageItem();
-                return t && t instanceof GGoogleDriveStorage.Item ? CloudIntegration.cloudOptions.find((e) => e.type === EXTERNAL_APP.GOOGLEDRIVE).name : "";
+            (GAutoSaveManager.prototype._getExternalStorageName = function (document) {
+                if (!document) return "";
+                const storageItem = document.getStorageItem();
+                return storageItem && storageItem instanceof GGoogleDriveStorage.Item ? CloudIntegration.cloudOptions.find((option) => option.type === EXTERNAL_APP.GOOGLEDRIVE).name : "";
             }),
-            (E.prototype._shouldHideNotifications = function () {
-                return gContainer.getProperty(E.AUTO_SAVE_HIDE_NOTIFICATION_PROP_NAME);
+            (GAutoSaveManager.prototype._shouldHideNotifications = function () {
+                return gContainer.getProperty(GAutoSaveManager.AUTO_SAVE_HIDE_NOTIFICATION_PROP_NAME);
             }),
-            (E.prototype._showNotification = async function (e) {
+            (GAutoSaveManager.prototype._showNotification = async function (failed) {
                 if (this._autoSaveModel.isSaving() || (await this._shouldHideNotifications())) return;
-                let t = "";
-                t = e
+                let message = "";
+                message = failed
                     ? GObject.GLocale.get(new GObject.GLocaleKey("GAutoSave", "text.failed-auto-saving"))
-                    : GObject.GLocale.get(E.ALTERNATE_STRINGS[Math.floor(Math.random() * E.ALTERNATE_STRINGS.length)]);
-                let n = {
+                    : GObject.GLocale.get(GAutoSaveManager.ALTERNATE_STRINGS[Math.floor(Math.random() * GAutoSaveManager.ALTERNATE_STRINGS.length)]);
+                let notification = {
                     custom: true,
                     class: "g-auto-save-notification",
                     enter: "enter",
                     exit: "exit",
                     timeout: 5e3,
                     content: [
-                        e
+                        failed
                             ? null
                             : $("<div/>")
                                   .addClass("spinner")
@@ -536,16 +536,16 @@ module.exports = function (module, exports, require) {
                                       $("<div/>"),
                                       $("<div/>"),
                                   ]),
-                        $("<div/>").addClass("message").text(t),
+                        $("<div/>").addClass("message").text(message),
                     ],
                     closeCallback: function () {
-                        gContainer.setProperty(E.AUTO_SAVE_HIDE_NOTIFICATION_PROP_NAME, true);
+                        gContainer.setProperty(GAutoSaveManager.AUTO_SAVE_HIDE_NOTIFICATION_PROP_NAME, true);
                     },
                 };
-                gDesigner.addNotification(n);
+                gDesigner.addNotification(notification);
             }),
-            (E.prototype._isCDRFile = function (e) {
+            (GAutoSaveManager.prototype._isCDRFile = function (document) {
                 return false;
             }),
-            (module.exports = E));
+            (module.exports = GAutoSaveManager));
     };

@@ -2,18 +2,18 @@ module.exports = function (module, exports, require) {
         "use strict";
         (Object.defineProperty(exports, "__esModule", { value: true }),
             (exports.REARRANGE_TAB_SELECTOR = exports.REARRANGE_TAB_CLASS = void 0),
-            (exports.allowRearrangeTabs = function (e) {
+            (exports.allowRearrangeTabs = function (container) {
                 ($(".tabs").sortable({
                     axis: "x",
                     containment: $("#header"),
                     revert: 150,
-                    activate: function (e, t) {
-                        ($(t.item[0]).trigger("click"), $(t.placeholder[0]).css({ height: "1px" }));
-                        var n = t.item.offset().top;
+                    activate: function (event, ui) {
+                        ($(ui.item[0]).trigger("click"), $(ui.placeholder[0]).css({ height: "1px" }));
+                        var itemTop = ui.item.offset().top;
                         $(".tabs")
                             .children()
                             .map(function () {
-                                $(this).hasClass("ui-sortable-placeholder") || ($(this).offset().top > n && $(this).addClass("hide"));
+                                $(this).hasClass("ui-sortable-placeholder") || ($(this).offset().top > itemTop && $(this).addClass("hide"));
                             });
                     },
                     beforeStop: function () {
@@ -34,25 +34,25 @@ module.exports = function (module, exports, require) {
                                     : setTimeout(function () {
                                           $(".more-button").addClass("active");
                                       }, 10),
-                                a());
+                                updateTabsInterface());
                         })
-                        .appendTo(e));
+                        .appendTo(container));
             }),
-            (exports.toggleRearrangeTabsVisibility = function (e, t) {
-                $(e)
-                    .find(i)
-                    .css("display", t ? "" : "none");
+            (exports.toggleRearrangeTabsVisibility = function (container, visible) {
+                $(container)
+                    .find(tabSelector)
+                    .css("display", visible ? "" : "none");
             }),
-            (exports.updateTabsInterface = a),
+            (exports.updateTabsInterface = updateTabsInterface),
             require(4),
             require(13),
             require(38),
             require(1518 /* lib:jquery-ui-sortable */));
-        const o = (exports.REARRANGE_TAB_CLASS = "more-button"),
-            i = (exports.REARRANGE_TAB_SELECTOR = ".".concat(o));
-        function a() {
-            var e = 0,
-                t = 0;
+        const tabClass = (exports.REARRANGE_TAB_CLASS = "more-button"),
+            tabSelector = (exports.REARRANGE_TAB_SELECTOR = ".".concat(tabClass));
+        function updateTabsInterface() {
+            var width = 0,
+                overflowIndex = 0;
             ($(".moreTab").empty(),
                 $(".moreTab").append($(".tabs").children().clone(true)),
                 $(".moreTab").children().children().prepend($("<span/>").addClass("select")),
@@ -63,19 +63,19 @@ module.exports = function (module, exports, require) {
                 $(".moreTab").children().off("contextmenu"),
                 $(".tabs")
                     .children()
-                    .each(function (n) {
-                        if (t);
-                        else if ((e += $(this).outerWidth() + 7.5) > $(".section.windows").outerWidth()) return (t = n);
+                    .each(function (index) {
+                        if (overflowIndex);
+                        else if ((width += $(this).outerWidth() + 7.5) > $(".section.windows").outerWidth()) return (overflowIndex = index);
                     }),
                 setTimeout(function () {
-                    (t &&
-                        $(".tabs>div").index($(".tab.g-active")) >= t &&
+                    (overflowIndex &&
+                        $(".tabs>div").index($(".tab.g-active")) >= overflowIndex &&
                         $(".tabs")
                             .find(".tab.g-active")
                             .insertBefore(
                                 $(".tabs")
                                     .children()
-                                    .eq(t - 1)
+                                    .eq(overflowIndex - 1)
                             ),
                         $(".moreTab")
                             .children()

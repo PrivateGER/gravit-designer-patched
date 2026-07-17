@@ -2,12 +2,12 @@ module.exports = function (module, exports, require) {
         "use strict";
         (require(8 /* Symbol */), require(3));
         var GObject = require(1),
-            i = require(31),
+            GAction = require(31),
             GCategory = require(18);
         const GSystemDialog = require(44),
             GCommonNames = require(119);
         function l() {}
-        (GObject.GObject.inherit(l, i),
+        (GObject.GObject.inherit(l, GAction),
             (l.ID = "use-coupon-action"),
             (l.TITLE = new GObject.GLocaleKey("GUseCouponAction", "title")),
             (l.prototype.getId = function () {

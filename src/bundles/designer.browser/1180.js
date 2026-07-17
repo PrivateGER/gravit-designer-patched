@@ -1,74 +1,74 @@
 module.exports = function (module, exports, require) {
         "use strict";
         require(3);
-        var o = require(53),
+        var GEditorModule = require(53),
             GObject = require(1),
             GCategory = require(18),
-            r = require(106);
-        function s() {}
-        (GObject.GObject.inherit(s, r),
-            (s.ID = "edit.selectbyfonttype"),
-            (s.TITLE = new GObject.GLocaleKey("GSelectByFontTypeAction", "title")),
-            (s.prototype.getId = function () {
-                return s.ID;
+            GAction = require(106);
+        function GSelectByFontTypeAction() {}
+        (GObject.GObject.inherit(GSelectByFontTypeAction, GAction),
+            (GSelectByFontTypeAction.ID = "edit.selectbyfonttype"),
+            (GSelectByFontTypeAction.TITLE = new GObject.GLocaleKey("GSelectByFontTypeAction", "title")),
+            (GSelectByFontTypeAction.prototype.getId = function () {
+                return GSelectByFontTypeAction.ID;
             }),
-            (s.prototype.getTitle = function () {
-                return s.TITLE;
+            (GSelectByFontTypeAction.prototype.getTitle = function () {
+                return GSelectByFontTypeAction.TITLE;
             }),
-            (s.prototype.getGroup = function () {
+            (GSelectByFontTypeAction.prototype.getGroup = function () {
                 return "edit/select-by-font";
             }),
-            (s.prototype.getCategory = function () {
+            (GSelectByFontTypeAction.prototype.getCategory = function () {
                 return GCategory.CATEGORY_EDIT_SELECT_SAME;
             }),
-            (s.prototype.isEnabled = function () {
-                if (!r.prototype.isEnabled.call(this)) return false;
-                var e = gDesigner.getActiveDocument();
-                if (e && e.getEditor() && e.getEditor().getSelection()) {
-                    var t = this._getFontFamily();
-                    return !(!t || !t.length);
+            (GSelectByFontTypeAction.prototype.isEnabled = function () {
+                if (!GAction.prototype.isEnabled.call(this)) return false;
+                var activeDocument = gDesigner.getActiveDocument();
+                if (activeDocument && activeDocument.getEditor() && activeDocument.getEditor().getSelection()) {
+                    var fontFamily = this._getFontFamily();
+                    return !(!fontFamily || !fontFamily.length);
                 }
                 return false;
             }),
-            (s.prototype.execute = function () {
-                var e = gDesigner.getActiveDocument(),
-                    t = this._getFontFamily(),
-                    n = gDesigner.getWorkspace().getFontManager().getDefaultFont(),
-                    o = [];
-                (e.getScene().acceptChildren(function (e) {
-                    (e.removeFlag(GObject.GNode.Flag.Selected), e instanceof GObject.GText) &&
-                        (e.getProperty("_tff") || (n && n.getFamily())) === t &&
-                        o.push(e);
+            (GSelectByFontTypeAction.prototype.execute = function () {
+                var activeDocument = gDesigner.getActiveDocument(),
+                    fontFamily = this._getFontFamily(),
+                    defaultFont = gDesigner.getWorkspace().getFontManager().getDefaultFont(),
+                    matchingElements = [];
+                (activeDocument.getScene().acceptChildren(function (element) {
+                    (element.removeFlag(GObject.GNode.Flag.Selected), element instanceof GObject.GText) &&
+                        (element.getProperty("_tff") || (defaultFont && defaultFont.getFamily())) === fontFamily &&
+                        matchingElements.push(element);
                 }),
-                    e.getEditor().updateSelection(true, o));
+                    activeDocument.getEditor().updateSelection(true, matchingElements));
             }),
-            (s.prototype.getIcon = function () {
+            (GSelectByFontTypeAction.prototype.getIcon = function () {
                 return gDesigner.isTouchEnabled() ? "gravit-icon-select-by-font" : "";
             }),
-            (s.prototype.toString = function () {
+            (GSelectByFontTypeAction.prototype.toString = function () {
                 return "[Object GSelectByFontTypeAction]";
             }),
-            (s.prototype._getFontFamily = function () {
+            (GSelectByFontTypeAction.prototype._getFontFamily = function () {
                 for (
-                    var e,
-                        t = gDesigner.getActiveDocument().getEditor().getSelection(),
-                        n = gDesigner.getWorkspace().getFontManager().getDefaultFont(),
+                    var commonFontFamily,
+                        selection = gDesigner.getActiveDocument().getEditor().getSelection(),
+                        defaultFont = gDesigner.getWorkspace().getFontManager().getDefaultFont(),
                         a = 0;
-                    a < t.length;
+                    a < selection.length;
                     a++
                 ) {
-                    var r = t[a];
+                    var r = selection[a];
                     if (r instanceof GObject.GText) {
-                        var s = (o.GElementEditor.getEditor(r) || r).getProperty("_tff");
-                        if ((s || (s = n && n.getFamily()), e)) {
-                            if (e !== s) {
-                                e = "";
+                        var s = (GEditorModule.GElementEditor.getEditor(r) || r).getProperty("_tff");
+                        if ((s || (s = defaultFont && defaultFont.getFamily()), commonFontFamily)) {
+                            if (commonFontFamily !== s) {
+                                commonFontFamily = "";
                                 break;
                             }
-                        } else e = s;
+                        } else commonFontFamily = s;
                     }
                 }
-                return e;
+                return commonFontFamily;
             }),
-            (module.exports = s));
+            (module.exports = GSelectByFontTypeAction));
     };

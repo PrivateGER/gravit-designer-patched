@@ -2,67 +2,67 @@ module.exports = function (module, exports, require) {
         "use strict";
         var GPlatform = require(15),
             GObject = require(1),
-            a = function (e) {
-                e.changed.escapeKey && (e.isImmediatePropagationStopped = true);
+            modifiersChangedListener = function (event) {
+                event.changed.escapeKey && (event.isImmediatePropagationStopped = true);
             },
-            r = {
+            menuManager = {
                 _activeMenu: null,
                 _activeActivationCallback: null,
                 _activeMenuMouseLocations: null,
                 getActiveMenu: function () {
-                    return r._activeMenu;
+                    return menuManager._activeMenu;
                 },
-                triggerGlobalActivation: function (e) {
-                    r._activeMenu && r._activeActivationCallback && r._activeActivationCallback(e);
+                triggerGlobalActivation: function (event) {
+                    menuManager._activeMenu && menuManager._activeActivationCallback && menuManager._activeActivationCallback(event);
                 },
-                setActiveMenu: function (e, t, n) {
-                    (r._activeMenu &&
-                        (GPlatform.GPlatform.removeEventListener(GPlatform.GModifiersChangedEvent, a, r._activeMenu && r._activeMenu.getHtmlElement()),
-                        t || r._activeMenu.close(),
-                        (r._activeMenu = null),
-                        (r._activeActivationCallback = null),
-                        document.removeEventListener("mousemove", r._activeMenuMouseMoveListener),
-                        document.removeEventListener("mousedown", r._activeMenuMouseUpDownListener),
-                        document.removeEventListener("mouseup", r._activeMenuMouseUpDownListener),
-                        document.removeEventListener("keydown", r._activeMenuKeyDownListener)),
-                        (r._activeMenu = e),
-                        (r._activeActivationCallback = n),
-                        r._activeMenu &&
-                            (GPlatform.GPlatform.addEventListener(GPlatform.GModifiersChangedEvent, a, e.getHtmlElement(), null, true),
-                            document.addEventListener("mousemove", r._activeMenuMouseMoveListener),
-                            document.addEventListener("mousedown", r._activeMenuMouseUpDownListener),
+                setActiveMenu: function (menu, keepOpen, activationCallback) {
+                    (menuManager._activeMenu &&
+                        (GPlatform.GPlatform.removeEventListener(GPlatform.GModifiersChangedEvent, modifiersChangedListener, menuManager._activeMenu && menuManager._activeMenu.getHtmlElement()),
+                        keepOpen || menuManager._activeMenu.close(),
+                        (menuManager._activeMenu = null),
+                        (menuManager._activeActivationCallback = null),
+                        document.removeEventListener("mousemove", menuManager._activeMenuMouseMoveListener),
+                        document.removeEventListener("mousedown", menuManager._activeMenuMouseUpDownListener),
+                        document.removeEventListener("mouseup", menuManager._activeMenuMouseUpDownListener),
+                        document.removeEventListener("keydown", menuManager._activeMenuKeyDownListener)),
+                        (menuManager._activeMenu = menu),
+                        (menuManager._activeActivationCallback = activationCallback),
+                        menuManager._activeMenu &&
+                            (GPlatform.GPlatform.addEventListener(GPlatform.GModifiersChangedEvent, modifiersChangedListener, menu.getHtmlElement(), null, true),
+                            document.addEventListener("mousemove", menuManager._activeMenuMouseMoveListener),
+                            document.addEventListener("mousedown", menuManager._activeMenuMouseUpDownListener),
                             setTimeout(function () {
-                                document.addEventListener("mouseup", r._activeMenuMouseUpDownListener);
+                                document.addEventListener("mouseup", menuManager._activeMenuMouseUpDownListener);
                             }, 250),
-                            document.addEventListener("keydown", r._activeMenuKeyDownListener)));
+                            document.addEventListener("keydown", menuManager._activeMenuKeyDownListener)));
                 },
-                _activeMenuMouseMoveListener: function (e) {
-                    (r._activeMenuMouseLocations || (r._activeMenuMouseLocations = []),
-                        r._activeMenuMouseLocations.push({ x: e.pageX, y: e.pageY }),
-                        r._activeMenuMouseLocations.length > 3 && r._activeMenuMouseLocations.shift());
+                _activeMenuMouseMoveListener: function (event) {
+                    (menuManager._activeMenuMouseLocations || (menuManager._activeMenuMouseLocations = []),
+                        menuManager._activeMenuMouseLocations.push({ x: event.pageX, y: event.pageY }),
+                        menuManager._activeMenuMouseLocations.length > 3 && menuManager._activeMenuMouseLocations.shift());
                 },
-                _activeMenuMouseUpDownListener: function (e) {
-                    e.cancelable && r.setActiveMenu(null);
+                _activeMenuMouseUpDownListener: function (event) {
+                    event.cancelable && menuManager.setActiveMenu(null);
                 },
-                _activeMenuKeyDownListener: function (e) {
-                    27 == e.keyCode && r.setActiveMenu(null);
+                _activeMenuKeyDownListener: function (event) {
+                    27 == event.keyCode && menuManager.setActiveMenu(null);
                 },
-                createActionMenu: function (e, t) {
+                createActionMenu: function (actions, menu) {
                     for (
-                        var n = [],
-                            o = function (e, o, i) {
-                                e.getItemCount() > 0 &&
-                                    (function (e) {
-                                        for (var t = 0; t < n.length; ++t) if (n[t].item === e) return n[t].group;
-                                    })(e.getItem(e.getItemCount() - 1)) !== i &&
-                                    e.addItem(t.createDivider());
-                                n.push({ item: o, group: i });
+                        var groupEntries = [],
+                            addDividerBeforeItem = function (targetMenu, menuItem, group) {
+                                targetMenu.getItemCount() > 0 &&
+                                    (function (comparedItem) {
+                                        for (var t = 0; t < groupEntries.length; ++t) if (groupEntries[t].item === comparedItem) return groupEntries[t].group;
+                                    })(targetMenu.getItem(targetMenu.getItemCount() - 1)) !== group &&
+                                    targetMenu.addItem(menu.createDivider());
+                                groupEntries.push({ item: menuItem, group: group });
                             },
                             a = 0;
-                        a < e.length;
+                        a < actions.length;
                         ++a
                     ) {
-                        var r = e[a];
+                        var r = actions[a];
                         if (r.isAvailable()) {
                             var s = GObject.GLocale.get(r.getCategory()),
                                 l = r.getGroup(),
@@ -70,18 +70,18 @@ module.exports = function (module, exports, require) {
                                 d = l ? [""].concat(l.split("/")) : null;
                             if (d && c && c.length !== d.length - 1)
                                 throw new Error("Number of categories different thant number of groups.");
-                            var u = t;
+                            var u = menu;
                             if (c)
                                 for (var p = 0; p < c.length; ++p) {
                                     ((s = c[p]), (l = d ? d[p] : null));
                                     var g = u.findItem(s);
-                                    (g || ((g = t.createMenuItem(true)).setCaption(s), o(u, g, l), u.addItem(g)), (u = g.getMenu()));
+                                    (g || ((g = menu.createMenuItem(true)).setCaption(s), addDividerBeforeItem(u, g, l), u.addItem(g)), (u = g.getMenu()));
                                 }
-                            var h = t.createMenuItem();
-                            (h.setAction(r), o(u, h, d ? d[d.length - 1] : null), u.addItem(h));
+                            var h = menu.createMenuItem();
+                            (h.setAction(r), addDividerBeforeItem(u, h, d ? d[d.length - 1] : null), u.addItem(h));
                         }
                     }
                 },
             };
-        module.exports = r;
+        module.exports = menuManager;
     };

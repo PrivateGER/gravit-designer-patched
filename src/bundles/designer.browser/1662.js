@@ -3,81 +3,81 @@ module.exports = function (module, exports, require) {
         var _interopRequireDefault = require(16);
         require(3);
         var GObject = require(1),
-            a = _interopRequireDefault(require(340)),
-            r = require(806),
-            s = require(395),
+            GTouchTool = _interopRequireDefault(require(340)),
+            GSidebar = require(806),
+            GSidebars = require(395),
             GLibraryPanel = require(1663),
             GCommonNames = require(119);
-        const d = require(291);
-        function u() {
-            r.call(this);
+        const GNetworkAvailabilityChangedEvent = require(291);
+        function GLibrarySidebar() {
+            GSidebar.call(this);
         }
-        (GObject.GObject.inherit(u, r),
-            (u.ID = "library"),
-            (u.TITLE = new GObject.GLocaleKey("GLibrarySidebar", "title")),
-            (u.prototype._initialized = false),
-            (u.prototype._libraryPanel = null),
-            (u.prototype._libraryPanelInstance = null),
-            (u.prototype._htmlElement = null),
-            (u.prototype.getId = function () {
-                return u.ID;
+        (GObject.GObject.inherit(GLibrarySidebar, GSidebar),
+            (GLibrarySidebar.ID = "library"),
+            (GLibrarySidebar.TITLE = new GObject.GLocaleKey("GLibrarySidebar", "title")),
+            (GLibrarySidebar.prototype._initialized = false),
+            (GLibrarySidebar.prototype._libraryPanel = null),
+            (GLibrarySidebar.prototype._libraryPanelInstance = null),
+            (GLibrarySidebar.prototype._htmlElement = null),
+            (GLibrarySidebar.prototype.getId = function () {
+                return GLibrarySidebar.ID;
             }),
-            (u.prototype.getTitle = function () {
-                return u.TITLE;
+            (GLibrarySidebar.prototype.getTitle = function () {
+                return GLibrarySidebar.TITLE;
             }),
-            (u.prototype.isEnabled = function () {
+            (GLibrarySidebar.prototype.isEnabled = function () {
                 return GCommonNames.isOnline();
             }),
-            (u.prototype.isVisible = function () {
+            (GLibrarySidebar.prototype.isVisible = function () {
                 // The panel's only living content source is the Unsplash proxy
                 // (window.UNSPLASH_ENABLED via /config.js); without it every
                 // category is dead, so hide the whole LIBRARIES tab.
                 return true === window.UNSPLASH_ENABLED && !!gDesigner.getApplicationManager().isEditingEnabled();
             }),
-            (u.prototype.getOrientation = function () {
-                return s.Orientation.Left;
+            (GLibrarySidebar.prototype.getOrientation = function () {
+                return GSidebars.Orientation.Left;
             }),
-            (u.prototype.getMinimumWidth = function () {
+            (GLibrarySidebar.prototype.getMinimumWidth = function () {
                 return 250;
             }),
-            (u.prototype.getDefaultWidth = function () {
+            (GLibrarySidebar.prototype.getDefaultWidth = function () {
                 return 250;
             }),
-            (u.prototype.isResizeable = function () {
+            (GLibrarySidebar.prototype.isResizeable = function () {
                 return true;
             }),
-            (u.prototype.resize = function () {
+            (GLibrarySidebar.prototype.resize = function () {
                 this._libraryPanelInstance.resize();
             }),
-            (u.prototype.relayout = function () {
+            (GLibrarySidebar.prototype.relayout = function () {
                 (this._libraryPanel && !this._libraryPanel.hasClass("unavailable")) ||
                     !this.isEnabled() ||
                     this._addLibraryPanel(this._htmlElement);
             }),
-            (u.prototype.init = function (e) {
-                (r.prototype.init.call(this, e),
-                    (this._htmlElement = e),
-                    this._addLibraryPanel(e),
+            (GLibrarySidebar.prototype.init = function (htmlElement) {
+                (GSidebar.prototype.init.call(this, htmlElement),
+                    (this._htmlElement = htmlElement),
+                    this._addLibraryPanel(htmlElement),
                     $(document).on(
                         "networkAvailable",
                         function () {
                             this.relayout();
-                            var e = gDesigner.getLeftSidebars(),
-                                t = e.getActiveSidebar();
-                            t === this.getId() && e.setSidebarEnabled(t, this.isEnabled());
+                            var leftSidebars = gDesigner.getLeftSidebars(),
+                                activeSidebarId = leftSidebars.getActiveSidebar();
+                            activeSidebarId === this.getId() && leftSidebars.setSidebarEnabled(activeSidebarId, this.isEnabled());
                         }.bind(this)
                     ),
-                    gDesigner.addEventListener(d, this._networkAvailabilityChangedEvent, this));
+                    gDesigner.addEventListener(GNetworkAvailabilityChangedEvent, this._networkAvailabilityChangedEvent, this));
             }),
-            (u.prototype._networkAvailabilityChangedEvent = function (e) {
-                (this._libraryPanel.toggleClass("offline", !e.connected), this._initialized || this._addLibraryPanel(this._htmlElement));
+            (GLibrarySidebar.prototype._networkAvailabilityChangedEvent = function (event) {
+                (this._libraryPanel.toggleClass("offline", !event.connected), this._initialized || this._addLibraryPanel(this._htmlElement));
             }),
-            (u.prototype._addLibraryPanel = function (e) {
+            (GLibrarySidebar.prototype._addLibraryPanel = function (htmlElement) {
                 (this._libraryPanel ||
                     ($("<div></div>")
                         .addClass("toolbar library-toolbar g-touch-only")
                         .append($("<label/>").text(GObject.GLocale.get(new GObject.GLocaleKey("GLibrarySidebar", "title"))))
-                        .appendTo(e),
+                        .appendTo(htmlElement),
                     (this._libraryPanel = $("<div/>")
                         .append(
                             $("<div/>")
@@ -94,7 +94,7 @@ module.exports = function (module, exports, require) {
                         )
                         .addClass("library-container")
                         .css("overflow", "auto")
-                        .appendTo(e))),
+                        .appendTo(htmlElement))),
                     this._libraryPanel.toggleClass("offline", gDesigner.isOffline()),
                     GCommonNames.isOnline()
                         ? (this._libraryPanel.hasClass("unavailable") &&
@@ -106,9 +106,9 @@ module.exports = function (module, exports, require) {
                               .text(GObject.GLocale.get(new GObject.GLocaleKey("GLibrarySidebar", "text.connect")))
                               .appendTo(this._libraryPanel)));
             }),
-            (u.prototype.getTouchTools = function () {
+            (GLibrarySidebar.prototype.getTouchTools = function () {
                 return [
-                    new a.default({
+                    new GTouchTool.default({
                         id: "libraries",
                         sidebar: this.getId(),
                         icon: "gravit-icon-touch-libraries-panel",
@@ -116,8 +116,8 @@ module.exports = function (module, exports, require) {
                     }),
                 ];
             }),
-            (u.prototype.toString = function () {
+            (GLibrarySidebar.prototype.toString = function () {
                 return "[Object GLibrarySidebar]";
             }),
-            (module.exports = u));
+            (module.exports = GLibrarySidebar));
     };

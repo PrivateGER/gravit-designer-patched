@@ -4,7 +4,7 @@ module.exports = function (module, exports, require) {
             GObject = require(1),
             GPlatform = require(15),
             r = _interopRequireDefault(require(18 /* GCategory */)),
-            s = _interopRequireDefault(require(1281)),
+            s = _interopRequireDefault(require(1281 /* GMainAction */)),
             SidebarsIds = require(198);
         class c extends s.default {
             getId() {

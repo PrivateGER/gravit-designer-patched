@@ -2,20 +2,20 @@ module.exports = function (module, exports, require) {
         "use strict";
         (require(8 /* Symbol */), require(4), require(13));
         var GObject = require(1);
-        function i(e, t, n, o, i, a, r, s, l, c) {
-            ((this._container = e),
-                (this._renderer = t),
-                (this._nodeStyle = n),
-                (this._expandStyle = o),
+        function i(container, renderer, nodeStyle, expandStyle, i, nodeExpand, upSpan1Style, upSpan2Style, downSpan1Style, downSpan2Style) {
+            ((this._container = container),
+                (this._renderer = renderer),
+                (this._nodeStyle = nodeStyle),
+                (this._expandStyle = expandStyle),
                 (this._nodeClick = i),
-                (this._nodeExpand = a),
-                (this._upSpan1Style = r),
-                (this._upSpan2Style = s),
-                (this._downSpan1Style = l),
-                (this._downSpan2Style = c));
+                (this._nodeExpand = nodeExpand),
+                (this._upSpan1Style = upSpan1Style),
+                (this._upSpan2Style = upSpan2Style),
+                (this._downSpan1Style = downSpan1Style),
+                (this._downSpan2Style = downSpan2Style));
         }
-        ((i.GSimpleTreeNodeNamed = function (e) {
-            this.id = e;
+        ((i.GSimpleTreeNodeNamed = function (id) {
+            this.id = id;
         }),
             (i.GSimpleTreeNodeNamed.prototype.id = -1),
             (i.GSimpleTreeNodeNamed.prototype.virtualNode = false),
@@ -47,109 +47,109 @@ module.exports = function (module, exports, require) {
             (i.prototype._isInvalidationBlocked = function () {
                 return true;
             }),
-            (i.prototype._beforeInvalidationStart = async function (e) {}),
-            (i.prototype._afterInvalidationEnd = function (e) {}),
-            (i.prototype.requestInvalidation = function (e, t) {
+            (i.prototype._beforeInvalidationStart = async function (invalidationOptions) {}),
+            (i.prototype._afterInvalidationEnd = function (invalidationOptions) {}),
+            (i.prototype.requestInvalidation = function (delay, invalidationOptions) {
                 if (null === this._invalidation) {
-                    var n = $(this._container);
+                    var containerElement = $(this._container);
                     if (!this._checkTreeSanity()) return;
                     this._invalidation = setTimeout(() => {
                         if (this._isInvalidationBlocked()) return ((this._invalidation = null), void this.requestInvalidation(500));
-                        this._beforeInvalidationStart(t).then(() => {
-                            n.empty();
-                            let e = document.createDocumentFragment();
+                        this._beforeInvalidationStart(invalidationOptions).then(() => {
+                            containerElement.empty();
+                            let fragment = document.createDocumentFragment();
                             for (let t = 0; t < this._nodes.length; t++) {
-                                let n = this._newNode(this._nodes[t]),
-                                    o = this._renderer(this._nodes[t], n[0]);
-                                ($(e).append(n),
-                                    n.hasClass("last-row") && $(e).append($("<div/>").addClass("last-row-division")),
-                                    o && o.length && n.before(o));
+                                let rowElement = this._newNode(this._nodes[t]),
+                                    extraElement = this._renderer(this._nodes[t], rowElement[0]);
+                                ($(fragment).append(rowElement),
+                                    rowElement.hasClass("last-row") && $(fragment).append($("<div/>").addClass("last-row-division")),
+                                    extraElement && extraElement.length && rowElement.before(extraElement));
                             }
-                            (n.append(e), this._afterInvalidationEnd(), (this._invalidation = null));
+                            (containerElement.append(fragment), this._afterInvalidationEnd(), (this._invalidation = null));
                         });
-                    }, e || 1);
+                    }, delay || 1);
                 }
             }),
             (i.prototype.expandAndFocus = function () {}),
             (i.prototype.beginUpdate = function () {
                 this._updateCount++;
             }),
-            (i.prototype.endUpdate = function (e) {
-                ((this._updateCount = Math.max(0, this._updateCount - 1)), 0 === this._updateCount && this.requestInvalidation(0, e));
+            (i.prototype.endUpdate = function (invalidationOptions) {
+                ((this._updateCount = Math.max(0, this._updateCount - 1)), 0 === this._updateCount && this.requestInvalidation(0, invalidationOptions));
             }),
-            (i.prototype._newNode = function (e) {
+            (i.prototype._newNode = function (node) {
                 return $("<div>")
                     .addClass(this._nodeStyle)
-                    .attr("id", e.id)
-                    .css("padding-left", 25 * e._depth)
-                    .on("click", (t) => {
-                        (t.stopPropagation(), this._nodeClick(e));
+                    .attr("id", node.id)
+                    .css("padding-left", 25 * node._depth)
+                    .on("click", (event) => {
+                        (event.stopPropagation(), this._nodeClick(node));
                     });
             }),
-            (i.prototype.appendNode = function (e, t, n) {
-                var o = e ? this._nodes.indexOf(e) : 0;
-                if (o < 0) console.error("no parent found");
-                else if (this._nodes.indexOf(t) >= 0) console.error("node already added");
+            (i.prototype.appendNode = function (parentNode, node, appendAtEnd) {
+                var parentIndex = parentNode ? this._nodes.indexOf(parentNode) : 0;
+                if (parentIndex < 0) console.error("no parent found");
+                else if (this._nodes.indexOf(node) >= 0) console.error("node already added");
                 else {
-                    var i,
-                        a = e ? e._depth : -1;
-                    if (((t._depth = a + 1), n))
-                        for (var r = (i = e ? o + 1 : 0); r < this._nodes.length; r++) {
-                            if (this._nodes[r]._depth <= a || this._nodes[r].virtualNode) {
-                                i = Math.max(0, r - 1);
+                    var insertIndex,
+                        parentDepth = parentNode ? parentNode._depth : -1;
+                    if (((node._depth = parentDepth + 1), appendAtEnd))
+                        for (var r = (insertIndex = parentNode ? parentIndex + 1 : 0); r < this._nodes.length; r++) {
+                            if (this._nodes[r]._depth <= parentDepth || this._nodes[r].virtualNode) {
+                                insertIndex = Math.max(0, r - 1);
                                 break;
                             }
-                            i = r;
+                            insertIndex = r;
                         }
-                    else i = e ? o : 0;
-                    var s = null;
-                    ((s = i >= this._nodes.length ? (this._nodes.length ? this._nodes[this._nodes.length - 1] : null) : this._nodes[i]),
-                        this.insertNodeAfter(s, t));
+                    else insertIndex = parentNode ? parentIndex : 0;
+                    var refNode = null;
+                    ((refNode = insertIndex >= this._nodes.length ? (this._nodes.length ? this._nodes[this._nodes.length - 1] : null) : this._nodes[insertIndex]),
+                        this.insertNodeAfter(refNode, node));
                 }
             }),
-            (i.prototype.prependNode = function (e, t) {
-                if ((e ? this._nodes.indexOf(e) : 0) < 0) console.error("no parent found");
-                else if (this._nodes.indexOf(t) >= 0) console.error("node already added");
+            (i.prototype.prependNode = function (parentNode, node) {
+                if ((parentNode ? this._nodes.indexOf(parentNode) : 0) < 0) console.error("no parent found");
+                else if (this._nodes.indexOf(node) >= 0) console.error("node already added");
                 else {
-                    var n = e ? e._depth : -1;
-                    ((t._depth = n + 1), this.insertNodeAfter(e, t));
+                    var parentDepth = parentNode ? parentNode._depth : -1;
+                    ((node._depth = parentDepth + 1), this.insertNodeAfter(parentNode, node));
                 }
             }),
-            (i.prototype.removeNode = function (e) {
-                var t = this._nodes.indexOf(e);
-                if (!(t < 0)) {
-                    var n = $(this._container);
-                    (n.find("#" + this._nodes[t].id).remove(), this._nodes.splice(t, 1));
-                    for (var o = this._nodes[t]; o && e._depth < o._depth; )
-                        (n.find("#" + o.id).remove(), this._nodes.splice(t, 1), (o = this._nodes[t]));
+            (i.prototype.removeNode = function (node) {
+                var index = this._nodes.indexOf(node);
+                if (!(index < 0)) {
+                    var containerElement = $(this._container);
+                    (containerElement.find("#" + this._nodes[index].id).remove(), this._nodes.splice(index, 1));
+                    for (var childNode = this._nodes[index]; childNode && node._depth < childNode._depth; )
+                        (containerElement.find("#" + childNode.id).remove(), this._nodes.splice(index, 1), (childNode = this._nodes[index]));
                 }
             }),
-            (i.prototype.insertNodeAfter = function (e, t) {
-                var n = e ? this._nodes.indexOf(e) : this._nodes.length;
+            (i.prototype.insertNodeAfter = function (referenceNode, node) {
+                var n = referenceNode ? this._nodes.indexOf(referenceNode) : this._nodes.length;
                 if (n < 0) console.error("no ref node found");
-                else if (this._nodes.indexOf(t) >= 0) console.error("node already added");
+                else if (this._nodes.indexOf(node) >= 0) console.error("node already added");
                 else {
-                    var o = e ? e._depth : 0;
-                    if (void 0 === t._depth) t._depth = o;
-                    else if (t._depth > o) return void this._nodes.splice(n + 1, 0, t);
+                    var refDepth = referenceNode ? referenceNode._depth : 0;
+                    if (void 0 === node._depth) node._depth = refDepth;
+                    else if (node._depth > refDepth) return void this._nodes.splice(n + 1, 0, node);
                     for (
                         n += 1;
                         this._nodes[n] &&
-                        (this._nodes[n]._depth > o || (this._nodes[n].virtualNode && (0 === o || this._nodes[n]._depth < o)));
+                        (this._nodes[n]._depth > refDepth || (this._nodes[n].virtualNode && (0 === refDepth || this._nodes[n]._depth < refDepth)));
 
                     )
                         n++;
-                    n >= this._nodes.length ? this._nodes.push(t) : this._nodes.splice(n, 0, t);
+                    n >= this._nodes.length ? this._nodes.push(node) : this._nodes.splice(n, 0, node);
                 }
             }),
-            (i.prototype.insertNodeBefore = function (e, t) {
-                var n = e ? this._nodes.indexOf(e) : -1;
+            (i.prototype.insertNodeBefore = function (referenceNode, node) {
+                var n = referenceNode ? this._nodes.indexOf(referenceNode) : -1;
                 if (n < 0) console.error("no ref node found");
-                else if (this._nodes.indexOf(t) >= 0) console.error("node already added");
+                else if (this._nodes.indexOf(node) >= 0) console.error("node already added");
                 else {
-                    var o = e ? e._depth : 0;
-                    for (void 0 === t._depth && (t._depth = o); n >= 0 && (this._nodes[n]._depth > o || this._nodes[n].virtualNode); ) n--;
-                    n < 0 ? this._nodes.unshift(t) : this._nodes.splice(n, 0, t);
+                    var refDepth = referenceNode ? referenceNode._depth : 0;
+                    for (void 0 === node._depth && (node._depth = refDepth); n >= 0 && (this._nodes[n]._depth > refDepth || this._nodes[n].virtualNode); ) n--;
+                    n < 0 ? this._nodes.unshift(node) : this._nodes.splice(n, 0, node);
                 }
             }),
             (i.prototype.clean = function () {

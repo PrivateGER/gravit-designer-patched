@@ -2,74 +2,74 @@ module.exports = function (module, exports, require) {
         "use strict";
         (require(4), require(32), require(33));
         require(1 /* GObject */);
-        (require(85), require(1671));
-        function o(e) {
-            this._storage = e;
+        (require(85 /* GContainer */), require(1671));
+        function PluginManager(storage) {
+            this._storage = storage;
         }
-        ((o.prototype._plugins = null),
-            (o.prototype._storage = null),
-            (o.prototype.load = function () {
+        ((PluginManager.prototype._plugins = null),
+            (PluginManager.prototype._storage = null),
+            (PluginManager.prototype.load = function () {
                 try {
                     ((this._plugins = this._storage.getPlugins()),
                         this._plugins &&
-                            this._plugins.forEach((e) => {
+                            this._plugins.forEach((plugin) => {
                                 try {
-                                    e.load(this._storage);
-                                } catch (e) {
-                                    console.error("PluginManager: Could not load plugin", e);
+                                    plugin.load(this._storage);
+                                } catch (error) {
+                                    console.error("PluginManager: Could not load plugin", error);
                                 }
                             }));
-                } catch (e) {
-                    console.error("PluginManager: Could not load plugins", e);
+                } catch (error) {
+                    console.error("PluginManager: Could not load plugins", error);
                 }
             }),
-            (o.prototype.init = function (e) {
+            (PluginManager.prototype.init = function (gravit) {
                 if (this._plugins && this._plugins.length) {
-                    let t = () => ({
+                    let createRecord = () => ({
                             actions: [],
                             sidebars: [],
                             panels: [],
                             tools: [],
                             properties: [],
                         }),
-                        n = t();
-                    (this._plugins.forEach((e) => {
+                        merged = createRecord();
+                    (this._plugins.forEach((plugin) => {
                         try {
-                            let o = t();
-                            (e.init(o),
-                                Object.keys(o).forEach((e) => {
-                                    n[e] = n[e].concat(o[e]);
+                            let pluginRecord = createRecord();
+                            (plugin.init(pluginRecord),
+                                Object.keys(pluginRecord).forEach((key) => {
+                                    merged[key] = merged[key].concat(pluginRecord[key]);
                                 }));
-                        } catch (e) {
-                            console.error("PluginManager: Could not initilize plugin", e);
+                        } catch (error) {
+                            console.error("PluginManager: Could not initilize plugin", error);
                         }
                     }),
-                        Object.keys(n).forEach((t) => {
-                            e[t] = e[t].concat(n[t]);
+                        Object.keys(merged).forEach((key) => {
+                            gravit[key] = gravit[key].concat(merged[key]);
                         }));
                 }
             }),
-            (o.prototype.start = function () {
+            (PluginManager.prototype.start = function () {
                 this._plugins &&
                     this._plugins.length &&
-                    this._plugins.forEach((e) => {
+                    this._plugins.forEach((plugin) => {
                         try {
-                            e.start();
-                        } catch (e) {
-                            console.error("PluginManager: Could not start plugin", e);
+                            plugin.start();
+                        } catch (error) {
+                            console.error("PluginManager: Could not start plugin", error);
                         }
                     });
             }),
-            (o.prototype.unload = function (e) {
+            (PluginManager.prototype.unload = function (e) {
                 this._plugins &&
                     this._plugins.length &&
-                    this._plugins.forEach((t) => {
+                    this._plugins.forEach((plugin) => {
                         try {
-                            t.unload(this._storage, e);
-                        } catch (e) {
-                            console.error("PluginManager: Could not unload plugin", e);
+                            plugin.unload(this._storage, e);
+                        } catch (error) {
+                            console.error("PluginManager: Could not unload plugin", error);
                         }
                     });
             }),
-            (module.exports = o));
+            (module.exports = PluginManager));
     };

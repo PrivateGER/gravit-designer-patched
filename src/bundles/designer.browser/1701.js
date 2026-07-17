@@ -3,163 +3,163 @@ module.exports = function (module, exports, require) {
         (require(19), require(8 /* Symbol */), require(20 /* polyfill:RegExp */), require(851), require(4), require(41), require(13), require(26));
         var GObject = require(1),
             Utils = require(40),
-            a = require(1200),
-            r = require(255);
-        function s(e, t) {
-            var n = $(this);
-            (n.empty(), (n.data("g-fonts-panel").lastPreviewPosition = 0), l.call(this, e, t));
+            gFontUtils = require(1200),
+            FontsProviderManager = require(255);
+        function resetAndRenderFonts(queryResult, scrollToFamily) {
+            var panel = $(this);
+            (panel.empty(), (panel.data("g-fonts-panel").lastPreviewPosition = 0), renderFontRows.call(this, queryResult, scrollToFamily));
         }
-        function l(e, t) {
-            var n = $(this),
-                o = this,
-                a = n.data("g-fonts-panel"),
-                r = e.faces;
-            if (r) {
-                var s = function (e, t, n) {
-                        if (t && "_SPECIAL_" === t.getAttribute("name")) e.stopPropagation();
+        function renderFontRows(queryResult, scrollToFamily) {
+            var panel = $(this),
+                element = this,
+                panelState = panel.data("g-fonts-panel"),
+                faces = queryResult.faces;
+            if (faces) {
+                var onRowActivate = function (event, target, font) {
+                        if (target && "_SPECIAL_" === target.getAttribute("name")) event.stopPropagation();
                         else {
-                            if ((t && !n && (n = $(t).closest(".fonts-row").data("font")), n.special))
-                                return (gDesigner.stats("fontspanel_click_deletefont", n.family), void e.stopPropagation());
-                            (gDesigner.stats("fontspanel_click_setfont", n.family),
-                                p.selection.call(o, n.family),
-                                a.options.changeCallback && a.options.changeCallback(n),
-                                e.preventDefault());
+                            if ((target && !font && (font = $(target).closest(".fonts-row").data("font")), font.special))
+                                return (gDesigner.stats("fontspanel_click_deletefont", font.family), void event.stopPropagation());
+                            (gDesigner.stats("fontspanel_click_setfont", font.family),
+                                methods.selection.call(element, font.family),
+                                panelState.options.changeCallback && panelState.options.changeCallback(font),
+                                event.preventDefault());
                         }
                     },
-                    l = null;
-                t && t.length && (l = t);
-                var u = [],
-                    g = [];
-                for (let e = 0; e < r.length; ++e) {
-                    const t = r[e];
+                    scrollTarget = null;
+                scrollToFamily && scrollToFamily.length && (scrollTarget = scrollToFamily);
+                var rows = [],
+                    pendingPreviewFonts = [];
+                for (let e = 0; e < faces.length; ++e) {
+                    const face = faces[e];
                     var h = $("<div></div>")
                         .addClass("fonts-row")
-                        .data("font", t)
-                        .on("mousedown", function (e) {
-                            (gDesigner.isTouchEnabled() && !e.originalEvent.isTrusted) || s(e, e.target);
+                        .data("font", face)
+                        .on("mousedown", function (event) {
+                            (gDesigner.isTouchEnabled() && !event.originalEvent.isTrusted) || onRowActivate(event, event.target);
                         })
-                        .on("click", (e) => {
-                            gDesigner.isTouchEnabled() && s(e, e.target);
+                        .on("click", (event) => {
+                            gDesigner.isTouchEnabled() && onRowActivate(event, event.target);
                         })
                         .append(
                             $("<div></div>")
                                 .addClass("info")
-                                .text(t.displayname || t.family)
+                                .text(face.displayname || face.family)
                         );
-                    (u.push(h),
-                        t.cachedPreview
-                            ? ($("<div></div>").addClass("preview").append(t.cachedPreview).appendTo(h), (a.lastPreviewPosition += 22))
-                            : t.addPreviewCallback && ((t.row = h), g.push(t)));
+                    (rows.push(h),
+                        face.cachedPreview
+                            ? ($("<div></div>").addClass("preview").append(face.cachedPreview).appendTo(h), (panelState.lastPreviewPosition += 22))
+                            : face.addPreviewCallback && ((face.row = h), pendingPreviewFonts.push(face)));
                 }
-                var f = 0;
-                if (l)
-                    for (let e = 0; e < g.length; e++) {
-                        const t = g[e];
-                        if ((t.displayname || t.family).localeCompare(l) >= 0) {
-                            f = e;
+                var firstPreviewIndex = 0;
+                if (scrollTarget)
+                    for (let e = 0; e < pendingPreviewFonts.length; e++) {
+                        const previewFont = pendingPreviewFonts[e];
+                        if ((previewFont.displayname || previewFont.family).localeCompare(scrollTarget) >= 0) {
+                            firstPreviewIndex = e;
                             break;
                         }
                     }
-                ((0, Utils.iterateAroundIndex)(g, f, (e) => {
-                    e.addPreviewCallback.call(
-                        e,
-                        function (e) {
+                ((0, Utils.iterateAroundIndex)(pendingPreviewFonts, firstPreviewIndex, (font) => {
+                    font.addPreviewCallback.call(
+                        font,
+                        function (preview) {
                             this.cachedPreview ||
-                                ((e instanceof Element || e instanceof jQuery) &&
-                                    ((this.cachedPreview = e),
-                                    (a.lastPreviewPosition += 22),
-                                    (function (e, t) {
-                                        null === c &&
-                                            (c = setTimeout(function () {
-                                                for (var e of d) e.where.append(e.what);
-                                                ((d = []), (c = null));
+                                ((preview instanceof Element || preview instanceof jQuery) &&
+                                    ((this.cachedPreview = preview),
+                                    (panelState.lastPreviewPosition += 22),
+                                    (function (previewElement, target) {
+                                        null === previewFlushTimer &&
+                                            (previewFlushTimer = setTimeout(function () {
+                                                for (var e of pendingPreviews) e.where.append(e.what);
+                                                ((pendingPreviews = []), (previewFlushTimer = null));
                                             }));
-                                        d.push({ what: e, where: t });
-                                    })($("<div></div>").addClass("preview").append(e), this.row)));
-                        }.bind(e)
+                                        pendingPreviews.push({ what: previewElement, where: target });
+                                    })($("<div></div>").addClass("preview").append(preview), this.row)));
+                        }.bind(font)
                     );
                 }),
-                    n.append(u),
-                    n.on("keydown", function (e, t) {
-                        if (13 === (t || e.which || e.keyCode)) {
-                            var n = $(".g-fonts-panel").find(".fonts-row:hover").data("font");
-                            n && n.family && s(e, null, n);
+                    panel.append(rows),
+                    panel.on("keydown", function (event, keyCode) {
+                        if (13 === (keyCode || event.which || event.keyCode)) {
+                            var hoveredFont = $(".g-fonts-panel").find(".fonts-row:hover").data("font");
+                            hoveredFont && hoveredFont.family && onRowActivate(event, null, hoveredFont);
                         }
                     }));
             }
         }
-        var c = null,
-            d = [];
-        function u(e, t) {
-            var n = this,
-                o = $(this).data("g-fonts-panel"),
-                i = o.manager;
-            e !== o.previousQuery &&
-                ((o.previousQuery = e),
-                i.query((e) => {
-                    s.call(n, e, t);
-                }, e));
+        var previewFlushTimer = null,
+            pendingPreviews = [];
+        function queryAndRender(searchText, scrollToFamily) {
+            var panel = this,
+                panelState = $(this).data("g-fonts-panel"),
+                manager = panelState.manager;
+            searchText !== panelState.previousQuery &&
+                ((panelState.previousQuery = searchText),
+                manager.query((queryResult) => {
+                    resetAndRenderFonts.call(panel, queryResult, scrollToFamily);
+                }, searchText));
         }
-        var p = {
-            init: function (e) {
+        var methods = {
+            init: function (options) {
                 return (
-                    (e = $.extend({ search: null, preview: null, changeCallback: null }, e)),
+                    (options = $.extend({ search: null, preview: null, changeCallback: null }, options)),
                     this.each(function () {
-                        var t = this,
-                            n = gDesigner.getWorkspace().getFontManager().getDefaultFont().getFamily(),
-                            o = r.getInstance(),
-                            i = $(this)
+                        var panel = this,
+                            defaultFamily = gDesigner.getWorkspace().getFontManager().getDefaultFont().getFamily(),
+                            manager = FontsProviderManager.getInstance(),
+                            element = $(this)
                                 .empty()
                                 .addClass("g-fonts-panel")
                                 .data("g-fonts-panel", {
-                                    options: e,
+                                    options: options,
                                     lastPreviewPosition: 0,
-                                    search: e.search || null,
-                                    changeCallback: e.changeCallback || null,
-                                    manager: o,
+                                    search: options.search || null,
+                                    changeCallback: options.changeCallback || null,
+                                    manager: manager,
                                 });
-                        (o.addEventListener(r.ResetEvent, () => {
-                            (i.addClass("g-loading"),
-                                o.query((e) => {
-                                    (s.call(t, e, n), i.removeClass("g-loading"), (n = void 0));
+                        (manager.addEventListener(FontsProviderManager.ResetEvent, () => {
+                            (element.addClass("g-loading"),
+                                manager.query((queryResult) => {
+                                    (resetAndRenderFonts.call(panel, queryResult, defaultFamily), element.removeClass("g-loading"), (defaultFamily = void 0));
                                 }, "%"));
                         }),
-                            i
+                            element
                                 .on("scroll", function () {
-                                    var e = i.scrollTop(),
-                                        n = i.data("g-fonts-panel"),
-                                        o = n.lastPreviewPosition,
-                                        a = i.height(),
-                                        r = n.manager;
-                                    r.isLoading() ||
-                                        (e / Math.max(1, o - a) > 0.7 &&
-                                            r.loadMore((e) => {
-                                                l.call(t, e, "Open Sans");
-                                            }, n.search));
+                                    var scrollTop = element.scrollTop(),
+                                        panelState = element.data("g-fonts-panel"),
+                                        lastPreviewPosition = panelState.lastPreviewPosition,
+                                        panelHeight = element.height(),
+                                        manager = panelState.manager;
+                                    manager.isLoading() ||
+                                        (scrollTop / Math.max(1, lastPreviewPosition - panelHeight) > 0.7 &&
+                                            manager.loadMore((queryResult) => {
+                                                renderFontRows.call(panel, queryResult, "Open Sans");
+                                            }, panelState.search));
                                 })
-                                .on("focusin", function (e) {
-                                    e.preventDefault();
+                                .on("focusin", function (event) {
+                                    event.preventDefault();
                                 }));
                     })
                 );
             },
-            selection: function (e) {
-                var t = this,
-                    n = $(this),
-                    o = n.data("g-fonts-panel");
+            selection: function (family) {
+                var panel = this,
+                    element = $(this),
+                    panelState = element.data("g-fonts-panel");
                 if (!arguments.length) {
-                    var i = n.find(".fonts-row.g-selected");
-                    return i.length ? i.data("font").family : null;
+                    var selectedRow = element.find(".fonts-row.g-selected");
+                    return selectedRow.length ? selectedRow.data("font").family : null;
                 }
                 return (
-                    n.find(".fonts-row").each(function (i, a) {
-                        var r = $(a),
-                            s = r.data("font").family === e;
-                        if ((r.toggleClass("g-selected", s), s)) {
-                            var c = o.manager;
-                            if (!r.data("font").cachedPreview || (i > 0 && !$(n.find(".fonts-row")[i - 1]).data("font").cachedPreview))
-                                for (var d = c.loadMore(l.bind(t), o.search); 0 !== d && d < i; ) {
-                                    if (d >= (d = c.loadMore(l.bind(t), o.search))) break;
+                    element.find(".fonts-row").each(function (index, rowElement) {
+                        var row = $(rowElement),
+                            isMatch = row.data("font").family === family;
+                        if ((row.toggleClass("g-selected", isMatch), isMatch)) {
+                            var manager = panelState.manager;
+                            if (!row.data("font").cachedPreview || (index > 0 && !$(element.find(".fonts-row")[index - 1]).data("font").cachedPreview))
+                                for (var loadedCount = manager.loadMore(renderFontRows.bind(panel), panelState.search); 0 !== loadedCount && loadedCount < index; ) {
+                                    if (loadedCount >= (loadedCount = manager.loadMore(renderFontRows.bind(panel), panelState.search))) break;
                                 }
                         }
                     }),
@@ -167,149 +167,149 @@ module.exports = function (module, exports, require) {
                 );
             },
             selectUpper: function () {
-                var e = $(this),
-                    t = e.data("g-fonts-panel"),
-                    n = e.find(".fonts-row.g-selected").prev().data("font");
-                (n ||
-                    (n = e
+                var element = $(this),
+                    panelState = element.data("g-fonts-panel"),
+                    targetFont = element.find(".fonts-row.g-selected").prev().data("font");
+                (targetFont ||
+                    (targetFont = element
                         .find(".fonts-row")
                         .filter(function () {
                             return $(this).position().top <= $(this).outerHeight();
                         })
                         .data("font")),
-                    n &&
-                        (p.selection.call(this, n.family),
-                        p.focusCurrent.call(this),
-                        t.options.changeCallback && t.options.changeCallback(n)));
+                    targetFont &&
+                        (methods.selection.call(this, targetFont.family),
+                        methods.focusCurrent.call(this),
+                        panelState.options.changeCallback && panelState.options.changeCallback(targetFont)));
             },
             selectLower: function () {
-                var e = $(this),
-                    t = e.data("g-fonts-panel"),
-                    n = e.find(".fonts-row.g-selected").next().data("font");
-                (n ||
-                    (n = e
+                var element = $(this),
+                    panelState = element.data("g-fonts-panel"),
+                    targetFont = element.find(".fonts-row.g-selected").next().data("font");
+                (targetFont ||
+                    (targetFont = element
                         .find(".fonts-row")
                         .filter(function () {
                             return $(this).position().top <= $(this).outerHeight();
                         })
                         .data("font")),
-                    n &&
-                        (p.selection.call(this, n.family),
-                        p.focusCurrent.call(this),
-                        t.options.changeCallback && t.options.changeCallback(n)));
+                    targetFont &&
+                        (methods.selection.call(this, targetFont.family),
+                        methods.focusCurrent.call(this),
+                        panelState.options.changeCallback && panelState.options.changeCallback(targetFont)));
             },
-            search: function (e, t) {
-                var n = $(this),
-                    o = n.data("g-fonts-panel");
-                return arguments.length ? (e !== o.search && ((o.search = e), p.refresh.call(this, false, t)), this) : o.search;
+            search: function (searchText, scrollToFamily) {
+                var element = $(this),
+                    panelState = element.data("g-fonts-panel");
+                return arguments.length ? (searchText !== panelState.search && ((panelState.search = searchText), methods.refresh.call(this, false, scrollToFamily)), this) : panelState.search;
             },
             focusCurrent: function () {
-                var e,
-                    t = $(this),
-                    n = t.find(".fonts-row.g-selected"),
-                    o = 0;
-                n &&
-                    n.position() &&
-                    (n.position().top > t.height() - n.outerHeight()
-                        ? ((e = n.index()),
-                          t.find(".fonts-row:lt(" + e + ")").each(function () {
-                              o += $(this).outerHeight(true);
+                var selectedIndex,
+                    panel = $(this),
+                    selectedRow = panel.find(".fonts-row.g-selected"),
+                    offsetTop = 0;
+                selectedRow &&
+                    selectedRow.position() &&
+                    (selectedRow.position().top > panel.height() - selectedRow.outerHeight()
+                        ? ((selectedIndex = selectedRow.index()),
+                          panel.find(".fonts-row:lt(" + selectedIndex + ")").each(function () {
+                              offsetTop += $(this).outerHeight(true);
                           }),
-                          t.scrollTop(o - t.height() + n.outerHeight(true)))
-                        : n.position().top < 0 &&
-                          ((e = n.index()),
-                          t.find(".fonts-row:lt(" + e + ")").each(function () {
-                              o += $(this).outerHeight(true);
+                          panel.scrollTop(offsetTop - panel.height() + selectedRow.outerHeight(true)))
+                        : selectedRow.position().top < 0 &&
+                          ((selectedIndex = selectedRow.index()),
+                          panel.find(".fonts-row:lt(" + selectedIndex + ")").each(function () {
+                              offsetTop += $(this).outerHeight(true);
                           }),
-                          t.scrollTop(o)));
+                          panel.scrollTop(offsetTop)));
             },
-            reload: function (e) {
-                (($(this).data("g-fonts-panel").previousQuery = null), p.refresh.call(this, false, e));
+            reload: function (scrollToFamily) {
+                (($(this).data("g-fonts-panel").previousQuery = null), methods.refresh.call(this, false, scrollToFamily));
             },
-            refresh: function (e, t) {
-                var n = $(this),
-                    i = n.data("g-fonts-panel"),
-                    a = i.search ? i.search + "%" : "%";
-                a !== i.previousQuery &&
-                    (n.empty(),
-                    (i.lastPreviewPosition = 0),
-                    n.text(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.loading")) + "..."),
-                    e && (i.search = null),
-                    u.call(this, a, t));
+            refresh: function (resetSearch, scrollToFamily) {
+                var element = $(this),
+                    panelState = element.data("g-fonts-panel"),
+                    searchPattern = panelState.search ? panelState.search + "%" : "%";
+                searchPattern !== panelState.previousQuery &&
+                    (element.empty(),
+                    (panelState.lastPreviewPosition = 0),
+                    element.text(GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.loading")) + "..."),
+                    resetSearch && (panelState.search = null),
+                    queryAndRender.call(this, searchPattern, scrollToFamily));
             },
-            stylesForFont: function (e, t) {
-                var n = null,
-                    o = $(this).data("g-fonts-panel").manager;
-                if (o.isCacheEmpty()) return void (t && o.query(t, "%", true));
-                let i = (0, a.getFontFamily)(e, o.searchFamilyInCache.bind(o));
-                if (i && i.fonts && i.fonts.length) {
-                    n = [];
-                    for (var r = 0; r < i.fonts.length; r++) n.push(i.fonts[r].style);
+            stylesForFont: function (family, callback) {
+                var styles = null,
+                    manager = $(this).data("g-fonts-panel").manager;
+                if (manager.isCacheEmpty()) return void (callback && manager.query(callback, "%", true));
+                let fontFamily = (0, gFontUtils.getFontFamily)(family, manager.searchFamilyInCache.bind(manager));
+                if (fontFamily && fontFamily.fonts && fontFamily.fonts.length) {
+                    styles = [];
+                    for (var r = 0; r < fontFamily.fonts.length; r++) styles.push(fontFamily.fonts[r].style);
                 }
-                return n;
+                return styles;
             },
-            stylesForWeight: function (e, t, n, o) {
-                var i = null,
-                    r = $(this).data("g-fonts-panel").manager;
-                if (r.isCacheEmpty()) return void (n && r.query(n, "%", true));
-                let s = (0, a.getFontFamily)(t, r.searchFamilyInCache.bind(r));
-                if (s && s.fonts && s.fonts.length) {
-                    i = [];
-                    for (var l = 0; l < s.fonts.length; l++)
-                        s.fonts[l].weight === e &&
-                            (o && s.fonts[l].hasOwnProperty("family")
-                                ? s.fonts[l].family === t && i.push(s.fonts[l].style)
-                                : i.push(s.fonts[l].style));
+            stylesForWeight: function (weight, family, callback, matchFamily) {
+                var styles = null,
+                    manager = $(this).data("g-fonts-panel").manager;
+                if (manager.isCacheEmpty()) return void (callback && manager.query(callback, "%", true));
+                let fontFamily = (0, gFontUtils.getFontFamily)(family, manager.searchFamilyInCache.bind(manager));
+                if (fontFamily && fontFamily.fonts && fontFamily.fonts.length) {
+                    styles = [];
+                    for (var l = 0; l < fontFamily.fonts.length; l++)
+                        fontFamily.fonts[l].weight === weight &&
+                            (matchFamily && fontFamily.fonts[l].hasOwnProperty("family")
+                                ? fontFamily.fonts[l].family === family && styles.push(fontFamily.fonts[l].style)
+                                : styles.push(fontFamily.fonts[l].style));
                 }
-                return i;
+                return styles;
             },
-            subfamiliesForWeight: function (e, t, n) {
-                var o = null,
-                    i = $(this).data("g-fonts-panel").manager;
-                if (i.isCacheEmpty()) return void (n && i.query(n, "%", true));
-                let r = (0, a.getFontFamily)(t, i.searchFamilyInCache.bind(i));
-                if (r && r.fonts && r.fonts.length) {
-                    o = [];
-                    for (var s = 0; s < r.fonts.length; s++)
-                        r.fonts[s].weight === e &&
-                            o.push({
-                                realName: r.fonts[s].family || r.family,
-                                subFamily: r.fonts[s].subfamily,
+            subfamiliesForWeight: function (weight, family, callback) {
+                var subfamilies = null,
+                    manager = $(this).data("g-fonts-panel").manager;
+                if (manager.isCacheEmpty()) return void (callback && manager.query(callback, "%", true));
+                let fontFamily = (0, gFontUtils.getFontFamily)(family, manager.searchFamilyInCache.bind(manager));
+                if (fontFamily && fontFamily.fonts && fontFamily.fonts.length) {
+                    subfamilies = [];
+                    for (var s = 0; s < fontFamily.fonts.length; s++)
+                        fontFamily.fonts[s].weight === weight &&
+                            subfamilies.push({
+                                realName: fontFamily.fonts[s].family || fontFamily.family,
+                                subFamily: fontFamily.fonts[s].subfamily,
                             });
                 }
-                return o;
+                return subfamilies;
             },
-            weightsForFont: async function (e, t, n) {
-                var o = null,
-                    i = $(this).data("g-fonts-panel").manager;
-                if (i.isCacheEmpty()) return void (t && i.query(t, "%", true));
-                let r = (0, a.getFontFamily)(e, i.searchFamilyInCache.bind(i));
+            weightsForFont: async function (family, callback, matchFamily) {
+                var weights = null,
+                    manager = $(this).data("g-fonts-panel").manager;
+                if (manager.isCacheEmpty()) return void (callback && manager.query(callback, "%", true));
+                let fontFamily = (0, gFontUtils.getFontFamily)(family, manager.searchFamilyInCache.bind(manager));
                 if (
-                    (r.isLocalFont && ((r.fonts = await (0, a.parseNativeFonts)(r.fonts)), delete r.isLocalFont),
-                    r && r.fonts && r.fonts.length)
+                    (fontFamily.isLocalFont && ((fontFamily.fonts = await (0, gFontUtils.parseNativeFonts)(fontFamily.fonts)), delete fontFamily.isLocalFont),
+                    fontFamily && fontFamily.fonts && fontFamily.fonts.length)
                 ) {
-                    o = [];
-                    for (var s = 0; s < r.fonts.length; s++)
-                        (n && r.fonts[s].hasOwnProperty("family") && r.fonts[s].family === e && o.push(r.fonts[s].weight),
-                            o.push(r.fonts[s].weight));
+                    weights = [];
+                    for (var s = 0; s < fontFamily.fonts.length; s++)
+                        (matchFamily && fontFamily.fonts[s].hasOwnProperty("family") && fontFamily.fonts[s].family === family && weights.push(fontFamily.fonts[s].weight),
+                            weights.push(fontFamily.fonts[s].weight));
                 }
-                return o;
+                return weights;
             },
-            fontDisplayName: function (e, t) {
-                var n = $(this).data("g-fonts-panel").manager;
-                if (n.isCacheEmpty()) return void (t && n.query(t, "%", true));
-                let o = (0, a.getFontFamily)(e, n.searchFamilyInCache.bind(n));
-                return (o && (o.displayname || o.family)) || e;
+            fontDisplayName: function (family, callback) {
+                var manager = $(this).data("g-fonts-panel").manager;
+                if (manager.isCacheEmpty()) return void (callback && manager.query(callback, "%", true));
+                let fontFamily = (0, gFontUtils.getFontFamily)(family, manager.searchFamilyInCache.bind(manager));
+                return (fontFamily && (fontFamily.displayname || fontFamily.family)) || family;
             },
             fontsLength: function () {
                 return $(this).find(".fonts-row").length;
             },
         };
-        $.fn.gFontsPanel = function (e) {
-            return p[e]
-                ? p[e].apply(this, Array.prototype.slice.call(arguments, 1))
-                : "object" != typeof e && e
-                  ? void $.error("Method " + e + " does not exist on jQuery.myPlugin")
-                  : p.init.apply(this, arguments);
+        $.fn.gFontsPanel = function (methodName) {
+            return methods[methodName]
+                ? methods[methodName].apply(this, Array.prototype.slice.call(arguments, 1))
+                : "object" != typeof methodName && methodName
+                  ? void $.error("Method " + methodName + " does not exist on jQuery.myPlugin")
+                  : methods.init.apply(this, arguments);
         };
     };

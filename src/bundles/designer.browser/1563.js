@@ -2,51 +2,51 @@ module.exports = function (module, exports, require) {
         "use strict";
         (require(4), require(13), require(32), require(97), require(33));
         var GObject = require(1),
-            i = require(53),
+            editorModule = require(53),
             GContextMenu = require(1303),
-            r = require(1176),
+            GAttachToPathAction = require(1176),
             GConvertToPathAction = require(810),
             GCreateSymbolAction = require(608),
-            c = require(874),
-            d = require(1177),
-            u = require(1178),
-            p = require(1179);
-        const g = require(812);
-        var h = require(1180),
-            f = require(873),
+            GDetachSymbolAction = require(874),
+            GResetInstanceAction = require(1177),
+            GDetachFromPathAction = require(1178),
+            GJoinPathsAction = require(1179);
+        const GMergeMainAction = require(812);
+        var GSelectByFontTypeAction = require(1180),
+            GSplitPathAction = require(873),
             GTransformAction = require(871),
             GVectorizeBorderAction = require(872),
-            v = require(238),
-            _ = require(339),
-            b = require(444),
-            w = require(1181),
-            C = require(877),
-            x = require(1183),
-            S = require(1184),
-            E = require(1182),
-            A = require(875),
+            GMenu = require(238),
+            GMenuItem = require(339),
+            GMenuPosition = require(444),
+            GMaskWithShapeAction = require(1181),
+            GPasteAction = require(877),
+            GPasteInPlaceAction = require(1183),
+            GPasteInsideAction = require(1184),
+            GPasteHereAction = require(1182),
+            GPasteStyleAction = require(875),
             GClipAction = require(809),
-            G = require(1314),
-            P = require(1315),
-            D = require(1316),
+            GConvertToImageAction = require(1314),
+            GDuplicateAction = require(1315),
+            GCreateNestedCompoundAction = require(1316),
             GOutlineAction = require(1185),
             GOffsetAction = require(1317),
             GSimplifyAction = require(1318),
-            O = require(1319),
-            F = require(1320),
-            R = require(566),
-            M = require(31),
+            GSplitLineAction = require(1319),
+            GConvertToRawPathAction = require(1320),
+            GFitSelectionAction = require(566),
+            GAction = require(31),
             { replaceImage, setOriginSize, cropImage } = require(1268 /* imageActions */),
-            j = require(78);
-        const K = require(876);
+            GDocumentEvent = require(78);
+        const GPasteAndReplaceAction = require(876);
         ((GContextMenu.prototype._contextMenuContainerTouch = null),
             (GContextMenu.prototype._createTouchContextMenu = function () {
-                var e = $("<div/>").gOverlay({
+                var container = $("<div/>").gOverlay({
                         releaseOnClose: false,
                         clazz: "context-menu-touch-overlay",
                     }),
-                    t = this;
-                this._contextMenuContainerTouch = e;
+                    self = this;
+                this._contextMenuContainerTouch = container;
                 $("<div/>")
                     .addClass("transform-section")
                     .gPropertyRow({
@@ -78,43 +78,43 @@ module.exports = function (module, exports, require) {
                             },
                         ],
                     })
-                    .appendTo(e);
+                    .appendTo(container);
                 $("<div/>")
                     .addClass("paste-section")
                     .gPropertyRow({
                         columns: [
                             {
                                 content: this._createActionButtonWithMenu(
-                                    gDesigner.getAction(C.ID),
+                                    gDesigner.getAction(GPasteAction.ID),
                                     GObject.GLocale.get(new GObject.GLocaleKey("GContextMenu", "text.paste")),
                                     [
-                                        gDesigner.getAction(x.ID),
-                                        gDesigner.getAction(S.ID),
-                                        gDesigner.getAction(E.ID),
-                                        gDesigner.getAction(K.ID),
-                                        gDesigner.getAction(A.ID),
+                                        gDesigner.getAction(GPasteInPlaceAction.ID),
+                                        gDesigner.getAction(GPasteInsideAction.ID),
+                                        gDesigner.getAction(GPasteHereAction.ID),
+                                        gDesigner.getAction(GPasteAndReplaceAction.ID),
+                                        gDesigner.getAction(GPasteStyleAction.ID),
                                     ]
                                 ),
                             },
                         ],
                     })
-                    .appendTo(e);
-                const n = gDesigner.getAction(g.ID),
-                    i = n && n.getSubActions().concat(gDesigner.getAction(D.ID));
+                    .appendTo(container);
+                const compoundAction = gDesigner.getAction(GMergeMainAction.ID),
+                    compoundSubActions = compoundAction && compoundAction.getSubActions().concat(gDesigner.getAction(GCreateNestedCompoundAction.ID));
                 ($("<div/>")
                     .addClass("compound-section")
                     .gPropertyRow({
                         columns: [
                             {
                                 content: this._createActionButtonWithMenu(
-                                    gDesigner.getAction(g.ID),
+                                    gDesigner.getAction(GMergeMainAction.ID),
                                     GObject.GLocale.get(new GObject.GLocaleKey("GContextMenu", "text.create-compound")),
-                                    i
+                                    compoundSubActions
                                 ),
                             },
                         ],
                     })
-                    .appendTo(e),
+                    .appendTo(container),
                     $("<div/>")
                         .addClass("path-section")
                         .gPropertyRow({
@@ -125,19 +125,19 @@ module.exports = function (module, exports, require) {
                                         GObject.GLocale.get(new GObject.GLocaleKey("GContextMenu", "text.convert-to-path")),
                                         [
                                             gDesigner.getAction(GVectorizeBorderAction.ID),
-                                            gDesigner.getAction(F.ID),
+                                            gDesigner.getAction(GConvertToRawPathAction.ID),
                                             gDesigner.getAction(GOutlineAction.ID),
                                             gDesigner.getAction(GOffsetAction.ID),
                                             gDesigner.getAction(GSimplifyAction.ID),
-                                            gDesigner.getAction(p.ID),
-                                            gDesigner.getAction(f.ID),
-                                            gDesigner.getAction(O.ID),
+                                            gDesigner.getAction(GJoinPathsAction.ID),
+                                            gDesigner.getAction(GSplitPathAction.ID),
+                                            gDesigner.getAction(GSplitLineAction.ID),
                                         ]
                                     ),
                                 },
                             ],
                         })
-                        .appendTo(e),
+                        .appendTo(container),
                     $("<div/>")
                         .addClass("symbol-section")
                         .gPropertyRow({
@@ -147,24 +147,24 @@ module.exports = function (module, exports, require) {
                                         gDesigner.getAction(GCreateSymbolAction.ID),
                                         GObject.GLocale.get(new GObject.GLocaleKey("GContextMenu", "text.create-symbol")),
                                         [
-                                            gDesigner.getAction(d.ID),
-                                            gDesigner.getAction(c.ID),
+                                            gDesigner.getAction(GResetInstanceAction.ID),
+                                            gDesigner.getAction(GDetachSymbolAction.ID),
                                             {
                                                 caption: GObject.GLocale.get(new GObject.GLocaleKey("GContextMenu", "text.go-to-master")),
-                                                click: (e) => {
-                                                    var t = gDesigner.getActiveDocument(),
-                                                        n = t.getEditor();
-                                                    if (t) {
-                                                        var i = t.getEditor().getIndividualSelection();
-                                                        if (i && i.length) {
-                                                            var a = i.find((e) => e instanceof GObject.GSymbol && !e.isLocked() && !e.isMaster());
-                                                            if (a) {
-                                                                var r = a;
-                                                                (n.beginTransaction(),
-                                                                    n.clearSelection(),
-                                                                    n.updateSelection(false, [r]),
-                                                                    gDesigner.executeAction(R.ID, void 0, void 0, true),
-                                                                    n.commitTransaction(
+                                                click: (event) => {
+                                                    var document = gDesigner.getActiveDocument(),
+                                                        editor = document.getEditor();
+                                                    if (document) {
+                                                        var individualSelection = document.getEditor().getIndividualSelection();
+                                                        if (individualSelection && individualSelection.length) {
+                                                            var symbolInstance = individualSelection.find((element) => element instanceof GObject.GSymbol && !element.isLocked() && !element.isMaster());
+                                                            if (symbolInstance) {
+                                                                var targetSymbol = symbolInstance;
+                                                                (editor.beginTransaction(),
+                                                                    editor.clearSelection(),
+                                                                    editor.updateSelection(false, [targetSymbol]),
+                                                                    gDesigner.executeAction(GFitSelectionAction.ID, void 0, void 0, true),
+                                                                    editor.commitTransaction(
                                                                         GObject.GLocale.get(new GObject.GLocaleKey("GContextMenu", "text.go-to-master"))
                                                                     ));
                                                             }
@@ -174,11 +174,11 @@ module.exports = function (module, exports, require) {
                                                 },
                                                 icon: "gravit-icon-go-to-master",
                                                 isEnabled: () => {
-                                                    var e = gDesigner.getActiveDocument();
-                                                    if (e) {
-                                                        var t = e.getEditor().getIndividualSelection();
-                                                        if (t && t.length)
-                                                            if (t.find((e) => e instanceof GObject.GSymbol && !e.isLocked() && !e.isMaster()))
+                                                    var document = gDesigner.getActiveDocument();
+                                                    if (document) {
+                                                        var individualSelection = document.getEditor().getIndividualSelection();
+                                                        if (individualSelection && individualSelection.length)
+                                                            if (individualSelection.find((element) => element instanceof GObject.GSymbol && !element.isLocked() && !element.isMaster()))
                                                                 return true;
                                                     }
                                                     return false;
@@ -189,7 +189,7 @@ module.exports = function (module, exports, require) {
                                 },
                             ],
                         })
-                        .appendTo(e));
+                        .appendTo(container));
                 $("<div/>")
                     .addClass("text-section")
                     .gPropertyRow({
@@ -198,36 +198,36 @@ module.exports = function (module, exports, require) {
                                 content: this._createActionButtonMenu(
                                     "gravit-icon-textbox",
                                     GObject.GLocale.get(new GObject.GLocaleKey("GContextMenu", "text.text")),
-                                    [gDesigner.getAction(r.ID), gDesigner.getAction(u.ID), gDesigner.getAction(h.ID)],
+                                    [gDesigner.getAction(GAttachToPathAction.ID), gDesigner.getAction(GDetachFromPathAction.ID), gDesigner.getAction(GSelectByFontTypeAction.ID)],
                                     () => !!this._getFirstSelectedTextElement()
                                 ),
                             },
                         ],
                     })
-                    .appendTo(e);
-                var a = [
+                    .appendTo(container);
+                var imageMenuItems = [
                     {
                         caption: GObject.GLocale.get(new GObject.GLocaleKey("GContextMenu", "text.crop")),
-                        click: (e) => {
-                            var t = gDesigner.getActiveDocument().getEditor().hasSelectionDetail();
-                            (cropImage(this._getFirstSelectedImageElement(), t), gDesigner.stats("touchmenu_crop-image"));
+                        click: (event) => {
+                            var hasDetail = gDesigner.getActiveDocument().getEditor().hasSelectionDetail();
+                            (cropImage(this._getFirstSelectedImageElement(), hasDetail), gDesigner.stats("touchmenu_crop-image"));
                         },
                         icon: "gravit-icon-crop",
-                        update: (e) => {
-                            var t = gDesigner.getActiveDocument().getEditor().hasSelectionDetail();
-                            e.setCaption(GObject.GLocale.get(new GObject.GLocaleKey("GImageProperties", t ? "action.no-crop" : "action.crop")));
+                        update: (menuItem) => {
+                            var hasDetail = gDesigner.getActiveDocument().getEditor().hasSelectionDetail();
+                            menuItem.setCaption(GObject.GLocale.get(new GObject.GLocaleKey("GImageProperties", hasDetail ? "action.no-crop" : "action.crop")));
                         },
                     },
                     {
                         caption: GObject.GLocale.get(new GObject.GLocaleKey("GContextMenu", "text.original-size")),
-                        click: (e) => {
+                        click: (event) => {
                             (setOriginSize(this._getFirstSelectedImageElement()), gDesigner.stats("touchmenu_original-size"));
                         },
                         icon: "gravit-icon-expand",
                     },
                     {
                         caption: GObject.GLocale.get(new GObject.GLocaleKey("GContextMenu", "text.replace-image")),
-                        click: (e) => {
+                        click: (event) => {
                             (gDesigner.stats("touchmenu_replace-image"),
                                 replaceImage(this._getFirstSelectedImageElement(), gDesigner.getActiveDocument()));
                         },
@@ -242,13 +242,13 @@ module.exports = function (module, exports, require) {
                                 content: this._createActionButtonMenu(
                                     "gravit-icon-image",
                                     GObject.GLocale.get(new GObject.GLocaleKey("GContextMenu", "text.image")),
-                                    a,
+                                    imageMenuItems,
                                     () => !!this._getFirstSelectedImageElement()
                                 ),
                             },
                         ],
                     })
-                    .appendTo(e);
+                    .appendTo(container);
                 return (
                     $("<div/>")
                         .addClass("")
@@ -259,7 +259,7 @@ module.exports = function (module, exports, require) {
                                     content: this._createActionButtons([
                                         { action: gDesigner.getAction(GClipAction.ID) },
                                         {
-                                            action: gDesigner.getAction(w.ID),
+                                            action: gDesigner.getAction(GMaskWithShapeAction.ID),
                                             icon: "gravit-icon-mask-with-shape",
                                         },
                                     ]),
@@ -269,18 +269,18 @@ module.exports = function (module, exports, require) {
                                     width: "48%",
                                     content: this._createActionButtons([
                                         {
-                                            action: gDesigner.getAction(G.ID),
+                                            action: gDesigner.getAction(GConvertToImageAction.ID),
                                             icon: "gravit-icon-flatten",
                                         },
                                         {
-                                            action: gDesigner.getAction(P.ID),
+                                            action: gDesigner.getAction(GDuplicateAction.ID),
                                             icon: "gravit-icon-duplicate",
                                         },
                                     ]),
                                 },
                             ],
                         })
-                        .appendTo(e),
+                        .appendTo(container),
                     $("<div/>")
                         .addClass("")
                         .gPropertyRow({
@@ -290,21 +290,21 @@ module.exports = function (module, exports, require) {
                                     content: this._createActionButtons([
                                         {
                                             icon: "gravit-icon-lock",
-                                            click: (e) => {
-                                                (t._setAllSelectionsLocked(),
+                                            click: (event) => {
+                                                (self._setAllSelectionsLocked(),
                                                     this._contextMenuContainerTouch.gOverlay("close"),
                                                     gDesigner.stats("touchmenu_lock-layer"));
                                             },
-                                            isEnabled: () => t._getSelectedItems().length > 0,
+                                            isEnabled: () => self._getSelectedItems().length > 0,
                                         },
                                         {
                                             icon: "gravit-icon-hide-big",
-                                            click: (e) => {
-                                                (t._setAllSelectionsHidden(),
+                                            click: (event) => {
+                                                (self._setAllSelectionsHidden(),
                                                     this._contextMenuContainerTouch.gOverlay("close"),
                                                     gDesigner.stats("touchmenu_hide-layer"));
                                             },
-                                            isEnabled: () => t._getSelectedItems().length > 0,
+                                            isEnabled: () => self._getSelectedItems().length > 0,
                                         },
                                     ]),
                                 },
@@ -312,206 +312,206 @@ module.exports = function (module, exports, require) {
                                 { width: "48%", content: this._createSelectMenuButton() },
                             ],
                         })
-                        .appendTo(e),
-                    gDesigner.addEventListener(j, this._documentEvent.bind(this)),
-                    e
+                        .appendTo(container),
+                    gDesigner.addEventListener(GDocumentEvent, this._documentEvent.bind(this)),
+                    container
                 );
             }),
             (GContextMenu.prototype._elementsToCheck = []),
-            (GContextMenu.prototype._documentEvent = function (e) {
-                e.type === j.Type.ContextMenuOpened &&
-                    (gDesigner.getAction(E.ID).setPosition(this._contextMenuClientPosition),
-                    this._elementsToCheck.forEach((e) => {
-                        e.isEnabled && e.element && e.element.attr("disabled", !e.isEnabled(this._mouseEvent));
+            (GContextMenu.prototype._documentEvent = function (event) {
+                event.type === GDocumentEvent.Type.ContextMenuOpened &&
+                    (gDesigner.getAction(GPasteHereAction.ID).setPosition(this._contextMenuClientPosition),
+                    this._elementsToCheck.forEach((checkEntry) => {
+                        checkEntry.isEnabled && checkEntry.element && checkEntry.element.attr("disabled", !checkEntry.isEnabled(this._mouseEvent));
                     }));
             }),
-            (GContextMenu.prototype._createActionButtons = function (e) {
-                var t = $("<div/>").addClass("button-group");
+            (GContextMenu.prototype._createActionButtons = function (actions) {
+                var buttonGroup = $("<div/>").addClass("button-group");
                 return (
-                    (e = e instanceof Array ? e : [e]).forEach((e) => {
-                        var n = this._createActionButton(e);
-                        t.append(n);
+                    (actions = actions instanceof Array ? actions : [actions]).forEach((actionDef) => {
+                        var button = this._createActionButton(actionDef);
+                        buttonGroup.append(button);
                     }),
-                    t
+                    buttonGroup
                 );
             }),
-            (GContextMenu.prototype._createActionButton = function (e) {
-                var t = e.label,
-                    n = e.icon,
-                    i = e.click;
-                let a = e.isEnabled,
-                    r = false;
-                e.action &&
-                    ((r = e.action.isPro()),
-                    t || (t = GObject.GLocale.get(e.action.getTitle())),
-                    n || (n = e.action.getIcon() || e.action.getGroupIcon()),
-                    i ||
-                        (i = function () {
-                            gDesigner.executeAction(e.action.getId(), void 0, "touchmenu");
+            (GContextMenu.prototype._createActionButton = function (options) {
+                var label = options.label,
+                    icon = options.icon,
+                    clickHandler = options.click;
+                let isEnabledFn = options.isEnabled,
+                    isPro = false;
+                options.action &&
+                    ((isPro = options.action.isPro()),
+                    label || (label = GObject.GLocale.get(options.action.getTitle())),
+                    icon || (icon = options.action.getIcon() || options.action.getGroupIcon()),
+                    clickHandler ||
+                        (clickHandler = function () {
+                            gDesigner.executeAction(options.action.getId(), void 0, "touchmenu");
                         }),
-                    a ||
-                        (a = function () {
-                            return gDesigner.canExecuteAction(e.action.getId());
+                    isEnabledFn ||
+                        (isEnabledFn = function () {
+                            return gDesigner.canExecuteAction(options.action.getId());
                         }));
-                var s = $("<div></div>").gPro({ pro: r });
-                e.action && s.addClass("action").attr("data-action", e.action.getId()).data("action", e.action);
-                var l = $("<button></button>")
+                var proWrapper = $("<div></div>").gPro({ pro: isPro });
+                options.action && proWrapper.addClass("action").attr("data-action", options.action.getId()).data("action", options.action);
+                var button = $("<button></button>")
                     .addClass("action-button")
-                    .addClass(e.longButton ? "long-button" : "")
-                    .toggleClass("g-active", true === e.active)
-                    .appendTo(s)
-                    .on("mousedown", function (e) {
-                        e.preventDefault();
+                    .addClass(options.longButton ? "long-button" : "")
+                    .toggleClass("g-active", true === options.active)
+                    .appendTo(proWrapper)
+                    .on("mousedown", function (event) {
+                        event.preventDefault();
                     });
                 return (
-                    this._elementsToCheck.push({ element: l, isEnabled: a }),
-                    n && (this._updateIcon($("<span></span>").appendTo(l), n), l.addClass("icon")),
-                    e.label && l.append($("<span></span>").addClass("label").text(e.label)),
-                    e.isMenu && l.append($("<span></span>").addClass("icon item-tail gravit-icon-chevron-left-small")),
-                    i && l.on("click", i),
-                    s
+                    this._elementsToCheck.push({ element: button, isEnabled: isEnabledFn }),
+                    icon && (this._updateIcon($("<span></span>").appendTo(button), icon), button.addClass("icon")),
+                    options.label && button.append($("<span></span>").addClass("label").text(options.label)),
+                    options.isMenu && button.append($("<span></span>").addClass("icon item-tail gravit-icon-chevron-left-small")),
+                    clickHandler && button.on("click", clickHandler),
+                    proWrapper
                 );
             }),
-            (GContextMenu.prototype._createActionButtonWithMenu = function (e, t, n) {
-                var o = $("<div/>").addClass("action-button-with-menu");
-                o.append(this._createActionButton({ action: e, label: t, longButton: true }));
-                var i = new v(null, "g-context-menu");
-                ((i.__which = "touchmenu"),
-                    n.forEach((e) => {
-                        if (e instanceof M) i.createAddItem(e, null, null, null, e.getId() === E.ID ? GContextMenu.ID : null);
+            (GContextMenu.prototype._createActionButtonWithMenu = function (action, label, menuItems) {
+                var wrapper = $("<div/>").addClass("action-button-with-menu");
+                wrapper.append(this._createActionButton({ action: action, label: label, longButton: true }));
+                var menu = new GMenu(null, "g-context-menu");
+                ((menu.__which = "touchmenu"),
+                    menuItems.forEach((menuItem) => {
+                        if (menuItem instanceof GAction) menu.createAddItem(menuItem, null, null, null, menuItem.getId() === GPasteHereAction.ID ? GContextMenu.ID : null);
                         else {
-                            var t = i.createAddItem(e.caption, e.click);
-                            (t.setIcon(e.icon),
-                                t.addEventListener(_.UpdateEvent, function () {
-                                    t.setEnabled(e.isEnabled());
+                            var addedItem = menu.createAddItem(menuItem.caption, menuItem.click);
+                            (addedItem.setIcon(menuItem.icon),
+                                addedItem.addEventListener(GMenuItem.UpdateEvent, function () {
+                                    addedItem.setEnabled(menuItem.isEnabled());
                                 }));
                         }
                     }));
-                var r = $("<button/>")
+                var menuButton = $("<button/>")
                     .addClass("open-menu icon gravit-icon-chevron-left-small")
-                    .on("click", (e) => {
-                        i.open($(e.target), b.Position.Right_Bottom, b.Position.Center);
+                    .on("click", (event) => {
+                        menu.open($(event.target), GMenuPosition.Position.Right_Bottom, GMenuPosition.Position.Center);
                     });
                 return (
                     this._elementsToCheck.push({
-                        element: r,
-                        isEnabled: () => n.some((e) => e.isEnabled()),
+                        element: menuButton,
+                        isEnabled: () => menuItems.some((menuItem) => menuItem.isEnabled()),
                     }),
-                    o.append(r),
-                    o
+                    wrapper.append(menuButton),
+                    wrapper
                 );
             }),
-            (GContextMenu.prototype._createActionButtonMenu = function (e, t, n, o) {
-                var i = new v(null, "g-context-menu");
-                ((i.__which = "touchmenu"),
-                    n.forEach((e) => {
-                        if (e instanceof M) i.createAddItem(e);
+            (GContextMenu.prototype._createActionButtonMenu = function (icon, label, menuItems, isEnabledFn) {
+                var menu = new GMenu(null, "g-context-menu");
+                ((menu.__which = "touchmenu"),
+                    menuItems.forEach((menuItem) => {
+                        if (menuItem instanceof GAction) menu.createAddItem(menuItem);
                         else {
-                            var t = i.createAddItem(e.caption, e.click);
-                            (t.setIcon(e.icon),
-                                t.addEventListener(_.UpdateEvent, function () {
-                                    e.update && e.update(t);
+                            var addedItem = menu.createAddItem(menuItem.caption, menuItem.click);
+                            (addedItem.setIcon(menuItem.icon),
+                                addedItem.addEventListener(GMenuItem.UpdateEvent, function () {
+                                    menuItem.update && menuItem.update(addedItem);
                                 }));
                         }
                     }));
-                var a = $("<div/>").addClass("action-menu-button");
+                var wrapper = $("<div/>").addClass("action-menu-button");
                 return (
-                    a.append(
+                    wrapper.append(
                         this._createActionButton({
-                            label: t,
-                            icon: e,
-                            click: (e) => {
-                                i.open($(e.target).closest(".action-menu-button"), b.Position.Right_Bottom, b.Position.Center);
+                            label: label,
+                            icon: icon,
+                            click: (event) => {
+                                menu.open($(event.target).closest(".action-menu-button"), GMenuPosition.Position.Right_Bottom, GMenuPosition.Position.Center);
                             },
                             isMenu: true,
-                            isEnabled: o,
+                            isEnabled: isEnabledFn,
                         })
                     ),
-                    a
+                    wrapper
                 );
             }),
             (GContextMenu.prototype._createSelectMenuButton = function () {
-                var e = $("<div/>").addClass("select-menu-button");
+                var wrapper = $("<div/>").addClass("select-menu-button");
                 return (
-                    e.append(
+                    wrapper.append(
                         this._createActionButton({
                             label: GObject.GLocale.get(new GObject.GLocaleKey("GContextMenu", "text.select")),
-                            click: (e) => {
-                                var t = this._getHitsElments(),
-                                    n = gDesigner.getActiveDocument().getEditor(),
-                                    o = $("<div/>").gOverlay({
+                            click: (event) => {
+                                var hitElements = this._getHitsElments(),
+                                    editor = gDesigner.getActiveDocument().getEditor(),
+                                    overlay = $("<div/>").gOverlay({
                                         releaseOnClose: true,
                                         offsetX: 100,
                                         offsetY: -25,
                                         clazz: "selected-menu-overlay",
                                     }),
-                                    i = $("<div/>").appendTo(o);
-                                o.gOverlay("open", $(e.target).closest(".select-menu-button"));
-                                i.gSelectedPanel({
-                                    clickCallback: (e) => {
-                                        (n.clearSelection(), n.updateSelection(false, [e]));
+                                    panel = $("<div/>").appendTo(overlay);
+                                overlay.gOverlay("open", $(event.target).closest(".select-menu-button"));
+                                panel.gSelectedPanel({
+                                    clickCallback: (element) => {
+                                        (editor.clearSelection(), editor.updateSelection(false, [element]));
                                     },
                                     renderFinishCallback: () => {
-                                        o.gOverlay("relayout");
+                                        overlay.gOverlay("relayout");
                                     },
-                                }).gSelectedPanel("setSelections", t);
+                                }).gSelectedPanel("setSelections", hitElements);
                             },
                             isMenu: true,
-                            isEnabled: (e) => {
-                                var t = this._getHitsElments(e);
-                                return !!(t && t.elementHits && t.elementHits.length > 0);
+                            isEnabled: (event) => {
+                                var hits = this._getHitsElments(event);
+                                return !!(hits && hits.elementHits && hits.elementHits.length > 0);
                             },
                         })
                     ),
-                    e
+                    wrapper
                 );
             }),
-            (GContextMenu.prototype._updateIcon = function (e, t) {
-                (e.empty(), e.attr("class", "icon " + t));
+            (GContextMenu.prototype._updateIcon = function (element, iconClass) {
+                (element.empty(), element.attr("class", "icon " + iconClass));
             }),
             (GContextMenu.prototype._getSelectedItems = function () {
-                var e = gDesigner.getActiveDocument();
-                if (e) {
-                    var t = e.getEditor();
-                    if (t) {
-                        var n = t.getSelection();
-                        return n || [];
+                var document = gDesigner.getActiveDocument();
+                if (document) {
+                    var editor = document.getEditor();
+                    if (editor) {
+                        var selection = editor.getSelection();
+                        return selection || [];
                     }
                 }
                 return [];
             }),
             (GContextMenu.prototype._getFirstSelectedImageElement = function () {
-                var e = this._getSelectedItems();
-                return e && e.length > 0 ? e.find((e) => e instanceof GObject.GImage) : null;
+                var items = this._getSelectedItems();
+                return items && items.length > 0 ? items.find((element) => element instanceof GObject.GImage) : null;
             }),
             (GContextMenu.prototype._getFirstSelectedTextElement = function () {
-                var e = this._getSelectedItems();
-                return e && e.length > 0 ? e.find((e) => e instanceof GObject.GText) : null;
+                var items = this._getSelectedItems();
+                return items && items.length > 0 ? items.find((element) => element instanceof GObject.GText) : null;
             }),
             (GContextMenu.prototype._setAllSelectionsHidden = function () {
-                var e = this._getSelectedItems();
-                e &&
-                    e.length > 0 &&
-                    i.GEditor.tryRunTransaction(
+                var items = this._getSelectedItems();
+                items &&
+                    items.length > 0 &&
+                    editorModule.GEditor.tryRunTransaction(
                         gDesigner.getActiveDocument().getScene(),
                         function () {
-                            for (var t = 0; t < e.length; t++) (e[t].setProperty("vis", false), e[t].removeFlag(GObject.GNode.Flag.Highlighted));
+                            for (var t = 0; t < items.length; t++) (items[t].setProperty("vis", false), items[t].removeFlag(GObject.GNode.Flag.Highlighted));
                         },
                         GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "action.toggle-visibility"))
                     );
             }),
             (GContextMenu.prototype._setAllSelectionsLocked = function () {
-                var e = this._getSelectedItems();
-                e &&
-                    e.length > 0 &&
-                    i.GEditor.tryRunTransaction(
+                var items = this._getSelectedItems();
+                items &&
+                    items.length > 0 &&
+                    editorModule.GEditor.tryRunTransaction(
                         gDesigner.getActiveDocument().getScene(),
                         function () {
-                            for (; e.length > 0; )
-                                (e[0].setProperty("lkt", GObject.GBlock.LockType.Full),
-                                    e[0].removeFlag(GObject.GNode.Flag.Highlighted),
-                                    e[0].accept(function (e) {
-                                        e.removeFlag(GObject.GNode.Flag.Selected);
+                            for (; items.length > 0; )
+                                (items[0].setProperty("lkt", GObject.GBlock.LockType.Full),
+                                    items[0].removeFlag(GObject.GNode.Flag.Highlighted),
+                                    items[0].accept(function (node) {
+                                        node.removeFlag(GObject.GNode.Flag.Selected);
                                     }));
                         },
                         GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "action.toggle-lock"))

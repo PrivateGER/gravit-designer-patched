@@ -3,37 +3,37 @@ module.exports = function (module, exports, require) {
         (require(91 /* polyfill:String */), require(842 /* polyfill:String */));
         var _interopRequireDefault = require(16);
         (Object.defineProperty(exports, "__esModule", { value: true }),
-            (exports._cloneChildrenIntoReceiver = E),
-            (exports._mergeChildren = x),
-            (exports._mergePath = C),
-            (exports._mergeProperties = b),
-            (exports._mergeStyle = w),
-            (exports._removeDeletedChildren = S),
+            (exports._cloneChildrenIntoReceiver = cloneChildrenIntoReceiver),
+            (exports._mergeChildren = mergeChildren),
+            (exports._mergePath = mergePath),
+            (exports._mergeProperties = mergeProperties),
+            (exports._mergeStyle = mergeStyle),
+            (exports._removeDeletedChildren = removeDeletedChildren),
             (exports._tryAndCatch = void 0),
-            (exports._updateCommonChildren = A),
-            (exports.areNodePropertiesDifferent = y),
-            (exports.base64StringToString = function (e) {
-                let t;
+            (exports._updateCommonChildren = updateCommonChildren),
+            (exports.areNodePropertiesDifferent = areNodePropertiesDifferent),
+            (exports.base64StringToString = function (base64String) {
+                let decoded;
                 try {
-                    t = f(l.toByteArray(e));
+                    decoded = decodeUtf8Bytes(base64.toByteArray(base64String));
                 } catch (e) {
-                    t = "";
+                    decoded = "";
                 }
-                return t;
+                return decoded;
             }),
-            (exports.base64URLSafeEncode = function (e) {
-                return (0, r.trim)((0, r.encode)(e));
+            (exports.base64URLSafeEncode = function (input) {
+                return (0, base64Url.trim)((0, base64Url.encode)(input));
             }),
-            (exports.blockChanges = function (e, t, n, o) {
-                n && n.startBlockReferenceChanges();
-                o && o.beginUpdate();
-                e && e._beginSelectionUpdate();
-                t &&
-                    t.forEach((e) => {
-                        e.beginUpdate();
+            (exports.blockChanges = function (editor, parents, scene, element) {
+                scene && scene.startBlockReferenceChanges();
+                element && element.beginUpdate();
+                editor && editor._beginSelectionUpdate();
+                parents &&
+                    parents.forEach((parent) => {
+                        parent.beginUpdate();
                     });
             }),
-            (exports.buildDialogDocumentHasUpdates = function (e, t, n, o) {
+            (exports.buildDialogDocumentHasUpdates = function (document, onReload, onSave, onCancel) {
                 return GSystemDialog.custom({
                     subtitle: GObject.GLocale.get(new GObject.GLocaleKey("GSaveAction", "has-new-version-when-save-message")),
                     className: "g-has-updates-warning-dialog",
@@ -46,14 +46,14 @@ module.exports = function (module, exports, require) {
                             shortcut: GSystemDialog.Shortcut.Esc,
                             position: "left",
                             onclick: () => {
-                                o && o.call(this, e);
+                                onCancel && onCancel.call(this, document);
                             },
                         },
                         {
                             label: GObject.GLocale.get(new GObject.GLocaleKey("GSaveAction", "has-new-version-when-save-reload")),
                             closeOnClick: true,
                             onclick: () => {
-                                (gDesigner.getToolbar()._updateActions(), t.call(this, e));
+                                (gDesigner.getToolbar()._updateActions(), onReload.call(this, document));
                             },
                         },
                         {
@@ -62,96 +62,96 @@ module.exports = function (module, exports, require) {
                             closeOnClick: true,
                             shortcut: GSystemDialog.Shortcut.Enter,
                             onclick: () => {
-                                n.call(this, e);
+                                onSave.call(this, document);
                             },
                         },
                     ],
                 });
             }),
             (exports.chaining = void 0),
-            (exports.debounce = function (e, t) {
-                let n;
+            (exports.debounce = function (func, wait) {
+                let timer;
                 return function () {
-                    const o = arguments;
-                    let i = () => {
-                        ((n = 0), e.apply(this, o));
+                    const args = arguments;
+                    let later = () => {
+                        ((timer = 0), func.apply(this, args));
                     };
-                    (n && clearTimeout(n), (n = setTimeout(i, t)));
+                    (timer && clearTimeout(timer), (timer = setTimeout(later, wait)));
                 };
             }),
-            (exports.decodeFromUTF8 = f),
-            (exports.decodeHTML = function (e) {
-                return $("<textarea/>").html(e).text();
+            (exports.decodeFromUTF8 = decodeUtf8Bytes),
+            (exports.decodeHTML = function (html) {
+                return $("<textarea/>").html(html).text();
             }),
-            (exports.decrypt = function (e) {
+            (exports.decrypt = function (encryptedText) {
                 try {
-                    var t = e.split(":"),
-                        n = t.shift(),
-                        o = s.enc.Hex.parse(n),
-                        i = t.join(":");
-                    return s.AES.decrypt(i, g, {
-                        iv: o,
-                        format: s.format.OpenSSL,
-                        mode: s.mode.CBC,
-                    }).toString(s.enc.Utf8);
+                    var parts = encryptedText.split(":"),
+                        ivHex = parts.shift(),
+                        iv = CryptoJS.enc.Hex.parse(ivHex),
+                        cipherText = parts.join(":");
+                    return CryptoJS.AES.decrypt(cipherText, encryptionKey, {
+                        iv: iv,
+                        format: CryptoJS.format.OpenSSL,
+                        mode: CryptoJS.mode.CBC,
+                    }).toString(CryptoJS.enc.Utf8);
                 } catch (e) {
                     return;
                 }
             }),
-            (exports.encodeToUTF8 = m),
-            (exports.encrypt = function (e) {
+            (exports.encodeToUTF8 = encodeUtf8String),
+            (exports.encrypt = function (plainText) {
                 try {
-                    var t = s.lib.WordArray.random(32),
-                        n = s.AES.encrypt(e, g, {
-                            iv: t,
-                            format: s.format.OpenSSL,
-                            mode: s.mode.CBC,
+                    var iv = CryptoJS.lib.WordArray.random(32),
+                        encrypted = CryptoJS.AES.encrypt(plainText, encryptionKey, {
+                            iv: iv,
+                            format: CryptoJS.format.OpenSSL,
+                            mode: CryptoJS.mode.CBC,
                         });
-                    return t.toString(s.enc.Hex) + ":" + n.toString();
+                    return iv.toString(CryptoJS.enc.Hex) + ":" + encrypted.toString();
                 } catch (e) {
                     return;
                 }
             }),
             (exports.fakeFunction = function () {}),
-            (exports.getAnnotationType = function (e) {
-                let t = e
+            (exports.getAnnotationType = function (annotation) {
+                let match = annotation
                     .toString()
                     .match(
                         /\[G((?:[\0-\t\x0B\f\x0E-\u2027\u202A-\uD7FF\uE000-\uFFFF]|[\uD800-\uDBFF][\uDC00-\uDFFF]|[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?:[^\uD800-\uDBFF]|^)[\uDC00-\uDFFF])*)Annotation\]/
                     );
-                return (t && t[1]) || null;
+                return (match && match[1]) || null;
             }),
-            (exports.getExtensionFromString = function (e, t) {
-                var n = new RegExp("\\b" + t.join("|") + "\\b", "gim"),
-                    o = e.match(n);
-                return o ? o[0] : null;
+            (exports.getExtensionFromString = function (text, extensions) {
+                var pattern = new RegExp("\\b" + extensions.join("|") + "\\b", "gim"),
+                    match = text.match(pattern);
+                return match ? match[0] : null;
             }),
-            (exports.getFileNameWithoutExtension = function (e, t) {
-                e.toLowerCase().endsWith(".".concat(t).toLowerCase()) && (e = e.substr(0, e.lastIndexOf(".")));
-                return e;
+            (exports.getFileNameWithoutExtension = function (fileName, extension) {
+                fileName.toLowerCase().endsWith(".".concat(extension).toLowerCase()) && (fileName = fileName.substr(0, fileName.lastIndexOf(".")));
+                return fileName;
             }),
-            (exports.getFileSHA256Digest = async function (e) {
-                e instanceof Blob ? (e = await e.arrayBuffer()) : "string" == typeof e && (e = m(e));
-                return s
+            (exports.getFileSHA256Digest = async function (input) {
+                input instanceof Blob ? (input = await input.arrayBuffer()) : "string" == typeof input && (input = encodeUtf8String(input));
+                return CryptoJS
                     .SHA256(
-                        (function (e) {
-                            for (var t = new Uint8Array(e), n = [], o = 0; o < t.length; o += 4)
-                                n.push((t[o] << 24) | (t[o + 1] << 16) | (t[o + 2] << 8) | t[o + 3]);
-                            return s.lib.WordArray.create(n, t.length);
-                        })(e)
+                        (function (buffer) {
+                            for (var bytes = new Uint8Array(buffer), words = [], index = 0; index < bytes.length; index += 4)
+                                words.push((bytes[index] << 24) | (bytes[index + 1] << 16) | (bytes[index + 2] << 8) | bytes[index + 3]);
+                            return CryptoJS.lib.WordArray.create(words, bytes.length);
+                        })(input)
                     )
                     .toString();
             }),
-            (exports.getFileStateAndRole = function (e, t) {
-                let n,
-                    o = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {};
-                const i = t.getPrivateShareList();
-                i.forEach((t) => {
-                    const { id, copy, inspect, comment, owner, access, edit } = t;
-                    e.getUID() === id
-                        ? ((n = d.makeFromShare(t)),
+            (exports.getFileStateAndRole = function (user, file) {
+                let role,
+                    state = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {};
+                const shareList = file.getPrivateShareList();
+                shareList.forEach((share) => {
+                    const { id, copy, inspect, comment, owner, access, edit } = share;
+                    user.getUID() === id
+                        ? ((role = GShareRoleFactory.makeFromShare(share)),
                           owner
-                              ? Object.assign(o, {
+                              ? Object.assign(state, {
                                     owner: true,
                                     edit: true,
                                     inspect: true,
@@ -159,7 +159,7 @@ module.exports = function (module, exports, require) {
                                     comment: !!HAS_ANNOTATIONS,
                                     share: true,
                                 })
-                              : Object.assign(o, {
+                              : Object.assign(state, {
                                     owner: false,
                                     share: false,
                                     edit: edit,
@@ -168,223 +168,223 @@ module.exports = function (module, exports, require) {
                                     comment: !!HAS_ANNOTATIONS && comment,
                                     sharing: access,
                                 }))
-                        : access && Object.assign(o, { sharing: true });
+                        : access && Object.assign(state, { sharing: true });
                 });
-                const a = i.find((e) => e.owner);
-                if (a) {
-                    const t = e.getUID() === a.id;
-                    ((o.owner = t), (o.share = t));
+                const ownerShare = shareList.find((share) => share.owner);
+                if (ownerShare) {
+                    const isOwner = user.getUID() === ownerShare.id;
+                    ((state.owner = isOwner), (state.share = isOwner));
                 }
-                const r = t.getPublicShare();
-                r && r.access && ((o.isPrivate = false), (o.sharing = true));
+                const publicShare = file.getPublicShare();
+                publicShare && publicShare.access && ((state.isPrivate = false), (state.sharing = true));
                 return (
-                    Object.assign(o, {
-                        isPrivate: i && i.filter((e) => !e.owner).length > 0,
+                    Object.assign(state, {
+                        isPrivate: shareList && shareList.filter((share) => !share.owner).length > 0,
                     }),
-                    { state: o, role: n, publicShare: r }
+                    { state: state, role: role, publicShare: publicShare }
                 );
             }),
-            (exports.getSizeInfo = function (e) {
-                var t = e;
-                const n = 1e6,
-                    o = 1e3 * n;
-                var i = { gb: 0, mb: 0, kb: 0 },
-                    a = Math.floor(t / o);
-                a && ((i.gb = a), (t -= a * o));
-                var r = Math.floor(t / n);
-                r && ((i.mb = r), (t -= r * n));
-                var s = Math.floor(t / 1e3);
-                s && ((i.kb = s), (t -= 1e3 * s));
-                return i;
+            (exports.getSizeInfo = function (bytes) {
+                var remaining = bytes;
+                const million = 1e6,
+                    billion = 1e3 * million;
+                var sizeInfo = { gb: 0, mb: 0, kb: 0 },
+                    gbCount = Math.floor(remaining / billion);
+                gbCount && ((sizeInfo.gb = gbCount), (remaining -= gbCount * billion));
+                var mbCount = Math.floor(remaining / million);
+                mbCount && ((sizeInfo.mb = mbCount), (remaining -= mbCount * million));
+                var kbCount = Math.floor(remaining / 1e3);
+                kbCount && ((sizeInfo.kb = kbCount), (remaining -= 1e3 * kbCount));
+                return sizeInfo;
             }),
-            (exports.getVersionFromString = function (e, t, n) {
-                var o = e.match(t.join("|"));
-                return o ? o[0] : n;
+            (exports.getVersionFromString = function (text, patterns, fallback) {
+                var match = text.match(patterns.join("|"));
+                return match ? match[0] : fallback;
             }),
-            (exports.isDifferent = v),
-            (exports.isFunction = function (e) {
-                if (void 0 === e) return false;
-                var t = Object.prototype.toString.call(e);
-                return ["[object Function]", "[object AsyncFunction]", "[object GeneratorFunction]", "[object Proxy]"].indexOf(t) >= 0;
+            (exports.isDifferent = isDifferent),
+            (exports.isFunction = function (value) {
+                if (void 0 === value) return false;
+                var typeTag = Object.prototype.toString.call(value);
+                return ["[object Function]", "[object AsyncFunction]", "[object GeneratorFunction]", "[object Proxy]"].indexOf(typeTag) >= 0;
             }),
             (exports.isPassiveSupported = function () {
-                if (void 0 === T) {
-                    T = false;
+                if (void 0 === passiveSupported) {
+                    passiveSupported = false;
                     try {
-                        const e = {
+                        const options = {
                             get passive() {
-                                return ((T = true), false);
+                                return ((passiveSupported = true), false);
                             },
                         };
-                        (window.addEventListener("test", null, e), window.removeEventListener("test", null, e));
+                        (window.addEventListener("test", null, options), window.removeEventListener("test", null, options));
                     } catch (e) {
-                        T = false;
+                        passiveSupported = false;
                     }
                 }
-                return T;
+                return passiveSupported;
             }),
-            (exports.isSupportedScreenSize = function (e) {
-                if (!e && GObject.GSystem.hardware === GObject.GSystem.Hardware.Tablet) {
+            (exports.isSupportedScreenSize = function (width) {
+                if (!width && GObject.GSystem.hardware === GObject.GSystem.Hardware.Tablet) {
                     return (window.screen.height > window.screen.width ? window.screen.height : window.screen.width) >= MIN_SUPPORTED_SCREEN_SIZE;
                 }
-                return (e || window.screen.availWidth) >= MIN_SUPPORTED_SCREEN_SIZE;
+                return (width || window.screen.availWidth) >= MIN_SUPPORTED_SCREEN_SIZE;
             }),
-            (exports.isSymbol = h),
+            (exports.isSymbol = isSymbol),
             (exports.isSymbolInstance = void 0),
-            (exports.iterateAroundIndex = function (e, t, n) {
+            (exports.iterateAroundIndex = function (list, startIndex, callback) {
                 var o = 0,
                     i = 0,
-                    a = e.length;
-                for (; o < a; ) {
-                    var r = t + i;
-                    (n(e[r], r), o++, i > 0 && t - i >= 0 ? (i = -i) : i > 0 ? i++ : t - i + 1 < a ? (i = 1 - i) : i--);
+                    length = list.length;
+                for (; o < length; ) {
+                    var r = startIndex + i;
+                    (callback(list[r], r), o++, i > 0 && startIndex - i >= 0 ? (i = -i) : i > 0 ? i++ : startIndex - i + 1 < length ? (i = 1 - i) : i--);
                 }
             }),
-            (exports.iterateEqualStyleLayers = function (e, t, n, o) {
-                var a = [];
-                if (n.length > 1) {
-                    for (var r = 0; r < n.length; r++) {
-                        var s = n[r],
+            (exports.iterateEqualStyleLayers = function (styleType, styleProperty, selectedLayers, callback) {
+                var matches = [];
+                if (selectedLayers.length > 1) {
+                    for (var r = 0; r < selectedLayers.length; r++) {
+                        var s = selectedLayers[r],
                             l = [];
-                        if ("fill" === e) l = s.getPaintLayers().getFillLayers();
-                        else if ("border" === e) l = s.getPaintLayers().getBorderLayers();
-                        else if ("effect" === e) for (var c = s.getEffects().getFirstChild(); null !== c; c = c.getNext()) l.push(c);
+                        if ("fill" === styleType) l = s.getPaintLayers().getFillLayers();
+                        else if ("border" === styleType) l = s.getPaintLayers().getBorderLayers();
+                        else if ("effect" === styleType) for (var c = s.getEffects().getFirstChild(); null !== c; c = c.getNext()) l.push(c);
                         for (var d = 0; d < l.length; d++) {
                             var u = l[d];
-                            (("fill" === e && GObject.GStylable.FillPaintLayer.equals(u, t)) ||
-                                ("border" === e && GObject.GStylable.BorderPaintLayer.equals(u, t)) ||
-                                ("effect" === e && GObject.GUtil.equals(u, t))) &&
-                                a.push(u);
+                            (("fill" === styleType && GObject.GStylable.FillPaintLayer.equals(u, styleProperty)) ||
+                                ("border" === styleType && GObject.GStylable.BorderPaintLayer.equals(u, styleProperty)) ||
+                                ("effect" === styleType && GObject.GUtil.equals(u, styleProperty))) &&
+                                matches.push(u);
                         }
                     }
-                    a.forEach(function (e) {
-                        o(e);
+                    matches.forEach(function (match) {
+                        callback(match);
                     });
-                } else o(t);
+                } else callback(styleProperty);
             }),
-            (exports.mergeNode = _),
-            (exports.releaseChanges = function (e, t, n) {
-                t &&
-                    t.forEach((e) => {
-                        e.endUpdate();
+            (exports.mergeNode = mergeNode),
+            (exports.releaseChanges = function (editor, parents, scene) {
+                parents &&
+                    parents.forEach((parent) => {
+                        parent.endUpdate();
                     });
-                e && e._finishSelectionUpdate();
-                for (var o = arguments.length, i = new Array(o > 3 ? o - 3 : 0), a = 3; a < o; a++) i[a - 3] = arguments[a];
-                i &&
-                    i.forEach((e) => {
-                        e.endUpdate();
+                editor && editor._finishSelectionUpdate();
+                for (var argsLength = arguments.length, elements = new Array(argsLength > 3 ? argsLength - 3 : 0), a = 3; a < argsLength; a++) elements[a - 3] = arguments[a];
+                elements &&
+                    elements.forEach((element) => {
+                        element.endUpdate();
                     });
-                n && n.endBlockReferenceChanges();
+                scene && scene.endBlockReferenceChanges();
             }),
-            (exports.removeAllSuffixWhichLikeExtension = function (e, t) {
-                const n = ".".concat(t).toLowerCase();
-                for (; e.toLowerCase().endsWith(n); ) e = e.substr(0, e.lastIndexOf("."));
-                return e;
+            (exports.removeAllSuffixWhichLikeExtension = function (fileName, extension) {
+                const suffix = ".".concat(extension).toLowerCase();
+                for (; fileName.toLowerCase().endsWith(suffix); ) fileName = fileName.substr(0, fileName.lastIndexOf("."));
+                return fileName;
             }),
-            (exports.resolveDocumentImages = function (e, t) {
-                let n = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {};
-                return new Promise(async (o, a) => {
-                    const r = (e) => e === GObject.GImage.ImageStatus.Loaded || e === GObject.GImage.ImageStatus.Error;
+            (exports.resolveDocumentImages = function (node, timeout) {
+                let options = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : {};
+                return new Promise(async (resolve, reject) => {
+                    const isImageSettled = (status) => status === GObject.GImage.ImageStatus.Loaded || status === GObject.GImage.ImageStatus.Error;
                     let s = 0;
                     if (
-                        (e.accept((e) => {
-                            e instanceof GObject.GImage && !r(e.getStatus()) && s++;
+                        (node.accept((element) => {
+                            element instanceof GObject.GImage && !isImageSettled(element.getStatus()) && s++;
                         }),
                         s > 0)
                     ) {
-                        let l = setTimeout(() => {
-                            (s > 0 || n.cancelled) && (e.removeEventListener(GObject.GImage.StatusEvent, c), a());
-                        }, t);
-                        const c = (t) => {
-                            let { status } = t;
-                            (r(status) &&
+                        let timeoutId = setTimeout(() => {
+                            (s > 0 || options.cancelled) && (node.removeEventListener(GObject.GImage.StatusEvent, onStatusChange), reject());
+                        }, timeout);
+                        const onStatusChange = (event) => {
+                            let { status } = event;
+                            (isImageSettled(status) &&
                                 --s <= 0 &&
-                                (l && (clearTimeout(l), (l = null)), e.removeEventListener(GObject.GImage.StatusEvent, c), o(true)),
-                                n.cancelled && (l && (clearTimeout(l), (l = null)), e.removeEventListener(GObject.GImage.StatusEvent, c), a()));
+                                (timeoutId && (clearTimeout(timeoutId), (timeoutId = null)), node.removeEventListener(GObject.GImage.StatusEvent, onStatusChange), resolve(true)),
+                                options.cancelled && (timeoutId && (clearTimeout(timeoutId), (timeoutId = null)), node.removeEventListener(GObject.GImage.StatusEvent, onStatusChange), reject()));
                         };
-                        e.addEventListener(GObject.GImage.StatusEvent, c);
-                    } else o(true);
+                        node.addEventListener(GObject.GImage.StatusEvent, onStatusChange);
+                    } else resolve(true);
                 });
             }),
-            (exports.saveBBoxes = function (e) {
-                var t = [];
-                e.accept(function (e) {
-                    if (e instanceof GObject.GElement) {
-                        var n = e.getPaintBBox(false, null, true);
-                        t.push(n);
+            (exports.saveBBoxes = function (node) {
+                var boundingBoxes = [];
+                node.accept(function (element) {
+                    if (element instanceof GObject.GElement) {
+                        var bbox = element.getPaintBBox(false, null, true);
+                        boundingBoxes.push(bbox);
                     }
                 });
-                for (var n = new Float64Array(4 * t.length), o = 0; o < t.length; ++o)
-                    for (var a = GObject.GRect.serialize(t[o]), r = 0; r < 4; ++r) n[4 * o + r] = a[r];
-                ((s = "Test_invisible-.dat"),
-                    (l = n),
-                    navigator.webkitTemporaryStorage.requestQuota(1e3, function (e) {
-                        var t = e;
-                        (console.log("Requested bytes:", 1e3, "Granted bytes:", t),
+                for (var serializedData = new Float64Array(4 * boundingBoxes.length), o = 0; o < boundingBoxes.length; ++o)
+                    for (var a = GObject.GRect.serialize(boundingBoxes[o]), r = 0; r < 4; ++r) serializedData[4 * o + r] = a[r];
+                ((fileName = "Test_invisible-.dat"),
+                    (fileData = serializedData),
+                    navigator.webkitTemporaryStorage.requestQuota(1e3, function (grantedBytes) {
+                        var bytes = grantedBytes;
+                        (console.log("Requested bytes:", 1e3, "Granted bytes:", bytes),
                             window.webkitRequestFileSystem(
                                 window.TEMPORARY,
-                                t,
-                                function (e) {
-                                    const t = e.root.toURL();
+                                bytes,
+                                function (fileSystem) {
+                                    const rootUrl = fileSystem.root.toURL();
                                     window.webkitResolveLocalFileSystemURL(
-                                        t,
-                                        function (e) {
-                                            e.getFile(s, { create: true }, function (e) {
-                                                e.createWriter(
-                                                    function (e) {
-                                                        ((e.onwriteend = function () {
+                                        rootUrl,
+                                        function (dirEntry) {
+                                            dirEntry.getFile(fileName, { create: true }, function (fileEntry) {
+                                                fileEntry.createWriter(
+                                                    function (fileWriter) {
+                                                        ((fileWriter.onwriteend = function () {
                                                             console.log("Write completed.");
                                                         }),
-                                                            (e.onerror = function (e) {
-                                                                console.log("Write failed: " + e.toString());
+                                                            (fileWriter.onerror = function (event) {
+                                                                console.log("Write failed: " + event.toString());
                                                             }),
-                                                            e.seek(0));
-                                                        var t = new Blob([l.buffer], {
+                                                            fileWriter.seek(0));
+                                                        var blob = new Blob([fileData.buffer], {
                                                             type: "application/octet-stream",
                                                         });
-                                                        e.write(t);
+                                                        fileWriter.write(blob);
                                                     },
-                                                    function (e) {
-                                                        console.log(e);
+                                                    function (error) {
+                                                        console.log(error);
                                                     }
                                                 );
                                             });
                                         },
-                                        function (e) {
-                                            console.log(e);
+                                        function (error) {
+                                            console.log(error);
                                         }
                                     );
                                 },
-                                function (e) {
-                                    console.log(e);
+                                function (error) {
+                                    console.log(error);
                                 }
                             ));
                     }));
-                var s, l;
+                var fileName, fileData;
             }),
-            (exports.sleep = function (e) {
-                return new Promise((t) => setTimeout(t, e));
+            (exports.sleep = function (ms) {
+                return new Promise((resolve) => setTimeout(resolve, ms));
             }),
-            (exports.stringToBase64String = function (e) {
-                return l.fromByteArray(m(e));
+            (exports.stringToBase64String = function (text) {
+                return base64.fromByteArray(encodeUtf8String(text));
             }),
-            (exports.throttle = function (e, t) {
-                let n;
+            (exports.throttle = function (func, wait) {
+                let throttled;
                 return function () {
-                    const o = arguments;
-                    n || (e.apply(this, o), (n = true), setTimeout(() => (n = false), t));
+                    const args = arguments;
+                    throttled || (func.apply(this, args), (throttled = true), setTimeout(() => (throttled = false), wait));
                 };
             }),
-            (exports.toCapitalize = function (e) {
-                return e.charAt(0).toUpperCase() + e.slice(1);
+            (exports.toCapitalize = function (text) {
+                return text.charAt(0).toUpperCase() + text.slice(1);
             }),
-            (exports.toMD5 = function (e) {
-                return s.MD5(e).toString();
+            (exports.toMD5 = function (text) {
+                return CryptoJS.MD5(text).toString();
             }),
-            (exports.trimStart = function (e, t) {
-                if (!t || !t.length) return e;
-                if (!e || !e.startsWith(t)) return e;
-                return e.substring(t.length);
+            (exports.trimStart = function (text, prefix) {
+                if (!prefix || !prefix.length) return text;
+                if (!text || !text.startsWith(prefix)) return text;
+                return text.substring(prefix.length);
             }),
             (exports.watchDog = void 0),
             require(58 /* polyfill:Array */),
@@ -393,7 +393,7 @@ module.exports = function (module, exports, require) {
             require(181 /* polyfill:ArrayBuffer */),
             require(30 /* polyfill:Object */),
             require(8 /* Symbol */),
-            require(356),
+            require(356 /* polyfill:RegExp */),
             require(20 /* polyfill:RegExp */),
             require(3),
             require(271 /* polyfill:String */),
@@ -415,164 +415,164 @@ module.exports = function (module, exports, require) {
             require(33));
         var GObject = require(1),
             a = _interopRequireDefault(require(84)),
-            r = require(1042);
-        const s = require(1043);
-        var l = require(250),
+            base64Url = require(1042);
+        const CryptoJS = require(1043);
+        var base64 = require(250),
             GSystemDialog = require(44);
-        const d = require(433),
+        const GShareRoleFactory = require(433),
             { HAS_ANNOTATIONS, MIN_SUPPORTED_SCREEN_SIZE } = require(10 /* designerConfig */);
         exports.watchDog = {
-            trap: (e, t, n, o) => (i) =>
-                ((e, t, n, o, i) =>
-                    gDesigner.isEnabledProFeatures(i) || (n && n(e))
-                        ? t
-                            ? t(e)
+            trap: (handler, bypassCheck, onBlocked, featureFlag) => (event) =>
+                ((event, handler, bypassCheck, onBlocked, featureFlag) =>
+                    gDesigner.isEnabledProFeatures(featureFlag) || (bypassCheck && bypassCheck(event))
+                        ? handler
+                            ? handler(event)
                             : void 0
-                        : (o && o(e), e.stopImmediatePropagation(), e.preventDefault(), gDesigner.handlePROFeatureInterruption(), false))(
-                    i,
-                    e,
-                    t,
-                    n,
-                    o
+                        : (onBlocked && onBlocked(event), event.stopImmediatePropagation(), event.preventDefault(), gDesigner.handlePROFeatureInterruption(), false))(
+                    event,
+                    handler,
+                    bypassCheck,
+                    onBlocked,
+                    featureFlag
                 ),
-            check: (e, t) => (gDesigner.isEnabledProFeatures() ? e : t),
+            check: (proValue, fallbackValue) => (gDesigner.isEnabledProFeatures() ? proValue : fallbackValue),
         };
-        exports._tryAndCatch = async (e) => {
+        exports._tryAndCatch = async (action) => {
             try {
-                await e();
+                await action();
             } catch (e) {
                 console.log(e);
             }
         };
-        const g = s.enc.Latin1.parse(s.enc.Latin1.stringify(s.SHA256("#a09j!@10jas-109827s*%#1098XAapoc-9908#!123")));
-        function h(e, t) {
-            const n = (e) => e && e instanceof GObject.GSymbol && (!t || !e.isMaster());
-            return !!n(e) || !!e.findParent(n);
+        const encryptionKey = CryptoJS.enc.Latin1.parse(CryptoJS.enc.Latin1.stringify(CryptoJS.SHA256("#a09j!@10jas-109827s*%#1098XAapoc-9908#!123")));
+        function isSymbol(node, requireInstance) {
+            const isSymbolNode = (candidate) => candidate && candidate instanceof GObject.GSymbol && (!requireInstance || !candidate.isMaster());
+            return !!isSymbolNode(node) || !!node.findParent(isSymbolNode);
         }
-        function f(e) {
-            return new TextDecoder("utf-8").decode(e);
+        function decodeUtf8Bytes(bytes) {
+            return new TextDecoder("utf-8").decode(bytes);
         }
-        function m(e) {
-            return new TextEncoder("utf-8").encode(e);
+        function encodeUtf8String(text) {
+            return new TextEncoder("utf-8").encode(text);
         }
-        exports.isSymbolInstance = (e) => h(e, true);
-        function y(e, t) {
-            let n = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : [];
-            const o = (e) =>
-                    Object.keys(e)
-                        .filter((e) => (e.startsWith("$") || e.startsWith("@")) && !n.includes(e))
-                        .map((e) => e.slice(1)),
-                a = o(e),
-                r = o(t);
-            return !GObject.GUtil.equals(a, r) || !e.arePropertiesEqual(t, a);
+        exports.isSymbolInstance = (node) => isSymbol(node, true);
+        function areNodePropertiesDifferent(nodeA, nodeB) {
+            let excludedProps = arguments.length > 2 && void 0 !== arguments[2] ? arguments[2] : [];
+            const getCustomProps = (obj) =>
+                    Object.keys(obj)
+                        .filter((key) => (key.startsWith("$") || key.startsWith("@")) && !excludedProps.includes(key))
+                        .map((key) => key.slice(1)),
+                keysA = getCustomProps(nodeA),
+                keysB = getCustomProps(nodeB);
+            return !GObject.GUtil.equals(keysA, keysB) || !nodeA.arePropertiesEqual(nodeB, keysA);
         }
-        function v(e, t, n) {
-            if ((n || (n = ["$lmd", "$storedUrl", "$__ids"]), !(e instanceof t.constructor))) return true;
-            if (e.hasMixin(GObject.GNode.Properties) !== t.hasMixin(GObject.GNode.Properties)) return true;
-            if (e.hasMixin(GObject.GNode.Properties) && y(e, t, n)) return true;
-            if (e.hasMixin(GObject.GElement.Stylable) !== t.hasMixin(GObject.GElement.Stylable)) return true;
-            if (e.hasMixin(GObject.GElement.Stylable)) {
-                const o = e.getEffects(),
-                    i = t.getEffects();
-                if (Boolean(o) !== Boolean(i)) return true;
-                if (o && v(o, i, n)) return true;
-                const a = e.getPaintLayers(),
-                    r = t.getPaintLayers();
-                if (Boolean(a) !== Boolean(r)) return true;
-                if (a && v(a, r, n)) return true;
+        function isDifferent(nodeA, nodeB, excludedProps) {
+            if ((excludedProps || (excludedProps = ["$lmd", "$storedUrl", "$__ids"]), !(nodeA instanceof nodeB.constructor))) return true;
+            if (nodeA.hasMixin(GObject.GNode.Properties) !== nodeB.hasMixin(GObject.GNode.Properties)) return true;
+            if (nodeA.hasMixin(GObject.GNode.Properties) && areNodePropertiesDifferent(nodeA, nodeB, excludedProps)) return true;
+            if (nodeA.hasMixin(GObject.GElement.Stylable) !== nodeB.hasMixin(GObject.GElement.Stylable)) return true;
+            if (nodeA.hasMixin(GObject.GElement.Stylable)) {
+                const effectsA = nodeA.getEffects(),
+                    effectsB = nodeB.getEffects();
+                if (Boolean(effectsA) !== Boolean(effectsB)) return true;
+                if (effectsA && isDifferent(effectsA, effectsB, excludedProps)) return true;
+                const paintLayersA = nodeA.getPaintLayers(),
+                    paintLayersB = nodeB.getPaintLayers();
+                if (Boolean(paintLayersA) !== Boolean(paintLayersB)) return true;
+                if (paintLayersA && isDifferent(paintLayersA, paintLayersB, excludedProps)) return true;
             }
-            if (e.hasMixin(GObject.GNode.Container) !== t.hasMixin(GObject.GNode.Container)) return true;
-            if (e instanceof GObject.GPathBase != t instanceof GObject.GPathBase) return true;
-            if (e instanceof GObject.GPathBase) {
-                var o = e.getAnchorPoints(),
-                    a = o.getChildren(),
-                    r = t.getAnchorPoints(),
-                    s = r.getChildren();
-                if (a.length !== s.length) return true;
-                for (var l = 0; l < a.length; l++) {
-                    var c = o.getChildByIndex(l),
-                        d = r.getChildByIndex(l);
+            if (nodeA.hasMixin(GObject.GNode.Container) !== nodeB.hasMixin(GObject.GNode.Container)) return true;
+            if (nodeA instanceof GObject.GPathBase != nodeB instanceof GObject.GPathBase) return true;
+            if (nodeA instanceof GObject.GPathBase) {
+                var anchorPointsA = nodeA.getAnchorPoints(),
+                    pointsA = anchorPointsA.getChildren(),
+                    anchorPointsB = nodeB.getAnchorPoints(),
+                    pointsB = anchorPointsB.getChildren();
+                if (pointsA.length !== pointsB.length) return true;
+                for (var l = 0; l < pointsA.length; l++) {
+                    var c = anchorPointsA.getChildByIndex(l),
+                        d = anchorPointsB.getChildByIndex(l);
                     if (c ^ d) return true;
-                    if (y(c, d, n)) return true;
+                    if (areNodePropertiesDifferent(c, d, excludedProps)) return true;
                 }
             }
-            if (e.hasMixin(GObject.GNode.Container)) {
-                const o = e.getChildren(),
-                    i = t.getChildren();
-                if (o.length !== i.length) return true;
-                for (let e = 0; e < o.length; e++) if (v(o[e], i[e], n)) return true;
+            if (nodeA.hasMixin(GObject.GNode.Container)) {
+                const childrenA = nodeA.getChildren(),
+                    childrenB = nodeB.getChildren();
+                if (childrenA.length !== childrenB.length) return true;
+                for (let e = 0; e < childrenA.length; e++) if (isDifferent(childrenA[e], childrenB[e], excludedProps)) return true;
             }
             return false;
         }
-        function _(e, t) {
+        function mergeNode(target, source) {
             try {
-                (w(e, t), C(e, t), x(e, t), b(e, t));
+                (mergeStyle(target, source), mergePath(target, source), mergeChildren(target, source), mergeProperties(target, source));
             } catch (e) {
                 console.log(e, e && e.stack);
             }
         }
-        function b(e, t) {
-            const n = (function (e) {
-                const t = [];
-                return Object.keys(e)
-                    .filter((e) => e.startsWith("$") && !t.includes(e))
-                    .map((e) => e.slice(1));
-            })(t);
-            e.setProperties(n, t.getProperties(n));
+        function mergeProperties(target, source) {
+            const propNames = (function (obj) {
+                const excludeKeys = [];
+                return Object.keys(obj)
+                    .filter((key) => key.startsWith("$") && !excludeKeys.includes(key))
+                    .map((key) => key.slice(1));
+            })(source);
+            target.setProperties(propNames, source.getProperties(propNames));
         }
-        function w(e, t) {
-            if (e.hasMixin(GObject.GElement.Stylable)) {
-                var n = e.getPaintLayers(),
-                    o = t.getPaintLayers(),
-                    r = n.getBorderLayers(),
-                    s = o.getBorderLayers(),
-                    l = n.getFillLayers(),
-                    c = o.getFillLayers();
-                e.hasMixin(a.default)
-                    ? (s.length && r.length && r[0].assignFrom(s[0]), c.length && l.length && l[0].assignFrom(c[0]))
-                    : (r.forEach((e) => {
-                          var t = s.find((t) => t.getId() === e.getId());
-                          t && e.assignFrom(t);
+        function mergeStyle(target, source) {
+            if (target.hasMixin(GObject.GElement.Stylable)) {
+                var targetPaintLayers = target.getPaintLayers(),
+                    sourcePaintLayers = source.getPaintLayers(),
+                    targetBorderLayers = targetPaintLayers.getBorderLayers(),
+                    sourceBorderLayers = sourcePaintLayers.getBorderLayers(),
+                    targetFillLayers = targetPaintLayers.getFillLayers(),
+                    sourceFillLayers = sourcePaintLayers.getFillLayers();
+                target.hasMixin(a.default)
+                    ? (sourceBorderLayers.length && targetBorderLayers.length && targetBorderLayers[0].assignFrom(sourceBorderLayers[0]), sourceFillLayers.length && targetFillLayers.length && targetFillLayers[0].assignFrom(sourceFillLayers[0]))
+                    : (targetBorderLayers.forEach((targetBorder) => {
+                          var sourceBorder = sourceBorderLayers.find((sourceBorder) => sourceBorder.getId() === targetBorder.getId());
+                          sourceBorder && targetBorder.assignFrom(sourceBorder);
                       }),
-                      l.forEach((e) => {
-                          var t = c.find((t) => t.getId() === e.getId());
-                          t && e.assignFrom(t);
+                      targetFillLayers.forEach((targetFill) => {
+                          var sourceFill = sourceFillLayers.find((sourceFill) => sourceFill.getId() === targetFill.getId());
+                          sourceFill && targetFill.assignFrom(sourceFill);
                       }));
             }
         }
-        function C(e, t) {
-            if (e instanceof GObject.GPathBase) {
-                var n = e.getAnchorPoints();
-                (n.beginUpdate(), n.clearChildren(), n.deserialize(t.getAnchorPoints().serialize()), n.endUpdate());
+        function mergePath(target, source) {
+            if (target instanceof GObject.GPathBase) {
+                var targetPoints = target.getAnchorPoints();
+                (targetPoints.beginUpdate(), targetPoints.clearChildren(), targetPoints.deserialize(source.getAnchorPoints().serialize()), targetPoints.endUpdate());
             }
         }
-        function x(e, t) {
-            if (!e.hasMixin(GObject.GNode.Container)) return;
-            let n = e.getChildren(),
-                o = t.getChildren();
-            (S(e, t), E(e, t), A(n, o));
+        function mergeChildren(target, source) {
+            if (!target.hasMixin(GObject.GNode.Container)) return;
+            let targetChildren = target.getChildren(),
+                sourceChildren = source.getChildren();
+            (removeDeletedChildren(target, source), cloneChildrenIntoReceiver(target, source), updateCommonChildren(targetChildren, sourceChildren));
         }
-        function S(e, t) {
-            let n = e.getChildren(),
-                o = t.getChildren();
-            n.forEach((t) => {
-                o.some((e) => e.getId() === t.getId()) || e.removeChild(t);
+        function removeDeletedChildren(target, source) {
+            let targetChildren = target.getChildren(),
+                sourceChildren = source.getChildren();
+            targetChildren.forEach((child) => {
+                sourceChildren.some((sourceChild) => sourceChild.getId() === child.getId()) || target.removeChild(child);
             });
         }
-        function E(e, t) {
-            for (var n = t.getLastChild(); null !== n; n = n.getPrevious()) {
-                if (e.getChildren().some((e) => e.getId() === n.getId())) continue;
-                let t = n.getNext(),
-                    o = t && e.getChildren().find((e) => e.getId() === t.getId());
-                e.insertChild(n.clone(), o);
+        function cloneChildrenIntoReceiver(target, source) {
+            for (var sourceChild = source.getLastChild(); null !== sourceChild; sourceChild = sourceChild.getPrevious()) {
+                if (target.getChildren().some((targetChild) => targetChild.getId() === sourceChild.getId())) continue;
+                let nextSourceChild = sourceChild.getNext(),
+                    insertBeforeNode = nextSourceChild && target.getChildren().find((targetChild) => targetChild.getId() === nextSourceChild.getId());
+                target.insertChild(sourceChild.clone(), insertBeforeNode);
             }
         }
-        function A(e, t) {
-            e.forEach((e) => {
-                let n = t.find((t) => t.getId() === e.getId());
-                n && v(e, n) && _(e, n);
+        function updateCommonChildren(targetChildren, sourceChildren) {
+            targetChildren.forEach((targetChild) => {
+                let sourceChild = sourceChildren.find((child) => child.getId() === targetChild.getId());
+                sourceChild && isDifferent(targetChild, sourceChild) && mergeNode(targetChild, sourceChild);
             });
         }
-        let T;
-        exports.chaining = (e, t) => () => e() && t();
+        let passiveSupported;
+        exports.chaining = (firstFn, secondFn) => () => firstFn() && secondFn();
     };

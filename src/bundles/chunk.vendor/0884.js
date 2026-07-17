@@ -3,7 +3,7 @@ module.exports = function (module, exports, require) {
                 r = require(815),
                 o = require(816),
                 a = require(885),
-                GShareDialog = require(886),
+                GGoggleDrive = require(886),
                 l = require(456),
                 h = require(456),
                 A = require(456),
@@ -12,8 +12,8 @@ module.exports = function (module, exports, require) {
                 {
                     project: c.Designer,
                     translations: n,
-                    temporary: GShareDialog,
-                    importStack: [GShareDialog, n],
+                    temporary: GGoggleDrive,
+                    importStack: [GGoggleDrive, n],
                 },
                 {
                     project: c.Cloud,

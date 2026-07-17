@@ -4,110 +4,110 @@ module.exports = function (module, exports, require) {
         var GObject = require(1),
             GPlatform = require(15);
         const GCategory = require(18),
-            r = require(106);
-        function s() {}
-        (GObject.GObject.inherit(s, r),
-            (s.ID = "edit.paste.replace"),
-            (s.TITLE = new GObject.GLocaleKey("GPasteAndReplaceAction", "title")),
-            (s.prototype.getId = function () {
-                return s.ID;
+            GElementAction = require(106);
+        function GPasteAndReplaceAction() {}
+        (GObject.GObject.inherit(GPasteAndReplaceAction, GElementAction),
+            (GPasteAndReplaceAction.ID = "edit.paste.replace"),
+            (GPasteAndReplaceAction.TITLE = new GObject.GLocaleKey("GPasteAndReplaceAction", "title")),
+            (GPasteAndReplaceAction.prototype.getId = function () {
+                return GPasteAndReplaceAction.ID;
             }),
-            (s.prototype.getTitle = function () {
-                return s.TITLE;
+            (GPasteAndReplaceAction.prototype.getTitle = function () {
+                return GPasteAndReplaceAction.TITLE;
             }),
-            (s.prototype.getIcon = function () {
+            (GPasteAndReplaceAction.prototype.getIcon = function () {
                 return gDesigner.isTouchEnabled() ? "gravit-icon-paste-and-replace" : null;
             }),
-            (s.prototype.getCategory = function () {
+            (GPasteAndReplaceAction.prototype.getCategory = function () {
                 return GCategory.CATEGORY_EDIT_PASTE;
             }),
-            (s.prototype.getGroup = function () {
+            (GPasteAndReplaceAction.prototype.getGroup = function () {
                 return "ccp/paste";
             }),
-            (s.prototype.getShortcut = function () {
+            (GPasteAndReplaceAction.prototype.getShortcut = function () {
                 return [GPlatform.GKey.Constant.OPTION, GPlatform.GKey.Constant.COMMAND, "V"];
             }),
-            (s.prototype.isEnabled = function () {
-                if (!r.prototype.isEnabled.call(this)) return false;
-                const e = gDesigner.getActiveDocument(),
-                    t = e && e.getEditor(),
-                    n = t && t.getSelection();
-                if (n && n.length > 0) {
+            (GPasteAndReplaceAction.prototype.isEnabled = function () {
+                if (!GElementAction.prototype.isEnabled.call(this)) return false;
+                const activeDocument = gDesigner.getActiveDocument(),
+                    editor = activeDocument && activeDocument.getEditor(),
+                    selection = editor && editor.getSelection();
+                if (selection && selection.length > 0) {
                     if (document.queryCommandSupported("paste")) return true;
-                    const e = gDesigner.getClipboardMimeTypes();
-                    if (e && e.indexOf(GObject.GNode.MIME_TYPE) >= 0) return true;
+                    const mimeTypes = gDesigner.getClipboardMimeTypes();
+                    if (mimeTypes && mimeTypes.indexOf(GObject.GNode.MIME_TYPE) >= 0) return true;
                 }
                 return false;
             }),
-            (s.prototype.execute = function () {
+            (GPasteAndReplaceAction.prototype.execute = function () {
                 (gDesigner.getPaste().assignCallback(this._paste.bind(this)),
                     (!gDesigner.isTouchDevice() && document.execCommand("paste")) ||
                         (gDesigner.getPaste().assignCallback(null),
                         this._paste(GObject.GNode.deserialize(gDesigner.getClipboardContent(GObject.GNode.MIME_TYPE)))));
             }),
-            (s.prototype._paste = function (e) {
-                if (e && e.length > 0) {
-                    const t = gDesigner.getActiveDocument();
-                    if (!t) return;
-                    const n = t && t.getEditor();
-                    if (!n || !n.hasSelection()) return;
-                    const i = t.filterUnrestrictedCommercialFileElements(e.filter((e) => e instanceof GObject.GElement));
-                    if (i.length > 0) {
-                        n.beginTransaction();
+            (GPasteAndReplaceAction.prototype._paste = function (elements) {
+                if (elements && elements.length > 0) {
+                    const activeDocument = gDesigner.getActiveDocument();
+                    if (!activeDocument) return;
+                    const editor = activeDocument && activeDocument.getEditor();
+                    if (!editor || !editor.hasSelection()) return;
+                    const filteredElements = activeDocument.filterUnrestrictedCommercialFileElements(elements.filter((node) => node instanceof GObject.GElement));
+                    if (filteredElements.length > 0) {
+                        editor.beginTransaction();
                         try {
-                            let e = [];
-                            const t = n.getSelection().slice();
-                            (this._fixTexts(i),
-                                t.forEach((t) => {
-                                    const n = this._replace(t, i);
-                                    n && n.length > 0 && (e = e.concat(n));
+                            let insertedElements = [];
+                            const selectedElements = editor.getSelection().slice();
+                            (this._fixTexts(filteredElements),
+                                selectedElements.forEach((selectedElement) => {
+                                    const replacements = this._replace(selectedElement, filteredElements);
+                                    replacements && replacements.length > 0 && (insertedElements = insertedElements.concat(replacements));
                                 }),
-                                n.insertElements(e, true, true, false, true));
+                                editor.insertElements(insertedElements, true, true, false, true));
                         } finally {
-                            n.commitTransaction(GObject.GLocale.get(this.getTitle()));
+                            editor.commitTransaction(GObject.GLocale.get(this.getTitle()));
                         }
                     }
                 }
             }),
-            (s.prototype._fixTexts = function (e) {
-                const t = gDesigner.getActiveDocument(),
-                    n = t && t.getEditor();
-                n &&
-                    e.forEach((e) => {
-                        e.accept((t) => {
-                            if (t instanceof GObject.GText) return (n.insertElements([e], true, true, false), e.getParent().removeChild(e), false);
+            (GPasteAndReplaceAction.prototype._fixTexts = function (elements) {
+                const activeDocument = gDesigner.getActiveDocument(),
+                    editor = activeDocument && activeDocument.getEditor();
+                editor &&
+                    elements.forEach((element) => {
+                        element.accept((node) => {
+                            if (node instanceof GObject.GText) return (editor.insertElements([element], true, true, false), element.getParent().removeChild(element), false);
                         });
                     });
             }),
-            (s.prototype._replace = function (e, t) {
-                const n = this._getBoundingBox(t);
-                if (!n) return;
-                const i = e.getGeometryBBox(),
-                    a = new GObject.GTransform(1, 0, 0, 1, i.getX() - n.getX(), i.getY() - n.getY()),
-                    r = this._clone(t);
+            (GPasteAndReplaceAction.prototype._replace = function (element, pastedElements) {
+                const boundingBox = this._getBoundingBox(pastedElements);
+                if (!boundingBox) return;
+                const elementBBox = element.getGeometryBBox(),
+                    transform = new GObject.GTransform(1, 0, 0, 1, elementBBox.getX() - boundingBox.getX(), elementBBox.getY() - boundingBox.getY()),
+                    clonedElements = this._clone(pastedElements);
                 return (
-                    r.forEach((e) => {
-                        e.hasMixin(GObject.GElement.Transform) && e.transform(a, true);
+                    clonedElements.forEach((clonedElement) => {
+                        clonedElement.hasMixin(GObject.GElement.Transform) && clonedElement.transform(transform, true);
                     }),
-                    e.getParent().removeChild(e),
-                    r
+                    element.getParent().removeChild(element),
+                    clonedElements
                 );
             }),
-            (s.prototype._clone = function (e) {
-                return e.map((e) => e.clone());
+            (GPasteAndReplaceAction.prototype._clone = function (elements) {
+                return elements.map((element) => element.clone());
             }),
-            (s.prototype._getBoundingBox = function (e) {
-                let t;
+            (GPasteAndReplaceAction.prototype._getBoundingBox = function (elements) {
+                let boundingBox;
                 return (
-                    e.forEach((e) => {
-                        const n = e.getGeometryBBox();
-                        n && !n.isEmpty() && (t = t ? t.united(n) : n);
+                    elements.forEach((element) => {
+                        const elementBBox = element.getGeometryBBox();
+                        elementBBox && !elementBBox.isEmpty() && (boundingBox = boundingBox ? boundingBox.united(elementBBox) : elementBBox);
                     }),
-                    t
+                    boundingBox
                 );
             }),
-            (s.prototype.toString = function () {
+            (GPasteAndReplaceAction.prototype.toString = function () {
                 return "[Object GPasteAndReplaceAction]";
             }),
-            (module.exports = s));
+            (module.exports = GPasteAndReplaceAction));
     };

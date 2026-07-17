@@ -1,35 +1,35 @@
 module.exports = function (module, exports, require) {
-            var n = require(2),
-                r = require(76),
-                o = require(50),
-                a = require(47),
+            var GNode = require(2),
+                GSceneNode = require(76),
+                GPattern = require(50),
+                GLocaleKey = require(47),
                 IsFiniteNonNegativeNumber = require(0),
                 GFont = require(108),
-                h = require(14),
-                A = require(11),
-                c = require(17);
+                GPaintCanvas = require(14),
+                GUtil = require(11),
+                GRGBColor = require(17);
 
-            function p() {}
-            for (var u in (IsFiniteNonNegativeNumber.inherit(p, IsFiniteNonNegativeNumber),
-            (p.prototype._effects = null),
-            (p.prototype._paintLayers = null),
-            (p.prototype._layId = null),
-            (p.prototype._effId = null),
-            (p.StyleLayer = {
+            function GStylable() {}
+            for (var u in (IsFiniteNonNegativeNumber.inherit(GStylable, IsFiniteNonNegativeNumber),
+            (GStylable.prototype._effects = null),
+            (GStylable.prototype._paintLayers = null),
+            (GStylable.prototype._layId = null),
+            (GStylable.prototype._effId = null),
+            (GStylable.StyleLayer = {
                 Fill: "F",
                 Border: "B",
             }),
-            (p.StyleLayerName = {
-                "": new a("GStylable", "layer.element"),
-                F: new a("GStylable", "layer.fill"),
-                B: new a("GStylable", "layer.border"),
+            (GStylable.StyleLayerName = {
+                "": new GLocaleKey("GStylable", "layer.element"),
+                F: new GLocaleKey("GStylable", "layer.fill"),
+                B: new GLocaleKey("GStylable", "layer.border"),
             }),
-            (p.BorderAlignment = {
+            (GStylable.BorderAlignment = {
                 Center: "C",
                 Outside: "O",
                 Inside: "I",
             }),
-            (p.BorderMarker = {
+            (GStylable.BorderMarker = {
                 Circle: "C",
                 Bullet: "B",
                 Diamond: "D",
@@ -42,23 +42,23 @@ module.exports = function (module, exports, require) {
                 ArrowLineBar: "ALB",
                 ArrowPointer: "AP",
             }),
-            (p.ParagraphAlignment = {
+            (GStylable.ParagraphAlignment = {
                 Left: "l",
                 Center: "c",
                 Right: "r",
                 Justify: "j",
             }),
-            (p.TypographyScript = {
+            (GStylable.TypographyScript = {
                 Subscript: "sub",
                 Superscript: "super",
             }),
-            (p.TextTransformation = {
+            (GStylable.TextTransformation = {
                 Uppercase: "u",
                 Lowercase: "l",
                 Capitalize: "c",
                 SmallCaps: "s",
             }),
-            (p.PropertySet = {
+            (GStylable.PropertySet = {
                 Style: "S",
                 Effects: "E",
                 Text: "T",
@@ -66,11 +66,11 @@ module.exports = function (module, exports, require) {
                 FillPaintLayers: "FL",
                 BorderPaintLayers: "BL",
             }),
-            (p.PropertySetInfo = {
+            (GStylable.PropertySetInfo = {
                 S: {
                     visualProperties: {
                         _sdf: null,
-                        _sbl: h.BlendMode.Normal,
+                        _sbl: GPaintCanvas.BlendMode.Normal,
                         _sfop: 1,
                         _stop: 1,
                     },
@@ -100,15 +100,15 @@ module.exports = function (module, exports, require) {
                     visualProperties: {
                         _fc: null,
                     },
-                    storeFilter: function (e, t) {
-                        return t && "_fc" === e ? o.serialize(t) : t;
+                    storeFilter: function (propertyName, value) {
+                        return value && "_fc" === propertyName ? GPattern.serialize(value) : value;
                     },
-                    restoreFilter: function (e, t) {
-                        if (t) {
-                            if ("_fc" === e) return o.deserialize(t);
-                            if ("_tff" === e) return GFont.getFontFamilyCorrected(t);
+                    restoreFilter: function (propertyName, value) {
+                        if (value) {
+                            if ("_fc" === propertyName) return GPattern.deserialize(value);
+                            if ("_tff" === propertyName) return GFont.getFontFamilyCorrected(value);
                         }
-                        return t;
+                        return value;
                     },
                 },
                 P: {
@@ -120,303 +120,303 @@ module.exports = function (module, exports, require) {
                     },
                 },
             }),
-            (p.AllVisualProperties = {}),
-            (p.AllGeometryProperties = {}),
-            p.PropertySetInfo)) {
-                var d = p.PropertySetInfo[u];
-                if (d.visualProperties) for (var g in d.visualProperties) p.AllVisualProperties[g] = d.visualProperties[g];
-                if (d.geometryProperties) for (var g in d.geometryProperties) p.AllGeometryProperties[g] = d.geometryProperties[g];
+            (GStylable.AllVisualProperties = {}),
+            (GStylable.AllGeometryProperties = {}),
+            GStylable.PropertySetInfo)) {
+                var d = GStylable.PropertySetInfo[u];
+                if (d.visualProperties) for (var g in d.visualProperties) GStylable.AllVisualProperties[g] = d.visualProperties[g];
+                if (d.geometryProperties) for (var g in d.geometryProperties) GStylable.AllGeometryProperties[g] = d.geometryProperties[g];
             }
-            (require(900)(p),
-                require(901)(p),
-                require(902)(p),
-                require(904)(p),
-                require(905)(p),
-                require(906)(p),
-                (p.prototype.getStylePropertySets = function () {
-                    return [p.PropertySet.Style, p.PropertySet.BorderPaintLayers, p.PropertySet.FillPaintLayers, p.PropertySet.Effects];
+            (require(900)(GStylable),
+                require(901)(GStylable),
+                require(902)(GStylable),
+                require(904)(GStylable),
+                require(905)(GStylable),
+                require(906)(GStylable),
+                (GStylable.prototype.getStylePropertySets = function () {
+                    return [GStylable.PropertySet.Style, GStylable.PropertySet.BorderPaintLayers, GStylable.PropertySet.FillPaintLayers, GStylable.PropertySet.Effects];
                 }),
-                (p.prototype.getEffects = function () {
-                    return this.getStylePropertySets().indexOf(p.PropertySet.Effects) >= 0
+                (GStylable.prototype.getEffects = function () {
+                    return this.getStylePropertySets().indexOf(GStylable.PropertySet.Effects) >= 0
                         ? (this._effects ||
-                              ((this._effects = new p.Effects()),
-                              (this._effects._multiReferenceId = this._effId || A.uuid()),
+                              ((this._effects = new GStylable.Effects()),
+                              (this._effects._multiReferenceId = this._effId || GUtil.uuid()),
                               this._effects._setParent(this)),
                           this._effects)
                         : null;
                 }),
-                (p.prototype.getPaintLayers = function () {
-                    return this.getStylePropertySets().indexOf(p.PropertySet.BorderPaintLayers) >= 0 ||
-                        this.getStylePropertySets().indexOf(p.PropertySet.FillPaintLayers) >= 0
+                (GStylable.prototype.getPaintLayers = function () {
+                    return this.getStylePropertySets().indexOf(GStylable.PropertySet.BorderPaintLayers) >= 0 ||
+                        this.getStylePropertySets().indexOf(GStylable.PropertySet.FillPaintLayers) >= 0
                         ? (this._paintLayers ||
-                              ((this._paintLayers = new p.PaintLayers()),
-                              (this._paintLayers._multiReferenceId = this._layId || A.uuid()),
+                              ((this._paintLayers = new GStylable.PaintLayers()),
+                              (this._paintLayers._multiReferenceId = this._layId || GUtil.uuid()),
                               this._paintLayers._setParent(this)),
                           this._paintLayers)
                         : null;
                 }),
-                (p.prototype.assignStyleFrom = function (e, t) {
-                    for (var i = e.getStylePropertySets(), r = this.getStylePropertySets(), o = [], a = 0; a < i.length; ++a)
-                        for (var s = i[a], l = 0; l < r.length; ++l)
-                            if (r[l] === s) {
-                                o.push(s);
+                (GStylable.prototype.assignStyleFrom = function (source, blockChanges) {
+                    for (var sourceSets = source.getStylePropertySets(), targetSets = this.getStylePropertySets(), commonSets = [], a = 0; a < sourceSets.length; ++a)
+                        for (var s = sourceSets[a], l = 0; l < targetSets.length; ++l)
+                            if (targetSets[l] === s) {
+                                commonSets.push(s);
                                 break;
                             }
-                    if (o.length) {
-                        var h = o.indexOf(p.PropertySet.FillPaintLayers) >= 0,
-                            A = o.indexOf(p.PropertySet.BorderPaintLayers) >= 0;
-                        if (h || A) {
-                            var c = this.getPaintLayers(),
-                                u = e.getPaintLayers(),
-                                d = false;
-                            t &&
-                                c._beginBlockChanges([
-                                    n._Change.BeforeChildRemove,
-                                    n._Change.AfterChildRemove,
-                                    n._Change.BeforeChildInsert,
-                                    n._Change.AfterChildInsert,
+                    if (commonSets.length) {
+                        var hasFillLayers = commonSets.indexOf(GStylable.PropertySet.FillPaintLayers) >= 0,
+                            hasBorderLayers = commonSets.indexOf(GStylable.PropertySet.BorderPaintLayers) >= 0;
+                        if (hasFillLayers || hasBorderLayers) {
+                            var targetPaintLayers = this.getPaintLayers(),
+                                sourcePaintLayers = source.getPaintLayers(),
+                                geometryChanged = false;
+                            blockChanges &&
+                                targetPaintLayers._beginBlockChanges([
+                                    GNode._Change.BeforeChildRemove,
+                                    GNode._Change.AfterChildRemove,
+                                    GNode._Change.BeforeChildInsert,
+                                    GNode._Change.AfterChildInsert,
                                 ]);
                             try {
-                                for (var g = [], f = c.getFirstChild(); null !== f; f = f.getNext())
-                                    ((f instanceof p.FillPaintLayer && h) || (f instanceof p.BorderPaintLayer && A)) &&
-                                        (d || (this._stylePrepareGeometryChange(true), (d = true)), g.push(f));
-                                for (a = 0; a < g.length; a++) c.removeChild(g[a]);
-                                if (u)
-                                    for (var m = u.getFirstChild(); null !== m; m = m.getNext())
-                                        ((m instanceof p.FillPaintLayer && h) || (m instanceof p.BorderPaintLayer && A)) &&
-                                            (d || (this._stylePrepareGeometryChange(true), (d = true)), c.appendChild(m.clone()));
+                                for (var layersToRemove = [], paintLayer = targetPaintLayers.getFirstChild(); null !== paintLayer; paintLayer = paintLayer.getNext())
+                                    ((paintLayer instanceof GStylable.FillPaintLayer && hasFillLayers) || (paintLayer instanceof GStylable.BorderPaintLayer && hasBorderLayers)) &&
+                                        (geometryChanged || (this._stylePrepareGeometryChange(true), (geometryChanged = true)), layersToRemove.push(paintLayer));
+                                for (a = 0; a < layersToRemove.length; a++) targetPaintLayers.removeChild(layersToRemove[a]);
+                                if (sourcePaintLayers)
+                                    for (var sourcePaintLayer = sourcePaintLayers.getFirstChild(); null !== sourcePaintLayer; sourcePaintLayer = sourcePaintLayer.getNext())
+                                        ((sourcePaintLayer instanceof GStylable.FillPaintLayer && hasFillLayers) || (sourcePaintLayer instanceof GStylable.BorderPaintLayer && hasBorderLayers)) &&
+                                            (geometryChanged || (this._stylePrepareGeometryChange(true), (geometryChanged = true)), targetPaintLayers.appendChild(sourcePaintLayer.clone()));
                             } finally {
-                                (t &&
-                                    c._endBlockChanges([
-                                        n._Change.BeforeChildRemove,
-                                        n._Change.AfterChildRemove,
-                                        n._Change.BeforeChildInsert,
-                                        n._Change.AfterChildInsert,
+                                (blockChanges &&
+                                    targetPaintLayers._endBlockChanges([
+                                        GNode._Change.BeforeChildRemove,
+                                        GNode._Change.AfterChildRemove,
+                                        GNode._Change.BeforeChildInsert,
+                                        GNode._Change.AfterChildInsert,
                                     ]),
-                                    d && this._styleFinishGeometryChange(true));
+                                    geometryChanged && this._styleFinishGeometryChange(true));
                             }
                         }
-                        if (o.indexOf(p.PropertySet.Effects) >= 0) {
-                            var y = this.getEffects(),
-                                _ = e.getEffects(),
-                                v = false;
-                            t &&
-                                y._beginBlockChanges([
-                                    n._Change.BeforeChildRemove,
-                                    n._Change.AfterChildRemove,
-                                    n._Change.BeforeChildInsert,
-                                    n._Change.AfterChildInsert,
+                        if (commonSets.indexOf(GStylable.PropertySet.Effects) >= 0) {
+                            var targetEffects = this.getEffects(),
+                                sourceEffects = source.getEffects(),
+                                effectsChanged = false;
+                            blockChanges &&
+                                targetEffects._beginBlockChanges([
+                                    GNode._Change.BeforeChildRemove,
+                                    GNode._Change.AfterChildRemove,
+                                    GNode._Change.BeforeChildInsert,
+                                    GNode._Change.AfterChildInsert,
                                 ]);
                             try {
-                                for (; y.getFirstChild(); )
-                                    (v || (this._stylePrepareGeometryChange(true), (v = true)), y.removeChild(y.getFirstChild()));
-                                if (_)
-                                    for (var b = _.getFirstChild(); null !== b; b = b.getNext())
-                                        (v || (this._stylePrepareGeometryChange(true), (v = true)), y.appendChild(b.clone()));
+                                for (; targetEffects.getFirstChild(); )
+                                    (effectsChanged || (this._stylePrepareGeometryChange(true), (effectsChanged = true)), targetEffects.removeChild(targetEffects.getFirstChild()));
+                                if (sourceEffects)
+                                    for (var sourceEffect = sourceEffects.getFirstChild(); null !== sourceEffect; sourceEffect = sourceEffect.getNext())
+                                        (effectsChanged || (this._stylePrepareGeometryChange(true), (effectsChanged = true)), targetEffects.appendChild(sourceEffect.clone()));
                             } finally {
-                                (t &&
-                                    y._endBlockChanges([
-                                        n._Change.BeforeChildRemove,
-                                        n._Change.AfterChildRemove,
-                                        n._Change.BeforeChildInsert,
-                                        n._Change.AfterChildInsert,
+                                (blockChanges &&
+                                    targetEffects._endBlockChanges([
+                                        GNode._Change.BeforeChildRemove,
+                                        GNode._Change.AfterChildRemove,
+                                        GNode._Change.BeforeChildInsert,
+                                        GNode._Change.AfterChildInsert,
                                     ]),
-                                    v && this._styleFinishGeometryChange(true));
+                                    effectsChanged && this._styleFinishGeometryChange(true));
                             }
                         }
-                        for (var C = [], w = 0; w < o.length; ++w) {
-                            var E = p.PropertySetInfo[o[w]],
+                        for (var propertyKeys = [], w = 0; w < commonSets.length; ++w) {
+                            var E = GStylable.PropertySetInfo[commonSets[w]],
                                 B = [];
                             (E.visualProperties && (B = B.concat(Object.keys(E.visualProperties))),
                                 E.geometryProperties && (B = B.concat(Object.keys(E.geometryProperties))));
                             for (a = 0; a < B.length; ++a) {
                                 var x = B[a];
-                                "_sdf" !== x && C.push(x);
+                                "_sdf" !== x && propertyKeys.push(x);
                             }
                         }
-                        if (C.length > 0) {
-                            var P = e.getProperties(C);
-                            this.setProperties(C, P, false, true);
+                        if (propertyKeys.length > 0) {
+                            var sourceValues = source.getProperties(propertyKeys);
+                            this.setProperties(propertyKeys, sourceValues, false, true);
                         }
                     }
                 }),
-                (p.prototype.hasStyleBorder = function () {
-                    var e = this.getPaintLayers();
-                    return e && e.hasStyleBorder();
+                (GStylable.prototype.hasStyleBorder = function () {
+                    var paintLayers = this.getPaintLayers();
+                    return paintLayers && paintLayers.hasStyleBorder();
                 }),
-                (p.prototype.hasStyleFill = function () {
-                    var e = this.getPaintLayers();
-                    return e && e.hasStyleFill();
+                (GStylable.prototype.hasStyleFill = function () {
+                    var paintLayers = this.getPaintLayers();
+                    return paintLayers && paintLayers.hasStyleFill();
                 }),
-                (p.prototype.getStyleLayers = function () {
-                    var e = this.getStylePropertySets(),
-                        t = e.indexOf(p.PropertySet.FillPaintLayers),
-                        i = e.indexOf(p.PropertySet.BorderPaintLayers),
-                        n = null;
-                    return ((t || i) && ((n = []), t && n.push(p.StyleLayer.Fill), i && n.push(p.StyleLayer.Border)), n);
+                (GStylable.prototype.getStyleLayers = function () {
+                    var styleSets = this.getStylePropertySets(),
+                        fillIndex = styleSets.indexOf(GStylable.PropertySet.FillPaintLayers),
+                        borderIndex = styleSets.indexOf(GStylable.PropertySet.BorderPaintLayers),
+                        result = null;
+                    return ((fillIndex || borderIndex) && ((result = []), fillIndex && result.push(GStylable.StyleLayer.Fill), borderIndex && result.push(GStylable.StyleLayer.Border)), result);
                 }),
-                (p.prototype.getStyleBorderPadding = function (e) {
-                    return e.$_ba === p.BorderAlignment.Center ? e.$_bw / 2 : e.$_ba === p.BorderAlignment.Outside ? e.$_bw : 0;
+                (GStylable.prototype.getStyleBorderPadding = function (borderLayer) {
+                    return borderLayer.$_ba === GStylable.BorderAlignment.Center ? borderLayer.$_bw / 2 : borderLayer.$_ba === GStylable.BorderAlignment.Outside ? borderLayer.$_bw : 0;
                 }),
-                (p.prototype._setStyleDefaultProperties = function () {
-                    for (var e = this.getStylePropertySets(), t = false, i = 0; i < e.length; ++i) {
-                        var n = p.PropertySetInfo[e[i]];
+                (GStylable.prototype._setStyleDefaultProperties = function () {
+                    for (var styleSets = this.getStylePropertySets(), layerIdAssigned = false, i = 0; i < styleSets.length; ++i) {
+                        var n = GStylable.PropertySetInfo[styleSets[i]];
                         (n.visualProperties && this._setDefaultProperties(n.visualProperties),
                             n.geometryProperties && this._setDefaultProperties(n.geometryProperties),
-                            e[i] === p.PropertySet.Effects
-                                ? (this._effId = A.uuid())
-                                : (e[i] !== p.PropertySet.FillPaintLayers && e[i] !== p.PropertySet.BorderPaintLayers) ||
-                                  t ||
-                                  ((this._layId = A.uuid()), (t = true)));
+                            styleSets[i] === GStylable.PropertySet.Effects
+                                ? (this._effId = GUtil.uuid())
+                                : (styleSets[i] !== GStylable.PropertySet.FillPaintLayers && styleSets[i] !== GStylable.PropertySet.BorderPaintLayers) ||
+                                  layerIdAssigned ||
+                                  ((this._layId = GUtil.uuid()), (layerIdAssigned = true)));
                     }
                 }),
-                (p.prototype._handleStyleChange = function (e, t) {
-                    if (e === n._Change.BeforePropertiesChange || e === n._Change.AfterPropertiesChange) {
-                        for (var i = false, o = false, a = [], s = [], l = 0; l < t.properties.length; ++l) {
-                            var h = t.properties[l];
-                            p.AllGeometryProperties.hasOwnProperty(h)
-                                ? ((o = true),
-                                  e === n._Change.BeforePropertiesChange
+                (GStylable.prototype._handleStyleChange = function (changeType, event) {
+                    if (changeType === GNode._Change.BeforePropertiesChange || changeType === GNode._Change.AfterPropertiesChange) {
+                        for (var hasVisualChange = false, hasGeometryChange = false, changedProperties = [], changedValues = [], l = 0; l < event.properties.length; ++l) {
+                            var h = event.properties[l];
+                            GStylable.AllGeometryProperties.hasOwnProperty(h)
+                                ? ((hasGeometryChange = true),
+                                  changeType === GNode._Change.BeforePropertiesChange
                                       ? this._stylePrepareGeometryChange()
-                                      : (a.push(t.properties[l]), s.push(t.values[l])))
-                                : p.AllVisualProperties.hasOwnProperty(h) &&
-                                  e === n._Change.AfterPropertiesChange &&
-                                  ((i = true), a.push(t.properties[l]), s.push(t.values[l]));
+                                      : (changedProperties.push(event.properties[l]), changedValues.push(event.values[l])))
+                                : GStylable.AllVisualProperties.hasOwnProperty(h) &&
+                                  changeType === GNode._Change.AfterPropertiesChange &&
+                                  ((hasVisualChange = true), changedProperties.push(event.properties[l]), changedValues.push(event.values[l]));
                         }
-                        !o && i
-                            ? (this._styleRepaint(), this._stylePropertiesUpdated(a, s))
-                            : o && (this._styleFinishGeometryChange(), this._stylePropertiesUpdated(a, s));
-                    } else if (e === n._Change.Store)
-                        for (var A = this.getStylePropertySets(), c = false, u = 0; u < A.length; ++u) {
-                            if ((g = A[u]) === p.PropertySet.Effects)
+                        !hasGeometryChange && hasVisualChange
+                            ? (this._styleRepaint(), this._stylePropertiesUpdated(changedProperties, changedValues))
+                            : hasGeometryChange && (this._styleFinishGeometryChange(), this._stylePropertiesUpdated(changedProperties, changedValues));
+                    } else if (changeType === GNode._Change.Store)
+                        for (var styleSets = this.getStylePropertySets(), layersStored = false, u = 0; u < styleSets.length; ++u) {
+                            if ((propertySetId = styleSets[u]) === GStylable.PropertySet.Effects)
                                 this._effects && null !== this._effects.getFirstChild()
-                                    ? (t.blob._eff = n.store(this._effects))
-                                    : (t.blob._effId = this._effId);
-                            else if (g === p.PropertySet.FillPaintLayers || g === p.PropertySet.BorderPaintLayers)
-                                !c && this._paintLayers && null !== this._paintLayers.getFirstChild()
-                                    ? ((t.blob._layers = n.store(this._paintLayers, t.options)), (c = true))
-                                    : c || (t.blob._layId = this._layId);
+                                    ? (event.blob._eff = GNode.store(this._effects))
+                                    : (event.blob._effId = this._effId);
+                            else if (propertySetId === GStylable.PropertySet.FillPaintLayers || propertySetId === GStylable.PropertySet.BorderPaintLayers)
+                                !layersStored && this._paintLayers && null !== this._paintLayers.getFirstChild()
+                                    ? ((event.blob._layers = GNode.store(this._paintLayers, event.options)), (layersStored = true))
+                                    : layersStored || (event.blob._layId = this._layId);
                             else {
-                                ((f = p.PropertySetInfo[g]).visualProperties &&
-                                    this.storeProperties(t.blob, f.visualProperties, f.storeFilter),
-                                    f.geometryProperties && this.storeProperties(t.blob, f.geometryProperties, f.storeFilter));
+                                ((setInfo = GStylable.PropertySetInfo[propertySetId]).visualProperties &&
+                                    this.storeProperties(event.blob, setInfo.visualProperties, setInfo.storeFilter),
+                                    setInfo.geometryProperties && this.storeProperties(event.blob, setInfo.geometryProperties, setInfo.storeFilter));
                             }
                         }
-                    else if (e === n._Change.Restore) {
-                        A = this.getStylePropertySets();
-                        var d = false;
-                        for (u = 0; u < A.length; ++u) {
-                            var g;
-                            if ((g = A[u]) === p.PropertySet.Effects)
-                                t.blob._eff
-                                    ? ((this._effects = n.restore(t.blob._eff)), this._effects._setParent(this))
-                                    : t.blob._effId && (this._effId = t.blob._effId);
-                            else if (g === p.PropertySet.FillPaintLayers || g === p.PropertySet.BorderPaintLayers)
-                                !d && t.blob._layers
-                                    ? ((this._paintLayers = n.restore(t.blob._layers)), this._paintLayers._setParent(this), (d = true))
-                                    : !d && t.blob._layId && ((this._layId = t.blob._layId), (d = true));
+                    else if (changeType === GNode._Change.Restore) {
+                        styleSets = this.getStylePropertySets();
+                        var layersRestored = false;
+                        for (u = 0; u < styleSets.length; ++u) {
+                            var propertySetId;
+                            if ((propertySetId = styleSets[u]) === GStylable.PropertySet.Effects)
+                                event.blob._eff
+                                    ? ((this._effects = GNode.restore(event.blob._eff)), this._effects._setParent(this))
+                                    : event.blob._effId && (this._effId = event.blob._effId);
+                            else if (propertySetId === GStylable.PropertySet.FillPaintLayers || propertySetId === GStylable.PropertySet.BorderPaintLayers)
+                                !layersRestored && event.blob._layers
+                                    ? ((this._paintLayers = GNode.restore(event.blob._layers)), this._paintLayers._setParent(this), (layersRestored = true))
+                                    : !layersRestored && event.blob._layId && ((this._layId = event.blob._layId), (layersRestored = true));
                             else {
-                                var f;
-                                ((f = p.PropertySetInfo[g]).visualProperties &&
-                                    this.restoreProperties(t.blob, f.visualProperties, f.restoreFilter),
-                                    f.geometryProperties && this.restoreProperties(t.blob, f.geometryProperties, f.restoreFilter));
+                                var setInfo;
+                                ((setInfo = GStylable.PropertySetInfo[propertySetId]).visualProperties &&
+                                    this.restoreProperties(event.blob, setInfo.visualProperties, setInfo.restoreFilter),
+                                    setInfo.geometryProperties && this.restoreProperties(event.blob, setInfo.geometryProperties, setInfo.restoreFilter));
                             }
                         }
-                        var m = this.getPaintLayers();
-                        m && m._notifyChange(e, t);
+                        var paintLayers = this.getPaintLayers();
+                        paintLayers && paintLayers._notifyChange(changeType, event);
                     } else
-                        e === n._Change.ParentAttached || e === n._Change.ParentDetach
+                        changeType === GNode._Change.ParentAttached || changeType === GNode._Change.ParentDetach
                             ? (this._effects &&
                                   (this._effects._detachFromParent(this),
-                                  e === n._Change.ParentAttached && this._effects._attachToParent(this)),
+                                  changeType === GNode._Change.ParentAttached && this._effects._attachToParent(this)),
                               this._paintLayers &&
                                   (this._paintLayers._detachFromParent(this),
-                                  e === n._Change.ParentAttached && this._paintLayers._attachToParent(this)))
-                            : (e !== r._Change.SceneAttached && e !== r._Change.SceneDetached) ||
+                                  changeType === GNode._Change.ParentAttached && this._paintLayers._attachToParent(this)))
+                            : (changeType !== GSceneNode._Change.SceneAttached && changeType !== GSceneNode._Change.SceneDetached) ||
                               (this._effects &&
                                   (this._effects._detachFromParent(this),
-                                  e == r._Change.SceneAttached && this._effects._attachToParent(this)),
+                                  changeType == GSceneNode._Change.SceneAttached && this._effects._attachToParent(this)),
                               this._paintLayers &&
                                   (this._paintLayers._detachFromParent(this),
-                                  e === r._Change.SceneAttached && this._paintLayers._attachToParent(this)));
+                                  changeType === GSceneNode._Change.SceneAttached && this._paintLayers._attachToParent(this)));
                 }),
-                (p.prototype._stylePrepareGeometryChange = function (e) {}),
-                (p.prototype._styleFinishGeometryChange = function (e) {}),
-                (p.prototype._styleRepaint = function (e) {}),
-                (p.prototype._stylePropertiesUpdated = function (e, t) {}),
-                (p.prototype.equalsStyle = function (e) {
-                    if (e) {
-                        var t = function (t) {
-                            var i = e.getPaintLayers();
-                            if (!i) return true;
-                            var n = i.getFirstChild();
-                            if (!(i = this.getPaintLayers())) return true;
-                            var r = i.getFirstChild();
-                            if ((null === n && null !== r) || (null !== n && null === r)) return false;
-                            for (; null !== n && null !== r; ) {
-                                if ((null === n && null !== r) || (null !== n && null === r)) return false;
-                                if (null !== n && null !== r) {
-                                    if (!A.equals(n, r)) return false;
-                                    for (n = n.getNext(), r = r.getNext(); null !== n && !(n instanceof t); ) n = n.getNext();
-                                    for (; null !== r && !(r instanceof t); ) r = r.getNext();
-                                    if ((null === n && null !== r) || (null !== n && null === r)) return false;
+                (GStylable.prototype._stylePrepareGeometryChange = function (e) {}),
+                (GStylable.prototype._styleFinishGeometryChange = function (e) {}),
+                (GStylable.prototype._styleRepaint = function (e) {}),
+                (GStylable.prototype._stylePropertiesUpdated = function (e, t) {}),
+                (GStylable.prototype.equalsStyle = function (other) {
+                    if (other) {
+                        var hasEqualPaintLayers = function (hasEqualPaintLayers) {
+                            var layers = other.getPaintLayers();
+                            if (!layers) return true;
+                            var otherLayer = layers.getFirstChild();
+                            if (!(layers = this.getPaintLayers())) return true;
+                            var thisLayer = layers.getFirstChild();
+                            if ((null === otherLayer && null !== thisLayer) || (null !== otherLayer && null === thisLayer)) return false;
+                            for (; null !== otherLayer && null !== thisLayer; ) {
+                                if ((null === otherLayer && null !== thisLayer) || (null !== otherLayer && null === thisLayer)) return false;
+                                if (null !== otherLayer && null !== thisLayer) {
+                                    if (!GUtil.equals(otherLayer, thisLayer)) return false;
+                                    for (otherLayer = otherLayer.getNext(), thisLayer = thisLayer.getNext(); null !== otherLayer && !(otherLayer instanceof hasEqualPaintLayers); ) otherLayer = otherLayer.getNext();
+                                    for (; null !== thisLayer && !(thisLayer instanceof hasEqualPaintLayers); ) thisLayer = thisLayer.getNext();
+                                    if ((null === otherLayer && null !== thisLayer) || (null !== otherLayer && null === thisLayer)) return false;
                                 }
                             }
                             return true;
                         }.bind(this);
-                        if (e.getProperty("ps").indexOf(p.PropertySet.Style) >= 0) {
-                            var i = [];
-                            ((l = p.PropertySetInfo[p.PropertySet.Style]).visualProperties &&
-                                (i = i.concat(Object.keys(l.visualProperties))),
-                                l.geometryProperties && (i = i.concat(Object.keys(l.geometryProperties))));
-                            var n = true;
+                        if (other.getProperty("ps").indexOf(GStylable.PropertySet.Style) >= 0) {
+                            var propertyKeys = [];
+                            ((setInfo = GStylable.PropertySetInfo[GStylable.PropertySet.Style]).visualProperties &&
+                                (propertyKeys = propertyKeys.concat(Object.keys(setInfo.visualProperties))),
+                                setInfo.geometryProperties && (propertyKeys = propertyKeys.concat(Object.keys(setInfo.geometryProperties))));
+                            var allEqual = true;
                             if (
-                                (i.forEach(
-                                    function (t) {
-                                        "_sdf" !== t && (n = n && this.getProperty(t) === e.getProperty(t));
+                                (propertyKeys.forEach(
+                                    function (propertyKey) {
+                                        "_sdf" !== propertyKey && (allEqual = allEqual && this.getProperty(propertyKey) === other.getProperty(propertyKey));
                                     }.bind(this)
                                 ),
-                                !n)
+                                !allEqual)
                             )
                                 return false;
                         }
-                        if (e.getProperty("ps").indexOf(p.PropertySet.FillPaintLayers) >= 0 && !t(p.FillPaintLayer)) return false;
-                        if (e.getProperty("ps").indexOf(p.PropertySet.BorderPaintLayers) >= 0 && !t(p.BorderPaintLayer)) return false;
-                        if (e.getProperty("ps").indexOf(p.PropertySet.Effects) >= 0) {
-                            var r = e.getEffects().getFirstChild(),
-                                o = this.getEffects().getFirstChild();
-                            if ((null === r && null !== o) || (null !== r && null === o)) return false;
-                            for (; null !== r && null !== o; ) {
-                                if (!A.equals(r, o)) return false;
-                                if (((r = r.getNext()), (o = o.getNext()), (null === r && null !== o) || (null !== r && null === o)))
+                        if (other.getProperty("ps").indexOf(GStylable.PropertySet.FillPaintLayers) >= 0 && !hasEqualPaintLayers(GStylable.FillPaintLayer)) return false;
+                        if (other.getProperty("ps").indexOf(GStylable.PropertySet.BorderPaintLayers) >= 0 && !hasEqualPaintLayers(GStylable.BorderPaintLayer)) return false;
+                        if (other.getProperty("ps").indexOf(GStylable.PropertySet.Effects) >= 0) {
+                            var otherEffect = other.getEffects().getFirstChild(),
+                                thisEffect = this.getEffects().getFirstChild();
+                            if ((null === otherEffect && null !== thisEffect) || (null !== otherEffect && null === thisEffect)) return false;
+                            for (; null !== otherEffect && null !== thisEffect; ) {
+                                if (!GUtil.equals(otherEffect, thisEffect)) return false;
+                                if (((otherEffect = otherEffect.getNext()), (thisEffect = thisEffect.getNext()), (null === otherEffect && null !== thisEffect) || (null !== otherEffect && null === thisEffect)))
                                     return false;
                             }
                         }
-                        if (e.getProperty("ps").indexOf(p.PropertySet.Text) >= 0) {
-                            n = true;
-                            for (var a = [p.PropertySet.Text, p.PropertySet.Paragraph], s = ((i = []), 0); s < a.length; ++s) {
-                                var l;
-                                ((l = p.PropertySetInfo[a[s]]).visualProperties && (i = i.concat(Object.keys(l.visualProperties))),
-                                    l.geometryProperties && (i = i.concat(Object.keys(l.geometryProperties))));
+                        if (other.getProperty("ps").indexOf(GStylable.PropertySet.Text) >= 0) {
+                            allEqual = true;
+                            for (var textPropertySets = [GStylable.PropertySet.Text, GStylable.PropertySet.Paragraph], s = ((propertyKeys = []), 0); s < textPropertySets.length; ++s) {
+                                var setInfo;
+                                ((setInfo = GStylable.PropertySetInfo[textPropertySets[s]]).visualProperties && (propertyKeys = propertyKeys.concat(Object.keys(setInfo.visualProperties))),
+                                    setInfo.geometryProperties && (propertyKeys = propertyKeys.concat(Object.keys(setInfo.geometryProperties))));
                             }
                             return (
                                 this.hasProperty("_tff") &&
-                                    i.forEach(
-                                        function (t) {
-                                            n =
-                                                "_fc" === t
-                                                    ? n && c.equals(this.getProperty(t), e.getProperty(t))
-                                                    : n && this.getProperty(t) === e.getProperty(t);
+                                    propertyKeys.forEach(
+                                        function (propertyKey) {
+                                            allEqual =
+                                                "_fc" === propertyKey
+                                                    ? allEqual && GRGBColor.equals(this.getProperty(propertyKey), other.getProperty(propertyKey))
+                                                    : allEqual && this.getProperty(propertyKey) === other.getProperty(propertyKey);
                                         }.bind(this)
                                     ),
-                                n
+                                allEqual
                             );
                         }
                     }
                     return true;
                 }),
-                (p.prototype.toString = function () {
+                (GStylable.prototype.toString = function () {
                     return "[Mixin GStylable]";
                 }),
-                (module.exports = p));
+                (module.exports = GStylable));
         };

@@ -3,11 +3,11 @@ module.exports = function (module, exports, require) {
         (require(8 /* Symbol */), require(3));
         var GObject = require(1),
             GCategory = require(18),
-            a = require(31),
+            GAction = require(31),
             GSettingsDialog = require(1275),
             s = require(1277);
         function l() {}
-        (GObject.GObject.inherit(l, a),
+        (GObject.GObject.inherit(l, GAction),
             (l.ID = s.ID),
             (l.TITLE = new GObject.GLocaleKey("GSettingsAction", "title")),
             (l.prototype.getId = function () {

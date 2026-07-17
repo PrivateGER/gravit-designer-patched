@@ -34,7 +34,7 @@ module.exports = function (module, exports, require) {
                                 e._onTimeout && e._onTimeout();
                             }, t));
                     }),
-                require(1116),
+                require(1116 /* lib:setimmediate */),
                 (exports.setImmediate =
                     ("undefined" != typeof self && self.setImmediate) || (void 0 !== e && e.setImmediate) || (this && this.setImmediate)),
                 (exports.clearImmediate =

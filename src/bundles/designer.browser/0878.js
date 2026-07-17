@@ -2,33 +2,33 @@ module.exports = function (module, exports, require) {
         "use strict";
         var _interopRequireDefault = require(16),
             designerConfig = require(10),
-            a = _interopRequireDefault(require(1582));
+            gestureHelperModule = _interopRequireDefault(require(1582));
         module.exports = class {
-            constructor(e) {
-                ((this._target = e),
+            constructor(target) {
+                ((this._target = target),
                     (this._lastTouchStartEvent = 0),
                     (this._touchmoved = false),
                     (this._touchStartX = 0),
                     (this._touchStartY = 0),
                     (this._handleEventBound = this._tryHandleEvent.bind(this)),
                     (this._handleScrollEventBound = this._handleScrollEvent.bind(this)),
-                    (this._gestureHelper = new a.default()),
-                    this.activate(e));
+                    (this._gestureHelper = new gestureHelperModule.default()),
+                    this.activate(target));
             }
-            addGesture(e) {
-                this._gestureHelper.addGesture(e);
+            addGesture(gesture) {
+                this._gestureHelper.addGesture(gesture);
             }
-            setDelayedTouchEventsEnabled(e) {
-                this._gestureHelper.setDelayedTouchEventsEnabled(e);
+            setDelayedTouchEventsEnabled(enabled) {
+                this._gestureHelper.setDelayedTouchEventsEnabled(enabled);
             }
-            setClickSuppressionEnabled(e) {
-                (this._gestureHelper.setClickSuppressionEnabled(e),
+            setClickSuppressionEnabled(enabled) {
+                (this._gestureHelper.setClickSuppressionEnabled(enabled),
                     document.removeEventListener("scroll", this._handleScrollEventBound, true),
-                    e && document.addEventListener("scroll", this._handleScrollEventBound, true));
+                    enabled && document.addEventListener("scroll", this._handleScrollEventBound, true));
             }
-            activate(e) {
+            activate(target) {
                 (this.deactivate(this._target),
-                    (this._target = e),
+                    (this._target = target),
                     this._target &&
                         (this._target.addEventListener("touchstart", this._handleEventBound),
                         this._target.addEventListener("touchmove", this._handleEventBound),
@@ -36,71 +36,71 @@ module.exports = function (module, exports, require) {
                         this._target.addEventListener("touchcancel", this._handleEventBound),
                         this._target.addEventListener("gesturestart", this._handleEventBound)));
             }
-            deactivate(e) {
-                const t = e || this._target;
-                (t &&
-                    (t.removeEventListener("touchstart", this._handleEventBound),
-                    t.removeEventListener("touchmove", this._handleEventBound),
-                    t.removeEventListener("touchend", this._handleEventBound),
-                    t.removeEventListener("touchcancel", this._handleEventBound),
-                    t.removeEventListener("gesturestart", this._handleEventBound)),
+            deactivate(target) {
+                const element = target || this._target;
+                (element &&
+                    (element.removeEventListener("touchstart", this._handleEventBound),
+                    element.removeEventListener("touchmove", this._handleEventBound),
+                    element.removeEventListener("touchend", this._handleEventBound),
+                    element.removeEventListener("touchcancel", this._handleEventBound),
+                    element.removeEventListener("gesturestart", this._handleEventBound)),
                     document.removeEventListener("scroll", this._handleScrollEventBound, true),
                     this._target && delete this._target);
             }
-            _tryHandleEvent(e) {
-                this._shouldHandle(e) && this._handleEvent(e);
+            _tryHandleEvent(event) {
+                this._shouldHandle(event) && this._handleEvent(event);
             }
-            _handleEvent(e) {
-                switch (e.type) {
+            _handleEvent(event) {
+                switch (event.type) {
                     case "touchstart":
-                        this._touchStart(e);
+                        this._touchStart(event);
                         break;
                     case "touchmove":
-                        this._touchMove(e);
+                        this._touchMove(event);
                         break;
                     case "touchend":
-                        this._touchEnd(e);
+                        this._touchEnd(event);
                         break;
                     case "touchcancel":
-                        this._touchCancel(e);
+                        this._touchCancel(event);
                         break;
                     case "gesturestart":
-                        this._gestureStart(e);
+                        this._gestureStart(event);
                 }
             }
-            _touchStart(e) {
-                const t = e.targetTouches[0] || e.changedTouches[0];
-                (t
-                    ? ((this._touchStartX = t.clientX), (this._touchStartY = t.clientY))
+            _touchStart(event) {
+                const touch = event.targetTouches[0] || event.changedTouches[0];
+                (touch
+                    ? ((this._touchStartX = touch.clientX), (this._touchStartY = touch.clientY))
                     : ((this._touchStartX = 0), (this._touchStartY = 0)),
                     (this._touchmoved = false),
-                    this._gestureHelper.touchStart(e));
+                    this._gestureHelper.touchStart(event));
             }
-            _touchMove(e) {
-                ((this._touchmoved = this._wasMoved(e)), this._touchmoved && this._gestureHelper.touchMove(e));
+            _touchMove(event) {
+                ((this._touchmoved = this._wasMoved(event)), this._touchmoved && this._gestureHelper.touchMove(event));
             }
-            _touchEnd(e) {
-                ((this._touchmoved = false), this._gestureHelper.touchEnd(e));
+            _touchEnd(event) {
+                ((this._touchmoved = false), this._gestureHelper.touchEnd(event));
             }
-            _touchCancel(e) {
-                this._gestureHelper.touchCancel(e);
+            _touchCancel(event) {
+                this._gestureHelper.touchCancel(event);
             }
-            _gestureStart(e) {
-                this._gestureHelper.gestureStart(e);
+            _gestureStart(event) {
+                this._gestureHelper.gestureStart(event);
             }
-            _handleScrollEvent(e) {
-                this._gestureHelper.scroll(e);
+            _handleScrollEvent(event) {
+                this._gestureHelper.scroll(event);
             }
-            _wasMoved(e) {
-                const t = e.changedTouches[0],
-                    { clientX, clientY } = t;
+            _wasMoved(event) {
+                const touch = event.changedTouches[0],
+                    { clientX, clientY } = touch;
                 return !(
                     Math.abs(clientX - this._touchStartX) < designerConfig.MIN_TOUCH_MOVE_DISTANCE &&
                     Math.abs(clientY - this._touchStartY) < designerConfig.MIN_TOUCH_MOVE_DISTANCE
                 );
             }
-            _shouldHandle(e) {
-                return !e.defaultPrevented;
+            _shouldHandle(event) {
+                return !event.defaultPrevented;
             }
         };
     };

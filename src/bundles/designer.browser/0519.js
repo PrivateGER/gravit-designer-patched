@@ -1,8 +1,8 @@
 module.exports = function (module, exports, require) {
         "use strict";
-        const o = [{ ext: "gvdesign", type: "application/gravit+design", default: true }],
-            i = o.map((e) => {
-                let { ext } = e;
+        const fileFormats = [{ ext: "gvdesign", type: "application/gravit+design", default: true }],
+            fileExtensions = fileFormats.map((fileFormat) => {
+                let { ext } = fileFormat;
                 return ext.toLowerCase();
             });
         module.exports = {
@@ -60,8 +60,8 @@ module.exports = function (module, exports, require) {
             AUTO_SAVE_ENABLED: true,
             AUTOSAVE_INTERVALS: [5, 10, 20],
             AUTOSAVE_INTERVAL_DEFAULT: 5,
-            FILE_FORMATS: o,
-            FILE_EXTENSIONS: i,
+            FILE_FORMATS: fileFormats,
+            FILE_EXTENSIONS: fileExtensions,
             LINKS: {
                 CLEVERBRIDGE_SUPPORT_URL: "https://support.cleverbridge.com/hc/en/requests/new?ticket_form_id=18434",
                 BLENDING_MODES_DOCUMENTATION_URL: null,

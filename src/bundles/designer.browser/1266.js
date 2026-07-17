@@ -3,18 +3,18 @@ module.exports = function (module, exports, require) {
         (require(3), require(4), require(13));
         require(53);
         var GObject = require(1),
-            i = (require(15 /* GPlatform */), require(1267)),
-            a = require(123),
+            ColorExtractor = (require(15 /* GPlatform */), require(1267 /* lib:color-thief */)),
+            PropertyPanelBase = require(123),
             { replaceImage, setOriginSize, cropImage } = (require(173), require(219), require(1268 /* imageActions */));
-        function c() {}
-        (GObject.GObject.inherit(c, a),
-            (c.prototype._panel = null),
-            (c.prototype._document = null),
-            (c.prototype._image = null),
-            (c.prototype._controls = null),
-            (c.prototype.init = function (e, t) {
-                ((this._panel = e),
-                    (this._controls = t),
+        function GImagePropertiesPanel() {}
+        (GObject.GObject.inherit(GImagePropertiesPanel, PropertyPanelBase),
+            (GImagePropertiesPanel.prototype._panel = null),
+            (GImagePropertiesPanel.prototype._document = null),
+            (GImagePropertiesPanel.prototype._image = null),
+            (GImagePropertiesPanel.prototype._controls = null),
+            (GImagePropertiesPanel.prototype.init = function (panelElement, controlsElement) {
+                ((this._panel = panelElement),
+                    (this._controls = controlsElement),
                     $("<div></div>")
                         .addClass("g-image-convert-status")
                         .css({ display: "none", "font-size": "8px" })
@@ -59,8 +59,8 @@ module.exports = function (module, exports, require) {
                                         .css("padding", "0")
                                         .append($("<span></span>").addClass("gravit-icon-crop"))
                                         .on("click", () => {
-                                            var t = e.find('button[data-action="handle-crop"]');
-                                            (cropImage(this._image, t.data("no-crop")), gDesigner.stats("image_change_croptype"));
+                                            var cropButton = panelElement.find('button[data-action="handle-crop"]');
+                                            (cropImage(this._image, cropButton.data("no-crop")), gDesigner.stats("image_change_croptype"));
                                         }),
                                 },
                                 {
@@ -75,53 +75,53 @@ module.exports = function (module, exports, require) {
                                 },
                             ],
                         })
-                        .appendTo(e),
-                    $("<div></div>").attr("data-image-palette", "palette").css({ height: "27px", margin: "5px 10px 0 10px" }).appendTo(e));
+                        .appendTo(panelElement),
+                    $("<div></div>").attr("data-image-palette", "palette").css({ height: "27px", margin: "5px 10px 0 10px" }).appendTo(panelElement));
             }),
-            (c.prototype._updateImagePalette = function () {
+            (GImagePropertiesPanel.prototype._updateImagePalette = function () {
                 gDesigner.stats("image_update_palette");
-                var e = this._image.getImage() || this._image.getImageCanvas(),
-                    t = this._panel.find('[data-image-palette="palette"]');
-                t.empty();
-                var n = function (e) {
+                var imageElement = this._image.getImage() || this._image.getImageCanvas(),
+                    paletteElement = this._panel.find('[data-image-palette="palette"]');
+                paletteElement.empty();
+                var addSwatch = function (color) {
                     $("<div></div>")
                         .gPatternTarget({ allowDrop: false })
                         .gPatternTarget("types", [GObject.GColor])
-                        .gPatternTarget("value", e)
+                        .gPatternTarget("value", color)
                         .css({
                             display: "inline-block",
                             height: "100%",
                             width: "12.5%",
-                            background: GObject.GPattern.asCSSBackground(e),
+                            background: GObject.GPattern.asCSSBackground(color),
                         })
-                        .appendTo(t);
+                        .appendTo(paletteElement);
                 }.bind(this);
-                if (e) {
-                    (t.css("display", ""), this._panel.find('[data-image-palette="button"]').prop("disabled", true));
-                    var a = new i(),
-                        r = null;
+                if (imageElement) {
+                    (paletteElement.css("display", ""), this._panel.find('[data-image-palette="button"]').prop("disabled", true));
+                    var colorExtractorInstance = new ColorExtractor(),
+                        rawDominantColor = null;
                     try {
-                        r = a.getColor(e);
+                        rawDominantColor = colorExtractorInstance.getColor(imageElement);
                     } catch (e) {
                         console.warn("Cannot extract image palette");
                     }
-                    var s = r ? new GObject.GRGBColor(r) : GObject.GRGBColor.BLACK;
-                    n(s);
-                    var l = null;
+                    var dominantColor = rawDominantColor ? new GObject.GRGBColor(rawDominantColor) : GObject.GRGBColor.BLACK;
+                    addSwatch(dominantColor);
+                    var paletteColors = null;
                     try {
-                        l = a.getPalette(e, 16);
+                        paletteColors = colorExtractorInstance.getPalette(imageElement, 16);
                     } catch (e) {
                         console.warn("Cannot extract image palette");
                     }
                     var c = 1;
-                    if (l)
-                        for (var d = 0; d < l.length; ++d) {
-                            var u = new GObject.GRGBColor(l[d]);
-                            if (!GObject.GUtil.equals(u, s) && (n(u), ++c >= 8)) break;
+                    if (paletteColors)
+                        for (var d = 0; d < paletteColors.length; ++d) {
+                            var u = new GObject.GRGBColor(paletteColors[d]);
+                            if (!GObject.GUtil.equals(u, dominantColor) && (addSwatch(u), ++c >= 8)) break;
                         }
                 }
             }),
-            (c.prototype.update = function (e, t) {
+            (GImagePropertiesPanel.prototype.update = function (editorDocument, nodes) {
                 if (
                     (this._document &&
                         (this._document
@@ -131,19 +131,19 @@ module.exports = function (module, exports, require) {
                         this._document.getScene().removeEventListener(GObject.GImage.ConvertStatusEvent, this._imageConvertStatus, this),
                         (this._document = null)),
                     (this._image = null),
-                    e)
+                    editorDocument)
                 ) {
-                    for (var n = 0; n < t.length; ++n)
-                        if (t[n] instanceof GObject.GImage) {
+                    for (var n = 0; n < nodes.length; ++n)
+                        if (nodes[n] instanceof GObject.GImage) {
                             if (this._image) {
                                 this._image = null;
                                 break;
                             }
-                            this._image = t[n];
+                            this._image = nodes[n];
                         }
                     if (this._image)
                         return (
-                            (this._document = e),
+                            (this._document = editorDocument),
                             this._document
                                 .getScene()
                                 .addEventListener(GObject.GNode.AfterPropertiesChangeEvent, this._afterPropertiesChange, this),
@@ -155,53 +155,53 @@ module.exports = function (module, exports, require) {
                 }
                 return (this._controls.find(".g-image-convert-status").css("display", "none"), false);
             }),
-            (c.prototype._afterPropertiesChange = function (e) {
-                !e.temporary && this._image && this._image === e.node && this._updateProperties();
+            (GImagePropertiesPanel.prototype._afterPropertiesChange = function (event) {
+                !event.temporary && this._image && this._image === event.node && this._updateProperties();
             }),
-            (c.prototype._imageStatus = function (e) {
-                e.image !== this._image ||
-                    (e.status !== GObject.GImage.ImageStatus.Error && e.status !== GObject.GImage.ImageStatus.Loaded) ||
+            (GImagePropertiesPanel.prototype._imageStatus = function (event) {
+                event.image !== this._image ||
+                    (event.status !== GObject.GImage.ImageStatus.Error && event.status !== GObject.GImage.ImageStatus.Loaded) ||
                     this._updateProperties();
             }),
-            (c.prototype._imageConvertStatus = function (e) {
-                this._updateConvertStatus(e.status);
+            (GImagePropertiesPanel.prototype._imageConvertStatus = function (event) {
+                this._updateConvertStatus(event.status);
             }),
-            (c.prototype._updateConvertStatus = function (e) {
-                var t;
-                switch (e) {
+            (GImagePropertiesPanel.prototype._updateConvertStatus = function (status) {
+                var statusText;
+                switch (status) {
                     case GObject.GImage.ConvertStatus.Checking:
-                        t = GObject.GLocale.get(new GObject.GLocaleKey("GImageProperties", "text.check-profile")) + "...";
+                        statusText = GObject.GLocale.get(new GObject.GLocaleKey("GImageProperties", "text.check-profile")) + "...";
                         break;
                     case GObject.GImage.ConvertStatus.Converting:
-                        t = GObject.GLocale.get(new GObject.GLocaleKey("GImageProperties", "text.loading-profile")) + "...";
+                        statusText = GObject.GLocale.get(new GObject.GLocaleKey("GImageProperties", "text.loading-profile")) + "...";
                 }
-                (t && this._controls.find(".g-image-convert-status > span").text(t),
-                    this._controls.find(".g-image-convert-status").css("display", t ? "" : "none"));
+                (statusText && this._controls.find(".g-image-convert-status > span").text(statusText),
+                    this._controls.find(".g-image-convert-status").css("display", statusText ? "" : "none"));
             }),
-            (c.prototype._updateProperties = function () {
+            (GImagePropertiesPanel.prototype._updateProperties = function () {
                 (this._image.getProperty("url"), this._image.getStatus());
-                var e = this._image.isReady(),
-                    t = this._image.getGeometryBBox(),
-                    n = t ? t.getWidth() : 0,
-                    i = t ? t.getHeight() : 0,
-                    a = this._image.getWidth(),
-                    r = this._image.getHeight();
+                var isReady = this._image.isReady(),
+                    bbox = this._image.getGeometryBBox(),
+                    bboxWidth = bbox ? bbox.getWidth() : 0,
+                    bboxHeight = bbox ? bbox.getHeight() : 0,
+                    imageWidth = this._image.getWidth(),
+                    imageHeight = this._image.getHeight();
                 if (gDesigner.getActiveDocument()) {
-                    var s = gDesigner.getActiveDocument().getEditor().hasSelectionDetail();
+                    var hasSelectionDetail = gDesigner.getActiveDocument().getEditor().hasSelectionDetail();
                     (this._panel
                         .find('button[data-action="reset-size"]')
-                        .prop("disabled", !e || (GObject.GMath.isEqualEps(a, n) && GObject.GMath.isEqualEps(r, i))),
-                        this._panel.find('button[data-action="handle-crop"]').data("no-crop", s),
+                        .prop("disabled", !isReady || (GObject.GMath.isEqualEps(imageWidth, bboxWidth) && GObject.GMath.isEqualEps(imageHeight, bboxHeight))),
+                        this._panel.find('button[data-action="handle-crop"]').data("no-crop", hasSelectionDetail),
                         this._panel
                             .find(".crop-label")
-                            .text(GObject.GLocale.get(new GObject.GLocaleKey("GImageProperties", s ? "action.no-crop" : "action.crop"))),
-                        this._panel.find('[data-image-palette="button"]').prop("disabled", !e).css("display", ""),
+                            .text(GObject.GLocale.get(new GObject.GLocaleKey("GImageProperties", hasSelectionDetail ? "action.no-crop" : "action.crop"))),
+                        this._panel.find('[data-image-palette="button"]').prop("disabled", !isReady).css("display", ""),
                         this._panel.find('[data-image-palette="palette"]').css("display", "none"),
                         this._updateConvertStatus(this._image.getConvertStatus()));
                 }
             }),
-            (c.prototype.toString = function () {
+            (GImagePropertiesPanel.prototype.toString = function () {
                 return "[Object GImageProperties]";
             }),
-            (module.exports = c));
+            (module.exports = GImagePropertiesPanel));
     };

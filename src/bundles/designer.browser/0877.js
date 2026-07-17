@@ -5,62 +5,62 @@ module.exports = function (module, exports, require) {
         var GObject = require(1),
             GPlatform = require(15),
             GCategory = require(18),
-            r = require(31);
+            GAction = require(31);
         require(44 /* GSystemDialog */);
-        function s() {}
-        (GObject.GObject.inherit(s, r),
-            (s.ID = "paste.paste"),
-            (s.TITLE = new GObject.GLocaleKey("GPasteAction", "title")),
-            (s.prototype.getId = function () {
-                return s.ID;
+        function GPasteAction() {}
+        (GObject.GObject.inherit(GPasteAction, GAction),
+            (GPasteAction.ID = "paste.paste"),
+            (GPasteAction.TITLE = new GObject.GLocaleKey("GPasteAction", "title")),
+            (GPasteAction.prototype.getId = function () {
+                return GPasteAction.ID;
             }),
-            (s.prototype.getTitle = function () {
-                return s.TITLE;
+            (GPasteAction.prototype.getTitle = function () {
+                return GPasteAction.TITLE;
             }),
-            (s.prototype.getIcon = function () {
+            (GPasteAction.prototype.getIcon = function () {
                 return "gravit-icon-paste";
             }),
-            (s.prototype.getCategory = function () {
+            (GPasteAction.prototype.getCategory = function () {
                 return GCategory.CATEGORY_EDIT_PASTE;
             }),
-            (s.prototype.getGroup = function () {
+            (GPasteAction.prototype.getGroup = function () {
                 return "ccp/paste";
             }),
-            (s.prototype.getShortcut = function () {
+            (GPasteAction.prototype.getShortcut = function () {
                 return [GPlatform.GKey.Constant.META, "V"];
             }),
-            (s.prototype.isEnabled = function () {
+            (GPasteAction.prototype.isEnabled = function () {
                 return !!gDesigner.getActiveDocument();
             }),
-            (s.prototype.executeFromShortcut = function () {
-                var e = gDesigner.getPaste(),
-                    t = null;
+            (GPasteAction.prototype.executeFromShortcut = function () {
+                var pasteObject = gDesigner.getPaste(),
+                    area = null;
                 return (
-                    e && (e.assignCallback(null), (t = e.getArea())),
+                    pasteObject && (pasteObject.assignCallback(null), (area = pasteObject.getArea())),
                     (document.activeElement &&
                         $(document.activeElement).is(":editable") &&
                         !gDesigner.isGravitIME(document.activeElement)) ||
-                        (t && (e.setAllowFocus(true), t.focus())),
+                        (area && (pasteObject.setAllowFocus(true), area.focus())),
                     false
                 );
             }),
-            (s.prototype.execute = function () {
+            (GPasteAction.prototype.execute = function () {
                 gDesigner
                     .getPaste()
                     .pasteFromClipboard()
-                    .catch((e) => {
+                    .catch((error) => {
                         this._pasteFromInternalClipboard();
                     });
             }),
-            (s.prototype._pasteFromInternalClipboard = function () {
+            (GPasteAction.prototype._pasteFromInternalClipboard = function () {
                 gDesigner.getClipboardContent(GObject.GNode.MIME_TYPE) &&
                     (gDesigner.getPaste().assignCallback(null),
                     gDesigner.getPaste().handlePasteData({
                         [GObject.GNode.MIME_TYPE]: gDesigner.getClipboardContent(GObject.GNode.MIME_TYPE),
                     }));
             }),
-            (s.prototype.toString = function () {
+            (GPasteAction.prototype.toString = function () {
                 return "[Object GPasteAction]";
             }),
-            (module.exports = s));
+            (module.exports = GPasteAction));
     };

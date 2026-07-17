@@ -1,7 +1,7 @@
 module.exports = function (module, exports, require) {
         var o, i, a;
         module.exports =
-            ((a = require(55)),
+            ((a = require(55 /* lib:crypto-js */)),
             require(98),
             (a.mode.OFB =
                 ((o = a.lib.BlockCipherMode.extend()),
