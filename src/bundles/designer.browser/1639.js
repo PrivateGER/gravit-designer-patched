@@ -26,8 +26,13 @@ module.exports = function (module, exports, require) {
             (c.prototype.isEnabled = function () {
                 return true;
             }),
+            // The translation tool uploaded to the dead i18n service; hide it
+            // (it only showed up because this build has the trunk flag set).
+            (c.prototype.isAvailable = function () {
+                return false;
+            }),
             (c.prototype.isVisible = function () {
-                return !(!IS_TRUNK && !IS_LOCALHOST);
+                return false;
             }),
             (c.prototype.execute = function () {
                 (this._translationTool || (this._translationTool = new GTranslationToolDialog()), this._translationTool.init());

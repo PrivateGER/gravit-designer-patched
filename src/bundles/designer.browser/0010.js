@@ -5,7 +5,12 @@ module.exports = function (module, exports, require) {
             CloudProviders = require(520),
             IS_TRUNK = require(231);
         ((configBase.GoogleTagManagerSettings = require(820)),
-            (configBase.AUTO_SAVE_ENABLED = GPlatform.GPlatform.webBrowser !== GPlatform.GPlatform.constructor.WebBrowser.Safari),
+            // Auto-save only ever saved to the dead cloud-sync service, and its
+            // subsystem nags local-file users with "save/sync to Corel Vector"
+            // dialogs whose Save-to-Cloud button is now hidden. Disabling the
+            // flag removes the nag dialogs and the two settings rows (Safari
+            // always ran with this false, so the path is well-tested).
+            (configBase.AUTO_SAVE_ENABLED = false),
             (configBase.DOMAIN = "gravit.plasmatrap.com"),
             (configBase.GA = { customDimensions: ["EWOSU", "token", "template", "preset"] }),
             (configBase.PURCHASE = {
@@ -73,7 +78,10 @@ module.exports = function (module, exports, require) {
             (configBase.CATEGORIES = require(831)),
             (configBase.ELEMENTS = require(832 /* ELEMENTS */)),
             (configBase.GooglePickerBuilder = require(833)),
-            (configBase.HAS_ANNOTATIONS = true),
+            // Comments/annotations synced through the dead collaboration API;
+            // the COMMENTS sidebar only offered "save and share to start the
+            // review process". Disabling the flag hides all commenting UI.
+            (configBase.HAS_ANNOTATIONS = false),
             (configBase.ANNOTATION_PERMANENT_LINK = true),
             (configBase.ANONYMOUS_SESSION_ENABLED = true),
             (configBase.USE_EXTENSION_IN_FILENAME = false),

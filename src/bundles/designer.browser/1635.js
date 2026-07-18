@@ -23,9 +23,12 @@ module.exports = function (module, exports, require) {
             (r.prototype.execute = function () {
                 gDesigner.runDeepLink("account");
             }),
+            // The account service is gone; hide alongside the header avatar.
+            (r.prototype.isAvailable = function () {
+                return false;
+            }),
             (r.prototype.isVisible = function () {
-                const e = gDesigner.getSyncUser();
-                return !(e && !e.canUpdateSelfAccountData()) && gDesigner.isTouchEnabled();
+                return false;
             }),
             (r.prototype.toString = function () {
                 return "[Object GOpenAccountSettingsAction]";

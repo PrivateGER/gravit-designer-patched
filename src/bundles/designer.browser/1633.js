@@ -21,6 +21,14 @@ module.exports = function (module, exports, require) {
             (s.prototype.getGroup = function () {
                 return "help/learn";
             }),
+            // Example files were listed through the dead cloud file API; the
+            // dialog this opens can only show an empty listing. Hide it.
+            (s.prototype.isAvailable = function () {
+                return false;
+            }),
+            (s.prototype.isVisible = function () {
+                return false;
+            }),
             (s.prototype.execute = function () {
                 const e = {
                         closable: true,

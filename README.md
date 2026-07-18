@@ -197,9 +197,31 @@ content:
   tutorial videos; those show as missing on some pages — that content is
   lost everywhere, including on archive.org itself.
 - **UI translations**: the locale-pack CDN was never archived, so the app
-  always falls back to its bundled English strings.
-- Anything requiring real cloud accounts: sharing, collaboration, comments,
-  cloud storage.
+  always falls back to its bundled English strings. The Help > Language
+  switcher (module `1620`) and the trunk-only "Translation Tool" (module
+  `1639`) are hidden — switching languages could only ever claim success and
+  render English anyway.
+- **Cloud storage**: "Open from .." and "Save to Cloud as…" (module `0448`)
+  and "Show Version History" (module `1256`) are hidden; local open/save,
+  import/export and the PWA "Install to Desktop" remain.
+- **Sharing & comments**: the File > Share submenu (modules `1628`, `1254`)
+  and the COMMENTS sidebar are hidden (`HAS_ANNOTATIONS` flag in module
+  `0010`) — commenting only worked through the dead review/collaboration
+  service. With the tab gone the right sidebar shows the Inspector directly.
+- **Accounts**: the header avatar and its popup ("Account settings" /
+  "Log out") are hidden (modules `1500`, `1635`, `1636`); the app always
+  runs as the local placeholder user.
+- **Example files** (Help > Learn): listed through the dead cloud file API,
+  hidden (module `1633`). The other Help links (Contact Us, Tutorials,
+  Request New Feature, EULA) still resolve to live Corel/YouTube pages and
+  are kept; "User Guide" opens the bundled `/docs` mirror.
+- **Auto-save**: only ever saved to the cloud-sync service, and its manager
+  nagged local-file users with "save/sync to Corel Vector" dialogs whose
+  Save-to-Cloud button is now hidden. `AUTO_SAVE_ENABLED` is off (module
+  `0010`), which removes the nag dialogs and the two auto-save rows in the
+  Settings dialog (Safari always ran with the flag off). The Settings
+  dialog's "Disable notifications" row (e-mail notifications for cloud
+  comments) is removed too (module `1275`).
 
 ## Privacy
 
@@ -210,7 +232,18 @@ to third-party analytics. The mirrored documentation is likewise scrubbed:
 Google Analytics removed and the Montserrat webfont self-hosted, so `/docs`
 pages make no external requests either.
 
-The one opt-in exception: with `UNSPLASH_ACCESS_KEY` configured, browsing the
+Two user-initiated exceptions. Selecting a web font in the text tool
+downloads the font file straight from `fonts.gstatic.com` — the original app
+did the same (the catalog in `assets/data/googlefonts.json` points at
+Google's font CDN, which is alive and well); nothing loads until a font is
+picked. Relatedly, the first font pick can surface the browser's *local
+fonts* permission prompt: the picker's System Fonts tab uses the Local Font
+Access API (original behavior, `LOCAL_FONTS_API_ENABLED`), and the full font
+catalog — queried once on the first pick — includes that provider. Allowing
+or denying both work; the chosen font applies either way once the prompt is
+answered.
+
+The other: with `UNSPLASH_ACCESS_KEY` configured, browsing the
 library panel's Photos category loads thumbnails and images directly from
 `images.unsplash.com` (hotlinking is required by Unsplash's API guidelines).
 API calls go through the local server; the browser never talks to

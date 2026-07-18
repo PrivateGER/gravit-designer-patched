@@ -227,24 +227,10 @@ module.exports = function (module, exports, require) {
                                 .append($("<div></div>"))
                         )
                     ),
-                    this._dialog.append(
-                        this._createSetting(
-                            GObject.GLocale.get(new GObject.GLocaleKey("GSettingsDialog", "setting.disable-notifications")),
-                            GObject.GLocale.get(new GObject.GLocaleKey("GSettingsDialog", "setting.disable-notifications-description")),
-                            $("<label></label>")
-                                .addClass("g-switch test")
-                                .append(
-                                    $("<input>")
-                                        .attr("type", "checkbox")
-                                        .attr("data-setting", "notifications_disabled")
-                                        .on("change", () => {
-                                            gDesigner.stats("settings_toggle_disable-notifications");
-                                        })
-                                        .prop("checked", notificationsDisabled)
-                                )
-                                .append($("<div></div>"))
-                        )
-                    ),
+                    // The "Disable notifications" row controlled e-mail
+                    // notifications for cloud comments; both the comment
+                    // sidebar and the mail service are gone, so the row is
+                    // omitted (see _saveNotificationSetting below).
                     this._dialog.append(
                         this._createSetting(
                             GObject.GLocale.get(new GObject.GLocaleKey("GSettingsDialog", "setting.disable-scrubbing")),
@@ -313,9 +299,8 @@ module.exports = function (module, exports, require) {
                 (this._saveBasicSettings(), await this._saveNotificationSetting(), callback(), $(".symbols-container").triggerHandler("scroll"));
             }),
             (SettingsDialog.prototype._saveNotificationSetting = async function () {
-                var notificationsDisabled = this._dialog.find('[data-setting="notifications_disabled"]').prop("checked"),
-                    userSettings = await designerConfig.gApi.getUserSettings();
-                userSettings && userSettings.notifications_disabled !== notificationsDisabled && (await designerConfig.gApi.updateUserSettings({ notifications_disabled: notificationsDisabled }, true));
+                // The notifications row is gone (dead cloud comment e-mails);
+                // never push its absent value to the stubbed settings API.
             }),
             (SettingsDialog.prototype._saveBasicSettings = function () {
                 var autoSaveInterval =

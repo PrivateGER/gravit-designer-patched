@@ -23,8 +23,13 @@ module.exports = function (module, exports, require) {
             (r.prototype.isEnabled = function () {
                 return gDesigner.getApplicationManager().isShareEnabled();
             }),
+            // The sharing/collaboration service is gone; hide the whole
+            // File > Share submenu (see also GOpenSharedFileAction).
+            (r.prototype.isAvailable = function () {
+                return false;
+            }),
             (r.prototype.isVisible = function () {
-                return true;
+                return false;
             }),
             (r.prototype.execute = function () {
                 gDesigner.getShareManager().share();
