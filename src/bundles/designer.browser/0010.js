@@ -5,7 +5,12 @@ module.exports = function (module, exports, require) {
             CloudProviders = require(520),
             IS_TRUNK = require(231);
         ((configBase.GoogleTagManagerSettings = require(820)),
-            (configBase.AUTO_SAVE_ENABLED = GPlatform.GPlatform.webBrowser !== GPlatform.GPlatform.constructor.WebBrowser.Safari),
+            // Auto-save only ever saved to the dead cloud-sync service, and its
+            // subsystem nags local-file users with "save/sync to Corel Vector"
+            // dialogs whose Save-to-Cloud button is now hidden. Disabling the
+            // flag removes the nag dialogs and the two settings rows (Safari
+            // always ran with this false, so the path is well-tested).
+            (configBase.AUTO_SAVE_ENABLED = false),
             (configBase.DOMAIN = "gravit.plasmatrap.com"),
             (configBase.GA = { customDimensions: ["EWOSU", "token", "template", "preset"] }),
             (configBase.PURCHASE = {

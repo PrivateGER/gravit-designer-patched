@@ -6,8 +6,8 @@
 //   - dead features stay hidden: no "New from Template" tile or menu entry,
 //     no cloud open/save/share/version-history in the File menu, no Language
 //     switcher or Translation Tool in the Help menu, no COMMENTS sidebar,
-//     no header account avatar (its popup only had dead account actions)
-//   - Help > Learn > User Guide points at the self-hosted /docs mirror
+//     no header account avatar (its popup only had dead account actions),
+//     no cloud auto-save or e-mail notification rows in the Settings dialog
 //   - the Unsplash proxy works end-to-end and the LIBRARIES tab
 //     appears/disappears with UNSPLASH_ACCESS_KEY
 // ...and that the editor itself still works (a rename-sweep regression here
@@ -222,6 +222,20 @@ async function testWithoutUnsplash(executablePath) {
         check("LIBRARIES tab hidden", !(await libTab.isVisible()));
         const visible = await page.locator(".sidebar-option:visible").allTextContents();
         check("other tabs still present", visible.some((t) => /layers/i.test(t)) && visible.some((t) => /symbols/i.test(t)), visible);
+
+        // Settings dialog: the cloud-only auto-save rows and the comment
+        // e-mail notifications row are gone; saving still works without them.
+        await page.getByText("Edit", { exact: true }).first().click();
+        await page.waitForTimeout(400);
+        await page.getByText("Settings...", { exact: true }).first().click();
+        await page.waitForTimeout(1200);
+        const settingsText = await page.evaluate(() => document.body.innerText);
+        check("settings has no auto-save rows", !/auto-save/i.test(settingsText));
+        check("settings has no notifications row", !/Disable notifications/i.test(settingsText));
+        check("settings keeps local rows", /Rounding/.test(settingsText) && /theme/i.test(settingsText));
+        await page.getByText("Save Changes", { exact: true }).first().click();
+        await page.waitForTimeout(1200);
+        check("settings dialog saves and closes", !(await page.evaluate(() => document.body.innerText.includes("Save Changes"))));
     } finally {
         await browser.close();
         server.kill();

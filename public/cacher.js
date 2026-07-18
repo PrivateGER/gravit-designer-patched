@@ -1265,7 +1265,7 @@ if (workbox) {
             { revision: "6736554d220367faf6cdcd9ff4e9f8f0_src", url: "chunk.vendors~heic2any.js" },
             { revision: "5cdadfcdd86717be65f04f91b61916d7_src", url: "chunk.vendors~pdfjsWorker.js" },
             { revision: "7a1bcf750f1e20a28f0d64980a65a8a0_8795", url: "designer.browser.dark.css" },
-            { revision: "841101ffca360f86025685799020516e_src", url: "designer.browser.js" },
+            { revision: "827ebcb6a211d42bceddb6f09f786a50_src", url: "designer.browser.js" },
             { revision: "dff101132147349edd900a10cd3b972d_8795", url: "designer.browser.light.css" },
             { revision: "760b774da05c9edf8fadb10bc5cddecf_src", url: "jquery.js" },
             { revision: "91b696434f2fdc35c0f61eb493eb332e_src", url: "pdf.worker.js" },

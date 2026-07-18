@@ -163,7 +163,12 @@ var GravitDesigner = (function (e) {
             CloudProviders = require(520),
             IS_TRUNK = require(231);
         ((configBase.GoogleTagManagerSettings = require(820)),
-            (configBase.AUTO_SAVE_ENABLED = GPlatform.GPlatform.webBrowser !== GPlatform.GPlatform.constructor.WebBrowser.Safari),
+            // Auto-save only ever saved to the dead cloud-sync service, and its
+            // subsystem nags local-file users with "save/sync to Corel Vector"
+            // dialogs whose Save-to-Cloud button is now hidden. Disabling the
+            // flag removes the nag dialogs and the two settings rows (Safari
+            // always ran with this false, so the path is well-tested).
+            (configBase.AUTO_SAVE_ENABLED = false),
             (configBase.DOMAIN = "gravit.plasmatrap.com"),
             (configBase.GA = { customDimensions: ["EWOSU", "token", "template", "preset"] }),
             (configBase.PURCHASE = {
@@ -77537,24 +77542,10 @@ var GravitDesigner = (function (e) {
                                 .append($("<div></div>"))
                         )
                     ),
-                    this._dialog.append(
-                        this._createSetting(
-                            GObject.GLocale.get(new GObject.GLocaleKey("GSettingsDialog", "setting.disable-notifications")),
-                            GObject.GLocale.get(new GObject.GLocaleKey("GSettingsDialog", "setting.disable-notifications-description")),
-                            $("<label></label>")
-                                .addClass("g-switch test")
-                                .append(
-                                    $("<input>")
-                                        .attr("type", "checkbox")
-                                        .attr("data-setting", "notifications_disabled")
-                                        .on("change", () => {
-                                            gDesigner.stats("settings_toggle_disable-notifications");
-                                        })
-                                        .prop("checked", notificationsDisabled)
-                                )
-                                .append($("<div></div>"))
-                        )
-                    ),
+                    // The "Disable notifications" row controlled e-mail
+                    // notifications for cloud comments; both the comment
+                    // sidebar and the mail service are gone, so the row is
+                    // omitted (see _saveNotificationSetting below).
                     this._dialog.append(
                         this._createSetting(
                             GObject.GLocale.get(new GObject.GLocaleKey("GSettingsDialog", "setting.disable-scrubbing")),
@@ -77623,9 +77614,8 @@ var GravitDesigner = (function (e) {
                 (this._saveBasicSettings(), await this._saveNotificationSetting(), callback(), $(".symbols-container").triggerHandler("scroll"));
             }),
             (SettingsDialog.prototype._saveNotificationSetting = async function () {
-                var notificationsDisabled = this._dialog.find('[data-setting="notifications_disabled"]').prop("checked"),
-                    userSettings = await designerConfig.gApi.getUserSettings();
-                userSettings && userSettings.notifications_disabled !== notificationsDisabled && (await designerConfig.gApi.updateUserSettings({ notifications_disabled: notificationsDisabled }, true));
+                // The notifications row is gone (dead cloud comment e-mails);
+                // never push its absent value to the stubbed settings API.
             }),
             (SettingsDialog.prototype._saveBasicSettings = function () {
                 var autoSaveInterval =
