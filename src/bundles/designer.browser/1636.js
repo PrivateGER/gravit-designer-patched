@@ -23,8 +23,13 @@ module.exports = function (module, exports, require) {
             (r.prototype.execute = function () {
                 return gDesigner.signout();
             }),
+            // Signing out of the dead auth service would only break the
+            // placeholder session; hide alongside the header avatar.
+            (r.prototype.isAvailable = function () {
+                return false;
+            }),
             (r.prototype.isVisible = function () {
-                return gDesigner.isTouchEnabled();
+                return false;
             }),
             (r.prototype.toString = function () {
                 return "[Object GLogoutAction]";

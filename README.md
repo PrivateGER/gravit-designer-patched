@@ -197,9 +197,24 @@ content:
   tutorial videos; those show as missing on some pages — that content is
   lost everywhere, including on archive.org itself.
 - **UI translations**: the locale-pack CDN was never archived, so the app
-  always falls back to its bundled English strings.
-- Anything requiring real cloud accounts: sharing, collaboration, comments,
-  cloud storage.
+  always falls back to its bundled English strings. The Help > Language
+  switcher (module `1620`) and the trunk-only "Translation Tool" (module
+  `1639`) are hidden — switching languages could only ever claim success and
+  render English anyway.
+- **Cloud storage**: "Open from .." and "Save to Cloud as…" (module `0448`)
+  and "Show Version History" (module `1256`) are hidden; local open/save,
+  import/export and the PWA "Install to Desktop" remain.
+- **Sharing & comments**: the File > Share submenu (modules `1628`, `1254`)
+  and the COMMENTS sidebar are hidden (`HAS_ANNOTATIONS` flag in module
+  `0010`) — commenting only worked through the dead review/collaboration
+  service. With the tab gone the right sidebar shows the Inspector directly.
+- **Accounts**: the header avatar and its popup ("Account settings" /
+  "Log out") are hidden (modules `1500`, `1635`, `1636`); the app always
+  runs as the local placeholder user.
+- **Example files** (Help > Learn): listed through the dead cloud file API,
+  hidden (module `1633`). The other Help links (Contact Us, Tutorials,
+  Request New Feature, EULA) still resolve to live Corel/YouTube pages and
+  are kept; "User Guide" opens the bundled `/docs` mirror.
 
 ## Privacy
 

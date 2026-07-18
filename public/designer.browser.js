@@ -231,7 +231,10 @@ var GravitDesigner = (function (e) {
             (configBase.CATEGORIES = require(831)),
             (configBase.ELEMENTS = require(832 /* ELEMENTS */)),
             (configBase.GooglePickerBuilder = require(833)),
-            (configBase.HAS_ANNOTATIONS = true),
+            // Comments/annotations synced through the dead collaboration API;
+            // the COMMENTS sidebar only offered "save and share to start the
+            // review process". Disabling the flag hides all commenting UI.
+            (configBase.HAS_ANNOTATIONS = false),
             (configBase.ANNOTATION_PERMANENT_LINK = true),
             (configBase.ANONYMOUS_SESSION_ENABLED = true),
             (configBase.USE_EXTENSION_IN_FILENAME = false),
@@ -16487,6 +16490,15 @@ var GravitDesigner = (function (e) {
                 if (!gDesigner.getApplicationManager().isOpenFromCloudEnabled() && this._type === GGravitCloudAction.Actions.Open) return false;
                 if (!gDesigner.getApplicationManager().isSavingAsEnabled() && this._type === GGravitCloudAction.Actions.SaveAs) return false;
                 return !(!gDesigner.getActiveDocument() && this._type !== GGravitCloudAction.Actions.Open) && !!GCommonNames.isOnline();
+            }),
+            // The Gravit Cloud storage service is gone (see README "Known-dead
+            // features"), so hide "Open from .." and "Save to Cloud as..." from
+            // the File menu and the touch toolbar's open/save menus.
+            (GGravitCloudAction.prototype.isAvailable = function () {
+                return false;
+            }),
+            (GGravitCloudAction.prototype.isVisible = function () {
+                return false;
             }),
             (GGravitCloudAction.prototype.execute = function (document, callback, options) {
                 const loginAndExecute = () =>
@@ -67541,8 +67553,13 @@ var GravitDesigner = (function (e) {
             (d.prototype.getGroup = function () {
                 return "file-share/opensharedfile";
             }),
+            // Shared-file links resolved through the dead cloud API; hide the
+            // action so the File > Share submenu disappears entirely.
+            (d.prototype.isAvailable = function () {
+                return false;
+            }),
             (d.prototype.isVisible = function () {
-                return true;
+                return false;
             }),
             (d.prototype.execute = function () {
                 GSystemDialog.prompt(
@@ -67696,6 +67713,14 @@ var GravitDesigner = (function (e) {
             }),
             (GVersionsHistoryAction.prototype.getIcon = function () {
                 return "gravit-icon-versions";
+            }),
+            // Version history lived on the cloud sync service; the menu item
+            // could only ever render permanently disabled. Hide it.
+            (GVersionsHistoryAction.prototype.isAvailable = function () {
+                return false;
+            }),
+            (GVersionsHistoryAction.prototype.isVisible = function () {
+                return false;
             }),
             (GVersionsHistoryAction.prototype.getCategory = function () {
                 return GCategory.default.CATEGORY_FILE;
@@ -104986,8 +105011,14 @@ var GravitDesigner = (function (e) {
                     this.setWindowTabEnable(gDesigner.getLicense().canAccessFreemium()));
             }),
             (GHeader.prototype._createLoginTab = function () {
+                // The account service is gone and the app always runs as the
+                // local placeholder user, so the avatar's popup ("Account
+                // settings" / "Log out") could only offer dead actions. Keep
+                // the element (updateLoginInfo and others select it) but never
+                // show it.
                 var loginElement = $("<div/>")
                     .addClass("section login")
+                    .css("display", "none")
                     .append($("<div/>").addClass("avatar"))
                     .append($("<div/>").addClass("username").append($("<span/>")))
                     .on("click", function () {
@@ -105007,7 +105038,7 @@ var GravitDesigner = (function (e) {
                 });
             }),
             (GHeader.prototype.updateLoginInfo = function (user) {
-                ($(".login").css("display", user && user.isAnonymous() ? "none" : ""),
+                ($(".login").css("display", "none"),
                     $(".login .username")
                         .find("span")
                         .text(user ? user.getFullUserName() : GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.cloud-login"))),
@@ -126898,8 +126929,14 @@ var GravitDesigner = (function (e) {
             (GSwitchLanguageAction.prototype.isEnabled = function () {
                 return true;
             }),
+            // The translation packs were served by the dead i18n CDN, so every
+            // language except bundled English silently falls back to English
+            // while the menu claims the switch worked. Hide the submenu.
+            (GSwitchLanguageAction.prototype.isAvailable = function () {
+                return false;
+            }),
             (GSwitchLanguageAction.prototype.isVisible = function () {
-                return !isExecutingOnMSTeamsSync();
+                return false;
             }),
             (GSwitchLanguageAction.prototype.execute = function () {
                 if (GObject.GLocale.getLanguage() !== this._locale) {
@@ -127290,8 +127327,13 @@ var GravitDesigner = (function (e) {
             (r.prototype.isEnabled = function () {
                 return gDesigner.getApplicationManager().isShareEnabled();
             }),
+            // The sharing/collaboration service is gone; hide the whole
+            // File > Share submenu (see also GOpenSharedFileAction).
+            (r.prototype.isAvailable = function () {
+                return false;
+            }),
             (r.prototype.isVisible = function () {
-                return true;
+                return false;
             }),
             (r.prototype.execute = function () {
                 gDesigner.getShareManager().share();
@@ -127576,6 +127618,14 @@ var GravitDesigner = (function (e) {
             (s.prototype.getGroup = function () {
                 return "help/learn";
             }),
+            // Example files were listed through the dead cloud file API; the
+            // dialog this opens can only show an empty listing. Hide it.
+            (s.prototype.isAvailable = function () {
+                return false;
+            }),
+            (s.prototype.isVisible = function () {
+                return false;
+            }),
             (s.prototype.execute = function () {
                 const e = {
                         closable: true,
@@ -127681,9 +127731,12 @@ var GravitDesigner = (function (e) {
             (r.prototype.execute = function () {
                 gDesigner.runDeepLink("account");
             }),
+            // The account service is gone; hide alongside the header avatar.
+            (r.prototype.isAvailable = function () {
+                return false;
+            }),
             (r.prototype.isVisible = function () {
-                const e = gDesigner.getSyncUser();
-                return !(e && !e.canUpdateSelfAccountData()) && gDesigner.isTouchEnabled();
+                return false;
             }),
             (r.prototype.toString = function () {
                 return "[Object GOpenAccountSettingsAction]";
@@ -127715,8 +127768,13 @@ var GravitDesigner = (function (e) {
             (r.prototype.execute = function () {
                 return gDesigner.signout();
             }),
+            // Signing out of the dead auth service would only break the
+            // placeholder session; hide alongside the header avatar.
+            (r.prototype.isAvailable = function () {
+                return false;
+            }),
             (r.prototype.isVisible = function () {
-                return gDesigner.isTouchEnabled();
+                return false;
             }),
             (r.prototype.toString = function () {
                 return "[Object GLogoutAction]";
@@ -127855,8 +127913,13 @@ var GravitDesigner = (function (e) {
             (c.prototype.isEnabled = function () {
                 return true;
             }),
+            // The translation tool uploaded to the dead i18n service; hide it
+            // (it only showed up because this build has the trunk flag set).
+            (c.prototype.isAvailable = function () {
+                return false;
+            }),
             (c.prototype.isVisible = function () {
-                return !(!IS_TRUNK && !IS_LOCALHOST);
+                return false;
             }),
             (c.prototype.execute = function () {
                 (this._translationTool || (this._translationTool = new GTranslationToolDialog()), this._translationTool.init());

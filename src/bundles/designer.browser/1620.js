@@ -41,8 +41,14 @@ module.exports = function (module, exports, require) {
             (GSwitchLanguageAction.prototype.isEnabled = function () {
                 return true;
             }),
+            // The translation packs were served by the dead i18n CDN, so every
+            // language except bundled English silently falls back to English
+            // while the menu claims the switch worked. Hide the submenu.
+            (GSwitchLanguageAction.prototype.isAvailable = function () {
+                return false;
+            }),
             (GSwitchLanguageAction.prototype.isVisible = function () {
-                return !isExecutingOnMSTeamsSync();
+                return false;
             }),
             (GSwitchLanguageAction.prototype.execute = function () {
                 if (GObject.GLocale.getLanguage() !== this._locale) {

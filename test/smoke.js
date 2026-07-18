@@ -3,8 +3,11 @@
 // bitten this rescue before:
 //   - the app boots to the editor with no requests to third-party hosts
 //   - no fetch of the literal URL "/null" (dead-i18n regression)
-//   - the avatar is local and actually rendered
-//   - dead features stay hidden (no "New from Template" tile or menu entry)
+//   - dead features stay hidden: no "New from Template" tile or menu entry,
+//     no cloud open/save/share/version-history in the File menu, no Language
+//     switcher or Translation Tool in the Help menu, no COMMENTS sidebar,
+//     no header account avatar (its popup only had dead account actions)
+//   - Help > Learn > User Guide points at the self-hosted /docs mirror
 //   - the Unsplash proxy works end-to-end and the LIBRARIES tab
 //     appears/disappears with UNSPLASH_ACCESS_KEY
 // ...and that the editor itself still works (a rename-sweep regression here
@@ -138,13 +141,41 @@ async function testWithUnsplash(executablePath) {
         await page.waitForTimeout(500);
         const bodyText = await page.evaluate(() => document.body.innerText);
         check("File menu has no 'From Template'", !/from template/i.test(bodyText));
+        check("File menu has no cloud open/save", !/Open from \.\.|Save to Cloud/i.test(bodyText));
+        check("File menu has no Share or Version History", !/^Share$/m.test(bodyText) && !/Version History/i.test(bodyText));
+        check("File menu still offers local open/save", /Open Local File/.test(bodyText) && /Save to Local File as/.test(bodyText));
         await page.keyboard.press("Escape");
+        await page.waitForTimeout(300);
 
-        const avatarBg = await page.evaluate(() => {
-            const el = document.querySelector(".login .avatar");
-            return el ? getComputedStyle(el).backgroundImage : "";
+        await page.getByText("Help", { exact: true }).first().click();
+        await page.waitForTimeout(500);
+        const helpText = await page.evaluate(() => document.body.innerText);
+        check("Help menu has no Language switcher or Translation Tool", !/^Language$/m.test(helpText) && !/Translation Tool/.test(helpText));
+        check("Help menu keeps Welcome Screen and Check for Updates", /Show Welcome Screen/.test(helpText) && /Check for Updates/.test(helpText));
+        await page.getByText("Learn", { exact: true }).first().hover();
+        await page.waitForTimeout(600);
+        const learnText = await page.evaluate(() => document.body.innerText);
+        check("Learn submenu has no Example Files, keeps User Guide", !/Explore Example Files/.test(learnText) && /User Guide/.test(learnText));
+        const [docsPage] = await Promise.all([
+            page.context().waitForEvent("page", { timeout: 10000 }).catch(() => null),
+            page.getByText("User Guide", { exact: true }).first().click(),
+        ]);
+        check("User Guide opens the self-hosted /docs mirror", !!docsPage && /^\/docs\/?$/.test(new URL(docsPage.url()).pathname), docsPage && docsPage.url());
+        if (docsPage) {
+            await docsPage.waitForLoadState("domcontentloaded").catch(() => {});
+            check("docs mirror serves content", (await docsPage.evaluate(() => document.body.innerText.length)) > 100);
+            await docsPage.close();
+        }
+        await page.keyboard.press("Escape");
+        await page.waitForTimeout(300);
+
+        const loginVisible = await page.evaluate(() => {
+            const el = document.querySelector(".login");
+            return !!el && getComputedStyle(el).display !== "none";
         });
-        check("avatar rendered from local URL", avatarBg.includes("/assets/prerendered/"), avatarBg);
+        check("header account avatar hidden", !loginVisible);
+        const rightTabs = await page.locator(".sidebar-option:visible").allTextContents();
+        check("COMMENTS sidebar hidden", !rightTabs.some((t) => /comments/i.test(t)), rightTabs);
 
         const libTab = page.locator(".sidebar-option:has-text('LIBRARIES')");
         check("LIBRARIES tab visible", await libTab.isVisible());

@@ -50,6 +50,15 @@ module.exports = function (module, exports, require) {
                 if (!gDesigner.getApplicationManager().isSavingAsEnabled() && this._type === GGravitCloudAction.Actions.SaveAs) return false;
                 return !(!gDesigner.getActiveDocument() && this._type !== GGravitCloudAction.Actions.Open) && !!GCommonNames.isOnline();
             }),
+            // The Gravit Cloud storage service is gone (see README "Known-dead
+            // features"), so hide "Open from .." and "Save to Cloud as..." from
+            // the File menu and the touch toolbar's open/save menus.
+            (GGravitCloudAction.prototype.isAvailable = function () {
+                return false;
+            }),
+            (GGravitCloudAction.prototype.isVisible = function () {
+                return false;
+            }),
             (GGravitCloudAction.prototype.execute = function (document, callback, options) {
                 const loginAndExecute = () =>
                     new GLoginPanel(

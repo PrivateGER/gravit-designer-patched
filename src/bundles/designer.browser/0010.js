@@ -73,7 +73,10 @@ module.exports = function (module, exports, require) {
             (configBase.CATEGORIES = require(831)),
             (configBase.ELEMENTS = require(832 /* ELEMENTS */)),
             (configBase.GooglePickerBuilder = require(833)),
-            (configBase.HAS_ANNOTATIONS = true),
+            // Comments/annotations synced through the dead collaboration API;
+            // the COMMENTS sidebar only offered "save and share to start the
+            // review process". Disabling the flag hides all commenting UI.
+            (configBase.HAS_ANNOTATIONS = false),
             (configBase.ANNOTATION_PERMANENT_LINK = true),
             (configBase.ANONYMOUS_SESSION_ENABLED = true),
             (configBase.USE_EXTENSION_IN_FILENAME = false),

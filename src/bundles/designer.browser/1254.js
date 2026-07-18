@@ -24,8 +24,13 @@ module.exports = function (module, exports, require) {
             (d.prototype.getGroup = function () {
                 return "file-share/opensharedfile";
             }),
+            // Shared-file links resolved through the dead cloud API; hide the
+            // action so the File > Share submenu disappears entirely.
+            (d.prototype.isAvailable = function () {
+                return false;
+            }),
             (d.prototype.isVisible = function () {
-                return true;
+                return false;
             }),
             (d.prototype.execute = function () {
                 GSystemDialog.prompt(

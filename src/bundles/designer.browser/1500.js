@@ -515,8 +515,14 @@ module.exports = function (module, exports, require) {
                     this.setWindowTabEnable(gDesigner.getLicense().canAccessFreemium()));
             }),
             (GHeader.prototype._createLoginTab = function () {
+                // The account service is gone and the app always runs as the
+                // local placeholder user, so the avatar's popup ("Account
+                // settings" / "Log out") could only offer dead actions. Keep
+                // the element (updateLoginInfo and others select it) but never
+                // show it.
                 var loginElement = $("<div/>")
                     .addClass("section login")
+                    .css("display", "none")
                     .append($("<div/>").addClass("avatar"))
                     .append($("<div/>").addClass("username").append($("<span/>")))
                     .on("click", function () {
@@ -536,7 +542,7 @@ module.exports = function (module, exports, require) {
                 });
             }),
             (GHeader.prototype.updateLoginInfo = function (user) {
-                ($(".login").css("display", user && user.isAnonymous() ? "none" : ""),
+                ($(".login").css("display", "none"),
                     $(".login .username")
                         .find("span")
                         .text(user ? user.getFullUserName() : GObject.GLocale.get(new GObject.GLocaleKey("GCommonNames", "text.cloud-login"))),

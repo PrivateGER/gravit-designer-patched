@@ -49,6 +49,14 @@ module.exports = function (module, exports, require) {
             (GVersionsHistoryAction.prototype.getIcon = function () {
                 return "gravit-icon-versions";
             }),
+            // Version history lived on the cloud sync service; the menu item
+            // could only ever render permanently disabled. Hide it.
+            (GVersionsHistoryAction.prototype.isAvailable = function () {
+                return false;
+            }),
+            (GVersionsHistoryAction.prototype.isVisible = function () {
+                return false;
+            }),
             (GVersionsHistoryAction.prototype.getCategory = function () {
                 return GCategory.default.CATEGORY_FILE;
             }),
