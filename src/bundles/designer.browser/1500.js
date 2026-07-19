@@ -673,6 +673,10 @@ module.exports = function (module, exports, require) {
                             const divider = menu.createAddDivider();
                             return (isVisible instanceof Function ? divider.setVisible(isVisible(win)) : "boolean" == typeof isVisible && divider.setVisible(isVisible), divider);
                         }
+                        // Tabs context menu: some entries reference actions that are not
+                        // registered in this build (e.g. removed cloud actions). Skip them
+                        // instead of creating broken items (upstream 8becdac6).
+                        if (needsAction && !gDesigner.getAction(actionId)) return;
                         (callback
                             ? (menuItem = menu.createAddItem(caption, () => {
                                   callback.call(self, win, tabElement);
