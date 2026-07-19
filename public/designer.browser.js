@@ -44325,7 +44325,7 @@ var GravitDesigner = (function (e) {
                             (file) => {
                                 (gDesigner.openDocument(file), callback && callback());
                             },
-                            false
+                            true
                         );
                     },
                     () => {

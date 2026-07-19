@@ -43,7 +43,7 @@ module.exports = function (module, exports, require) {
                             (file) => {
                                 (gDesigner.openDocument(file), callback && callback());
                             },
-                            false
+                            true
                         );
                     },
                     () => {
