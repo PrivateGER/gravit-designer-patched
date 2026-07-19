@@ -118,7 +118,13 @@ async function testWithUnsplash(executablePath) {
     check("unsplash featured returns shaped assets", featured.length === 12 && featured[0].path === "element.image.unsplash");
     const dl = await (await fetch(`${APP}/unsplash/download/photo?id=mockphoto2&size=regular`)).json();
     check("unsplash download returns a URL string", typeof dl === "string" && dl.includes("/img/2.png"), dl);
-    const reported = await (await fetch(`http://localhost:${MOCK_PORT}/__downloads`)).json();
+    // The server reports the download to Unsplash fire-and-forget (server.js
+    // /unsplash/download/photo), so poll briefly instead of racing it.
+    let reported = { downloadsReported: 0 };
+    for (let i = 0; i < 20 && reported.downloadsReported < 1; i++) {
+        reported = await (await fetch(`http://localhost:${MOCK_PORT}/__downloads`)).json();
+        if (reported.downloadsReported < 1) await new Promise((r) => setTimeout(r, 100));
+    }
     check("download reported to Unsplash", reported.downloadsReported >= 1);
     const market = await (await fetch(`${APP}/market?path=element.`)).json();
     check("market stub returns empty list", Array.isArray(market) && market.length === 0);
