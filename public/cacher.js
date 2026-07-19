@@ -1261,7 +1261,7 @@ if (workbox) {
             { revision: "04e3d8a9cd90b5824cee9cbaddf9f9b8_8795", url: "assets/static/maintenance/index.html" },
             { revision: "d2a92928bcfed646e387a6690f92979e_8795", url: "assets/static/maintenance/logo.svg" },
             { revision: "aed96dc1d185ed4fdb4a7da7679422f5_src", url: "autosave.worker.js" },
-            { revision: "680fc6ce7faf91b848a11ecd2353a126_src", url: "chunk.vendor.js" },
+            { revision: "7918730675e31cc0ae25159d28be7278_src", url: "chunk.vendor.js" },
             { revision: "6736554d220367faf6cdcd9ff4e9f8f0_src", url: "chunk.vendors~heic2any.js" },
             { revision: "5cdadfcdd86717be65f04f91b61916d7_src", url: "chunk.vendors~pdfjsWorker.js" },
             { revision: "7a1bcf750f1e20a28f0d64980a65a8a0_8795", url: "designer.browser.dark.css" },
