@@ -193,9 +193,13 @@ content:
 - **Documentation** is bundled: `public/docs/` is a self-contained mirror of
   `documentation.corelvector.com` (102 pages + assets, recovered from the
   Wayback Machine), and the app's help links point at `/docs/...`. The
-  Wayback crawler never captured roughly a third of the images and most
-  tutorial videos; those show as missing on some pages — that content is
-  lost everywhere, including on archive.org itself.
+  corelvector.com crawl missed roughly a third of the images, but most were
+  recovered from captures of the site's earlier home,
+  `documentation.designer.io` (see `scripts/recover-docs-images.js`, which
+  re-runs the recovery and reports what's still missing). 41 files — 15
+  originals plus their size variants, mostly 2021-22 Corel-era uploads —
+  were never captured by any archive host and show as missing on 11 pages;
+  that content is lost everywhere, including on archive.org itself.
 - **UI translations**: the locale-pack CDN was never archived, so the app
   always falls back to its bundled English strings. The Help > Language
   switcher (module `1620`) and the trunk-only "Translation Tool" (module
