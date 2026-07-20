@@ -2766,13 +2766,10 @@ module.exports = function (module, exports, require) {
                                         this.executeWhenReady(() => GSystemDialog.error(error));
                                     });
                             }
-                            if ("account" === action)
-                                user &&
-                                    !this.isAnonymous() &&
-                                    this.executeWhenReady(() => {
-                                        new GProfileDialog(user).open();
-                                    });
-                            else if ("purchases" === action) {
+                            // "account" deep link removed: it bypassed the action
+                            // framework and opened the dead cloud profile dialog even
+                            // though GOpenAccountSettingsAction is hidden in this fork.
+                            if ("purchases" === action) {
                                 user &&
                                     (await gApi.hasPurchases()) &&
                                     this.executeWhenReady(() => {

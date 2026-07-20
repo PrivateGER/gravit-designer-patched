@@ -72,4 +72,10 @@ for (const bundle of bundles) {
     }
 }
 console.log(`\nverify-refine: ${checked} modules checked, ${failed} divergent, ${missing} without baseline`);
+if (checked === 0 && missing > 0) {
+    // A run that verified nothing must not look like a pass (typo'd
+    // --baseline path, or modules not committed yet so `git show` has none).
+    console.error("verify-refine: no module had a baseline — nothing was verified");
+    process.exit(2);
+}
 process.exit(failed ? 1 : 0);

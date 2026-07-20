@@ -26,6 +26,7 @@ const fs = require("fs");
 const os = require("os");
 const path = require("path");
 const { chromium } = require("playwright-core");
+const WebSocket = require("ws");
 
 const ROOT = path.join(__dirname, "..");
 const APP_PORT = parseInt(process.env.SMOKE_APP_PORT, 10) || 3190;
@@ -58,6 +59,28 @@ function launch(cmd, args, env) {
     child.stderr.on("data", (d) => process.stderr.write(`[${path.basename(args[0])}] ${d}`));
     children.push(child);
     return child;
+}
+
+// Teardown that cannot wedge the run: close the browser with a hard timeout
+// (a crashed renderer can hang close() forever), never let one failing step
+// skip the rest, and wait for the server to actually release its port before
+// the next phase binds the same one.
+async function teardown(browser, server) {
+    try {
+        await Promise.race([browser.close(), new Promise((r) => setTimeout(r, 15000))]);
+    } catch {}
+    try {
+        await killAndWait(server);
+    } catch {}
+}
+function killAndWait(child) {
+    return new Promise((resolve) => {
+        if (child.exitCode !== null || child.signalCode !== null) return resolve();
+        child.once("exit", resolve);
+        child.kill();
+        // SIGKILL fallback if graceful shutdown stalls past server.js's own 3s timer
+        setTimeout(() => child.kill("SIGKILL"), 5000).unref();
+    });
 }
 
 async function waitForHttp(url, timeoutMs = 15000) {
@@ -118,10 +141,44 @@ async function testWithUnsplash(executablePath) {
     check("unsplash featured returns shaped assets", featured.length === 12 && featured[0].path === "element.image.unsplash");
     const dl = await (await fetch(`${APP}/unsplash/download/photo?id=mockphoto2&size=regular`)).json();
     check("unsplash download returns a URL string", typeof dl === "string" && dl.includes("/img/2.png"), dl);
-    const reported = await (await fetch(`http://localhost:${MOCK_PORT}/__downloads`)).json();
+    // The server reports the download to Unsplash fire-and-forget (server.js
+    // /unsplash/download/photo), so poll briefly instead of racing it.
+    let reported = { downloadsReported: 0 };
+    for (let i = 0; i < 20 && reported.downloadsReported < 1; i++) {
+        reported = await (await fetch(`http://localhost:${MOCK_PORT}/__downloads`)).json();
+        if (reported.downloadsReported < 1) await new Promise((r) => setTimeout(r, 100));
+    }
     check("download reported to Unsplash", reported.downloadsReported >= 1);
     const market = await (await fetch(`${APP}/market?path=element.`)).json();
     check("market stub returns empty list", Array.isArray(market) && market.length === 0);
+
+    // License WS keepalive: the bundled client sends the raw string "ping"
+    // every 50s (chunk.vendor module 0957); the server must answer with a
+    // JSON pong, not choke on non-JSON input.
+    await new Promise((resolve) => {
+        const sock = new WebSocket(`ws://localhost:${APP_PORT}/license?lang=1`);
+        let reply = null;
+        let settled = false;
+        const done = () => {
+            if (settled) return;
+            settled = true;
+            check("license WS answers raw ping keepalive", reply === "pong", reply);
+            try {
+                sock.close();
+            } catch {}
+            resolve();
+        };
+        setTimeout(done, 5000);
+        sock.on("open", () => sock.send("ping"));
+        sock.on("error", done);
+        sock.on("message", (m) => {
+            try {
+                reply = JSON.parse(m.toString()).name;
+            } catch {}
+            // Ignore other pushes (e.g. a future license-on-connect message).
+            if (reply === "pong") done();
+        });
+    });
 
     const browser = await chromium.launch({ executablePath, args: ["--no-sandbox"] });
     try {
@@ -198,8 +255,7 @@ async function testWithUnsplash(executablePath) {
         await page.waitForTimeout(3000);
         check("search returns results", (await page.locator(".asset-container img.asset").count()) > 12);
     } finally {
-        await browser.close();
-        server.kill();
+        await teardown(browser, server);
     }
 }
 
@@ -237,8 +293,7 @@ async function testWithoutUnsplash(executablePath) {
         await page.waitForTimeout(1200);
         check("settings dialog saves and closes", !(await page.evaluate(() => document.body.innerText.includes("Save Changes"))));
     } finally {
-        await browser.close();
-        server.kill();
+        await teardown(browser, server);
     }
 }
 
@@ -428,8 +483,7 @@ async function testEditor(executablePath) {
         // filled rather than pinning the exact count here.
         check("service worker precached the app", sw.entries > 1000, sw);
     } finally {
-        await browser.close();
-        server.kill();
+        await teardown(browser, server);
         fs.rmSync(tmpDir, { recursive: true, force: true });
     }
 }

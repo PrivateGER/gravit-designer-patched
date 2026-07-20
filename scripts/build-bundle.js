@@ -13,7 +13,7 @@ const fs = require("fs");
 const path = require("path");
 const zlib = require("zlib");
 const crypto = require("crypto");
-const { execFileSync } = require("child_process");
+const vm = require("vm");
 
 const ROOT = path.join(__dirname, "..");
 const BUNDLES_DIR = path.join(ROOT, "src", "bundles");
@@ -109,9 +109,27 @@ for (const name of names) {
     }
 
     const target = path.join(ROOT, "public", manifest.bundle);
-    fs.writeFileSync(target, out);
-    execFileSync(process.execPath, ["--check", target], { stdio: "inherit" });
+    // Validate everything BEFORE the first write: a failure must never leave
+    // the repo half-updated (clobbered bundle, stale precache revision).
+    try {
+        new vm.Script(out, { filename: manifest.bundle });
+    } catch (e) {
+        console.error(`SYNTAX ERROR in reassembled ${manifest.bundle}: ${e.message}`);
+        process.exit(1);
+    }
+    const md5 = crypto.createHash("md5").update(out).digest("hex");
+    const cacherPath = path.join(ROOT, "public", "cacher.js");
+    const cacher = fs.readFileSync(cacherPath, "utf8");
+    // Whitespace-tolerant (prettier may line-wrap entries); a missing entry is
+    // a hard error — silently keeping the old revision would pin returning
+    // clients' service workers to the stale bundle forever.
+    const entry = new RegExp(`revision: "[^"]*",\\s*url: "${manifest.bundle.replace(/\./g, "\\.")}"`);
+    if (!entry.test(cacher)) {
+        console.error(`ERROR: no precache entry for ${manifest.bundle} in cacher.js`);
+        process.exit(1);
+    }
 
+    fs.writeFileSync(target, out);
     fs.writeFileSync(path.join(dir, "linemap.json"), JSON.stringify({ bundle: manifest.bundle, modules: linemap }, null, 1));
     fs.writeFileSync(
         target + ".map",
@@ -123,14 +141,9 @@ for (const name of names) {
             mappings: encodeMappings(segsByLine, line),
         })
     );
-
-    // refresh the service-worker precache revision so clients refetch
-    const md5 = crypto.createHash("md5").update(out).digest("hex");
-    const cacherPath = path.join(ROOT, "public", "cacher.js");
-    const cacher = fs.readFileSync(cacherPath, "utf8");
-    const entry = new RegExp(`revision: "[^"]*", url: "${manifest.bundle.replace(".", "\\.")}"`);
-    if (!entry.test(cacher)) console.warn(`  WARNING: no precache entry for ${manifest.bundle} in cacher.js`);
-    fs.writeFileSync(cacherPath, cacher.replace(entry, `revision: "${md5}_src", url: "${manifest.bundle}"`));
+    // Refresh the service-worker precache revision so clients refetch.
+    // Function replacer: exempt from $-pattern substitution in the new text.
+    fs.writeFileSync(cacherPath, cacher.replace(entry, () => `revision: "${md5}_src", url: "${manifest.bundle}"`));
 
     // refresh precompressed variants
     const buf = Buffer.from(out);
