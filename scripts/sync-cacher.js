@@ -39,8 +39,9 @@ for (const [match, revision, url] of entries) {
     const md5 = crypto.createHash("md5").update(fs.readFileSync(filePath)).digest("hex");
     if (revision.startsWith(md5)) continue;
     // Replace only the revision string inside the matched entry so the
-    // original formatting (prettier line-wrapping) is preserved.
-    cacher = cacher.replace(match, match.replace(`revision: "${revision}"`, `revision: "${md5}_src"`));
+    // original formatting (prettier line-wrapping) is preserved. Function
+    // replacer: exempt from $-pattern substitution in the entry text.
+    cacher = cacher.replace(match, () => match.replace(`revision: "${revision}"`, `revision: "${md5}_src"`));
     updated++;
     console.log(`  bumped ${url} -> ${md5.slice(0, 8)}…_src`);
 }
