@@ -37,7 +37,6 @@ module.exports = function (module, exports, require) {
         }
         (GObject.GObject.inherit(SettingsDialog, GObject.GObject),
             (SettingsDialog.prototype._buildDialog = async function () {
-                let notificationsDisabled = (await designerConfig.gApi.getUserSettings().catch(() => ({ notifications_disabled: false }))).notifications_disabled;
                 ((this._dialog = $("<div></div>")
                     .append(
                         this._createSetting(
@@ -303,11 +302,7 @@ module.exports = function (module, exports, require) {
                 // never push its absent value to the stubbed settings API.
             }),
             (SettingsDialog.prototype._saveBasicSettings = function () {
-                var autoSaveInterval =
-                        designerConfig.AUTOSAVE_INTERVALS[
-                            parseInt(this._dialog.find('[data-setting="'.concat(GAutoSave.AUTO_SAVE_INTERVAL_SETTING, '"]')).val())
-                        ],
-                    decimalsNum = null;
+                var decimalsNum = null;
                 if (this._dialog.find('[data-setting="decimals-num-onoff"]').prop("checked")) {
                     var rawDecimalsNum = this._dialog.find('[data-setting="decimals-num-val"]').gInputBox("value"),
                         parsedDecimalsNum = GObject.GUtil.parseNumber(rawDecimalsNum);
@@ -317,8 +312,6 @@ module.exports = function (module, exports, require) {
                     [
                         "highlight_on_hover",
                         "auto_expand_layers",
-                        GAutoSave.AUTO_SAVE_SETTING,
-                        GAutoSave.DISABLE_WARNING_SETTING_NAME,
                         "system_fonts_enabled",
                         "theme",
                         "dont_store_textpath",
@@ -328,15 +321,12 @@ module.exports = function (module, exports, require) {
                         "eps_outline_fonts",
                         "ui_toolbar_alignment",
                         "decimals_num",
-                        GAutoSave.AUTO_SAVE_INTERVAL_SETTING,
                         "create_backup_copy",
                         scrubbingModule.default.getSetting(),
                     ],
                     [
                         this._dialog.find('[data-setting="highlight_on_hover"]').prop("checked"),
                         this._dialog.find('[data-setting="auto_expand_layers"]').prop("checked"),
-                        this._dialog.find('[data-setting="'.concat(GAutoSave.AUTO_SAVE_SETTING, '"]')).prop("checked"),
-                        !this._dialog.find('[data-setting="'.concat(GAutoSave.DISABLE_WARNING_SETTING_NAME, '"]')).prop("checked"),
                         this._dialog.find('[data-setting="system_fonts_enabled"]').prop("checked"),
                         this._dialog.find('[data-setting="theme"]').data("theme"),
                         !this._dialog.find('[data-setting="dont_store_textpath"]').prop("checked"),
@@ -346,7 +336,6 @@ module.exports = function (module, exports, require) {
                         this._dialog.find('[data-setting="eps_outline_fonts"]').prop("checked"),
                         this._dialog.find('[data-setting="ui_toolbar_alignment"]').prop("checked"),
                         decimalsNum,
-                        autoSaveInterval,
                         this._dialog.find('[data-setting="create_backup_copy"]').prop("checked"),
                         !this._dialog.find('[data-setting="'.concat(scrubbingModule.default.getSetting(), '"]')).prop("checked"),
                     ]
